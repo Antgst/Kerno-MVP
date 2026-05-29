@@ -40,6 +40,8 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 
 ---
 
+<a id="table-of-contents"></a>
+
 ## 📚 Table of Contents
 
 - [⚡ At a Glance](#at-a-glance)
@@ -78,6 +80,8 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 
 ---
 
+<a id="at-a-glance"></a>
+
 ## ⚡ At a Glance
 
 | Item | Description |
@@ -95,6 +99,8 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 | Portfolio stage | Holberton Stage 4 MVP implementation |
 
 ---
+
+<a id="key-value-proposition"></a>
 
 ## 💡 Key Value Proposition
 
@@ -117,6 +123,8 @@ Kerno helps suppliers become visible and helps stores discover relevant product 
 Kerno does not replace the full purchasing process in the MVP. It focuses on making the first business connection simpler, clearer, and more professional.
 
 ---
+
+<a id="project-overview"></a>
 
 ## 📌 Project Overview
 
@@ -154,6 +162,8 @@ This project is developed as part of the Holberton School portfolio process and 
 
 ---
 
+<a id="problem-statement"></a>
+
 ## 🧩 Problem Statement
 
 Retail stores often need to find direct, local, regional, or specialized suppliers, but supplier discovery can be fragmented, time-consuming, and poorly structured.
@@ -171,6 +181,8 @@ Kerno addresses this gap by providing a structured marketplace where:
 
 ---
 
+<a id="product-vision"></a>
+
 ## 🚀 Product Vision
 
 Kerno aims to become a simple, professional, and scalable sourcing platform for retail stores and suppliers.
@@ -182,6 +194,8 @@ The first version is intentionally limited to the core value proposition:
 Future versions may expand the platform with more advanced features, but the MVP remains focused on validating the central business flow before introducing transactional complexity.
 
 ---
+
+<a id="mvp-scope"></a>
 
 ## 🎯 MVP Scope
 
@@ -240,6 +254,8 @@ These features are deliberately excluded from the MVP and must not be implemente
 These exclusions protect the project from scope drift and keep the MVP focused on the validated value chain: supplier visibility, product discovery, and structured first contact.
 
 ---
+
+<a id="moscow-prioritization"></a>
 
 ## 🧮 MoSCoW Prioritization
 
@@ -303,6 +319,8 @@ The Won't Have scope is intentionally excluded from the MVP:
 
 ---
 
+<a id="out-of-scope"></a>
+
 ## 🚫 Out of Scope
 
 The following features are intentionally excluded from the MVP to prevent scope drift:
@@ -326,6 +344,8 @@ The MVP is not a complete e-commerce platform. It is a sourcing and first-contac
 Some excluded features may become relevant in V2 or V3, but they must not be implemented before the core MVP has been validated.
 
 ---
+
+<a id="future-evolutions"></a>
 
 ## 🛣️ Future Evolutions
 
@@ -393,6 +413,8 @@ This long-term vision remains secondary during Stage 4. The current priority is 
 
 ---
 
+<a id="user-roles"></a>
+
 ## 👥 User Roles
 
 ### Visitor
@@ -427,6 +449,8 @@ A store user can:
 
 ---
 
+<a id="main-user-journey"></a>
+
 ## 🧭 Main User Journey
 
 ```mermaid
@@ -452,6 +476,8 @@ flowchart TD
 ```
 
 ---
+
+<a id="core-features"></a>
 
 ## 🖥️ Core Features
 
@@ -516,6 +542,8 @@ flowchart TD
 
 ---
 
+<a id="mockups-and-product-screens"></a>
+
 ## 🎨 Mockups and Product Screens
 
 The Stage 3 documentation defines 15 main screens used as a visual basis for the MVP.
@@ -540,6 +568,8 @@ The Stage 3 documentation defines 15 main screens used as a visual basis for the
 
 ---
 
+<a id="tech-stack"></a>
+
 ## 🧱 Tech Stack
 
 | Layer | Technology | Purpose |
@@ -560,6 +590,8 @@ The Stage 3 documentation defines 15 main screens used as a visual basis for the
 The stack is intentionally classic, readable, and realistic for an MVP built by a small team.
 
 ---
+
+<a id="application-architecture"></a>
 
 ## 🏗️ Application Architecture
 
@@ -604,6 +636,8 @@ flowchart LR
 - Keep deployment simple with separated frontend, backend, and hosted PostgreSQL database.
 
 ---
+
+<a id="backend-modules"></a>
 
 ## 🧩 Backend Modules
 
@@ -672,6 +706,8 @@ Responsibilities:
 - check request ownership and access rights.
 
 ---
+
+<a id="database-design"></a>
 
 ## 🗄️ Database Design
 
@@ -798,6 +834,8 @@ erDiagram
 
 ---
 
+<a id="api-overview"></a>
+
 ## 🔌 API Overview
 
 The backend exposes a REST API.
@@ -832,6 +870,8 @@ The API will be documented progressively with OpenAPI / Swagger.
 | `PATCH` | `/api/requests/:id/status` | Update request status | Supplier |
 
 ---
+
+<a id="repository-structure"></a>
 
 ## 📁 Repository Structure
 
@@ -893,6 +933,8 @@ This structure may evolve during implementation, but the separation between fron
 
 ---
 
+<a id="getting-started"></a>
+
 ## ⚙️ Getting Started
 
 > The project is under active development. Setup commands may evolve as the frontend and backend foundations are created.
@@ -942,6 +984,8 @@ npx prisma migrate dev
 
 ---
 
+<a id="environment-variables"></a>
+
 ## 🔐 Environment Variables
 
 ### Backend `.env.example`
@@ -962,6 +1006,8 @@ VITE_API_BASE_URL="http://localhost:3000/api"
 Real `.env` files must never be committed.
 
 ---
+
+<a id="development-workflow"></a>
 
 ## 🌿 Development Workflow
 
@@ -993,6 +1039,8 @@ A pull request must include:
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the full workflow.
 
 ---
+
+<a id="github-project-workflow"></a>
 
 ## 📊 GitHub Project Workflow
 
@@ -1039,6 +1087,8 @@ An issue should not move to `Done` only because code was written. It must be rev
 For team-level issues, group validation is required before moving the card to `Done`.
 
 ---
+
+<a id="testing-strategy"></a>
 
 ## 🧪 Testing Strategy
 
@@ -1102,6 +1152,8 @@ register/login
 
 ---
 
+<a id="quality-and-review-process"></a>
+
 ## ✅ Quality and Review Process
 
 The project must remain ready for a technical manual review.
@@ -1129,6 +1181,8 @@ Review focus:
 - Can the team explain the implementation?
 
 ---
+
+<a id="ai-assisted-working-method"></a>
 
 ## 🤖 AI-Assisted Working Method
 
@@ -1198,6 +1252,8 @@ Every important suggestion must be checked against:
 The objective is to use AI as a professional assistant while keeping full human control over the project.
 
 ---
+
+<a id="sprint-organization"></a>
 
 ## 📅 Sprint Organization
 
@@ -1309,6 +1365,8 @@ Expected outcome:
 
 ---
 
+<a id="collaboration-model"></a>
+
 ## 🤝 Collaboration Model
 
 Kerno is developed collaboratively by a three-person team.
@@ -1354,6 +1412,8 @@ The goal is to build a working MVP and to maximize collective learning.
 
 ---
 
+<a id="team"></a>
+
 ## 👨‍💻 Team
 
 | Member | Main Role | Responsibilities |
@@ -1366,6 +1426,8 @@ The team works collaboratively, with shared reviews and cross-functional underst
 
 ---
 
+<a id="authors"></a>
+
 ## ✍️ Authors
 
 | Name | GitHub | Project Contribution |
@@ -1375,6 +1437,8 @@ The team works collaboratively, with shared reviews and cross-functional underst
 | Gwendal Boisard | [Gwendal-B](https://github.com/Gwendal-B) | Frontend lead, user interface, React pages, frontend implementation |
 
 ---
+
+<a id="project-links"></a>
 
 ## 🔗 Project Links
 
@@ -1393,6 +1457,8 @@ The team works collaboratively, with shared reviews and cross-functional underst
 
 ---
 
+<a id="license"></a>
+
 ## 📄 License
 
 No open-source license is granted at this stage.
@@ -1400,6 +1466,8 @@ No open-source license is granted at this stage.
 This repository is currently developed for educational purposes as part of the Holberton School portfolio process. Unless a specific license is added later, the source code, documentation, product concept, mockups, brand elements, architecture decisions, and related materials remain protected and may not be copied, reused, redistributed, or commercially exploited without prior written permission from the project owner and relevant contributors.
 
 ---
+
+<a id="project-origin-and-intellectual-property-notice"></a>
 
 ## 🔒 Project Origin and Intellectual Property Notice
 
