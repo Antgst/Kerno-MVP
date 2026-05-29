@@ -914,6 +914,8 @@ kerno-mvp/
 │   └── .env.example
 │
 ├── docs/
+│   ├── assets/
+│   │   └── kerno-logo.png
 │   ├── API.md
 │   ├── ARCHITECTURE.md
 │   ├── DATABASE.md
