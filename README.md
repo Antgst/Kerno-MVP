@@ -65,6 +65,7 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 - [📁 Repository Structure](#repository-structure)
 - [⚙️ Getting Started](#getting-started)
 - [🔐 Environment Variables](#environment-variables)
+- [🐳 Docker Local Development](#docker-local-development)
 - [🌿 Development Workflow](#development-workflow)
 - [📊 GitHub Project Workflow](#github-project-workflow)
 - [🧪 Testing Strategy](#testing-strategy)
@@ -94,6 +95,7 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 | Frontend | React, JavaScript, Vite, Tailwind CSS |
 | Backend | Node.js, Express, JavaScript |
 | Database | PostgreSQL with Prisma ORM |
+| Local infrastructure | Docker Compose for PostgreSQL local development |
 | API | REST |
 | Documentation | README, CONTRIBUTING, API docs, architecture, database, test plan |
 | Portfolio stage | Holberton Stage 4 MVP implementation |
@@ -581,6 +583,7 @@ The Stage 3 documentation defines 15 main screens used as a visual basis for the
 | Backend | Node.js | JavaScript runtime for the API |
 | Backend | Express | Lightweight REST API framework |
 | Database | PostgreSQL | Relational database for structured business data |
+| Local infrastructure | Docker Compose | Shared local PostgreSQL environment for the team |
 | ORM | Prisma | Database modeling, migrations, and queries |
 | API | REST | Simple communication between frontend and backend |
 | API Docs | OpenAPI / Swagger | Lightweight route documentation and testing support |
@@ -634,6 +637,7 @@ flowchart LR
 - Keep the frontend focused on UI, navigation, forms, and API consumption.
 - Use REST endpoints that are easy to test and document.
 - Keep deployment simple with separated frontend, backend, and hosted PostgreSQL database.
+- Use Docker Compose to standardize the local PostgreSQL environment during development.
 
 ---
 
@@ -916,11 +920,16 @@ kerno-mvp/
 ├── docs/
 │   ├── assets/
 │   │   └── kerno-logo.png
+│   ├── docker/
+│   │   └── DOCKER.md
 │   ├── API.md
 │   ├── ARCHITECTURE.md
 │   ├── DATABASE.md
 │   ├── TEST_PLAN.md
 │   └── SPRINT_NOTES.md
+│
+├── compose.yaml
+├── .dockerignore
 │
 ├── .github/
 │   └── pull_request_template.md
@@ -948,6 +957,7 @@ Recommended tools:
 - Node.js 20.x
 - npm
 - PostgreSQL
+- Docker Desktop or Docker Engine with Docker Compose
 - Git
 - VS Code or equivalent editor
 - Postman or equivalent API testing tool
@@ -984,6 +994,25 @@ npx prisma generate
 npx prisma migrate dev
 ```
 
+### Docker Local Database
+
+Docker Compose is used to provide a shared local PostgreSQL environment for the team.
+
+```bash
+docker compose up -d
+docker compose ps
+docker compose logs
+docker compose down
+```
+
+To reset the local PostgreSQL volume, use:
+
+```bash
+docker compose down -v
+```
+
+> Warning: `docker compose down -v` removes local database volumes and deletes local PostgreSQL data.
+
 ---
 
 <a id="environment-variables"></a>
@@ -1005,7 +1034,101 @@ NODE_ENV="development"
 VITE_API_BASE_URL="http://localhost:3000/api"
 ```
 
+### Docker PostgreSQL Environment
+
+The Docker PostgreSQL service uses local development values only.
+
+```env
+POSTGRES_USER=kerno_user
+POSTGRES_PASSWORD=kerno_password
+POSTGRES_DB=kerno_db
+```
+
+When the backend runs outside Docker, the backend `DATABASE_URL` should point to `localhost`:
+
+```env
+DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db"
+```
+
+If the backend is dockerized later, the host may change from `localhost` to the Docker service name:
+
+```env
+DATABASE_URL="postgresql://kerno_user:kerno_password@postgres:5432/kerno_db"
+```
+
 Real `.env` files must never be committed.
+
+---
+
+<a id="docker-local-development"></a>
+
+## 🐳 Docker Local Development
+
+Docker Compose is included to standardize the local development infrastructure.
+
+For the first MVP implementation, Docker is mainly used for PostgreSQL. The backend and frontend can still run locally with standard npm commands.
+
+### Docker Scope
+
+Initial Docker scope:
+
+- provide a local PostgreSQL service;
+- keep database configuration consistent across the team;
+- support Prisma setup and migrations;
+- avoid requiring each team member to manually install and configure PostgreSQL in the same way.
+
+Out of scope for the initial Docker setup:
+
+- production deployment;
+- Docker image publishing;
+- Kubernetes;
+- CI/CD;
+- mandatory backend containerization;
+- mandatory frontend containerization.
+
+### Docker Commands
+
+Start local services:
+
+```bash
+docker compose up -d
+```
+
+Check running services:
+
+```bash
+docker compose ps
+```
+
+Read service logs:
+
+```bash
+docker compose logs
+```
+
+Stop local services:
+
+```bash
+docker compose down
+```
+
+Reset local database data:
+
+```bash
+docker compose down -v
+```
+
+> Warning: `docker compose down -v` removes local Docker volumes and deletes local PostgreSQL data.
+
+### Expected Docker Files
+
+```text
+compose.yaml
+.dockerignore
+docs/docker/DOCKER.md
+```
+
+The Docker documentation can be expanded progressively when PostgreSQL, Prisma, and local database workflows are implemented.
 
 ---
 
