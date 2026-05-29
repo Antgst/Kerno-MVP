@@ -1,0 +1,24 @@
+# Docker Compose configuration for Kerno local development.
+#
+# First scope:
+# - provide a shared PostgreSQL service for local development;
+# - keep backend and frontend runnable locally with npm at this stage.
+#
+# Backend and frontend Dockerfiles may be added later if useful.
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: kerno_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kerno_user
+      POSTGRES_PASSWORD: kerno_password
+      POSTGRES_DB: kerno_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - kerno_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  kerno_postgres_data:
