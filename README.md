@@ -1,6 +1,12 @@
-# Kerno-MVP
+<div align="center">
+  <img src="./docs/assets/kerno-logo.png" alt="Kerno logo" width="180" />
 
-> B2B SaaS marketplace MVP connecting direct or local suppliers with retail stores.
+  <h1>KERNO</h1>
+
+  <p><strong>B2B SaaS marketplace MVP connecting direct or local suppliers with retail stores.</strong></p>
+</div>
+
+> Note: Kerno is a temporary working name for this portfolio project. The name, brand identity, and visual direction may evolve later if the project moves forward as a real entrepreneurial initiative.
 
 Kerno was born from a concrete retail observation: finding the right supplier is often more difficult than it should be.
 
@@ -9,6 +15,8 @@ For many retail stores, discovering direct, local, regional, or specialized supp
 At the same time, many suppliers struggle to make their products visible to the right retail buyers. They may have relevant offers, strong local value, or specific expertise, but lack a simple professional space where stores can discover them, understand their products, and initiate a first business contact.
 
 Kerno aims to bridge that gap.
+
+At this stage, Kerno is used as a provisional project name. It gives the MVP a clear identity during the portfolio and development phase, but it remains open to future naming, branding, and positioning changes if the project becomes a real business initiative.
 
 The project is designed as a B2B SaaS marketplace MVP focused on supplier discovery, product visibility, and structured first contact between stores and suppliers. It does not try to replace the full purchasing process. Instead, it focuses on the first critical step: helping the right store find the right supplier and send a clear contact or quote request.
 
@@ -1375,6 +1383,7 @@ The team works collaboratively, with shared reviews and cross-functional underst
 | GitHub repository | https://github.com/Antgst/Kerno-MVP |
 | GitHub Project board | https://github.com/users/Antgst/projects/1/views/1 |
 | Contribution guide | [CONTRIBUTING.md](./CONTRIBUTING.md) |
+| Logo asset path | `docs/assets/kerno-logo.png` |
 | API documentation | `docs/API.md` — coming soon |
 | Architecture documentation | `docs/ARCHITECTURE.md` — coming soon |
 | Database documentation | `docs/DATABASE.md` — coming soon |
