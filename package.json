@@ -1,0 +1,29 @@
+{
+  "name": "kerno-mvp",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">   <img src=\"./docs/assets/kerno-logo.png\" alt=\"Kerno logo\" width=\"180\" />",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Antgst/Kerno-MVP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Antgst/Kerno-MVP/issues"
+  },
+  "homepage": "https://github.com/Antgst/Kerno-MVP#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.1"
+  }
+}

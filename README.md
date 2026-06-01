@@ -844,12 +844,31 @@ erDiagram
 
 The backend exposes a REST API.
 
-The API will be documented progressively with OpenAPI / Swagger.
+The API is documented progressively with OpenAPI / Swagger.
+
+### Swagger Documentation
+
+When the backend server is running, the Swagger UI is available at:
+
+```text
+http://localhost:3000/api/docs
+```
+
+The raw OpenAPI JSON specification is available at:
+
+```text
+http://localhost:3000/api/openapi.json
+```
+
+The current Swagger document is defined in `backend/src/config/swagger.js` and mounted from `backend/src/app.js`.
 
 ### Planned Main Endpoints
 
 | Method | Endpoint | Purpose | Access |
 |---|---|---|---|
+| `GET` | `/api/health` | Check API health | Public |
+| `GET` | `/api/docs` | Open Swagger UI documentation | Public |
+| `GET` | `/api/openapi.json` | Retrieve raw OpenAPI specification | Public |
 | `POST` | `/api/auth/register` | Register a new user | Public |
 | `POST` | `/api/auth/login` | Log in a user | Public |
 | `GET` | `/api/auth/me` | Retrieve current user | Authenticated |
@@ -888,6 +907,7 @@ kerno-mvp/
 │   │   └── schema.prisma
 │   ├── src/
 │   │   ├── config/
+│   │   │   └── swagger.js
 │   │   ├── modules/
 │   │   │   ├── auth/
 │   │   │   ├── users/
@@ -977,6 +997,12 @@ npm install
 cp .env.example .env
 npm run dev
 ```
+
+Once the backend is running, you can access:
+
+- API health check: `http://localhost:3000/api/health`
+- Swagger UI: `http://localhost:3000/api/docs`
+- OpenAPI JSON: `http://localhost:3000/api/openapi.json`
 
 ### Frontend Setup
 
