@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./config/swagger");
 
 const app = express();
 
@@ -12,5 +14,11 @@ app.get("/api/health", (req, res) => {
     message: "KERNO API is running",
   });
 });
+
+app.get("/api/openapi.json", (req, res) => {
+  res.json(swaggerDocument);
+});
+
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 module.exports = app;
