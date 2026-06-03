@@ -976,8 +976,8 @@ Recommended tools:
 
 - Node.js 20.x
 - npm
-- PostgreSQL
-- Docker Desktop or Docker Engine with Docker Compose
+- Docker Desktop or Docker Engine with Docker Compose, recommended for local PostgreSQL
+- PostgreSQL, only if Docker Compose is not used
 - Git
 - VS Code or equivalent editor
 - Postman or equivalent API testing tool
@@ -1049,7 +1049,7 @@ docker compose down -v
 
 ```env
 PORT=3000
-DATABASE_URL="postgresql://user:password@localhost:5432/kerno_db"
+DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db"
 JWT_SECRET="replace_with_local_secret"
 NODE_ENV="development"
 ```

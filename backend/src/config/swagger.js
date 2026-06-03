@@ -3,7 +3,7 @@ const swaggerDocument = {
   info: {
     title: "Kerno API",
     version: "1.0.0",
-    description: "Documentation de l'API Kerno",
+    description: "Kerno API documentation",
   },
   servers: [
     {
@@ -14,18 +14,19 @@ const swaggerDocument = {
   tags: [
     {
       name: "Health",
-      description: "Vérification de l'état de l'API",
+      description: "API health status check",
     },
   ],
   paths: {
     "/health": {
       get: {
         tags: ["Health"],
-        summary: "Vérifie que l'API fonctionne",
-        description: "Retourne un message indiquant que l'API Kerno est en ligne.",
+        summary: "Checks that the API is running",
+        description:
+          "Returns a message confirming that the Kerno API is online.",
         responses: {
           200: {
-            description: "API opérationnelle",
+            description: "API is running",
             content: {
               "application/json": {
                 schema: {
@@ -38,13 +39,13 @@ const swaggerDocument = {
                     },
                     message: {
                       type: "string",
-                      example: "Kerno API is running",
+                      example: "KERNO API is running",
                     },
                   },
                 },
                 example: {
                   success: true,
-                  message: "Kerno API is running",
+                  message: "KERNO API is running",
                 },
               },
             },
