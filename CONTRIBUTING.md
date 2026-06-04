@@ -311,7 +311,7 @@ Example:
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/kerno_db"
 JWT_SECRET="replace_with_local_secret"
-PORT=3000
+PORT=5000
 ```
 
 ---
