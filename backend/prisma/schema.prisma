@@ -6,11 +6,16 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  SUPPLIER
+  STORE
+}
+
 model User {
   id           String   @id @default(uuid()) @db.Uuid
   email        String   @unique
   passwordHash String   @map("password_hash")
-  role         String
+  role         UserRole
   firstName    String?  @map("first_name")
   lastName     String?  @map("last_name")
   createdAt    DateTime @default(now()) @map("created_at")
@@ -43,17 +48,17 @@ model SupplierProfile {
 }
 
 model StoreProfile {
-  id             String   @id @default(uuid()) @db.Uuid
-  userId         String   @unique @map("user_id") @db.Uuid
-  storeName      String   @map("store_name")
-  brandName      String?  @map("brand_name")
-  location       String?
-  storeType      String?  @map("store_type")
-  sourcingNeeds  String?  @map("sourcing_needs")
-  contactEmail   String?  @map("contact_email")
-  phone          String?
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @unique @map("user_id") @db.Uuid
+  storeName     String   @map("store_name")
+  brandName     String?  @map("brand_name")
+  location      String?
+  storeType     String?  @map("store_type")
+  sourcingNeeds String?  @map("sourcing_needs")
+  contactEmail  String?  @map("contact_email")
+  phone         String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
   user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   contactRequests ContactRequest[]
@@ -87,8 +92,8 @@ model Product {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  supplier        SupplierProfile @relation(fields: [supplierId], references: [id], onDelete: Cascade)
-  category        Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  supplier        SupplierProfile  @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  category        Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   contactRequests ContactRequest[]
 
   @@map("products")
@@ -106,9 +111,9 @@ model ContactRequest {
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
-  store    StoreProfile     @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  supplier SupplierProfile  @relation(fields: [supplierId], references: [id], onDelete: Cascade)
-  product  Product?         @relation(fields: [productId], references: [id], onDelete: SetNull)
+  store    StoreProfile    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  supplier SupplierProfile @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  product  Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
 
   @@map("contact_requests")
 }
