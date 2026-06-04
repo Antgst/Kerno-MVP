@@ -1049,7 +1049,7 @@ docker compose down -v
 
 ```env
 PORT=5000
-DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db"
+DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db?schema=public"
 JWT_SECRET="replace_with_local_secret"
 NODE_ENV="development"
 ```
@@ -1073,7 +1073,7 @@ POSTGRES_DB=kerno_db
 When the backend runs outside Docker, the backend `DATABASE_URL` should point to `localhost`:
 
 ```env
-DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db"
+DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db?schema=public"
 ```
 
 If the backend is dockerized later, the host may change from `localhost` to the Docker service name:

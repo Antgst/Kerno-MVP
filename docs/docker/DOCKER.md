@@ -51,7 +51,7 @@ POSTGRES_DB=kerno_db
 When the backend runs outside Docker, use:
 
 ```env
-DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db"
+DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db?schema=public"
 ```
 
 If the backend is dockerized later, the host may change to the Docker service name:
