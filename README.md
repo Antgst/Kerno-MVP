@@ -857,7 +857,7 @@ http://localhost:5000/api/docs
 The raw OpenAPI JSON specification is available at:
 
 ```text
-0http://localhost:5000/api/openapi.json
+http://localhost:5000/api/openapi.json
 ```
 
 The current Swagger document is defined in `backend/src/config/swagger.js` and mounted from `backend/src/app.js`.
