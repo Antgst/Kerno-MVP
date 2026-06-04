@@ -851,13 +851,13 @@ The API is documented progressively with OpenAPI / Swagger.
 When the backend server is running, the Swagger UI is available at:
 
 ```text
-http://localhost:3000/api/docs
+http://localhost:5000/api/docs
 ```
 
 The raw OpenAPI JSON specification is available at:
 
 ```text
-http://localhost:3000/api/openapi.json
+http://localhost:5000/api/openapi.json
 ```
 
 The current Swagger document is defined in `backend/src/config/swagger.js` and mounted from `backend/src/app.js`.
@@ -976,8 +976,8 @@ Recommended tools:
 
 - Node.js 20.x
 - npm
-- PostgreSQL
-- Docker Desktop or Docker Engine with Docker Compose
+- Docker Desktop or Docker Engine with Docker Compose, recommended for local PostgreSQL
+- PostgreSQL, only if Docker Compose is not used
 - Git
 - VS Code or equivalent editor
 - Postman or equivalent API testing tool
@@ -1000,9 +1000,9 @@ npm run dev
 
 Once the backend is running, you can access:
 
-- API health check: `http://localhost:3000/api/health`
-- Swagger UI: `http://localhost:3000/api/docs`
-- OpenAPI JSON: `http://localhost:3000/api/openapi.json`
+- API health check: `http://localhost:5000/api/health`
+- Swagger UI: `http://localhost:5000/api/docs`
+- OpenAPI JSON: `http://localhost:5000/api/openapi.json`
 
 ### Frontend Setup
 
@@ -1048,8 +1048,8 @@ docker compose down -v
 ### Backend `.env.example`
 
 ```env
-PORT=3000
-DATABASE_URL="postgresql://user:password@localhost:5432/kerno_db"
+PORT=5000
+DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db"
 JWT_SECRET="replace_with_local_secret"
 NODE_ENV="development"
 ```
@@ -1057,7 +1057,7 @@ NODE_ENV="development"
 ### Frontend `.env.example`
 
 ```env
-VITE_API_BASE_URL="http://localhost:3000/api"
+VITE_API_BASE_URL="http://localhost:5000/api"
 ```
 
 ### Docker PostgreSQL Environment
