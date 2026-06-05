@@ -906,7 +906,6 @@ The current Swagger document is defined in `backend/src/config/swagger.js` and m
 Target structure:
 
 ```text
-```text
 kerno-mvp/
 ├── backend/
 │   ├── prisma/
