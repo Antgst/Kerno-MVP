@@ -717,6 +717,11 @@ Responsibilities:
 
 Kerno uses PostgreSQL with Prisma ORM.
 
+> Implementation note: during Stage 4, the user role field was strengthened from a generic conceptual field into a Prisma `UserRole` enum with `SUPPLIER` and `STORE`. This improves data consistency and prevents invalid role values while keeping the implementation aligned with the Stage 3 MVP design.
+>
+> More details are available in [`docs/database/USER_ROLE_ENUM_ALIGNMENT.md`](./docs/database/USER_ROLE_ENUM_ALIGNMENT.md).
+
+
 The MVP database stores:
 
 - users,
@@ -764,7 +769,7 @@ erDiagram
         uuid id PK
         string email
         string password_hash
-        string role
+        UserRole role
         string first_name
         string last_name
         datetime created_at
@@ -908,12 +913,15 @@ kerno-mvp/
 │   ├── src/
 │   │   ├── config/
 │   │   │   └── swagger.js
+│   │   ├── lib/
+│   │   │   └── prisma.js
 │   │   ├── modules/
 │   │   │   ├── auth/
 │   │   │   ├── users/
 │   │   │   ├── suppliers/
 │   │   │   ├── stores/
 │   │   │   ├── products/
+│   │   │   ├── categories/
 │   │   │   └── requests/
 │   │   ├── middlewares/
 │   │   ├── utils/
@@ -940,8 +948,12 @@ kerno-mvp/
 ├── docs/
 │   ├── assets/
 │   │   └── kerno-logo.png
+│   ├── database/
+│   │   └── USER_ROLE_ENUM_ALIGNMENT.md
 │   ├── docker/
 │   │   └── DOCKER.md
+│   ├── security/
+│   │   └── AUTH_SECURITY_NOTES.md
 │   ├── API.md
 │   ├── ARCHITECTURE.md
 │   ├── DATABASE.md
@@ -958,6 +970,7 @@ kerno-mvp/
 ├── README.md
 ├── .gitignore
 └── LICENSE
+
 ```
 
 This structure may evolve during implementation, but the separation between frontend, backend, and documentation must remain clear.
