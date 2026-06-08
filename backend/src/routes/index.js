@@ -1,5 +1,6 @@
 const express = require("express");
 
+const healthRoutes = require("../modules/health/health.routes");
 const authRoutes = require("../modules/auth/auth.routes");
 const usersRoutes = require("../modules/users/users.routes");
 const suppliersRoutes = require("../modules/suppliers/suppliers.routes");
@@ -10,6 +11,7 @@ const requestsRoutes = require("../modules/requests/requests.routes");
 
 const router = express.Router();
 
+router.use("/health", healthRoutes);
 router.use("/auth", authRoutes);
 router.use("/users", usersRoutes);
 router.use("/suppliers", suppliersRoutes);
