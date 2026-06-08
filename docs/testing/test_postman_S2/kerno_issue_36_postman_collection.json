@@ -1,0 +1,967 @@
+{
+  "info": {
+    "name": "Kerno MVP - Issue #36 API Tests",
+    "description": "Postman collection for testing the main Kerno API flow: health, auth, profiles, categories, products and contact requests. Built for issue #36; documentation can stay separate.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "supplierEmail",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "storeEmail",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "testPassword",
+      "value": "Password123!",
+      "type": "string"
+    },
+    {
+      "key": "supplierToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "storeToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "supplierUserId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "storeUserId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "supplierProfileId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "storeProfileId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "categoryId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "requestId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Health check",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (!pm.collectionVariables.get('supplierEmail')) {",
+              "  const suffix = Date.now();",
+              "  pm.collectionVariables.set('supplierEmail', `supplier_${suffix}@kerno.test`);",
+              "  pm.collectionVariables.set('storeEmail', `store_${suffix}@kerno.test`);",
+              "  pm.collectionVariables.set('testPassword', 'Password123!');",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "pm.test('API message is present', function () { pm.expect(pm.response.json().message).to.include('KERNO API'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Register supplier",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{supplierEmail}}\",\n  \"password\": \"{{testPassword}}\",\n  \"role\": \"SUPPLIER\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"Supplier\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "const json = pm.response.json();",
+              "pm.test('Supplier token returned', function () { pm.expect(json.token).to.be.a('string').and.not.empty; });",
+              "pm.test('Supplier role is correct', function () { pm.expect(json.user.role).to.eql('SUPPLIER'); });",
+              "pm.collectionVariables.set('supplierToken', json.token);",
+              "pm.collectionVariables.set('supplierUserId', json.user.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Login supplier",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{supplierEmail}}\",\n  \"password\": \"{{testPassword}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "const json = pm.response.json();",
+              "pm.test('Supplier login returns token', function () { pm.expect(json.token).to.be.a('string').and.not.empty; });",
+              "pm.collectionVariables.set('supplierToken', json.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Get current supplier user",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{supplierToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "pm.test('Current user is supplier', function () { pm.expect(pm.response.json().user.role).to.eql('SUPPLIER'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Create supplier profile",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/suppliers/profile",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "suppliers",
+            "profile"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{supplierToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"companyName\": \"Kerno Test Supplier\",\n  \"description\": \"Supplier profile created from Postman tests\",\n  \"location\": \"Rennes, France\",\n  \"businessType\": \"Wholesale\",\n  \"contactEmail\": \"contact.supplier@kerno.test\",\n  \"phone\": \"+33102030405\",\n  \"website\": \"https://supplier.kerno.test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "const json = pm.response.json();",
+              "pm.test('Supplier profile id returned', function () { pm.expect(json.supplier.id).to.be.a('string').and.not.empty; });",
+              "pm.collectionVariables.set('supplierProfileId', json.supplier.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Create category",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/categories",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "categories"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{supplierToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Postman Test Category {{supplierUserId}}\",\n  \"description\": \"Category created during Postman tests\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "const json = pm.response.json();",
+              "pm.test('Category id returned', function () { pm.expect(json.category.id).to.be.a('string').and.not.empty; });",
+              "pm.collectionVariables.set('categoryId', json.category.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 - Create product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/products",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{supplierToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoryId\": \"{{categoryId}}\",\n  \"name\": \"Postman Test Product\",\n  \"description\": \"Product created during Postman tests\",\n  \"priceInfo\": \"On request\",\n  \"minimumOrder\": \"10 units\",\n  \"origin\": \"France\",\n  \"imageUrl\": \"https://example.com/product.jpg\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "const json = pm.response.json();",
+              "pm.test('Product id returned', function () { pm.expect(json.product.id).to.be.a('string').and.not.empty; });",
+              "pm.collectionVariables.set('productId', json.product.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 - Get product by id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/products/{{productId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products",
+            "{{productId}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "pm.test('Product matches stored id', function () { pm.expect(pm.response.json().product.id).to.eql(pm.collectionVariables.get('productId')); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 - Register store",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{storeEmail}}\",\n  \"password\": \"{{testPassword}}\",\n  \"role\": \"STORE\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"Store\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "const json = pm.response.json();",
+              "pm.test('Store token returned', function () { pm.expect(json.token).to.be.a('string').and.not.empty; });",
+              "pm.test('Store role is correct', function () { pm.expect(json.user.role).to.eql('STORE'); });",
+              "pm.collectionVariables.set('storeToken', json.token);",
+              "pm.collectionVariables.set('storeUserId', json.user.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 - Login store",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{storeEmail}}\",\n  \"password\": \"{{testPassword}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "const json = pm.response.json();",
+              "pm.test('Store login returns token', function () { pm.expect(json.token).to.be.a('string').and.not.empty; });",
+              "pm.collectionVariables.set('storeToken', json.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 - Create store profile",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/stores/profile",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "stores",
+            "profile"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{storeToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"storeName\": \"Kerno Test Store\",\n  \"brandName\": \"Kerno Store Brand\",\n  \"location\": \"Nantes, France\",\n  \"storeType\": \"Independent shop\",\n  \"sourcingNeeds\": \"Local products\",\n  \"contactEmail\": \"contact.store@kerno.test\",\n  \"phone\": \"+33102030406\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "const json = pm.response.json();",
+              "pm.test('Store profile id returned', function () { pm.expect(json.store.id).to.be.a('string').and.not.empty; });",
+              "pm.collectionVariables.set('storeProfileId', json.store.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 - Create contact request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/requests",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "requests"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{storeToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"supplierId\": \"{{supplierProfileId}}\",\n  \"productId\": \"{{productId}}\",\n  \"subject\": \"Postman quote request\",\n  \"message\": \"Hello, I would like more information about this product.\",\n  \"requestedQuantity\": \"25 units\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "const json = pm.response.json();",
+              "pm.test('Request id returned', function () { pm.expect(json.request.id).to.be.a('string').and.not.empty; });",
+              "pm.test('Request status is PENDING', function () { pm.expect(json.request.status).to.eql('PENDING'); });",
+              "pm.collectionVariables.set('requestId', json.request.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13 - Store sees sent requests",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/requests/sent",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "requests",
+            "sent"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{storeToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "pm.test('Sent requests list contains created request', function () { const ids = pm.response.json().requests.map(r => r.id); pm.expect(ids).to.include(pm.collectionVariables.get('requestId')); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14 - Supplier sees received requests",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/requests/received",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "requests",
+            "received"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{supplierToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "pm.test('Received requests list contains created request', function () { const ids = pm.response.json().requests.map(r => r.id); pm.expect(ids).to.include(pm.collectionVariables.get('requestId')); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "15 - Supplier updates request status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/requests/{{requestId}}/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "requests",
+            "{{requestId}}",
+            "status"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{supplierToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"READ\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Response is JSON', function () { pm.response.to.have.header('Content-Type'); });",
+              "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
+              "pm.test('Request status is READ', function () { pm.expect(pm.response.json().request.status).to.eql('READ'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "16 - Negative: create product without token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/products",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Should fail\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('success is false', function () { pm.expect(pm.response.json().success).to.eql(false); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "17 - Negative: store cannot create supplier category",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/categories",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "categories"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{storeToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Forbidden category\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+              "pm.test('success is false', function () { pm.expect(pm.response.json().success).to.eql(false); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "18 - Negative: login with wrong password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{supplierEmail}}\",\n  \"password\": \"WrongPassword123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('success is false', function () { pm.expect(pm.response.json().success).to.eql(false); });"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
