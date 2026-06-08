@@ -1,0 +1,657 @@
+{
+  "startedAt": "2026-06-08T13:29:31.989703+00:00",
+  "finishedAt": "2026-06-08T13:29:37.611340+00:00",
+  "durationSeconds": 5.6198,
+  "environment": {
+    "python": "3.10.12",
+    "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "baseUrl": "http://localhost:5000"
+  },
+  "summary": {
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "xpassed": 0,
+    "errors": 0,
+    "total": 127
+  },
+  "tests": [
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_health_endpoint_returns_success",
+      "outcome": "passed",
+      "durationSeconds": 0.0043
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_openapi_json_endpoint_returns_an_openapi_document",
+      "outcome": "passed",
+      "durationSeconds": 0.0052
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_swagger_docs_endpoint_is_available",
+      "outcome": "passed",
+      "durationSeconds": 0.0237
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_unknown_route_returns_404_json",
+      "outcome": "passed",
+      "durationSeconds": 0.0084
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_method_not_allowed_or_not_found_returns_error_json",
+      "outcome": "passed",
+      "durationSeconds": 0.0396
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_supplier_success",
+      "outcome": "passed",
+      "durationSeconds": 0.3815
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_store_success",
+      "outcome": "passed",
+      "durationSeconds": 0.1364
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_normalizes_email_and_role",
+      "outcome": "passed",
+      "durationSeconds": 0.2089
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_login_success_after_register",
+      "outcome": "passed",
+      "durationSeconds": 0.2774
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_login_accepts_email_with_uppercase_and_spaces",
+      "outcome": "passed",
+      "durationSeconds": 0.3214
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_missing_or_blank_required_fields[email-payload0-Email is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0095
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_missing_or_blank_required_fields[password-payload1-Password is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0101
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_missing_or_blank_required_fields[role-payload2-Role is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0154
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_missing_or_blank_required_fields[blank_email-payload3-Email is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0073
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_missing_or_blank_required_fields[blank_role-payload4-Role is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0062
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_rejects_empty_or_short_password[]",
+      "outcome": "passed",
+      "durationSeconds": 0.0105
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_rejects_empty_or_short_password[ ]",
+      "outcome": "passed",
+      "durationSeconds": 0.0072
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_rejects_empty_or_short_password[short]",
+      "outcome": "passed",
+      "durationSeconds": 0.0104
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_rejects_empty_or_short_password[1234567]",
+      "outcome": "passed",
+      "durationSeconds": 0.0098
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_rejects_invalid_roles[ADMIN]",
+      "outcome": "passed",
+      "durationSeconds": 0.0062
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_rejects_invalid_roles[CUSTOMER]",
+      "outcome": "passed",
+      "durationSeconds": 0.0039
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_rejects_invalid_roles[]",
+      "outcome": "passed",
+      "durationSeconds": 0.0162
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_rejects_invalid_roles[supplier-store]",
+      "outcome": "passed",
+      "durationSeconds": 0.005
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_rejects_invalid_roles[123]",
+      "outcome": "passed",
+      "durationSeconds": 0.0083
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_rejects_invalid_roles[None]",
+      "outcome": "passed",
+      "durationSeconds": 0.0063
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_duplicate_email_returns_409",
+      "outcome": "passed",
+      "durationSeconds": 0.1383
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_duplicate_email_is_case_insensitive",
+      "outcome": "passed",
+      "durationSeconds": 0.1387
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_login_rejects_invalid_or_missing_credentials[payload0]",
+      "outcome": "passed",
+      "durationSeconds": 0.009
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_login_rejects_invalid_or_missing_credentials[payload1]",
+      "outcome": "passed",
+      "durationSeconds": 0.0042
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_login_rejects_invalid_or_missing_credentials[payload2]",
+      "outcome": "passed",
+      "durationSeconds": 0.0043
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_login_rejects_invalid_or_missing_credentials[payload3]",
+      "outcome": "passed",
+      "durationSeconds": 0.004
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_login_rejects_invalid_or_missing_credentials[payload4]",
+      "outcome": "passed",
+      "durationSeconds": 0.0065
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_login_rejects_wrong_password",
+      "outcome": "passed",
+      "durationSeconds": 0.3794
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_register_with_non_json_body_returns_error",
+      "outcome": "passed",
+      "durationSeconds": 0.0052
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_auth_module_status",
+      "outcome": "passed",
+      "durationSeconds": 0.0067
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_users_module_status",
+      "outcome": "passed",
+      "durationSeconds": 0.0053
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_users_me_requires_authentication",
+      "outcome": "passed",
+      "durationSeconds": 0.0084
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_users_me_rejects_invalid_bearer_token",
+      "outcome": "passed",
+      "durationSeconds": 0.0052
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_users_me_rejects_malformed_authorization_header",
+      "outcome": "passed",
+      "durationSeconds": 0.0129
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_users_me_accepts_supplier_token",
+      "outcome": "passed",
+      "durationSeconds": 0.014
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_users_me_accepts_store_token",
+      "outcome": "passed",
+      "durationSeconds": 0.0135
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_all_suppliers_is_public",
+      "outcome": "passed",
+      "durationSeconds": 0.0229
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_supplier_by_id_success",
+      "outcome": "passed",
+      "durationSeconds": 0.0097
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_supplier_by_unknown_uuid_returns_404",
+      "outcome": "passed",
+      "durationSeconds": 0.0167
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_supplier_profile_me_requires_supplier_role",
+      "outcome": "passed",
+      "durationSeconds": 0.0122
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_supplier_profile_me_requires_authentication",
+      "outcome": "passed",
+      "durationSeconds": 0.011
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_supplier_profile_requires_supplier_role",
+      "outcome": "passed",
+      "durationSeconds": 0.0132
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_supplier_profile_requires_company_name",
+      "outcome": "passed",
+      "durationSeconds": 0.1263
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_supplier_profile_rejects_duplicate_profile",
+      "outcome": "passed",
+      "durationSeconds": 0.0048
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_supplier_profile_success_and_trims_values",
+      "outcome": "passed",
+      "durationSeconds": 0.0169
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_supplier_profile_rejects_blank_company_name",
+      "outcome": "passed",
+      "durationSeconds": 0.011
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_supplier_profile_me_without_existing_profile_returns_404",
+      "outcome": "passed",
+      "durationSeconds": 0.0064
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_stores_module_status_is_public",
+      "outcome": "passed",
+      "durationSeconds": 0.0082
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_store_profile_me_requires_store_role",
+      "outcome": "passed",
+      "durationSeconds": 0.0079
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_store_profile_me_requires_authentication",
+      "outcome": "passed",
+      "durationSeconds": 0.005
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_store_profile_requires_store_role",
+      "outcome": "passed",
+      "durationSeconds": 0.0176
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_store_profile_requires_store_name",
+      "outcome": "passed",
+      "durationSeconds": 0.1263
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_store_profile_rejects_duplicate_profile",
+      "outcome": "passed",
+      "durationSeconds": 0.013
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_store_profile_me_success",
+      "outcome": "passed",
+      "durationSeconds": 0.0094
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_store_profile_success_and_nulls_empty_optional_fields",
+      "outcome": "passed",
+      "durationSeconds": 0.0318
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_store_profile_rejects_blank_store_name",
+      "outcome": "passed",
+      "durationSeconds": 0.0125
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_store_profile_me_without_existing_profile_returns_404",
+      "outcome": "passed",
+      "durationSeconds": 0.0162
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_categories_is_public",
+      "outcome": "passed",
+      "durationSeconds": 0.007
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_category_requires_authentication",
+      "outcome": "passed",
+      "durationSeconds": 0.0103
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_category_requires_supplier_role",
+      "outcome": "passed",
+      "durationSeconds": 0.0155
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_category_requires_name",
+      "outcome": "passed",
+      "durationSeconds": 0.0059
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_category_rejects_blank_name",
+      "outcome": "passed",
+      "durationSeconds": 0.0068
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_category_rejects_duplicate_name",
+      "outcome": "passed",
+      "durationSeconds": 0.0157
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_categories_are_returned_sorted_by_name",
+      "outcome": "passed",
+      "durationSeconds": 0.0088
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_products_is_public_and_returns_only_active_products",
+      "outcome": "passed",
+      "durationSeconds": 0.0353
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_product_by_id_success",
+      "outcome": "passed",
+      "durationSeconds": 0.0239
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_unknown_product_returns_404",
+      "outcome": "passed",
+      "durationSeconds": 0.0081
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_product_requires_authentication",
+      "outcome": "passed",
+      "durationSeconds": 0.0054
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_product_requires_supplier_role",
+      "outcome": "passed",
+      "durationSeconds": 0.0114
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_product_requires_supplier_profile",
+      "outcome": "passed",
+      "durationSeconds": 0.0104
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_product_requires_name",
+      "outcome": "passed",
+      "durationSeconds": 0.0143
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_product_rejects_blank_name",
+      "outcome": "passed",
+      "durationSeconds": 0.0139
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_product_rejects_unknown_category",
+      "outcome": "passed",
+      "durationSeconds": 0.0081
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_product_accepts_optional_fields_as_empty_strings",
+      "outcome": "passed",
+      "durationSeconds": 0.0376
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_product_success",
+      "outcome": "passed",
+      "durationSeconds": 0.0279
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_product_rejects_blank_name",
+      "outcome": "passed",
+      "durationSeconds": 0.0082
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_product_rejects_unknown_category",
+      "outcome": "passed",
+      "durationSeconds": 0.0208
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_product_rejects_not_owner_supplier",
+      "outcome": "passed",
+      "durationSeconds": 0.0244
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_delete_product_requires_supplier_role",
+      "outcome": "passed",
+      "durationSeconds": 0.0054
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_deactivate_product_hides_it_from_public_list",
+      "outcome": "passed",
+      "durationSeconds": 0.0768
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_deactivate_product_twice_returns_404",
+      "outcome": "passed",
+      "durationSeconds": 0.05
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_requires_store_role",
+      "outcome": "passed",
+      "durationSeconds": 0.0103
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_requires_store_profile",
+      "outcome": "passed",
+      "durationSeconds": 0.0129
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_validates_required_fields[body0-Supplier id is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0165
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_validates_required_fields[body1-Subject is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0157
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_validates_required_fields[body2-Message is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0094
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_validates_required_fields[body3-Supplier id is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0208
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_validates_required_fields[body4-Subject is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0143
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_validates_required_fields[body5-Message is required]",
+      "outcome": "passed",
+      "durationSeconds": 0.0098
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_rejects_unknown_supplier",
+      "outcome": "passed",
+      "durationSeconds": 0.0145
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_rejects_product_from_another_supplier",
+      "outcome": "passed",
+      "durationSeconds": 0.0553
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_create_contact_request_without_product_success",
+      "outcome": "passed",
+      "durationSeconds": 0.0421
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_sent_requests_requires_store_role",
+      "outcome": "passed",
+      "durationSeconds": 0.0051
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_sent_requests_success",
+      "outcome": "passed",
+      "durationSeconds": 0.0526
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_received_requests_requires_supplier_role",
+      "outcome": "passed",
+      "durationSeconds": 0.014
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_received_requests_success",
+      "outcome": "passed",
+      "durationSeconds": 0.0223
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_request_by_id_as_store_owner_success",
+      "outcome": "passed",
+      "durationSeconds": 0.0385
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_request_by_id_as_supplier_recipient_success",
+      "outcome": "passed",
+      "durationSeconds": 0.0171
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_request_by_id_rejects_other_store",
+      "outcome": "passed",
+      "durationSeconds": 0.0174
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_request_by_id_rejects_other_supplier",
+      "outcome": "passed",
+      "durationSeconds": 0.0184
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_get_unknown_request_returns_404",
+      "outcome": "passed",
+      "durationSeconds": 0.0105
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_accepts_valid_statuses[PENDING]",
+      "outcome": "passed",
+      "durationSeconds": 0.0303
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_accepts_valid_statuses[READ]",
+      "outcome": "passed",
+      "durationSeconds": 0.0222
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_accepts_valid_statuses[ANSWERED]",
+      "outcome": "passed",
+      "durationSeconds": 0.0168
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_accepts_valid_statuses[CLOSED]",
+      "outcome": "passed",
+      "durationSeconds": 0.0312
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_accepts_valid_statuses[ read ]",
+      "outcome": "passed",
+      "durationSeconds": 0.0196
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_accepts_valid_statuses[answered]",
+      "outcome": "passed",
+      "durationSeconds": 0.0134
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_rejects_invalid_statuses[]",
+      "outcome": "passed",
+      "durationSeconds": 0.0086
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_rejects_invalid_statuses[ ]",
+      "outcome": "passed",
+      "durationSeconds": 0.0148
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_rejects_invalid_statuses[NEW]",
+      "outcome": "passed",
+      "durationSeconds": 0.0092
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_rejects_invalid_statuses[INVALID]",
+      "outcome": "passed",
+      "durationSeconds": 0.0166
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_rejects_invalid_statuses[DONE]",
+      "outcome": "passed",
+      "durationSeconds": 0.0303
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_rejects_invalid_statuses[123]",
+      "outcome": "passed",
+      "durationSeconds": 0.0127
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_rejects_invalid_statuses[None]",
+      "outcome": "passed",
+      "durationSeconds": 0.0081
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_requires_supplier_role",
+      "outcome": "passed",
+      "durationSeconds": 0.0163
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_request_status_rejects_other_supplier",
+      "outcome": "passed",
+      "durationSeconds": 0.0181
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_update_unknown_request_status_returns_404",
+      "outcome": "passed",
+      "durationSeconds": 0.0182
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_invalid_uuid_path_parameters_return_json_error[GET-/api/products/not-a-uuid]",
+      "outcome": "passed",
+      "durationSeconds": 0.0224
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_invalid_uuid_path_parameters_return_json_error[GET-/api/suppliers/not-a-uuid]",
+      "outcome": "passed",
+      "durationSeconds": 0.0143
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_request_body_can_contain_extra_fields_without_leaking_them",
+      "outcome": "passed",
+      "durationSeconds": 0.0183
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_large_but_valid_text_fields_are_accepted",
+      "outcome": "passed",
+      "durationSeconds": 0.0412
+    },
+    {
+      "nodeid": "tests/test_kerno_api_comprehensive.py::test_unicode_text_fields_are_accepted",
+      "outcome": "passed",
+      "durationSeconds": 0.0167
+    }
+  ],
+  "exitStatus": 0
+}
