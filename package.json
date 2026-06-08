@@ -1,7 +1,7 @@
 {
   "name": "kerno-mvp",
   "version": "1.0.0",
-  "description": "<div align=\"center\">   <img src=\"./docs/assets/kerno-logo.png\" alt=\"Kerno logo\" width=\"180\" />",
+  "description": "Kerno MVP - B2B SaaS marketplace connecting local suppliers and retail stores",
   "main": "index.js",
   "directories": {
     "doc": "docs"
@@ -25,8 +25,5 @@
   "homepage": "https://github.com/Antgst/Kerno-MVP#readme",
   "devDependencies": {
     "concurrently": "^10.0.1"
-  },
-  "dependencies": {
-    "bcrypt": "^6.0.0"
   }
 }

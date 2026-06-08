@@ -108,7 +108,7 @@ model ContactRequest {
   subject           String
   message           String
   requestedQuantity String?  @map("requested_quantity")
-  status            String   @default("pending")
+  status            String   @default("PENDING")
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
