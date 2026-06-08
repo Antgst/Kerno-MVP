@@ -11,21 +11,34 @@ router.post(
   "/",
   requireAuth,
   requireRole("STORE"),
-  requestsController.getRequestsModuleStatus,
+  requestsController.createContactRequest,
 );
 
 router.get(
   "/sent",
   requireAuth,
   requireRole("STORE"),
-  requestsController.getRequestsModuleStatus,
+  requestsController.getSentRequests,
 );
 
 router.get(
   "/received",
   requireAuth,
   requireRole("SUPPLIER"),
-  requestsController.getRequestsModuleStatus,
+  requestsController.getReceivedRequests,
+);
+
+router.patch(
+  "/:id/status",
+  requireAuth,
+  requireRole("SUPPLIER"),
+  requestsController.updateRequestStatus,
+);
+
+router.get(
+  "/:id",
+  requireAuth,
+  requestsController.getRequestById,
 );
 
 module.exports = router;
