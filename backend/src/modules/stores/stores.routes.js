@@ -7,11 +7,27 @@ const {
 
 const router = express.Router();
 
-router.get(
-  "/",
+router.get("/", storesController.getStoresModuleStatus);
+
+router.post(
+  "/profile",
   requireAuth,
   requireRole("STORE"),
-  storesController.getStoresModuleStatus,
+  storesController.createStoreProfile,
+);
+
+router.get(
+  "/profile/me",
+  requireAuth,
+  requireRole("STORE"),
+  storesController.getCurrentStoreProfile,
+);
+
+router.put(
+  "/profile/me",
+  requireAuth,
+  requireRole("STORE"),
+  storesController.updateCurrentStoreProfile,
 );
 
 module.exports = router;
