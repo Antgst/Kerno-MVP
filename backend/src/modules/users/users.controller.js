@@ -10,6 +10,14 @@ function getUsersModuleStatus(req, res) {
   });
 }
 
+function getCurrentUser(req, res) {
+  res.status(200).json({
+    success: true,
+    user: req.user,
+  });
+}
+
 module.exports = {
   getUsersModuleStatus,
+  getCurrentUser,
 };
