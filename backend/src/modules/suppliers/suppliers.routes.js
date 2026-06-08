@@ -7,11 +7,29 @@ const {
 
 const router = express.Router();
 
+router.get("/", suppliersController.getAllSupplierProfiles);
+
 router.get(
-  "/",
+  "/profile/me",
   requireAuth,
   requireRole("SUPPLIER"),
-  suppliersController.getSuppliersModuleStatus,
+  suppliersController.getCurrentSupplierProfile,
 );
+
+router.post(
+  "/profile",
+  requireAuth,
+  requireRole("SUPPLIER"),
+  suppliersController.createSupplierProfile,
+);
+
+router.put(
+  "/profile/me",
+  requireAuth,
+  requireRole("SUPPLIER"),
+  suppliersController.updateCurrentSupplierProfile,
+);
+
+router.get("/:id", suppliersController.getSupplierProfileById);
 
 module.exports = router;
