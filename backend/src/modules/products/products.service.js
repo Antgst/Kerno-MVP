@@ -1,7 +1,255 @@
+const prisma = require("../../lib/prisma");
+
 function getStatus() {
   return "Products module is ready";
 }
 
+function createError(message, statusCode) {
+  const error = new Error(message);
+  error.statusCode = statusCode;
+  return error;
+}
+
+function validateRequiredString(value, fieldName) {
+  if (!value || typeof value !== "string" || value.trim() === "") {
+    throw createError(`${fieldName} is required`, 400);
+  }
+}
+
+function getSafeProduct(product) {
+  return {
+    id: product.id,
+    supplierId: product.supplierId,
+    categoryId: product.categoryId,
+    name: product.name,
+    description: product.description,
+    priceInfo: product.priceInfo,
+    minimumOrder: product.minimumOrder,
+    origin: product.origin,
+    imageUrl: product.imageUrl,
+    isActive: product.isActive,
+    createdAt: product.createdAt,
+    updatedAt: product.updatedAt,
+    supplier: product.supplier
+      ? {
+          id: product.supplier.id,
+          companyName: product.supplier.companyName,
+          location: product.supplier.location,
+          businessType: product.supplier.businessType,
+        }
+      : undefined,
+    category: product.category
+      ? {
+          id: product.category.id,
+          name: product.category.name,
+          description: product.category.description,
+        }
+      : null,
+  };
+}
+
+async function getSupplierProfileForUser(userId) {
+  const supplierProfile = await prisma.supplierProfile.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  if (!supplierProfile) {
+    throw createError("Supplier profile is required before managing products", 404);
+  }
+
+  return supplierProfile;
+}
+
+async function getAllProducts() {
+  const products = await prisma.product.findMany({
+    where: {
+      isActive: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      supplier: true,
+      category: true,
+    },
+  });
+
+  return products.map(getSafeProduct);
+}
+
+async function getProductById(id) {
+  const product = await prisma.product.findFirst({
+    where: {
+      id,
+      isActive: true,
+    },
+    include: {
+      supplier: true,
+      category: true,
+    },
+  });
+
+  if (!product) {
+    throw createError("Product not found", 404);
+  }
+
+  return getSafeProduct(product);
+}
+
+async function createProduct(userId, payload) {
+  const supplierProfile = await getSupplierProfileForUser(userId);
+
+  const {
+    categoryId,
+    name,
+    description,
+    priceInfo,
+    minimumOrder,
+    origin,
+    imageUrl,
+  } = payload;
+
+  validateRequiredString(name, "Product name");
+
+  if (categoryId) {
+    const category = await prisma.category.findUnique({
+      where: {
+        id: categoryId,
+      },
+    });
+
+    if (!category) {
+      throw createError("Category not found", 404);
+    }
+  }
+
+  const product = await prisma.product.create({
+    data: {
+      supplierId: supplierProfile.id,
+      categoryId: categoryId || null,
+      name: name.trim(),
+      description: description?.trim() || null,
+      priceInfo: priceInfo?.trim() || null,
+      minimumOrder: minimumOrder?.trim() || null,
+      origin: origin?.trim() || null,
+      imageUrl: imageUrl?.trim() || null,
+    },
+    include: {
+      supplier: true,
+      category: true,
+    },
+  });
+
+  return getSafeProduct(product);
+}
+
+async function updateProduct(userId, productId, payload) {
+  const supplierProfile = await getSupplierProfileForUser(userId);
+
+  const existingProduct = await prisma.product.findFirst({
+    where: {
+      id: productId,
+      supplierId: supplierProfile.id,
+      isActive: true,
+    },
+  });
+
+  if (!existingProduct) {
+    throw createError("Product not found or not owned by current supplier", 404);
+  }
+
+  const {
+    categoryId,
+    name,
+    description,
+    priceInfo,
+    minimumOrder,
+    origin,
+    imageUrl,
+  } = payload;
+
+  if (name !== undefined) {
+    validateRequiredString(name, "Product name");
+  }
+
+  if (categoryId !== undefined && categoryId !== null && categoryId !== "") {
+    const category = await prisma.category.findUnique({
+      where: {
+        id: categoryId,
+      },
+    });
+
+    if (!category) {
+      throw createError("Category not found", 404);
+    }
+  }
+
+  const updatedProduct = await prisma.product.update({
+    where: {
+      id: productId,
+    },
+    data: {
+      categoryId:
+        categoryId !== undefined ? categoryId || null : undefined,
+      name: name !== undefined ? name.trim() : undefined,
+      description:
+        description !== undefined ? description?.trim() || null : undefined,
+      priceInfo:
+        priceInfo !== undefined ? priceInfo?.trim() || null : undefined,
+      minimumOrder:
+        minimumOrder !== undefined ? minimumOrder?.trim() || null : undefined,
+      origin:
+        origin !== undefined ? origin?.trim() || null : undefined,
+      imageUrl:
+        imageUrl !== undefined ? imageUrl?.trim() || null : undefined,
+    },
+    include: {
+      supplier: true,
+      category: true,
+    },
+  });
+
+  return getSafeProduct(updatedProduct);
+}
+
+async function deactivateProduct(userId, productId) {
+  const supplierProfile = await getSupplierProfileForUser(userId);
+
+  const existingProduct = await prisma.product.findFirst({
+    where: {
+      id: productId,
+      supplierId: supplierProfile.id,
+      isActive: true,
+    },
+  });
+
+  if (!existingProduct) {
+    throw createError("Product not found or not owned by current supplier", 404);
+  }
+
+  const product = await prisma.product.update({
+    where: {
+      id: productId,
+    },
+    data: {
+      isActive: false,
+    },
+    include: {
+      supplier: true,
+      category: true,
+    },
+  });
+
+  return getSafeProduct(product);
+}
+
 module.exports = {
   getStatus,
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deactivateProduct,
 };
