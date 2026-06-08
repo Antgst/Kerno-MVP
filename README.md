@@ -985,11 +985,13 @@ kerno-mvp/
 │   ├── src/
 │   │   ├── config/
 │   │   │   └── swagger.js
+
 │   │   ├── generated/
 │   │   │   └── prisma/
 │   │   ├── lib/
 │   │   │   └── prisma.js
 │   │   ├── middlewares/
+
 │   │   ├── modules/
 │   │   │   ├── auth/
 │   │   │   │   ├── auth.controller.js
@@ -999,12 +1001,14 @@ kerno-mvp/
 │   │   │   ├── categories/
 │   │   │   ├── health/
 │   │   │   ├── products/
+
 │   │   │   ├── requests/
 │   │   │   ├── stores/
 │   │   │   ├── suppliers/
 │   │   │   └── users/
 │   │   ├── routes/
 │   │   │   └── index.js
+
 │   │   ├── app.js
 │   │   └── server.js
 │   ├── tests/
@@ -1043,13 +1047,17 @@ kerno-mvp/
 │   │   └── DOCKER.md
 │   ├── security/
 │   │   └── AUTH_SECURITY_NOTES.md
+
 │   └── testing/
 │       └── test_postman_S2/
+
 │
 ├── compose.yaml
 ├── CONTRIBUTING.md
+
 ├── package.json
 └── README.md
+
 ```
 
 This structure may evolve during implementation, but the separation between frontend, backend, and documentation must remain clear.
