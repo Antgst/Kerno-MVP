@@ -7,13 +7,29 @@ const {
 
 const router = express.Router();
 
-router.get("/", requireAuth, productsController.getProductsModuleStatus);
+router.get("/", productsController.getAllProducts);
+
+router.get("/:id", productsController.getProductById);
 
 router.post(
   "/",
   requireAuth,
   requireRole("SUPPLIER"),
-  productsController.getProductsModuleStatus,
+  productsController.createProduct,
+);
+
+router.put(
+  "/:id",
+  requireAuth,
+  requireRole("SUPPLIER"),
+  productsController.updateProduct,
+);
+
+router.delete(
+  "/:id",
+  requireAuth,
+  requireRole("SUPPLIER"),
+  productsController.deactivateProduct,
 );
 
 module.exports = router;
