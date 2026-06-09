@@ -97,7 +97,7 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 | Database | PostgreSQL with Prisma ORM |
 | Local infrastructure | Docker Compose for PostgreSQL local development |
 | API | REST |
-| Documentation | README, CONTRIBUTING, API docs, architecture, database, test plan |
+| API documentation | OpenAPI / Swagger + Sprint 2 API reference |
 | Portfolio stage | Holberton Stage 4 MVP implementation |
 
 ---
@@ -587,7 +587,7 @@ The Stage 3 documentation defines 15 main screens used as a visual basis for the
 | ORM | Prisma | Database modeling, migrations, and queries |
 | API | REST | Simple communication between frontend and backend |
 | API Docs | OpenAPI / Swagger | Lightweight route documentation and testing support |
-| Auth | JWT or simple session | User authentication and route protection |
+| Auth | JWT | User authentication and route protection |
 | Architecture | Modular monolith | Simple architecture with clear module separation |
 
 The stack is intentionally classic, readable, and realistic for an MVP built by a small team.
@@ -609,10 +609,12 @@ flowchart LR
     U[Web browser user] --> F[Frontend<br/>React + JavaScript + Vite + Tailwind CSS]
     F -->|HTTP / JSON via REST API| B[Backend<br/>Node.js + Express + JavaScript]
 
+    B --> H[Health module]
     B --> A[Auth module]
     B --> US[Users module]
     B --> SP[Suppliers module]
     B --> ST[Stores module]
+    B --> C[Categories module]
     B --> P[Products module]
     B --> R[Requests module]
 
@@ -620,6 +622,7 @@ flowchart LR
     US --> PR
     SP --> PR
     ST --> PR
+    C --> PR
     P --> PR
     R --> PR
 
@@ -647,6 +650,26 @@ flowchart LR
 
 The backend is organized as a modular monolith.
 
+Each backend module can contain:
+
+- a route file;
+- a controller file;
+- a service file when business or database logic is needed;
+- a Swagger file when the module exposes documented API routes.
+
+Current backend modules:
+
+| Module | Main responsibility |
+|---|---|
+| `health` | API health check |
+| `auth` | Registration, login, JWT generation |
+| `users` | Current user access and shared account data |
+| `suppliers` | Supplier profile creation, update, listing and detail access |
+| `stores` | Store profile creation and update |
+| `categories` | Product category listing and creation |
+| `products` | Product creation, update, listing, detail access and deactivation |
+| `requests` | Contact or quote request creation, listing, detail access and status updates |
+
 ### Auth Module
 
 Responsibilities:
@@ -654,8 +677,7 @@ Responsibilities:
 - user registration,
 - login,
 - password verification,
-- token or session generation,
-- current user retrieval,
+- JWT generation,
 - route protection,
 - role-based access.
 
@@ -665,8 +687,7 @@ Responsibilities:
 
 - store common user information,
 - manage user roles,
-- retrieve connected user information,
-- update general account data.
+- retrieve connected user information.
 
 ### Suppliers Module
 
@@ -674,9 +695,8 @@ Responsibilities:
 
 - create and update supplier profiles,
 - display public supplier pages,
-- search or list suppliers,
-- associate suppliers with products,
-- provide supplier dashboard data.
+- list suppliers,
+- associate suppliers with products.
 
 ### Stores Module
 
@@ -684,8 +704,14 @@ Responsibilities:
 
 - create and update store profiles,
 - display store information when a request is received,
-- provide store dashboard data,
-- list requests sent by a store.
+- list requests sent by a store through the requests module.
+
+### Categories Module
+
+Responsibilities:
+
+- list product categories,
+- create categories used to structure the product catalog.
 
 ### Products Module
 
@@ -695,8 +721,8 @@ Responsibilities:
 - update products,
 - deactivate products,
 - display products in the catalog,
-- filter products by simple criteria,
-- display product detail pages.
+- display product detail pages,
+- associate products with suppliers and categories.
 
 ### Requests Module
 
@@ -710,7 +736,6 @@ Responsibilities:
 - check request ownership and access rights.
 
 ---
-
 <a id="database-design"></a>
 
 ## 🗄️ Database Design
@@ -847,9 +872,13 @@ erDiagram
 
 ## 🔌 API Overview
 
-The backend exposes a REST API.
+The backend exposes a REST API mounted under:
 
-The API is documented progressively with OpenAPI / Swagger.
+```text
+/api
+```
+
+The API is documented with OpenAPI / Swagger and is now split by backend module.
 
 ### Swagger Documentation
 
@@ -865,80 +894,140 @@ The raw OpenAPI JSON specification is available at:
 http://localhost:5000/api/openapi.json
 ```
 
-The current Swagger document is defined in `backend/src/config/swagger.js` and mounted from `backend/src/app.js`.
+The current Swagger document is defined in `backend/src/config/swagger.js`, mounted from `backend/src/app.js`, and assembled from module-specific Swagger files.
 
-### Planned Main Endpoints
+### Sprint 2 API Reference
 
-| Method | Endpoint | Purpose | Access |
+The Sprint 2 backend API reference is available here:
+
+```text
+docs/api/BACKEND_API_S2.md
+```
+
+This document describes:
+
+- authentication routes;
+- current user route;
+- supplier profile routes;
+- store profile routes;
+- product and category routes;
+- contact request routes;
+- health route;
+- common request bodies;
+- common success and error responses;
+- local validation commands;
+- frontend integration notes.
+
+### Current API Status
+
+The current Sprint 2 API exposes:
+
+```text
+server: /api
+paths: 21
+bad paths: []
+```
+
+This means the OpenAPI server base path is `/api`, and documented OpenAPI paths do not repeat the `/api` prefix.
+
+### Main Implemented Routes
+
+| Module | Method | Route | Access |
 |---|---|---|---|
-| `GET` | `/api/health` | Check API health | Public |
-| `GET` | `/api/docs` | Open Swagger UI documentation | Public |
-| `GET` | `/api/openapi.json` | Retrieve raw OpenAPI specification | Public |
-| `POST` | `/api/auth/register` | Register a new user | Public |
-| `POST` | `/api/auth/login` | Log in a user | Public |
-| `GET` | `/api/auth/me` | Retrieve current user | Authenticated |
-| `GET` | `/api/users/me` | Retrieve connected account data | Authenticated |
-| `POST` | `/api/suppliers/profile` | Create supplier profile | Supplier |
-| `GET` | `/api/suppliers/me` | Retrieve own supplier profile | Supplier |
-| `PATCH` | `/api/suppliers/me` | Update own supplier profile | Supplier |
-| `GET` | `/api/suppliers` | List or search suppliers | Authenticated |
-| `GET` | `/api/suppliers/:id` | Retrieve supplier details | Authenticated |
-| `POST` | `/api/stores/profile` | Create store profile | Store |
-| `GET` | `/api/stores/me` | Retrieve own store profile | Store |
-| `PATCH` | `/api/stores/me` | Update own store profile | Store |
-| `GET` | `/api/products` | List or search products | Authenticated |
-| `POST` | `/api/products` | Create product | Supplier |
-| `GET` | `/api/products/:id` | Retrieve product details | Authenticated |
-| `PATCH` | `/api/products/:id` | Update product | Supplier owner |
-| `DELETE` | `/api/products/:id` | Deactivate product | Supplier owner |
-| `POST` | `/api/requests` | Send contact or quote request | Store |
-| `GET` | `/api/requests/sent` | View sent requests | Store |
-| `GET` | `/api/requests/received` | View received requests | Supplier |
-| `GET` | `/api/requests/:id` | View request details | Owner |
-| `PATCH` | `/api/requests/:id/status` | Update request status | Supplier |
+| Health | `GET` | `/api/health` | Public |
+| Swagger | `GET` | `/api/docs` | Public |
+| OpenAPI | `GET` | `/api/openapi.json` | Public |
+| Auth | `POST` | `/api/auth/register` | Public |
+| Auth | `POST` | `/api/auth/login` | Public |
+| Users | `GET` | `/api/users/me` | Authenticated |
+| Suppliers | `GET` | `/api/suppliers` | Public |
+| Suppliers | `GET` | `/api/suppliers/:id` | Public |
+| Suppliers | `POST` | `/api/suppliers/profile` | Supplier |
+| Suppliers | `GET` | `/api/suppliers/profile/me` | Supplier |
+| Suppliers | `PUT` | `/api/suppliers/profile/me` | Supplier |
+| Stores | `GET` | `/api/stores` | Public |
+| Stores | `POST` | `/api/stores/profile` | Store |
+| Stores | `GET` | `/api/stores/profile/me` | Store |
+| Stores | `PUT` | `/api/stores/profile/me` | Store |
+| Categories | `GET` | `/api/categories` | Public |
+| Categories | `POST` | `/api/categories` | Supplier |
+| Products | `GET` | `/api/products` | Public |
+| Products | `GET` | `/api/products/:id` | Public |
+| Products | `POST` | `/api/products` | Supplier |
+| Products | `PUT` | `/api/products/:id` | Supplier owner |
+| Products | `DELETE` | `/api/products/:id` | Supplier owner |
+| Requests | `POST` | `/api/requests` | Store |
+| Requests | `GET` | `/api/requests/sent` | Store |
+| Requests | `GET` | `/api/requests/received` | Supplier |
+| Requests | `GET` | `/api/requests/:id` | Authenticated owner |
+| Requests | `PATCH` | `/api/requests/:id/status` | Supplier |
+
+For detailed request bodies, responses, role rules, and validation notes, see:
+
+```text
+docs/api/BACKEND_API_S2.md
+```
 
 ---
-
 <a id="repository-structure"></a>
 
 ## 📁 Repository Structure
 
-Target structure:
+Current simplified structure:
 
 ```text
 kerno-mvp/
 ├── backend/
 │   ├── prisma/
+│   │   ├── migrations/
+│   │   ├── INSTALL_POSTGRES_PRISMA.md
 │   │   └── schema.prisma
 │   ├── src/
 │   │   ├── config/
 │   │   │   └── swagger.js
+
+│   │   ├── generated/
+│   │   │   └── prisma/
 │   │   ├── lib/
 │   │   │   └── prisma.js
+│   │   ├── middlewares/
+
 │   │   ├── modules/
 │   │   │   ├── auth/
-│   │   │   ├── users/
-│   │   │   ├── suppliers/
-│   │   │   ├── stores/
-│   │   │   ├── products/
+│   │   │   │   ├── auth.controller.js
+│   │   │   │   ├── auth.routes.js
+│   │   │   │   ├── auth.service.js
+│   │   │   │   └── auth.swagger.js
 │   │   │   ├── categories/
-│   │   │   └── requests/
-│   │   ├── middlewares/
-│   │   ├── utils/
+│   │   │   ├── health/
+│   │   │   ├── products/
+
+│   │   │   ├── requests/
+│   │   │   ├── stores/
+│   │   │   ├── suppliers/
+│   │   │   └── users/
+│   │   ├── routes/
+│   │   │   └── index.js
+
 │   │   ├── app.js
 │   │   └── server.js
+│   ├── tests/
+│   │   ├── results/
+│   │   ├── RUN_KERNO_PYTESTS.md
+│   │   └── test_kerno_api_comprehensive.py
 │   ├── package.json
 │   └── .env.example
 │
 ├── frontend/
+│   ├── public/
 │   ├── src/
 │   │   ├── api/
 │   │   ├── assets/
 │   │   ├── components/
+│   │   ├── hooks/
 │   │   ├── layouts/
 │   │   ├── pages/
 │   │   ├── routes/
-│   │   ├── hooks/
 │   │   ├── utils/
 │   │   ├── App.jsx
 │   │   └── main.jsx
@@ -946,6 +1035,10 @@ kerno-mvp/
 │   └── .env.example
 │
 ├── docs/
+│   ├── api/
+│   │   └── BACKEND_API_S2.md
+│   ├── architecture/
+│   │   └── BACKEND_STRUCTURE.md
 │   ├── assets/
 │   │   └── kerno-logo.png
 │   ├── database/
@@ -954,29 +1047,22 @@ kerno-mvp/
 │   │   └── DOCKER.md
 │   ├── security/
 │   │   └── AUTH_SECURITY_NOTES.md
-│   ├── API.md
-│   ├── ARCHITECTURE.md
-│   ├── DATABASE.md
-│   ├── TEST_PLAN.md
-│   └── SPRINT_NOTES.md
+
+│   └── testing/
+│       └── test_postman_S2/
+
 │
 ├── compose.yaml
-├── .dockerignore
-│
-├── .github/
-│   └── pull_request_template.md
-│
 ├── CONTRIBUTING.md
-├── README.md
-├── .gitignore
-└── LICENSE
+
+├── package.json
+└── README.md
 
 ```
 
 This structure may evolve during implementation, but the separation between frontend, backend, and documentation must remain clear.
 
 ---
-
 <a id="getting-started"></a>
 
 ## ⚙️ Getting Started
@@ -1008,6 +1094,8 @@ cd Kerno-MVP
 cd backend
 npm install
 cp .env.example .env
+npx prisma generate
+npx prisma migrate dev
 npm run dev
 ```
 
@@ -1062,7 +1150,7 @@ docker compose down -v
 
 ```env
 PORT=5000
-DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db"
+DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db?schema=public"
 JWT_SECRET="replace_with_local_secret"
 NODE_ENV="development"
 ```
@@ -1086,7 +1174,7 @@ POSTGRES_DB=kerno_db
 When the backend runs outside Docker, the backend `DATABASE_URL` should point to `localhost`:
 
 ```env
-DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db"
+DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db?schema=public"
 ```
 
 If the backend is dockerized later, the host may change from `localhost` to the Docker service name:
@@ -1175,12 +1263,13 @@ The Docker documentation can be expanded progressively when PostgreSQL, Prisma, 
 
 ## 🌿 Development Workflow
 
-The project uses a Git workflow based on `main`, `develop`, and short-lived branches.
+The project uses a Git workflow based on `main`, `develop`, sprint integration branches, and short-lived task branches.
 
 ### Branches
 
 - `main`: stable branch
-- `develop`: integration branch
+- `develop`: global integration branch
+- `S1`, `S2`, etc.: sprint integration branches when needed
 - `feature/...`: new feature branch
 - `fix/...`: bug fix branch
 - `docs/...`: documentation branch
@@ -1188,7 +1277,12 @@ The project uses a Git workflow based on `main`, `develop`, and short-lived bran
 
 ### Pull Requests
 
-Every meaningful change must go through a pull request into `develop`.
+Every meaningful change must go through a pull request into the current integration branch.
+
+Depending on the project phase, the target branch can be:
+
+- `develop`, for global integration;
+- `S1`, `S2`, etc., for sprint-level integration.
 
 A pull request must include:
 
@@ -1203,7 +1297,6 @@ A pull request must include:
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the full workflow.
 
 ---
-
 <a id="github-project-workflow"></a>
 
 ## 📊 GitHub Project Workflow
@@ -1292,6 +1385,11 @@ Postman or an equivalent tool will be used to test:
 - search endpoints,
 - contact request endpoints.
 
+Sprint 2 API documentation and validation are available in:
+
+- [`docs/api/BACKEND_API_S2.md`](./docs/api/BACKEND_API_S2.md)
+- [`docs/testing/test_postman_S2`](./docs/testing/test_postman_S2)
+
 ### Integration Testing
 
 Integration tests must verify that:
@@ -1315,7 +1413,6 @@ register/login
 ```
 
 ---
-
 <a id="quality-and-review-process"></a>
 
 ## ✅ Quality and Review Process
@@ -1612,15 +1709,16 @@ The team works collaboratively, with shared reviews and cross-functional underst
 | GitHub Project board | https://github.com/users/Antgst/projects/1/views/1 |
 | Contribution guide | [CONTRIBUTING.md](./CONTRIBUTING.md) |
 | Logo asset path | `docs/assets/kerno-logo.png` |
-| API documentation | `docs/API.md` — coming soon |
-| Architecture documentation | `docs/ARCHITECTURE.md` — coming soon |
-| Database documentation | `docs/DATABASE.md` — coming soon |
-| Test plan | `docs/TEST_PLAN.md` — coming soon |
+| API documentation | [`docs/api/BACKEND_API_S2.md`](./docs/api/BACKEND_API_S2.md) |
+| Backend structure | [`docs/architecture/BACKEND_STRUCTURE.md`](./docs/architecture/BACKEND_STRUCTURE.md) |
+| Database notes | [`docs/database/USER_ROLE_ENUM_ALIGNMENT.md`](./docs/database/USER_ROLE_ENUM_ALIGNMENT.md) |
+| Docker documentation | [`docs/docker/DOCKER.md`](./docs/docker/DOCKER.md) |
+| Security notes | [`docs/security/AUTH_SECURITY_NOTES.md`](./docs/security/AUTH_SECURITY_NOTES.md) |
+| Postman S2 test evidence | [`docs/testing/test_postman_S2`](./docs/testing/test_postman_S2) |
 | Stage 3 report — FR | https://canva.link/qqyguvw0uxid4ys |
 | Stage 3 report — EN | https://canva.link/85zocsxjseziifk |
 
 ---
-
 <a id="license"></a>
 
 ## 📄 License

@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  SUPPLIER
+  STORE
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         UserRole
+  firstName    String?  @map("first_name")
+  lastName     String?  @map("last_name")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  supplierProfile SupplierProfile?
+  storeProfile    StoreProfile?
+
+  @@map("users")
+}
+
+model SupplierProfile {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @unique @map("user_id") @db.Uuid
+  companyName  String   @map("company_name")
+  description  String?
+  location     String?
+  businessType String?  @map("business_type")
+  contactEmail String?  @map("contact_email")
+  phone        String?
+  website      String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products        Product[]
+  contactRequests ContactRequest[]
+
+  @@map("supplier_profiles")
+}
+
+model StoreProfile {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @unique @map("user_id") @db.Uuid
+  storeName     String   @map("store_name")
+  brandName     String?  @map("brand_name")
+  location      String?
+  storeType     String?  @map("store_type")
+  sourcingNeeds String?  @map("sourcing_needs")
+  contactEmail  String?  @map("contact_email")
+  phone         String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contactRequests ContactRequest[]
+
+  @@map("store_profiles")
+}
+
+model Category {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id           String   @id @default(uuid()) @db.Uuid
+  supplierId   String   @map("supplier_id") @db.Uuid
+  categoryId   String?  @map("category_id") @db.Uuid
+  name         String
+  description  String?
+  priceInfo    String?  @map("price_info")
+  minimumOrder String?  @map("minimum_order")
+  origin       String?
+  imageUrl     String?  @map("image_url")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  supplier        SupplierProfile  @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  category        Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  contactRequests ContactRequest[]
+
+  @@map("products")
+}
+
+model ContactRequest {
+  id                String   @id @default(uuid()) @db.Uuid
+  storeId           String   @map("store_id") @db.Uuid
+  supplierId        String   @map("supplier_id") @db.Uuid
+  productId         String?  @map("product_id") @db.Uuid
+  subject           String
+  message           String
+  requestedQuantity String?  @map("requested_quantity")
+  status            String   @default("PENDING")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  store    StoreProfile    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  supplier SupplierProfile @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  product  Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@map("contact_requests")
+}
