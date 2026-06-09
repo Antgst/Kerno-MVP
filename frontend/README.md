@@ -1,19 +1,59 @@
-# React + Vite
+# KERNO Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + JavaScript + Vite frontend for the KERNO MVP.
 
-Currently, two official plugins are available:
+## Purpose
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This frontend provides the user interface for the KERNO B2B SaaS marketplace MVP.
 
-## React Compiler
+It supports the main MVP journeys:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* public access;
+* authentication entry points;
+* supplier workspace;
+* store workspace;
+* catalog and detail pages;
+* contact / quote request flow.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* React
+* JavaScript
+* Vite
+* Tailwind CSS
+* React Router
+
+## Environment Variables
+
+```env
+VITE_API_BASE_URL="http://localhost:5000/api"
+```
+
+## Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+The frontend runs by default on:
+
+```text
+http://localhost:5173
+```
+
+The backend API should run on:
+
+```text
+http://localhost:5000/api
+```
+
+## Validation
+
+```bash
+npm run build
+npm run lint
+```
 
 ## MVP frontend routing map
 
@@ -21,40 +61,40 @@ The Sprint 3 frontend routing map defines the initial navigation structure for t
 
 ### Public routes
 
-- `/` — Home / route map
-- `/login` — Login
-- `/register` — Register
+* `/` — Home / route map
+* `/login` — Login
+* `/register` — Register
 
 ### Authenticated shared routes
 
-- `/catalog` — Catalog
-- `/suppliers/:id` — Supplier details
-- `/products/:id` — Product details
+* `/catalog` — Catalog
+* `/suppliers/:id` — Supplier details
+* `/products/:id` — Product details
 
 ### Supplier routes
 
-- `/supplier/dashboard` — Supplier dashboard
-- `/supplier/profile` — Supplier profile
-- `/supplier/products` — Supplier products
-- `/supplier/products/new` — Add product
-- `/supplier/requests` — Received requests
-- `/supplier/requests/:id` — Received request details
+* `/supplier/dashboard` — Supplier dashboard
+* `/supplier/profile` — Supplier profile
+* `/supplier/products` — Supplier products
+* `/supplier/products/new` — Add product
+* `/supplier/requests` — Received requests
+* `/supplier/requests/:id` — Received request details
 
 ### Store routes
 
-- `/store/dashboard` — Store dashboard
-- `/store/profile` — Store profile
-- `/store/requests` — Sent requests
-- `/store/requests/:id` — Sent request details
-- `/requests/new` — New request
+* `/store/dashboard` — Store dashboard
+* `/store/profile` — Store profile
+* `/store/requests` — Sent requests
+* `/store/requests/:id` — Sent request details
+* `/requests/new` — New request
 
 ### Fallback route
 
-- `*` — Not found page
+* `*` — Not found page
 
 ### Access model
 
-- `public`: accessible without authentication
-- `auth`: requires an authenticated user
-- `supplier`: requires an authenticated supplier user
-- `store`: requires an authenticated store user
+* `public`: accessible without authentication
+* `auth`: requires an authenticated user
+* `supplier`: requires an authenticated supplier user
+* `store`: requires an authenticated store user
