@@ -1,10 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AppLayout from "../layouts/AppLayout";
+import PublicLayout from "../layouts/PublicLayout";
 import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import routeConfig from "./routeConfig";
 
-function getRouteElement(route) {
+function getRoutePage(route) {
   if (route.path === "/") {
     return <HomePage />;
   }
@@ -14,6 +16,16 @@ function getRouteElement(route) {
   }
 
   return <PlaceholderPage route={route} />;
+}
+
+function getRouteElement(route) {
+  const page = getRoutePage(route);
+
+  if (route.access === "public" || route.path === "*") {
+    return <PublicLayout>{page}</PublicLayout>;
+  }
+
+  return <AppLayout>{page}</AppLayout>;
 }
 
 function AppRoutes() {
