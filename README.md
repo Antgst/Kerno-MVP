@@ -44,40 +44,40 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 
 ## 📚 Table of Contents
 
-- [⚡ At a Glance](#at-a-glance)
-- [💡 Key Value Proposition](#key-value-proposition)
-- [📌 Project Overview](#project-overview)
-- [🧩 Problem Statement](#problem-statement)
-- [🚀 Product Vision](#product-vision)
-- [🎯 MVP Scope](#mvp-scope)
-- [🧮 MoSCoW Prioritization](#moscow-prioritization)
-- [🚫 Out of Scope](#out-of-scope)
-- [🛣️ Future Evolutions](#future-evolutions)
-- [👥 User Roles](#user-roles)
-- [🧭 Main User Journey](#main-user-journey)
-- [🖥️ Core Features](#core-features)
-- [🎨 Mockups and Product Screens](#mockups-and-product-screens)
-- [🧱 Tech Stack](#tech-stack)
-- [🏗️ Application Architecture](#application-architecture)
-- [🧩 Backend Modules](#backend-modules)
-- [🗄️ Database Design](#database-design)
-- [🔌 API Overview](#api-overview)
-- [📁 Repository Structure](#repository-structure)
-- [⚙️ Getting Started](#getting-started)
-- [🔐 Environment Variables](#environment-variables)
-- [🐳 Docker Local Development](#docker-local-development)
-- [🌿 Development Workflow](#development-workflow)
-- [📊 GitHub Project Workflow](#github-project-workflow)
-- [🧪 Testing Strategy](#testing-strategy)
-- [✅ Quality and Review Process](#quality-and-review-process)
-- [🤖 AI-Assisted Working Method](#ai-assisted-working-method)
-- [📅 Sprint Organization](#sprint-organization)
-- [🤝 Collaboration Model](#collaboration-model)
-- [👨‍💻 Team](#team)
-- [✍️ Authors](#authors)
-- [🔗 Project Links](#project-links)
-- [📄 License](#license)
-- [🔒 Project Origin and Intellectual Property Notice](#project-origin-and-intellectual-property-notice)
+* [⚡ At a Glance](#at-a-glance)
+* [💡 Key Value Proposition](#key-value-proposition)
+* [📌 Project Overview](#project-overview)
+* [🧩 Problem Statement](#problem-statement)
+* [🚀 Product Vision](#product-vision)
+* [🎯 MVP Scope](#mvp-scope)
+* [🧮 MoSCoW Prioritization](#moscow-prioritization)
+* [🚫 Out of Scope](#out-of-scope)
+* [🛣️ Future Evolutions](#future-evolutions)
+* [👥 User Roles](#user-roles)
+* [🧭 Main User Journey](#main-user-journey)
+* [🖥️ Core Features](#core-features)
+* [🎨 Mockups and Product Screens](#mockups-and-product-screens)
+* [🧱 Tech Stack](#tech-stack)
+* [🏗️ Application Architecture](#application-architecture)
+* [🧩 Backend Modules](#backend-modules)
+* [🗄️ Database Design](#database-design)
+* [🔌 API Overview](#api-overview)
+* [📁 Repository Structure](#repository-structure)
+* [⚙️ Getting Started](#getting-started)
+* [🔐 Environment Variables](#environment-variables)
+* [🐳 Docker Local Development](#docker-local-development)
+* [🌿 Development Workflow](#development-workflow)
+* [📊 GitHub Project Workflow](#github-project-workflow)
+* [🧪 Testing Strategy](#testing-strategy)
+* [✅ Quality and Review Process](#quality-and-review-process)
+* [🤖 AI-Assisted Working Method](#ai-assisted-working-method)
+* [📅 Sprint Organization](#sprint-organization)
+* [🤝 Collaboration Model](#collaboration-model)
+* [👨‍💻 Team](#team)
+* [✍️ Authors](#authors)
+* [🔗 Project Links](#project-links)
+* [📄 License](#license)
+* [🔒 Project Origin and Intellectual Property Notice](#project-origin-and-intellectual-property-notice)
 
 ---
 
@@ -85,20 +85,20 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 
 ## ⚡ At a Glance
 
-| Item | Description |
-|---|---|
-| Project type | B2B SaaS marketplace MVP |
-| Target users | Direct/local suppliers and retail stores |
-| Core value | Supplier discovery and structured first contact |
-| Main business action | Store sends a contact or quote request |
-| MVP focus | Profiles, products, search, detail pages, requests |
-| Frontend | React, JavaScript, Vite, Tailwind CSS |
-| Backend | Node.js, Express, JavaScript |
-| Database | PostgreSQL with Prisma ORM |
-| Local infrastructure | Docker Compose for PostgreSQL local development |
-| API | REST |
-| API documentation | OpenAPI / Swagger + Sprint 2 API reference |
-| Portfolio stage | Holberton Stage 4 MVP implementation |
+| Item                 | Description                                        |
+| -------------------- | -------------------------------------------------- |
+| Project type         | B2B SaaS marketplace MVP                           |
+| Target users         | Direct/local suppliers and retail stores           |
+| Core value           | Supplier discovery and structured first contact    |
+| Main business action | Store sends a contact or quote request             |
+| MVP focus            | Profiles, products, search, detail pages, requests |
+| Frontend             | React, JavaScript, Vite, Tailwind CSS              |
+| Backend              | Node.js, Express, JavaScript                       |
+| Database             | PostgreSQL with Prisma ORM                         |
+| Local infrastructure | Docker Compose for PostgreSQL local development    |
+| API                  | REST                                               |
+| API documentation    | OpenAPI / Swagger + Sprint 2 API reference         |
+| Portfolio stage      | Holberton Stage 4 MVP implementation               |
 
 ---
 
@@ -110,19 +110,17 @@ Kerno helps suppliers become visible and helps stores discover relevant product 
 
 ### For suppliers
 
-- create a professional company profile;
-- publish structured product offers;
-- increase visibility to retail buyers;
-- receive contact or quote requests from interested stores.
+* create a professional company profile;
+* publish structured product offers;
+* increase visibility to retail buyers;
+* receive contact or quote requests from interested stores.
 
 ### For stores
 
-- search for products or suppliers from one place;
-- use simple filters to reduce sourcing time;
-- compare essential supplier and product information;
-- send clear and structured contact or quote requests.
-
-Kerno does not replace the full purchasing process in the MVP. It focuses on making the first business connection simpler, clearer, and more professional.
+* discover direct, local, regional, or specialized suppliers;
+* search products and supplier profiles;
+* compare basic supplier and product information;
+* send structured contact or quote requests.
 
 ---
 
@@ -130,37 +128,18 @@ Kerno does not replace the full purchasing process in the MVP. It focuses on mak
 
 ## 📌 Project Overview
 
-Kerno is a B2B SaaS marketplace MVP that connects direct or local suppliers with retail stores.
+Kerno is a B2B SaaS marketplace MVP designed to connect suppliers and retail stores through a simple professional discovery platform.
 
-The goal is to simplify supplier discovery, improve product visibility, and structure the first business contact between suppliers and stores.
+The product focuses on the first commercial step between both sides:
 
-The MVP does not aim to cover the full purchasing process. Instead, it focuses on product discovery and initial contact:
+* supplier visibility;
+* product discovery;
+* supplier and product detail pages;
+* structured contact or quote requests.
 
-```text
-Supplier creates a profile
-        ↓
-Supplier publishes products
-        ↓
-Store searches for suppliers or products
-        ↓
-Store views product and supplier details
-        ↓
-Store sends a contact or quote request
-        ↓
-Supplier receives and reviews the request
-```
+The MVP intentionally stays narrow. It does not include payment, logistics, internal messaging, ratings, advanced analytics, or full procurement automation. These features may be considered later, but they are not part of the current implementation scope.
 
-This project is developed as part of the Holberton School portfolio process and must demonstrate:
-
-- a functional MVP,
-- clean code organization,
-- a professional GitHub repository,
-- clear documentation,
-- application architecture,
-- database design,
-- testing evidence,
-- team collaboration,
-- Git and GitHub best practices.
+This project is built as part of the Holberton School portfolio process, with a strong focus on teamwork, planning, scope control, architecture, documentation, Git workflow, and MVP delivery.
 
 ---
 
@@ -168,18 +147,24 @@ This project is developed as part of the Holberton School portfolio process and 
 
 ## 🧩 Problem Statement
 
-Retail stores often need to find direct, local, regional, or specialized suppliers, but supplier discovery can be fragmented, time-consuming, and poorly structured.
+Retail stores often need to find new suppliers quickly, but supplier discovery is still fragmented.
 
-At the same time, smaller suppliers need visibility and a simple way to present their products to potential retail buyers.
+Common issues include:
 
-Kerno addresses this gap by providing a structured marketplace where:
+* supplier information is scattered across websites, personal networks, directories, emails, or informal recommendations;
+* stores lose time comparing suppliers and understanding what they offer;
+* direct and local suppliers can be hard to identify;
+* supplier product information is often incomplete or inconsistent;
+* the first business contact is not always structured.
 
-- suppliers can create a credible profile,
-- suppliers can publish product offers,
-- stores can search and filter suppliers or products,
-- stores can consult detail pages before contacting a supplier,
-- stores can send structured contact or quote requests,
-- suppliers can receive and review incoming requests.
+For suppliers, the problem is also clear:
+
+* visibility toward retail buyers is limited;
+* presenting products in a professional and reusable way can be difficult;
+* contact requests are often informal or incomplete;
+* smaller suppliers may struggle to compete with larger, more visible actors.
+
+Kerno addresses this by creating a focused marketplace where suppliers can publish their profile and products, and stores can search, view details, and send structured requests.
 
 ---
 
@@ -187,13 +172,13 @@ Kerno addresses this gap by providing a structured marketplace where:
 
 ## 🚀 Product Vision
 
-Kerno aims to become a simple, professional, and scalable sourcing platform for retail stores and suppliers.
+The product vision is to create a professional B2B marketplace that makes supplier discovery simpler, clearer, and more structured for retail stores.
 
-The first version is intentionally limited to the core value proposition:
+The long-term ambition is to become a trusted sourcing interface between retail stores and suppliers, especially for direct, local, regional, or specialized sourcing opportunities.
 
-> supplier visibility + product discovery + structured first contact.
+For the MVP, the vision is intentionally limited:
 
-Future versions may expand the platform with more advanced features, but the MVP remains focused on validating the central business flow before introducing transactional complexity.
+> Help a store discover a supplier, understand its products, and send a structured first contact request.
 
 ---
 
@@ -201,59 +186,54 @@ Future versions may expand the platform with more advanced features, but the MVP
 
 ## 🎯 MVP Scope
 
-The MVP covers the minimum functional scope required to validate the product value.
+The MVP focuses on the smallest set of features required to demonstrate the marketplace value.
 
 ### Must Have
 
-- Landing page presenting Kerno and its value proposition
-- User registration and login
-- Role-based access: supplier or store
-- Supplier profile creation and edition
-- Store profile creation and edition
-- Supplier product creation and management
-- Product and supplier catalog
-- Search and simple filters
-- Product detail page
-- Supplier detail page
-- Structured contact or quote request form
-- Supplier view of received requests
-- Store view of sent requests
-- Simple request status tracking
-- Basic dashboards for suppliers and stores
+* user registration and login;
+* user roles: supplier and store;
+* supplier profile creation and display;
+* store profile creation and display;
+* product creation by suppliers;
+* product catalog;
+* supplier catalog;
+* product detail page;
+* supplier detail page;
+* structured contact or quote request;
+* basic request tracking;
+* responsive frontend foundation;
+* REST API backend;
+* PostgreSQL database with Prisma ORM.
 
 ### Should Have
 
-- Supplier dashboard overview
-- Store dashboard overview
-- Profile completion indicators
-- Simple request follow-up
-- Clear onboarding progression
+* category filtering;
+* product search;
+* supplier search;
+* basic profile editing;
+* clean visual identity;
+* Swagger / OpenAPI documentation.
 
 ### Could Have
 
-These features may be considered only if the MVP scope is already stable:
-
-- basic recommendations,
-- contextual help messages,
-- simple product quality hints,
-- related product suggestions,
-- light supplier activity indicators.
+* basic dashboard cards;
+* request status updates;
+* supplier product activation / deactivation;
+* basic UI polish;
+* empty states.
 
 ### Won't Have / Not for MVP
 
-These features are deliberately excluded from the MVP and must not be implemented during the first version:
-
-- online payment;
-- shopping cart;
-- full ordering process;
-- delivery or logistics tracking;
-- invoicing;
-- advanced internal messaging;
-- public reviews and ratings;
-- advanced analytics;
-- complex subscription plans.
-
-These exclusions protect the project from scope drift and keep the MVP focused on the validated value chain: supplier visibility, product discovery, and structured first contact.
+* payment;
+* logistics;
+* delivery tracking;
+* internal messaging;
+* ratings and reviews;
+* advanced analytics;
+* real supplier verification workflow;
+* subscription billing;
+* recommendation engine;
+* mobile app.
 
 ---
 
@@ -261,63 +241,27 @@ These exclusions protect the project from scope drift and keep the MVP focused o
 
 ## 🧮 MoSCoW Prioritization
 
-The MVP scope is organized according to the MoSCoW method used during Stage 3.
-
-| Priority | Count | Role in the MVP |
-|---|---:|---|
-| Must Have | 15 | Covers the complete minimum process: registration, profiles, products, search, detail pages, contact request, and request reception |
-| Should Have | 5 | Improves readability, tracking, and simple organization of supplier and store journeys |
-| Could Have | 5 | Adds user convenience without blocking MVP validation |
-| Won't Have | 8 | Groups excluded features to avoid scope drift and keep the MVP realistic |
-
 ### Must Have Summary
 
-The Must Have scope is the foundation of the MVP. It includes:
+The Must Have scope covers the essential user journey:
 
-- account creation and login;
-- supplier and store role selection;
-- supplier profile creation;
-- store profile creation;
-- product creation and management;
-- catalog search and simple filters;
-- product and supplier detail pages;
-- structured contact or quote request;
-- supplier-side received requests;
-- store-side sent requests.
+```text
+Account → Profile → Product → Search → Details → Request
+```
+
+Without these elements, the MVP cannot demonstrate its core value.
 
 ### Should Have Summary
 
-The Should Have scope improves the usability of the MVP without changing its core purpose:
-
-- supplier dashboard;
-- store dashboard;
-- profile completion indicators;
-- simple request tracking;
-- clearer onboarding guidance.
+The Should Have scope improves usability and credibility, especially with search, filters, editing, and API documentation.
 
 ### Could Have Summary
 
-The Could Have scope can be considered only if the core MVP is stable:
-
-- recommended suppliers;
-- simple product indicators;
-- related product suggestions;
-- contextual help messages;
-- incomplete product indicators.
+The Could Have scope adds comfort and polish but is not required to validate the MVP.
 
 ### Won't Have Summary
 
-The Won't Have scope is intentionally excluded from the MVP:
-
-- payment;
-- cart;
-- complete ordering;
-- delivery and logistics;
-- invoicing;
-- advanced messaging;
-- reviews and ratings;
-- advanced analytics;
-- complex subscriptions.
+The Won't Have scope protects the project from becoming too large and losing focus during the portfolio timeline.
 
 ---
 
@@ -325,25 +269,22 @@ The Won't Have scope is intentionally excluded from the MVP:
 
 ## 🚫 Out of Scope
 
-The following features are intentionally excluded from the MVP to prevent scope drift:
+The following elements are intentionally excluded from the MVP:
 
-- online payment,
-- shopping cart,
-- full order management,
-- delivery or logistics tracking,
-- invoicing,
-- advanced internal messaging,
-- public reviews and ratings,
-- advanced analytics,
-- complex subscription plans,
-- heavy admin back office,
-- mandatory external API integrations,
-- multi-store organization management,
-- advanced permission systems.
+* online payment;
+* supplier subscription billing;
+* logistics and shipping;
+* advanced procurement workflows;
+* internal chat;
+* ratings and reviews;
+* notifications;
+* advanced data import;
+* supplier scoring;
+* legal contract management;
+* ERP integration;
+* accounting integration.
 
-The MVP is not a complete e-commerce platform. It is a sourcing and first-contact platform.
-
-Some excluded features may become relevant in V2 or V3, but they must not be implemented before the core MVP has been validated.
+These features may be explored later only if the MVP proves useful and the core workflow is validated.
 
 ---
 
@@ -351,67 +292,47 @@ Some excluded features may become relevant in V2 or V3, but they must not be imp
 
 ## 🛣️ Future Evolutions
 
-The MVP is intentionally limited, but the product vision can evolve after the first validated version.
-
-The following ideas are not part of the initial MVP. They are possible future directions that may be considered only after the core flow is functional, tested, and validated.
-
 ### V2 — Product and User Experience Improvements
 
-A V2 could improve the usability and business value of the platform without transforming it into a full transactional marketplace.
+Possible V2 features:
 
-Potential V2 improvements:
-
-- supplier recommendations based on store needs;
-- related product suggestions;
-- improved search and filter experience;
-- profile completion scoring;
-- product quality indicators;
-- simple notifications for received or sent requests;
-- better request follow-up without advanced messaging;
-- supplier badges or trust indicators;
-- certifications or quality labels;
-- richer supplier and product pages;
-- light dashboard indicators for suppliers and stores;
-- saved searches or simple bookmarks if they do not slow down the MVP.
-
-The goal of V2 would be to improve discovery, credibility, and follow-up while keeping the platform simple.
+* advanced product filters;
+* saved searches;
+* favorites;
+* supplier badges;
+* certifications;
+* improved request management;
+* request status history;
+* supplier onboarding improvements;
+* product image management;
+* category-based browsing.
 
 ### V3 — Business and Marketplace Expansion
 
-A V3 could explore more advanced business features if the MVP proves that stores and suppliers actually use the platform and find value in the first-contact workflow.
+Possible V3 features:
 
-Potential V3 evolutions:
-
-- advanced messaging between stores and suppliers;
-- public reviews and ratings;
-- advanced supplier analytics;
-- subscription plans;
-- premium supplier visibility;
-- store organization and multi-user access;
-- advanced admin back office;
-- external APIs for location, maps, or data enrichment;
-- supplier website generation or supplier mini-pages;
-- document management for product sheets, certifications, or commercial files;
-- order, payment, delivery, or invoicing features only if the business model requires them.
-
-These features must not be implemented too early because they would increase complexity before the core value proposition is validated.
+* SaaS subscription plans;
+* supplier promotion options;
+* featured supplier placement;
+* analytics dashboard;
+* sourcing insights;
+* verification workflow;
+* team accounts;
+* multi-store management;
+* CSV product import.
 
 ### Long-Term Product Direction
 
-Long term, Kerno could become a broader B2B sourcing platform for retail professionals.
+Possible long-term directions:
 
-Possible directions:
-
-- local and regional supplier discovery;
-- specialized supplier marketplaces by product category;
-- supplier qualification and certification;
-- sourcing workflow management;
-- data-driven recommendations;
-- marketplace SaaS subscriptions;
-- supplier visibility services;
-- tools for retail buyers to structure supplier research.
-
-This long-term vision remains secondary during Stage 4. The current priority is still the MVP: supplier profiles, products, search, detail pages, and structured contact or quote requests.
+* payment integration;
+* logistics partners;
+* quote comparison;
+* purchase order generation;
+* API integrations;
+* AI-assisted supplier matching;
+* marketplace trust scoring;
+* regional sourcing maps.
 
 ---
 
@@ -421,33 +342,40 @@ This long-term vision remains secondary during Stage 4. The current priority is 
 
 ### Visitor
 
-A visitor can:
+A visitor is not authenticated.
 
-- understand the value proposition,
-- choose between a supplier journey and a store journey,
-- access registration or login.
+Possible actions:
+
+* access the public landing page;
+* understand the product value;
+* choose to register or log in.
 
 ### Supplier
 
-A supplier can:
+A supplier is a registered user who wants to present their company and products.
 
-- create an account,
-- create and update a supplier profile,
-- add and manage products,
-- view received contact or quote requests,
-- review the details of a request sent by a store.
+Possible actions:
+
+* create a supplier profile;
+* edit supplier information;
+* publish products;
+* manage product visibility;
+* receive contact or quote requests;
+* view request details.
 
 ### Store
 
-A store user can:
+A store is a registered user who wants to discover suppliers and products.
 
-- create an account,
-- create and update a store profile,
-- search for products or suppliers,
-- use simple filters,
-- view supplier and product detail pages,
-- send a structured contact or quote request,
-- view sent requests and their simple status.
+Possible actions:
+
+* create a store profile;
+* search suppliers;
+* search products;
+* view supplier detail pages;
+* view product detail pages;
+* send contact or quote requests;
+* follow sent requests.
 
 ---
 
@@ -455,26 +383,16 @@ A store user can:
 
 ## 🧭 Main User Journey
 
-```mermaid
-flowchart TD
-    A[Visitor lands on Kerno] --> B{Choose user role}
-
-    B --> C[Supplier registration / login]
-    B --> D[Store registration / login]
-
-    C --> E[Supplier creates profile]
-    E --> F[Supplier adds products]
-    F --> G[Products become visible in catalog]
-
-    D --> H[Store creates profile]
-    H --> I[Store searches products or suppliers]
-    I --> J[Store views product details]
-    J --> K[Store views supplier details]
-    K --> L[Store sends contact or quote request]
-
-    L --> M[Backend records request]
-    M --> N[Supplier receives request]
-    N --> O[Supplier reviews request details]
+```text
+1. User registers
+2. User selects or receives a role: SUPPLIER or STORE
+3. Supplier creates a profile
+4. Supplier publishes products
+5. Store creates a profile
+6. Store browses or searches products / suppliers
+7. Store views details
+8. Store sends a structured request
+9. Supplier receives the request
 ```
 
 ---
@@ -485,62 +403,49 @@ flowchart TD
 
 ### Authentication
 
-- User registration
-- User login
-- Role selection: supplier or store
-- Protected routes
-- Role-based access control
+* register;
+* login;
+* password hashing;
+* JWT-based session foundation;
+* role-based access.
 
 ### Supplier Profile
 
-- Company name
-- Business type
-- Location
-- Description
-- Contact information
-- Optional website
-- Supplier public detail page
+* create supplier profile;
+* view supplier profile;
+* update supplier profile;
+* expose public supplier information to stores.
 
 ### Store Profile
 
-- Store name
-- Brand or structure
-- Store type
-- Location
-- Sourcing needs
-- Contact information
+* create store profile;
+* view store profile;
+* update store profile;
+* store sourcing information.
 
 ### Product Management
 
-- Product creation
-- Product edition
-- Product visibility status
-- Category association
-- Product description
-- Origin or production area
-- Optional image
-- Simple commercial information
+* create product;
+* list supplier products;
+* view product details;
+* associate product with supplier;
+* optional category association.
 
 ### Catalog and Search
 
-- Product and supplier listing
-- Keyword search
-- Simple filters
-- Supplier cards
-- Product cards
-- Links to detail pages
+* list products;
+* list suppliers;
+* browse product detail pages;
+* browse supplier detail pages;
+* prepare search and filtering foundations.
 
 ### Contact and Quote Requests
 
-- Structured request form
-- Supplier targeted by the request
-- Optional product targeted by the request
-- Subject and message
-- Optional requested quantity
-- Store contact details
-- Simple request status
-- Supplier-side received requests
-- Store-side sent requests
+* create request from store to supplier;
+* optionally link request to a product;
+* view sent requests as store;
+* view received requests as supplier;
+* track request status.
 
 ---
 
@@ -548,25 +453,34 @@ flowchart TD
 
 ## 🎨 Mockups and Product Screens
 
-The Stage 3 documentation defines 15 main screens used as a visual basis for the MVP.
+The Stage 3 design work includes mockups for the main MVP screens:
 
-| Screen | Name | Purpose |
-|---:|---|---|
-| 01 | Landing page | Present Kerno and guide users to the right journey |
-| 02 | Login / Registration | Allow users to create an account or log in based on their role |
-| 03 | Supplier dashboard | Give suppliers a simple overview of profile, products, and requests |
-| 04 | Supplier profile form | Collect professional supplier information |
-| 05 | Add product | Allow suppliers to publish structured product offers |
-| 06 | Supplier product management | Allow suppliers to manage their products |
-| 07 | Supplier received requests | Centralize contact or quote requests received by suppliers |
-| 08 | Store dashboard | Give stores a quick overview of sourcing activity |
-| 09 | Store profile form | Collect professional store information |
-| 10 | Catalog / supplier search | Allow stores to search and filter products or suppliers |
-| 11 | Supplier detail page | Help stores evaluate a supplier before contact |
-| 12 | Product detail page | Help stores evaluate a product before sending a request |
-| 13 | Request for quote / contact | Allow stores to send structured requests |
-| 14 | Store sent requests | Allow stores to track sent requests |
-| 15 | Received request detail | Allow suppliers to understand store needs before responding |
+* landing page;
+* register / login;
+* role selection;
+* supplier dashboard;
+* store dashboard;
+* supplier profile;
+* store profile;
+* product creation;
+* product catalog;
+* supplier catalog;
+* product detail page;
+* supplier detail page;
+* request creation;
+* request tracking;
+* request detail.
+
+The design direction is based on a professional B2B SaaS interface with a premium but practical visual identity.
+
+Main design principles:
+
+* clear hierarchy;
+* trust and professionalism;
+* simple navigation;
+* desktop-first responsive layout;
+* supplier and product visibility;
+* structured business actions.
 
 ---
 
@@ -574,23 +488,23 @@ The Stage 3 documentation defines 15 main screens used as a visual basis for the
 
 ## 🧱 Tech Stack
 
-| Layer | Technology | Purpose |
-|---|---|---|
-| Frontend | React | Build a component-based user interface |
-| Frontend | JavaScript | Keep a simple and consistent language across the stack |
-| Frontend | Vite | Fast frontend development and build tooling |
-| Frontend | Tailwind CSS | Rapid and consistent UI styling |
-| Backend | Node.js | JavaScript runtime for the API |
-| Backend | Express | Lightweight REST API framework |
-| Database | PostgreSQL | Relational database for structured business data |
-| Local infrastructure | Docker Compose | Shared local PostgreSQL environment for the team |
-| ORM | Prisma | Database modeling, migrations, and queries |
-| API | REST | Simple communication between frontend and backend |
-| API Docs | OpenAPI / Swagger | Lightweight route documentation and testing support |
-| Auth | JWT | User authentication and route protection |
-| Architecture | Modular monolith | Simple architecture with clear module separation |
-
-The stack is intentionally classic, readable, and realistic for an MVP built by a small team.
+| Layer               | Technology                      |
+| ------------------- | ------------------------------- |
+| Frontend            | React                           |
+| Frontend language   | JavaScript                      |
+| Frontend build tool | Vite                            |
+| Styling             | Tailwind CSS                    |
+| Backend             | Node.js                         |
+| Backend framework   | Express                         |
+| Backend language    | JavaScript                      |
+| Database            | PostgreSQL                      |
+| ORM                 | Prisma                          |
+| API                 | REST                            |
+| API documentation   | Swagger / OpenAPI               |
+| Authentication      | JWT foundation                  |
+| Local database      | Docker Compose PostgreSQL       |
+| Version control     | Git + GitHub                    |
+| Project tracking    | GitHub Issues / GitHub Projects |
 
 ---
 
@@ -598,49 +512,63 @@ The stack is intentionally classic, readable, and realistic for an MVP built by 
 
 ## 🏗️ Application Architecture
 
-Kerno uses a classic three-layer web architecture:
+The application follows a simple full-stack architecture:
 
-1. **Frontend**: React application used by visitors, suppliers, and stores.
-2. **Backend**: Node.js / Express REST API containing business logic.
-3. **Database**: PostgreSQL database accessed through Prisma ORM.
+```text
+Browser
+  ↓
+React Frontend
+  ↓ HTTP / JSON
+Express REST API
+  ↓
+Prisma ORM
+  ↓
+PostgreSQL Database
+```
 
-```mermaid
-flowchart LR
-    U[Web browser user] --> F[Frontend<br/>React + JavaScript + Vite + Tailwind CSS]
-    F -->|HTTP / JSON via REST API| B[Backend<br/>Node.js + Express + JavaScript]
+The backend is organized as a modular monolith.
 
-    B --> H[Health module]
-    B --> A[Auth module]
-    B --> US[Users module]
-    B --> SP[Suppliers module]
-    B --> ST[Stores module]
-    B --> C[Categories module]
-    B --> P[Products module]
-    B --> R[Requests module]
+```text
+backend/
+  src/
+    modules/
+      auth/
+      users/
+      suppliers/
+      stores/
+      categories/
+      products/
+      requests/
+    routes/
+    middlewares/
+    lib/
+    config/
+```
 
-    A --> PR[Prisma ORM]
-    US --> PR
-    SP --> PR
-    ST --> PR
-    C --> PR
-    P --> PR
-    R --> PR
+The frontend is organized around pages, components, layouts, hooks, routes, API helpers, and utilities.
 
-    PR --> DB[(PostgreSQL database)]
-
-    DOC[OpenAPI / Swagger documentation] -.-> B
+```text
+frontend/
+  src/
+    api/
+    assets/
+    components/
+    hooks/
+    layouts/
+    pages/
+    routes/
+    utils/
 ```
 
 ### Architecture Principles
 
-- Keep the application simple and explainable.
-- Avoid microservices for the MVP.
-- Separate responsibilities by backend modules.
-- Keep business logic in backend services.
-- Keep the frontend focused on UI, navigation, forms, and API consumption.
-- Use REST endpoints that are easy to test and document.
-- Keep deployment simple with separated frontend, backend, and hosted PostgreSQL database.
-- Use Docker Compose to standardize the local PostgreSQL environment during development.
+* keep the MVP simple;
+* avoid premature microservices;
+* separate frontend and backend concerns;
+* keep backend modules organized by domain;
+* use REST endpoints for communication;
+* keep database access centralized through Prisma;
+* document important decisions.
 
 ---
 
@@ -648,223 +576,98 @@ flowchart LR
 
 ## 🧩 Backend Modules
 
-The backend is organized as a modular monolith.
-
-Each backend module can contain:
-
-- a route file;
-- a controller file;
-- a service file when business or database logic is needed;
-- a Swagger file when the module exposes documented API routes.
-
-Current backend modules:
-
-| Module | Main responsibility |
-|---|---|
-| `health` | API health check |
-| `auth` | Registration, login, JWT generation |
-| `users` | Current user access and shared account data |
-| `suppliers` | Supplier profile creation, update, listing and detail access |
-| `stores` | Store profile creation and update |
-| `categories` | Product category listing and creation |
-| `products` | Product creation, update, listing, detail access and deactivation |
-| `requests` | Contact or quote request creation, listing, detail access and status updates |
-
 ### Auth Module
 
-Responsibilities:
+Responsible for:
 
-- user registration,
-- login,
-- password verification,
-- JWT generation,
-- route protection,
-- role-based access.
+* registration;
+* login;
+* password hashing;
+* JWT generation;
+* authentication checks.
 
 ### Users Module
 
-Responsibilities:
+Responsible for:
 
-- store common user information,
-- manage user roles,
-- retrieve connected user information.
+* user data;
+* current user endpoint;
+* user role management foundation.
 
 ### Suppliers Module
 
-Responsibilities:
+Responsible for:
 
-- create and update supplier profiles,
-- display public supplier pages,
-- list suppliers,
-- associate suppliers with products.
+* supplier profile creation;
+* supplier profile listing;
+* supplier profile details;
+* supplier profile update.
 
 ### Stores Module
 
-Responsibilities:
+Responsible for:
 
-- create and update store profiles,
-- display store information when a request is received,
-- list requests sent by a store through the requests module.
+* store profile creation;
+* store profile details;
+* store profile update.
 
 ### Categories Module
 
-Responsibilities:
+Responsible for:
 
-- list product categories,
-- create categories used to structure the product catalog.
+* product category listing;
+* category creation foundation.
 
 ### Products Module
 
-Responsibilities:
+Responsible for:
 
-- create products,
-- update products,
-- deactivate products,
-- display products in the catalog,
-- display product detail pages,
-- associate products with suppliers and categories.
+* product creation;
+* product listing;
+* product details;
+* supplier product association;
+* category association.
 
 ### Requests Module
 
-Responsibilities:
+Responsible for:
 
-- create contact or quote requests,
-- associate requests with stores, suppliers, and optionally products,
-- allow suppliers to view received requests,
-- allow stores to view sent requests,
-- manage a simple request status,
-- check request ownership and access rights.
+* contact request creation;
+* sent requests for stores;
+* received requests for suppliers;
+* request detail view;
+* request status foundation.
 
 ---
+
 <a id="database-design"></a>
 
 ## 🗄️ Database Design
 
-Kerno uses PostgreSQL with Prisma ORM.
-
-> Implementation note: during Stage 4, the user role field was strengthened from a generic conceptual field into a Prisma `UserRole` enum with `SUPPLIER` and `STORE`. This improves data consistency and prevents invalid role values while keeping the implementation aligned with the Stage 3 MVP design.
->
-> More details are available in [`docs/database/USER_ROLE_ENUM_ALIGNMENT.md`](./docs/database/USER_ROLE_ENUM_ALIGNMENT.md).
-
-
-The MVP database stores:
-
-- users,
-- supplier profiles,
-- store profiles,
-- categories,
-- products,
-- contact requests.
+The database is built with PostgreSQL and Prisma ORM.
 
 ### Main Tables
 
-| Table | Purpose |
-|---|---|
-| `users` | Stores common account data and role |
-| `supplier_profiles` | Stores professional supplier information |
-| `store_profiles` | Stores professional store information |
-| `categories` | Structures product catalog and filters |
-| `products` | Stores products published by suppliers |
-| `contact_requests` | Stores contact or quote requests sent by stores |
+* `users`
+* `supplier_profiles`
+* `store_profiles`
+* `categories`
+* `products`
+* `contact_requests`
 
 ### Main Relationships
 
-- A user can have one supplier profile.
-- A user can have one store profile.
-- A supplier can publish many products.
-- A category can contain many products.
-- A store can send many contact requests.
-- A supplier can receive many contact requests.
-- A product can be linked to many contact requests.
-- A contact request can optionally concern a specific product.
+* one user can have one supplier profile;
+* one user can have one store profile;
+* one supplier can publish many products;
+* one category can contain many products;
+* one store can send many contact requests;
+* one supplier can receive many contact requests;
+* one request can optionally reference one product.
 
 ### Database Diagram
 
-```mermaid
-erDiagram
-    USERS ||--o| SUPPLIER_PROFILES : owns
-    USERS ||--o| STORE_PROFILES : owns
-    SUPPLIER_PROFILES ||--o{ PRODUCTS : publishes
-    CATEGORIES ||--o{ PRODUCTS : classifies
-    STORE_PROFILES ||--o{ CONTACT_REQUESTS : sends
-    SUPPLIER_PROFILES ||--o{ CONTACT_REQUESTS : receives
-    PRODUCTS ||--o{ CONTACT_REQUESTS : concerns
-
-    USERS {
-        uuid id PK
-        string email
-        string password_hash
-        UserRole role
-        string first_name
-        string last_name
-        datetime created_at
-        datetime updated_at
-    }
-
-    SUPPLIER_PROFILES {
-        uuid id PK
-        uuid user_id FK
-        string company_name
-        text description
-        string location
-        string business_type
-        string contact_email
-        string phone
-        string website
-        datetime created_at
-        datetime updated_at
-    }
-
-    STORE_PROFILES {
-        uuid id PK
-        uuid user_id FK
-        string store_name
-        string brand_name
-        string location
-        string store_type
-        text sourcing_needs
-        string contact_email
-        string phone
-        datetime created_at
-        datetime updated_at
-    }
-
-    CATEGORIES {
-        uuid id PK
-        string name
-        text description
-        datetime created_at
-        datetime updated_at
-    }
-
-    PRODUCTS {
-        uuid id PK
-        uuid supplier_id FK
-        uuid category_id FK
-        string name
-        text description
-        string price_info
-        string minimum_order
-        string origin
-        string image_url
-        boolean is_active
-        datetime created_at
-        datetime updated_at
-    }
-
-    CONTACT_REQUESTS {
-        uuid id PK
-        uuid store_id FK
-        uuid supplier_id FK
-        uuid product_id FK
-        string subject
-        text message
-        string requested_quantity
-        string status
-        datetime created_at
-        datetime updated_at
-    }
-```
+A database diagram is maintained in the project documentation and Stage 3 materials.
 
 ---
 
@@ -872,214 +675,162 @@ erDiagram
 
 ## 🔌 API Overview
 
-The backend exposes a REST API mounted under:
-
-```text
-/api
-```
-
-The API is documented with OpenAPI / Swagger and is now split by backend module.
+The backend exposes a REST API under the `/api` prefix.
 
 ### Swagger Documentation
 
-When the backend server is running, the Swagger UI is available at:
+When the backend is running:
 
 ```text
 http://localhost:5000/api/docs
 ```
 
-The raw OpenAPI JSON specification is available at:
+OpenAPI JSON:
 
 ```text
 http://localhost:5000/api/openapi.json
 ```
 
-The current Swagger document is defined in `backend/src/config/swagger.js`, mounted from `backend/src/app.js`, and assembled from module-specific Swagger files.
-
 ### Sprint 2 API Reference
 
-The Sprint 2 backend API reference is available here:
+Detailed Sprint 2 backend API documentation is available in:
 
 ```text
 docs/api/BACKEND_API_S2.md
 ```
-
-This document describes:
-
-- authentication routes;
-- current user route;
-- supplier profile routes;
-- store profile routes;
-- product and category routes;
-- contact request routes;
-- health route;
-- common request bodies;
-- common success and error responses;
-- local validation commands;
-- frontend integration notes.
 
 ### Current API Status
 
-The current Sprint 2 API exposes:
+Implemented backend domains include:
 
-```text
-server: /api
-paths: 21
-bad paths: []
-```
-
-This means the OpenAPI server base path is `/api`, and documented OpenAPI paths do not repeat the `/api` prefix.
+* health;
+* auth;
+* users;
+* suppliers;
+* stores;
+* categories;
+* products;
+* requests.
 
 ### Main Implemented Routes
 
-| Module | Method | Route | Access |
-|---|---|---|---|
-| Health | `GET` | `/api/health` | Public |
-| Swagger | `GET` | `/api/docs` | Public |
-| OpenAPI | `GET` | `/api/openapi.json` | Public |
-| Auth | `POST` | `/api/auth/register` | Public |
-| Auth | `POST` | `/api/auth/login` | Public |
-| Users | `GET` | `/api/users/me` | Authenticated |
-| Suppliers | `GET` | `/api/suppliers` | Public |
-| Suppliers | `GET` | `/api/suppliers/:id` | Public |
-| Suppliers | `POST` | `/api/suppliers/profile` | Supplier |
-| Suppliers | `GET` | `/api/suppliers/profile/me` | Supplier |
-| Suppliers | `PUT` | `/api/suppliers/profile/me` | Supplier |
-| Stores | `GET` | `/api/stores` | Public |
-| Stores | `POST` | `/api/stores/profile` | Store |
-| Stores | `GET` | `/api/stores/profile/me` | Store |
-| Stores | `PUT` | `/api/stores/profile/me` | Store |
-| Categories | `GET` | `/api/categories` | Public |
-| Categories | `POST` | `/api/categories` | Supplier |
-| Products | `GET` | `/api/products` | Public |
-| Products | `GET` | `/api/products/:id` | Public |
-| Products | `POST` | `/api/products` | Supplier |
-| Products | `PUT` | `/api/products/:id` | Supplier owner |
-| Products | `DELETE` | `/api/products/:id` | Supplier owner |
-| Requests | `POST` | `/api/requests` | Store |
-| Requests | `GET` | `/api/requests/sent` | Store |
-| Requests | `GET` | `/api/requests/received` | Supplier |
-| Requests | `GET` | `/api/requests/:id` | Authenticated owner |
-| Requests | `PATCH` | `/api/requests/:id/status` | Supplier |
-
-For detailed request bodies, responses, role rules, and validation notes, see:
+Health:
 
 ```text
-docs/api/BACKEND_API_S2.md
+GET /api/health
+```
+
+Auth:
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+```
+
+Users:
+
+```text
+GET /api/users/me
+```
+
+Suppliers:
+
+```text
+POST /api/suppliers
+GET /api/suppliers
+GET /api/suppliers/:id
+PATCH /api/suppliers/:id
+```
+
+Stores:
+
+```text
+POST /api/stores
+GET /api/stores/me
+PATCH /api/stores/:id
+```
+
+Categories:
+
+```text
+POST /api/categories
+GET /api/categories
+```
+
+Products:
+
+```text
+POST /api/products
+GET /api/products
+GET /api/products/:id
+PATCH /api/products/:id
+```
+
+Requests:
+
+```text
+POST /api/requests
+GET /api/requests/sent
+GET /api/requests/received
+GET /api/requests/:id
+PATCH /api/requests/:id/status
 ```
 
 ---
+
 <a id="repository-structure"></a>
 
 ## 📁 Repository Structure
 
-Current simplified structure:
-
 ```text
-kerno-mvp/
-├── backend/
-│   ├── prisma/
-│   │   ├── migrations/
-│   │   ├── INSTALL_POSTGRES_PRISMA.md
-│   │   └── schema.prisma
-│   ├── src/
-│   │   ├── config/
-│   │   │   └── swagger.js
-
-│   │   ├── generated/
-│   │   │   └── prisma/
-│   │   ├── lib/
-│   │   │   └── prisma.js
-│   │   ├── middlewares/
-
-│   │   ├── modules/
-│   │   │   ├── auth/
-│   │   │   │   ├── auth.controller.js
-│   │   │   │   ├── auth.routes.js
-│   │   │   │   ├── auth.service.js
-│   │   │   │   └── auth.swagger.js
-│   │   │   ├── categories/
-│   │   │   ├── health/
-│   │   │   ├── products/
-
-│   │   │   ├── requests/
-│   │   │   ├── stores/
-│   │   │   ├── suppliers/
-│   │   │   └── users/
-│   │   ├── routes/
-│   │   │   └── index.js
-
-│   │   ├── app.js
-│   │   └── server.js
-│   ├── tests/
-│   │   ├── results/
-│   │   ├── RUN_KERNO_PYTESTS.md
-│   │   └── test_kerno_api_comprehensive.py
-│   ├── package.json
-│   └── .env.example
-│
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── api/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── hooks/
-│   │   ├── layouts/
-│   │   ├── pages/
-│   │   ├── routes/
-│   │   ├── utils/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── package.json
-│   └── .env.example
-│
-├── docs/
-│   ├── api/
-│   │   └── BACKEND_API_S2.md
-│   ├── architecture/
-│   │   └── BACKEND_STRUCTURE.md
-│   ├── assets/
-│   │   └── kerno-logo.png
-│   ├── database/
-│   │   └── USER_ROLE_ENUM_ALIGNMENT.md
-│   ├── docker/
-│   │   └── DOCKER.md
-│   ├── security/
-│   │   └── AUTH_SECURITY_NOTES.md
-
-│   └── testing/
-│       └── test_postman_S2/
-
-│
-├── compose.yaml
-├── CONTRIBUTING.md
-
-├── package.json
-└── README.md
-
+Kerno-MVP/
+  backend/
+    prisma/
+    src/
+      config/
+      lib/
+      middlewares/
+      modules/
+      routes/
+    tests/
+  docs/
+    api/
+    architecture/
+    assets/
+    database/
+    docker/
+    security/
+    testing/
+  frontend/
+    public/
+    src/
+      api/
+      assets/
+      components/
+      hooks/
+      layouts/
+      pages/
+      routes/
+      utils/
+  compose.yaml
+  CONTRIBUTING.md
+  README.md
 ```
 
-This structure may evolve during implementation, but the separation between frontend, backend, and documentation must remain clear.
-
 ---
+
 <a id="getting-started"></a>
 
 ## ⚙️ Getting Started
 
-> The project is under active development. Setup commands may evolve as the frontend and backend foundations are created.
-
 ### Prerequisites
 
-Recommended tools:
-
-- Node.js 20.x
-- npm
-- Docker Desktop or Docker Engine with Docker Compose, recommended for local PostgreSQL
-- PostgreSQL, only if Docker Compose is not used
-- Git
-- VS Code or equivalent editor
-- Postman or equivalent API testing tool
+* Node.js
+* npm
+* PostgreSQL or Docker
+* Git
+* VS Code or equivalent editor
+* Postman or equivalent API testing tool
 
 ### Clone the Repository
 
@@ -1101,9 +852,9 @@ npm run dev
 
 Once the backend is running, you can access:
 
-- API health check: `http://localhost:5000/api/health`
-- Swagger UI: `http://localhost:5000/api/docs`
-- OpenAPI JSON: `http://localhost:5000/api/openapi.json`
+* API health check: `http://localhost:5000/api/health`
+* Swagger UI: `http://localhost:5000/api/docs`
+* OpenAPI JSON: `http://localhost:5000/api/openapi.json`
 
 ### Frontend Setup
 
@@ -1112,6 +863,8 @@ cd frontend
 npm install
 npm run dev
 ```
+
+Frontend routing details are documented in [`frontend/README.md`](./frontend/README.md).
 
 ### Database Setup
 
@@ -1163,27 +916,7 @@ VITE_API_BASE_URL="http://localhost:5000/api"
 
 ### Docker PostgreSQL Environment
 
-The Docker PostgreSQL service uses local development values only.
-
-```env
-POSTGRES_USER=kerno_user
-POSTGRES_PASSWORD=kerno_password
-POSTGRES_DB=kerno_db
-```
-
-When the backend runs outside Docker, the backend `DATABASE_URL` should point to `localhost`:
-
-```env
-DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db?schema=public"
-```
-
-If the backend is dockerized later, the host may change from `localhost` to the Docker service name:
-
-```env
-DATABASE_URL="postgresql://kerno_user:kerno_password@postgres:5432/kerno_db"
-```
-
-Real `.env` files must never be committed.
+The Docker PostgreSQL service uses local development values defined in `compose.yaml`.
 
 ---
 
@@ -1191,71 +924,50 @@ Real `.env` files must never be committed.
 
 ## 🐳 Docker Local Development
 
-Docker Compose is included to standardize the local development infrastructure.
-
-For the first MVP implementation, Docker is mainly used for PostgreSQL. The backend and frontend can still run locally with standard npm commands.
-
 ### Docker Scope
 
-Initial Docker scope:
+Docker is currently used for local PostgreSQL only.
 
-- provide a local PostgreSQL service;
-- keep database configuration consistent across the team;
-- support Prisma setup and migrations;
-- avoid requiring each team member to manually install and configure PostgreSQL in the same way.
-
-Out of scope for the initial Docker setup:
-
-- production deployment;
-- Docker image publishing;
-- Kubernetes;
-- CI/CD;
-- mandatory backend containerization;
-- mandatory frontend containerization.
+The frontend and backend are still run directly with npm scripts during development.
 
 ### Docker Commands
 
-Start local services:
+Start PostgreSQL:
 
 ```bash
 docker compose up -d
 ```
 
-Check running services:
+Check running containers:
 
 ```bash
 docker compose ps
 ```
 
-Read service logs:
+View logs:
 
 ```bash
 docker compose logs
 ```
 
-Stop local services:
+Stop containers:
 
 ```bash
 docker compose down
 ```
 
-Reset local database data:
+Reset local database volume:
 
 ```bash
 docker compose down -v
 ```
 
-> Warning: `docker compose down -v` removes local Docker volumes and deletes local PostgreSQL data.
-
 ### Expected Docker Files
 
 ```text
 compose.yaml
-.dockerignore
 docs/docker/DOCKER.md
 ```
-
-The Docker documentation can be expanded progressively when PostgreSQL, Prisma, and local database workflows are implemented.
 
 ---
 
@@ -1263,85 +975,78 @@ The Docker documentation can be expanded progressively when PostgreSQL, Prisma, 
 
 ## 🌿 Development Workflow
 
-The project uses a Git workflow based on `main`, `develop`, sprint integration branches, and short-lived task branches.
-
 ### Branches
 
-- `main`: stable branch
-- `develop`: global integration branch
-- `S1`, `S2`, etc.: sprint integration branches when needed
-- `feature/...`: new feature branch
-- `fix/...`: bug fix branch
-- `docs/...`: documentation branch
-- `setup/...`: setup branch
+Main branch logic:
+
+* `main`: stable final branch;
+* `develop`: integration branch;
+* `S1`, `S2`, `S3`, `S4`, `S5`: sprint branches;
+* feature branches: scoped branches created from the current sprint branch.
+
+Branch naming examples:
+
+```text
+setup/s1-04-project-structure
+backend/s2-01-health-route
+database/s2-02-prisma-schema
+frontend/s3-01-routing-map
+```
 
 ### Pull Requests
 
-Every meaningful change must go through a pull request into the current integration branch.
+Pull request rules:
 
-Depending on the project phase, the target branch can be:
-
-- `develop`, for global integration;
-- `S1`, `S2`, etc., for sprint-level integration.
-
-A pull request must include:
-
-- summary,
-- related issue,
-- MVP area,
-- changes made,
-- tests performed,
-- points to review,
-- out-of-scope check.
-
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the full workflow.
+* one PR per issue or small group of closely related tasks;
+* PR targets the active sprint branch;
+* PR title follows the project convention;
+* PR description summarizes changes and validation;
+* PR references the related issue;
+* PR is reviewed before merge.
 
 ---
+
 <a id="github-project-workflow"></a>
 
 ## 📊 GitHub Project Workflow
 
-The team uses GitHub Projects to track the technical execution of the Kerno MVP.
-
-The GitHub Project board is used to:
-
-- centralize all sprint issues;
-- track task progress;
-- make blockers visible;
-- organize reviews;
-- keep implementation aligned with the MVP scope;
-- prepare evidence for the final technical review.
-
 ### Project Columns
 
-| Column | Meaning |
-|---|---|
-| Todo | Issue is defined but not started |
-| In Progress | Issue is actively being worked on |
-| Review | Work is ready for review or team validation |
-| Blocked | Issue cannot progress because of a dependency, decision, or technical blocker |
-| Done | Issue is completed, reviewed, and validated |
-| Parking Lot | Useful reference, idea, or future improvement not planned for immediate implementation |
+The project board uses columns such as:
+
+* Backlog;
+* Sprint;
+* To Do;
+* In Progress;
+* Review;
+* Done;
+* Blocked;
+* Parking Lot.
 
 ### Issue Tracking Rules
 
 Each issue should include:
 
-- a clear objective;
-- technical or functional scope;
-- responsibilities;
-- expected outcome;
-- definition of done;
-- checklist;
-- labels;
-- assignees when relevant;
-- link to the sprint or project area.
+* clear title;
+* user story or purpose;
+* acceptance criteria;
+* technical notes;
+* validation steps;
+* assignee;
+* reviewer when applicable;
+* sprint label;
+* priority label.
 
 ### Review Logic
 
-An issue should not move to `Done` only because code was written. It must be reviewed, tested when relevant, and aligned with the expected MVP scope.
+Review should verify:
 
-For team-level issues, group validation is required before moving the card to `Done`.
+* scope alignment;
+* code quality;
+* naming consistency;
+* documentation updates;
+* lint/build/test results;
+* no accidental generated or local files committed.
 
 ---
 
@@ -1349,97 +1054,62 @@ For team-level issues, group validation is required before moving the card to `D
 
 ## 🧪 Testing Strategy
 
-Testing is planned progressively during the MVP development.
-
 ### Manual Testing
 
-Manual tests will validate:
+Manual testing is used to validate core MVP flows during development:
 
-- navigation,
-- forms,
-- dashboards,
-- catalog display,
-- product and supplier detail pages,
-- contact request submission,
-- request visibility for suppliers and stores.
+* run the backend;
+* run the frontend;
+* test API routes with Postman;
+* test frontend flows in the browser;
+* verify expected errors and empty states.
 
 ### Backend Testing
 
-Backend tests should verify:
+Backend testing includes:
 
-- route responses,
-- input validation,
-- authentication behavior,
-- role-based access,
-- database operations,
-- request ownership rules.
+* route availability;
+* response format;
+* status codes;
+* validation errors;
+* authentication requirements;
+* role-based access control.
 
 ### API Testing
 
-Postman or an equivalent tool will be used to test:
+API testing uses:
 
-- authentication endpoints,
-- supplier profile endpoints,
-- store profile endpoints,
-- product endpoints,
-- search endpoints,
-- contact request endpoints.
-
-Sprint 2 API documentation and validation are available in:
-
-- [`docs/api/BACKEND_API_S2.md`](./docs/api/BACKEND_API_S2.md)
-- [`docs/testing/test_postman_S2`](./docs/testing/test_postman_S2)
+* Postman collections;
+* Swagger UI;
+* manual curl commands;
+* backend validation scripts where relevant.
 
 ### Integration Testing
 
-Integration tests must verify that:
+Integration testing focuses on:
 
-- the frontend correctly communicates with the backend API,
-- database operations work as expected,
-- protected routes behave correctly,
-- the main MVP journey works end-to-end.
-
-Main end-to-end path:
-
-```text
-register/login
-→ create supplier profile
-→ add product
-→ create store profile
-→ search product
-→ view product details
-→ send request
-→ supplier views received request
-```
+* frontend calling backend API;
+* frontend environment variable configuration;
+* authentication flow;
+* protected routes;
+* supplier and store workflows;
+* product and request workflows.
 
 ---
+
 <a id="quality-and-review-process"></a>
 
 ## ✅ Quality and Review Process
 
-The project must remain ready for a technical manual review.
+Before a PR is considered ready:
 
-Quality expectations:
-
-- readable code,
-- clear file structure,
-- meaningful commits,
-- pull requests before merge,
-- code review by at least one teammate,
-- MVP scope respected,
-- no secrets committed,
-- documentation updated when needed,
-- tests or manual checks documented.
-
-Review focus:
-
-- Is the feature aligned with the MVP?
-- Is the code understandable?
-- Are responsibilities correctly separated?
-- Is the API behavior predictable?
-- Are edge cases handled?
-- Is the database usage coherent?
-- Can the team explain the implementation?
+* code must match the issue scope;
+* `npm run build` should pass for frontend changes;
+* `npm run lint` should pass for frontend changes;
+* backend syntax checks or tests should pass for backend changes;
+* documentation must be updated when relevant;
+* README files must stay aligned with the current project state;
+* no `.env`, generated Prisma client, `node_modules`, or build output should be committed.
 
 ---
 
@@ -1447,70 +1117,49 @@ Review focus:
 
 ## 🤖 AI-Assisted Working Method
 
-AI is used in this project as a learning, productivity, documentation, and review support tool.
+AI tools are used as support for:
 
-The goal is not to replace the team's technical understanding. The goal is to accelerate learning, improve structure, challenge decisions, and help the team produce clearer deliverables.
+* planning;
+* architecture review;
+* documentation drafting;
+* route and API consistency checks;
+* code review preparation;
+* debugging;
+* learning and explanation.
 
 ### Main Uses of AI
 
-AI may be used to support:
-
-- understanding technical concepts;
-- breaking down complex tasks;
-- improving documentation quality;
-- preparing issue descriptions;
-- reviewing README and project structure;
-- identifying missing acceptance criteria;
-- suggesting test scenarios;
-- helping debug errors;
-- comparing implementation choices;
-- preparing explanations for technical review.
+* clarify tasks before coding;
+* detect inconsistencies;
+* prepare issue descriptions and PR descriptions;
+* review documentation;
+* propose implementation steps;
+* support learning without replacing team understanding.
 
 ### Learning Principles
 
-The team must stay able to explain every part of the project.
-
-AI-generated suggestions must be:
-
-- reviewed by the team;
-- adapted to the actual project context;
-- tested when they affect code;
-- rejected when they introduce unnecessary complexity;
-- kept aligned with the MVP scope.
+* the team should understand the code it ships;
+* AI suggestions must be reviewed critically;
+* no generated code should be merged blindly;
+* explanations and validation matter as much as output.
 
 ### BMAD Working System
 
-The project also uses a structured AI-assisted working method inspired by the BMAD system.
+BMAD is used as a lightweight working method to separate product, technical, UX/UI, critical review, and orchestration perspectives when useful.
 
-In this context, BMAD is used as a project reasoning and orchestration support system. It helps the team separate product thinking, technical decisions, documentation, QA, backlog preparation, and review logic.
-
-BMAD supports:
-
-- scope control;
-- MVP alignment;
-- task breakdown;
-- role clarification;
-- documentation review;
-- technical decision review;
-- sprint preparation;
-- risk identification.
-
-It does not replace team ownership. Antoine remains the project initiator and project owner, while Yonas and Gwendal keep their technical responsibilities within the team.
+It helps the team challenge assumptions, avoid scope creep, and keep decisions aligned with the MVP.
 
 ### Responsible AI Usage
 
-The team does not treat AI output as automatically correct.
+AI is used as an assistant, not as an owner of the project.
 
-Every important suggestion must be checked against:
+The team remains responsible for:
 
-- the Stage 3 documentation;
-- the Stage 4 requirements;
-- the actual repository;
-- the team's technical level;
-- the MVP scope;
-- implementation constraints.
-
-The objective is to use AI as a professional assistant while keeping full human control over the project.
+* technical decisions;
+* code quality;
+* final validation;
+* project direction;
+* documentation accuracy.
 
 ---
 
@@ -1518,111 +1167,72 @@ The objective is to use AI as a professional assistant while keeping full human 
 
 ## 📅 Sprint Organization
 
-The project is organized into five short sprints.
-
-The sprint plan follows the Stage 4 objective: breaking down user stories into manageable development tasks, assigning responsibilities, identifying dependencies, tracking progress, reviewing completed work, and preparing the final technical review.
-
 ### Sprint Timeline
 
-| Sprint | Dates | Main Focus | Main Driver(s) |
-|---|---|---|---|
-| Sprint 1 | 25 May 2026 → 5 June 2026 | Project setup, Git workflow, README, repository structure, backend/frontend foundations | Antoine, with support from Yonas and Gwendal |
-| Sprint 2 | 8 June 2026 → 12 June 2026 | Backend MVP, PostgreSQL, Prisma, authentication, API foundations | Yonas, with Antoine support |
-| Sprint 3 | 15 June 2026 → 19 June 2026 | Frontend foundation, routing, layouts, main pages, MVP navigation | Gwendal, with Antoine support |
-| Sprint 4 | 22 June 2026 → 30 June 2026 | Core MVP features, frontend/backend integration, main user journeys | Antoine, Yonas, Gwendal |
-| Sprint 5 | 1 July 2026 → 3 July 2026 | Tests, integration, bug fixing, documentation, demo preparation, final review readiness | Full team |
+The Stage 4 implementation is organized into five sprints.
+
+| Sprint   | Focus                                     |
+| -------- | ----------------------------------------- |
+| Sprint 1 | Project setup and foundations             |
+| Sprint 2 | Backend MVP and database                  |
+| Sprint 3 | Frontend foundation and MVP navigation    |
+| Sprint 4 | Core MVP features                         |
+| Sprint 5 | Tests, integration, demo and finalization |
 
 ### Sprint 1 — Project Setup and Foundations
 
-Objective:
+Focus:
 
-- create and prepare the repository;
-- define the Git workflow;
-- write the initial README;
-- define the frontend/backend structure;
-- initialize backend and frontend foundations;
-- configure the GitHub Project workflow.
-
-Expected outcome:
-
-- clean repository;
-- documented workflow;
-- initial README;
-- clear project structure;
-- basic local startup path;
-- team validation before deeper development.
+* repository setup;
+* Git workflow;
+* project structure;
+* README foundation;
+* team conventions.
 
 ### Sprint 2 — Backend MVP and Database
 
-Objective:
+Focus:
 
-- install and configure Prisma with PostgreSQL;
-- create the MVP database schema;
-- build the modular backend structure;
-- implement authentication principles;
-- prepare supplier, store, product, catalog, and request API foundations.
-
-Expected outcome:
-
-- backend structure aligned with the Stage 3 architecture;
-- database models ready;
-- first core API routes available;
-- backend test strategy started.
+* Express backend foundation;
+* PostgreSQL and Prisma;
+* MVP database schema;
+* backend modules;
+* API routes;
+* Swagger documentation;
+* authentication foundation.
 
 ### Sprint 3 — Frontend Foundation and MVP Navigation
 
-Objective:
+Focus:
 
-- create the frontend structure;
-- configure routing and layouts;
-- prepare reusable components;
-- build placeholder pages;
-- make supplier and store journeys navigable.
-
-Expected outcome:
-
-- navigable frontend skeleton;
-- public, supplier, and store layouts;
-- main MVP routes prepared;
-- screens aligned with Stage 3 mockups.
+* frontend routing;
+* application layout;
+* authentication screens;
+* supplier and store navigation;
+* catalog and detail page foundations;
+* request flow UI foundation.
 
 ### Sprint 4 — Core MVP Features
 
-Objective:
+Focus:
 
-- connect frontend and backend;
-- implement the main supplier journey;
-- implement the main store journey;
-- make contact or quote requests functional;
-- validate the end-to-end MVP flow.
-
-Expected outcome:
-
-- supplier can create a profile and add products;
-- store can search products or suppliers;
-- store can view details and send a request;
-- supplier can view received requests;
-- store can view sent requests.
+* frontend/backend integration;
+* product flow;
+* supplier flow;
+* store flow;
+* contact request flow;
+* role-based UI behavior.
 
 ### Sprint 5 — Tests, Integration, Demo and Finalization
 
-Objective:
+Focus:
 
-- stabilize the MVP;
-- test the end-to-end flow;
-- fix critical bugs;
-- finalize documentation;
-- prepare the final demonstration and technical review.
-
-Expected outcome:
-
-- functional MVP;
-- clean repository;
-- professional README;
-- architecture and database documentation ready;
-- testing evidence available;
-- demo scenario prepared;
-- each team member able to explain the project.
+* bug fixing;
+* QA;
+* documentation polish;
+* demo preparation;
+* final review;
+* portfolio delivery.
 
 ---
 
@@ -1630,46 +1240,40 @@ Expected outcome:
 
 ## 🤝 Collaboration Model
 
-Kerno is developed collaboratively by a three-person team.
-
-The objective is not only to divide tasks, but also to make sure each team member learns as much as possible from the fullstack development process.
+The project is developed by a team of three Holberton students.
 
 ### Collaboration Principles
 
-The team follows these principles:
-
-- work from GitHub issues;
-- use clear responsibilities for each task;
-- keep the workload balanced;
-- use pull requests for meaningful changes;
-- review each other's work;
-- discuss technical decisions as a group when needed;
-- avoid isolated implementation choices;
-- document important decisions;
-- keep the MVP scope under control.
+* shared understanding before implementation;
+* clear issue ownership;
+* regular review;
+* small focused branches;
+* direct communication when blocked;
+* scope control.
 
 ### Shared Review Culture
 
-Reviews are used as a learning and quality process, not only as a validation step.
+The team reviews:
 
-Each review should help the team check:
-
-- whether the code is understandable;
-- whether the implementation matches the issue;
-- whether the MVP scope is respected;
-- whether the feature is testable;
-- whether the architecture remains coherent;
-- whether the team can explain the choice during the final review.
+* code;
+* documentation;
+* architecture decisions;
+* API consistency;
+* UI consistency;
+* sprint progress.
 
 ### Learning Goal
 
-Even when one member leads a specific area, the other members should understand the logic behind it.
+The project is not only about shipping a working MVP.
 
-- Yonas leads backend topics, but Antoine and Gwendal must understand the API and database decisions.
-- Gwendal leads frontend topics, but Antoine and Yonas must understand the main user journeys and frontend integration.
-- Antoine coordinates the product, documentation, and fullstack coherence, but the technical implementation must remain shared and reviewable.
+It is also used to demonstrate:
 
-The goal is to build a working MVP and to maximize collective learning.
+* teamwork;
+* planning;
+* technical growth;
+* full-stack development;
+* product thinking;
+* professional documentation.
 
 ---
 
@@ -1677,13 +1281,11 @@ The goal is to build a working MVP and to maximize collective learning.
 
 ## 👨‍💻 Team
 
-| Member | Main Role | Responsibilities |
-|---|---|---|
-| Antoine Gousset | Project owner / Fullstack support | Project coordination, MVP coherence, documentation, review, fullstack contribution |
-| Yonas Houriez | Backend lead | API, database, authentication, business logic, backend modules |
-| Gwendal Boisard | Frontend lead | UI, React components, pages, user journeys, frontend integration |
-
-The team works collaboratively, with shared reviews and cross-functional understanding of the MVP.
+| Name            | Main Role                                                |
+| --------------- | -------------------------------------------------------- |
+| Antoine Gousset | Project lead, product direction, full-stack contribution |
+| Yonas Houriez   | Backend lead                                             |
+| Gwendal Boisard | Frontend lead                                            |
 
 ---
 
@@ -1691,11 +1293,9 @@ The team works collaboratively, with shared reviews and cross-functional underst
 
 ## ✍️ Authors
 
-| Name | GitHub | Project Contribution |
-|---|---|---|
-| Antoine Gousset | [Antgst](https://github.com/Antgst) | Project initiator, product vision, coordination, documentation, fullstack contribution |
-| Yonas Houriez | [Ausaryu](https://github.com/Ausaryu) | Backend lead, API, database, authentication, backend implementation |
-| Gwendal Boisard | [Gwendal-B](https://github.com/Gwendal-B) | Frontend lead, user interface, React pages, frontend implementation |
+* Antoine Gousset
+* Yonas Houriez
+* Gwendal Boisard
 
 ---
 
@@ -1703,22 +1303,15 @@ The team works collaboratively, with shared reviews and cross-functional underst
 
 ## 🔗 Project Links
 
-| Resource | Link |
-|---|---|
-| GitHub repository | https://github.com/Antgst/Kerno-MVP |
-| GitHub Project board | https://github.com/users/Antgst/projects/1/views/1 |
-| Contribution guide | [CONTRIBUTING.md](./CONTRIBUTING.md) |
-| Logo asset path | `docs/assets/kerno-logo.png` |
-| API documentation | [`docs/api/BACKEND_API_S2.md`](./docs/api/BACKEND_API_S2.md) |
-| Backend structure | [`docs/architecture/BACKEND_STRUCTURE.md`](./docs/architecture/BACKEND_STRUCTURE.md) |
-| Database notes | [`docs/database/USER_ROLE_ENUM_ALIGNMENT.md`](./docs/database/USER_ROLE_ENUM_ALIGNMENT.md) |
-| Docker documentation | [`docs/docker/DOCKER.md`](./docs/docker/DOCKER.md) |
-| Security notes | [`docs/security/AUTH_SECURITY_NOTES.md`](./docs/security/AUTH_SECURITY_NOTES.md) |
-| Postman S2 test evidence | [`docs/testing/test_postman_S2`](./docs/testing/test_postman_S2) |
-| Stage 3 report — FR | https://canva.link/qqyguvw0uxid4ys |
-| Stage 3 report — EN | https://canva.link/85zocsxjseziifk |
+| Resource             | Link                                        |
+| -------------------- | ------------------------------------------- |
+| GitHub Repository    | https://github.com/Antgst/Kerno-MVP         |
+| GitHub Project Board | https://github.com/users/Antgst/projects/11 |
+| Stage 3 mockups      | https://canva.link/qqyguvw0uxid4ys          |
+| Stage 3 report — EN  | https://canva.link/85zocsxjseziifk          |
 
 ---
+
 <a id="license"></a>
 
 ## 📄 License
@@ -1741,13 +1334,13 @@ All rights are reserved.
 
 This includes, without limitation:
 
-- the product idea and business positioning,
-- the Kerno name and brand direction,
-- the MVP scope and functional structure,
-- the marketplace concept connecting suppliers and retail stores,
-- the documentation and mockups,
-- the application architecture and database design,
-- the source code and implementation work produced in this repository.
+* the product idea and business positioning,
+* the Kerno name and brand direction,
+* the MVP scope and functional structure,
+* the marketplace concept connecting suppliers and retail stores,
+* the documentation and mockups,
+* the application architecture and database design,
+* the source code and implementation work produced in this repository.
 
 No transfer of ownership, commercial usage right, or reuse permission is granted by the publication of this repository.
 
