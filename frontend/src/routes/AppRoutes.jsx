@@ -12,6 +12,7 @@ import SupplierProductsPage from "../pages/supplier/SupplierProductsPage";
 import SupplierProfilePage from "../pages/supplier/SupplierProfilePage";
 import StoreDashboardPage from "../pages/store/StoreDashboardPage";
 import StoreProfilePage from "../pages/store/StoreProfilePage";
+import CatalogPage from "../pages/catalog/CatalogPage";
 import routeConfig from "./routeConfig";
 
 function getRoutePage(route) {
@@ -49,6 +50,10 @@ function getRoutePage(route) {
 
   if (route.path === "/store/profile") {
     return <StoreProfilePage />;
+  }
+
+  if (route.path === "/catalog") {
+    return <CatalogPage />;
   }
 
   if (route.path === "*") {
