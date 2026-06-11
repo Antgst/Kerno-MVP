@@ -63,6 +63,7 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 * [🗄️ Database Design](#database-design)
 * [🔌 API Overview](#api-overview)
 * [📁 Repository Structure](#repository-structure)
+* [📖 Documentation Map](#documentation-map)
 * [⚙️ Getting Started](#getting-started)
 * [🔐 Environment Variables](#environment-variables)
 * [🐳 Docker Local Development](#docker-local-development)
@@ -691,9 +692,15 @@ OpenAPI JSON:
 http://localhost:5000/api/openapi.json
 ```
 
-### Sprint 2 API Reference
+### API References
 
-Detailed Sprint 2 backend API documentation is available in:
+Final API summary:
+
+```text
+docs/api/API_SUMMARY.md
+```
+
+Sprint 2 backend API documentation is also available in:
 
 ```text
 docs/api/BACKEND_API_S2.md
@@ -723,6 +730,7 @@ GET /api/health
 Auth:
 
 ```text
+GET /api/auth
 POST /api/auth/register
 POST /api/auth/login
 ```
@@ -730,40 +738,44 @@ POST /api/auth/login
 Users:
 
 ```text
+GET /api/users
 GET /api/users/me
 ```
 
 Suppliers:
 
 ```text
-POST /api/suppliers
 GET /api/suppliers
 GET /api/suppliers/:id
-PATCH /api/suppliers/:id
+POST /api/suppliers/profile
+GET /api/suppliers/profile/me
+PUT /api/suppliers/profile/me
 ```
 
 Stores:
 
 ```text
-POST /api/stores
-GET /api/stores/me
-PATCH /api/stores/:id
+GET /api/stores
+POST /api/stores/profile
+GET /api/stores/profile/me
+PUT /api/stores/profile/me
 ```
 
 Categories:
 
 ```text
-POST /api/categories
 GET /api/categories
+POST /api/categories
 ```
 
 Products:
 
 ```text
-POST /api/products
 GET /api/products
 GET /api/products/:id
-PATCH /api/products/:id
+POST /api/products
+PUT /api/products/:id
+DELETE /api/products/:id
 ```
 
 Requests:
@@ -775,6 +787,8 @@ GET /api/requests/received
 GET /api/requests/:id
 PATCH /api/requests/:id/status
 ```
+
+For the final API reference, see [`docs/api/API_SUMMARY.md`](./docs/api/API_SUMMARY.md).
 
 ---
 
@@ -798,7 +812,9 @@ Kerno-MVP/
     architecture/
     assets/
     database/
+    demo/
     docker/
+    review/
     security/
     testing/
   frontend/
@@ -807,15 +823,38 @@ Kerno-MVP/
       api/
       assets/
       components/
+      config/
       hooks/
       layouts/
       pages/
       routes/
+      services/
       utils/
   compose.yaml
   CONTRIBUTING.md
   README.md
 ```
+
+---
+
+<a id="documentation-map"></a>
+
+## 📖 Documentation Map
+
+The final Stage 4 documentation is split by topic:
+
+| Topic | File |
+| --- | --- |
+| Application architecture | [`docs/architecture/APPLICATION_ARCHITECTURE.md`](./docs/architecture/APPLICATION_ARCHITECTURE.md) |
+| Backend structure | [`docs/architecture/BACKEND_STRUCTURE.md`](./docs/architecture/BACKEND_STRUCTURE.md) |
+| Frontend structure | [`docs/architecture/FRONTEND_STRUCTURE.md`](./docs/architecture/FRONTEND_STRUCTURE.md) |
+| Database schema | [`docs/database/DATABASE_SCHEMA.md`](./docs/database/DATABASE_SCHEMA.md) |
+| API summary | [`docs/api/API_SUMMARY.md`](./docs/api/API_SUMMARY.md) |
+| Docker local database | [`docs/docker/DOCKER.md`](./docs/docker/DOCKER.md) |
+| Auth and security notes | [`docs/security/AUTH_SECURITY_NOTES.md`](./docs/security/AUTH_SECURITY_NOTES.md) |
+| Testing evidence | [`docs/testing/TESTING_EVIDENCE.md`](./docs/testing/TESTING_EVIDENCE.md) |
+| Demo scenario | [`docs/demo/DEMO_SCENARIO.md`](./docs/demo/DEMO_SCENARIO.md) |
+| Technical review notes | [`docs/review/TECHNICAL_REVIEW_NOTES.md`](./docs/review/TECHNICAL_REVIEW_NOTES.md) |
 
 ---
 

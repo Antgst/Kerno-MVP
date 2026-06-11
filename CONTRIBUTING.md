@@ -62,7 +62,7 @@ Direct commits to `main` are not allowed.
 
 It contains validated work that is ready to be tested together before being merged into `main`.
 
-All feature, fix, and documentation branches must target `develop` first.
+During sprint execution, feature, fix, and documentation branches should target the active sprint branch (`S1`, `S2`, `S3`, `S4`, or `S5`). Validated sprint branches can then be merged into `develop`, and `develop` can be stabilized into `main`.
 
 ---
 
@@ -160,273 +160,304 @@ Every meaningful change must go through a pull request.
 
 ### Standard workflow
 
-1. Start from `develop`.
+1. Start from the active sprint branch.
 2. Create a dedicated branch.
 3. Make the changes.
 4. Commit with a clear message.
 5. Push the branch.
-6. Open a pull request into `develop`.
+6. Open a pull request into the active sprint branch.
 7. Request at least one review.
 8. Apply corrections if needed.
 9. Merge only after validation.
 
 ### Pull request target
 
-Pull requests must target `develop`, not `main`.
+Pull requests must target the active sprint branch, not `main`.
 
-The only exception is a final stabilization pull request from `develop` to `main`.
+Validated sprint branches can be merged into `develop`. The final stabilization pull request should go from `develop` to `main`.
 
 ---
 
-## 7. Pull request content
+## 7. Pull request requirements
 
-Each pull request must contain the following sections:
+Each pull request must include:
+
+* A clear title
+* A short description of what was changed
+* The linked issue number when applicable
+* The type of change
+* Testing or manual verification notes
+* Any known limitations or follow-up work
+
+### Pull request title examples
+
+```text
+feat(auth): add user registration endpoint
+docs(readme): update MVP scope section
+fix(products): prevent empty product name
+```
+
+### Pull request description template
 
 ```markdown
 ## Summary
 
-Short explanation of what was added, changed, or fixed.
+Describe the changes made in this pull request.
 
 ## Related issue
 
-Closes #issue_number
+Closes #issue-number
 
-## MVP area
-
-Specify the related part of the MVP:
-- Authentication
-- Supplier profile
-- Store profile
-- Products
-- Catalog / Search
-- Product detail
-- Supplier detail
-- Contact request
-- Dashboard
-- Documentation
-- Setup
-
-## Changes made
+## Changes
 
 - Change 1
 - Change 2
 - Change 3
 
-## Tests performed
+## Testing
 
-Explain what was tested:
-- Manual verification
-- API test
-- Frontend check
-- Unit test
-- Integration test
+- [ ] Manual test completed
+- [ ] Backend test completed
+- [ ] Frontend build completed
+- [ ] Documentation updated if needed
 
-## Points to review
+## Notes
 
-Mention specific parts that reviewers should check carefully.
-
-## Out-of-scope check
-
-Confirm that the PR does not introduce features outside the MVP scope.
+Add any limitation, risk, or follow-up task.
 ```
 
 ---
 
 ## 8. Review rules
 
-At least one reviewer must validate a pull request before merge.
+At least one team member should review a pull request before it is merged.
 
-For important features, the review should be done by the full team when possible.
+A reviewer should check:
 
-The review must focus on:
+* The change matches the issue scope
+* The MVP scope is respected
+* The code is readable
+* The file structure is coherent
+* No unrelated change is included
+* The application still runs
+* Documentation is updated when needed
 
-* Code readability
-* Absence of obvious errors
-* Respect of the MVP scope
-* Consistency with the planned architecture
-* Correct behavior of the related user flow
-* No unnecessary complexity
-* No out-of-scope feature
-* No secret committed in the repository
-* Clear naming and understandable structure
-
-The review should detect important problems before integration. It should not block the team on minor details unless they affect quality, clarity, or maintainability.
+The reviewer should not only approve quickly. The goal is to catch issues early and keep the project explainable for the final review.
 
 ---
 
-## 9. Testing expectations
+## 9. Issue workflow
 
-Testing must stay adapted to the project stage.
+GitHub issues are used to split the project into manageable tasks.
 
-Depending on the feature, the team may use:
+Each issue should include:
 
-* Manual testing
-* API testing with Postman or an equivalent tool
-* Frontend behavior checks
-* Backend route tests
-* Integration checks between frontend and backend
-* Database operation checks through Prisma and PostgreSQL
+* A clear title
+* A short description
+* Acceptance criteria
+* A sprint or priority indication when useful
+* A responsible person if assigned
+* Relevant labels if used
 
-Each pull request must explain what was tested.
+### Issue status
 
-For backend API routes, the minimum expected validation is:
+Issues should move through the project board according to their real state:
 
-* The route responds correctly.
-* Required fields are validated.
-* Invalid input is rejected.
-* Protected routes require authentication when needed.
-* Role-based access is respected when needed.
-* Database operations behave as expected.
+* Backlog
+* To Do
+* In Progress
+* Review
+* Done
+* Blocked
+* Parking lot
 
-For frontend screens, the minimum expected validation is:
+A task should not stay in progress if it is waiting for review.
 
-* The page renders correctly.
-* Navigation works.
-* Forms are usable.
-* API calls are correctly connected when available.
-* Errors are displayed or handled clearly.
-* The screen remains aligned with the MVP user journey.
+A task should not be marked as done until it is reviewed and validated.
 
 ---
 
-## 10. Environment and secrets
+## 10. Documentation rules
 
-Secrets must never be committed.
+Documentation is part of the project deliverable.
 
-The following files must remain ignored:
+Documentation should be updated when:
 
-* `.env`
-* `.env.local`
-* `.env.development`
-* `.env.production`
+* A new feature changes the project behavior
+* A new API route is added
+* The database schema changes
+* The setup process changes
+* The architecture changes
+* A decision needs to be preserved for the final review
 
-Only example files are allowed:
+Important documentation files include:
 
-* `.env.example`
+* `README.md`
+* `CONTRIBUTING.md`
+* `docs/api/API_SUMMARY.md`
+* `docs/architecture/APPLICATION_ARCHITECTURE.md`
+* `docs/architecture/BACKEND_STRUCTURE.md`
+* `docs/architecture/FRONTEND_STRUCTURE.md`
+* `docs/database/DATABASE_SCHEMA.md`
+* `docs/docker/DOCKER.md`
+* `docs/security/AUTH_SECURITY_NOTES.md`
+* `docs/testing/TESTING_EVIDENCE.md`
+* `docs/demo/DEMO_SCENARIO.md`
+* `docs/review/TECHNICAL_REVIEW_NOTES.md`
 
-Environment variables must be documented with placeholder values only.
+Documentation must stay clear, factual, and aligned with the real implementation.
 
-Example:
+---
 
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/kerno_db"
-JWT_SECRET="replace_with_local_secret"
-PORT=5000
+## 11. Code organization principles
+
+The project should stay easy to understand.
+
+### Backend
+
+Backend code should be organized by domain when possible:
+
+* auth
+* users
+* suppliers
+* stores
+* products
+* categories
+* requests
+* health
+
+The backend should keep a clear separation between:
+
+* routes
+* controllers
+* services
+* middlewares
+* configuration
+
+### Frontend
+
+Frontend code should be organized by responsibility:
+
+* pages
+* layouts
+* components
+* services
+* routes
+* config
+* utils
+
+Reusable UI should be placed in shared or UI components instead of being duplicated across pages.
+
+---
+
+## 12. Testing expectations
+
+Testing must be proportional to the MVP scope.
+
+Before a pull request is approved, the team should run the relevant checks.
+
+### Backend checks
+
+Possible commands:
+
+```bash
+cd backend
+npm test
 ```
 
----
+If API tests are needed:
 
-## 11. Merge rules
+```bash
+cd backend
+python3 -m pytest tests/test_kerno_api_comprehensive.py -v
+```
 
-A pull request can be merged when:
+### Frontend checks
 
-* The branch targets `develop`.
-* The description is complete.
-* The related issue is linked.
-* The MVP area is identified.
-* The tests performed are described.
-* At least one reviewer has approved.
-* No critical issue remains unresolved.
-* The code does not introduce out-of-scope features.
-* The branch does not contain secrets or generated files.
+Possible commands:
 
-`main` must only receive stable code from `develop`.
+```bash
+cd frontend
+npm run build
+```
 
----
+Manual route checks should be done for frontend navigation and major screens.
 
-## 12. Issue workflow
+### Manual MVP scenario
 
-Each GitHub issue should represent a clear task.
+Before final submission, the team should validate the full MVP flow:
 
-Before starting an issue, the team must check:
-
-* The objective is clear.
-* The scope is realistic.
-* The responsible person is identified.
-* The reviewer is identified.
-* Dependencies are understood.
-* The expected result is clear.
-
-Recommended issue statuses:
-
-* `Todo`: not started
-* `In Progress`: currently being worked on
-* `Review`: ready for review or validation
-* `Blocked`: blocked by a dependency or decision
-* `Done`: completed and validated
-
-An issue should not be moved to `Done` without review or team validation when required.
+1. Register or login as supplier.
+2. Create or update supplier profile.
+3. Create product.
+4. Register or login as store.
+5. Create or update store profile.
+6. Browse catalog.
+7. Open product or supplier detail.
+8. Send request.
+9. Review sent and received requests.
+10. Update request status if available.
 
 ---
 
-## 13. Team responsibilities
+## 13. Environment rules
 
-The project is developed as a team.
+Local environment files must not be committed.
 
-General responsibility split:
+Do not commit:
 
-* Antoine: project owner, coordination, fullstack support, review, documentation, MVP coherence
-* Yonas: backend lead, API, database, authentication, business logic
-* Gwendal: frontend lead, interface, React components, pages, user flows
+* `.env`
+* secret keys
+* local database dumps
+* personal credentials
+* generated local caches
 
-Responsibilities may evolve depending on sprint priorities, blockers, and learning needs.
+Use example files instead:
 
-The team should keep the workload balanced and make sure each member understands the main technical decisions.
-
----
-
-## 14. MVP architecture guardrails
-
-The project follows a simple fullstack architecture:
-
-* Frontend: React, JavaScript, Vite, Tailwind CSS
-* Backend: Node.js, Express, JavaScript
-* Database: PostgreSQL
-* ORM: Prisma
-* API: REST
-* Documentation: lightweight OpenAPI / Swagger when relevant
-* Architecture: modular monolithic backend
-
-The backend should remain organized by clear modules:
-
-* Auth
-* Users
-* Suppliers
-* Stores
-* Products
-* Requests
-
-The project should avoid premature complexity such as:
-
-* Microservices
-* GraphQL
-* Complex DevOps pipelines
-* Mandatory external integrations
-* Advanced permissions systems
-* Over-engineered abstractions
+* `backend/.env.example`
+* `frontend/.env.example`
 
 ---
 
-## 15. Documentation expectations
+## 14. Style and language rules
 
-Documentation must be kept in English.
+GitHub-facing content must be written in English.
 
-The repository should progressively include:
+This includes:
 
-* A clear `README.md`
-* This `CONTRIBUTING.md`
-* Setup instructions
-* API documentation
-* Database diagram
-* Application architecture diagram
-* Testing evidence
-* Sprint or review notes when needed
+* Issue titles
+* Issue descriptions
+* Pull request titles
+* Pull request descriptions
+* Commit messages
+* README sections
+* Technical documentation
 
-Documentation must stay useful and readable. It should help the team and the evaluator understand how the project works.
+French can be used for team discussion if needed, but final repository content should stay in English.
 
 ---
 
-## 16. Definition of Done
+## 15. AI-assisted work rules
+
+AI tools may be used to support the team, but the team remains responsible for the final work.
+
+AI can help with:
+
+* documentation drafts
+* code review suggestions
+* debugging explanations
+* architecture clarification
+* test scenario planning
+
+AI should not be used blindly.
+
+Every AI-assisted output must be reviewed, adapted, and validated by the team before being committed.
+
+The team must be able to explain every committed change during the technical review.
+
+---
+
+## 16. Definition of done
 
 A task can be considered done when:
 
