@@ -7,6 +7,8 @@ import NotFoundPage from "../pages/NotFoundPage";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import RegisterPage from "../pages/RegisterPage";
 import SupplierDashboardPage from "../pages/supplier/SupplierDashboardPage";
+import SupplierProductFormPage from "../pages/supplier/SupplierProductFormPage";
+import SupplierProductsPage from "../pages/supplier/SupplierProductsPage";
 import SupplierProfilePage from "../pages/supplier/SupplierProfilePage";
 import routeConfig from "./routeConfig";
 
@@ -29,6 +31,14 @@ function getRoutePage(route) {
 
   if (route.path === "/supplier/profile") {
     return <SupplierProfilePage />;
+  }
+
+  if (route.path === "/supplier/products") {
+    return <SupplierProductsPage />;
+  }
+
+  if (route.path === "/supplier/products/new") {
+    return <SupplierProductFormPage />;
   }
 
   if (route.path === "*") {
