@@ -10,6 +10,8 @@ import SupplierDashboardPage from "../pages/supplier/SupplierDashboardPage";
 import SupplierProductFormPage from "../pages/supplier/SupplierProductFormPage";
 import SupplierProductsPage from "../pages/supplier/SupplierProductsPage";
 import SupplierProfilePage from "../pages/supplier/SupplierProfilePage";
+import StoreDashboardPage from "../pages/store/StoreDashboardPage";
+import StoreProfilePage from "../pages/store/StoreProfilePage";
 import routeConfig from "./routeConfig";
 
 function getRoutePage(route) {
@@ -39,6 +41,14 @@ function getRoutePage(route) {
 
   if (route.path === "/supplier/products/new") {
     return <SupplierProductFormPage />;
+  }
+
+  if (route.path === "/store/dashboard") {
+    return <StoreDashboardPage />;
+  }
+
+  if (route.path === "/store/profile") {
+    return <StoreProfilePage />;
   }
 
   if (route.path === "*") {
