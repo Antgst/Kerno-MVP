@@ -15,6 +15,11 @@ import StoreProfilePage from "../pages/store/StoreProfilePage";
 import CatalogPage from "../pages/catalog/CatalogPage";
 import ProductDetailPage from "../pages/details/ProductDetailPage";
 import SupplierDetailPage from "../pages/details/SupplierDetailPage";
+import RequestFormPage from "../pages/requests/RequestFormPage";
+import StoreRequestDetailPage from "../pages/requests/StoreRequestDetailPage";
+import StoreRequestsPage from "../pages/requests/StoreRequestsPage";
+import SupplierRequestDetailPage from "../pages/requests/SupplierRequestDetailPage";
+import SupplierRequestsPage from "../pages/requests/SupplierRequestsPage";
 import routeConfig from "./routeConfig";
 
 function getRoutePage(route) {
@@ -64,6 +69,26 @@ function getRoutePage(route) {
 
   if (route.path === "/suppliers/:id") {
     return <SupplierDetailPage />;
+  }
+
+  if (route.path === "/requests/new") {
+    return <RequestFormPage />;
+  }
+
+  if (route.path === "/store/requests") {
+    return <StoreRequestsPage />;
+  }
+
+  if (route.path === "/store/requests/:id") {
+    return <StoreRequestDetailPage />;
+  }
+
+  if (route.path === "/supplier/requests") {
+    return <SupplierRequestsPage />;
+  }
+
+  if (route.path === "/supplier/requests/:id") {
+    return <SupplierRequestDetailPage />;
   }
 
   if (route.path === "*") {
