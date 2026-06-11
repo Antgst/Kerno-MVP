@@ -13,6 +13,8 @@ import SupplierProfilePage from "../pages/supplier/SupplierProfilePage";
 import StoreDashboardPage from "../pages/store/StoreDashboardPage";
 import StoreProfilePage from "../pages/store/StoreProfilePage";
 import CatalogPage from "../pages/catalog/CatalogPage";
+import ProductDetailPage from "../pages/details/ProductDetailPage";
+import SupplierDetailPage from "../pages/details/SupplierDetailPage";
 import routeConfig from "./routeConfig";
 
 function getRoutePage(route) {
@@ -54,6 +56,14 @@ function getRoutePage(route) {
 
   if (route.path === "/catalog") {
     return <CatalogPage />;
+  }
+
+  if (route.path === "/products/:id") {
+    return <ProductDetailPage />;
+  }
+
+  if (route.path === "/suppliers/:id") {
+    return <SupplierDetailPage />;
   }
 
   if (route.path === "*") {
