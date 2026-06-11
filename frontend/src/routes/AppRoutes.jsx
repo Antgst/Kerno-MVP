@@ -6,6 +6,8 @@ import LoginPage from "../pages/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import RegisterPage from "../pages/RegisterPage";
+import SupplierDashboardPage from "../pages/supplier/SupplierDashboardPage";
+import SupplierProfilePage from "../pages/supplier/SupplierProfilePage";
 import routeConfig from "./routeConfig";
 
 function getRoutePage(route) {
@@ -19,6 +21,14 @@ function getRoutePage(route) {
 
   if (route.path === "/register") {
     return <RegisterPage />;
+  }
+
+  if (route.path === "/supplier/dashboard") {
+    return <SupplierDashboardPage />;
+  }
+
+  if (route.path === "/supplier/profile") {
+    return <SupplierProfilePage />;
   }
 
   if (route.path === "*") {
