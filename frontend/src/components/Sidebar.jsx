@@ -8,7 +8,6 @@ const navigationSections = [
       "/supplier/dashboard",
       "/supplier/profile",
       "/supplier/products",
-      "/supplier/products/new",
       "/supplier/requests",
     ],
   },
