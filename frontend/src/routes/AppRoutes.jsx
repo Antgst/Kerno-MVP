@@ -2,13 +2,23 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
 import PublicLayout from "../layouts/PublicLayout";
 import HomePage from "../pages/HomePage";
+import LoginPage from "../pages/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import PlaceholderPage from "../pages/PlaceholderPage";
+import RegisterPage from "../pages/RegisterPage";
 import routeConfig from "./routeConfig";
 
 function getRoutePage(route) {
   if (route.path === "/") {
     return <HomePage />;
+  }
+
+  if (route.path === "/login") {
+    return <LoginPage />;
+  }
+
+  if (route.path === "/register") {
+    return <RegisterPage />;
   }
 
   if (route.path === "*") {
