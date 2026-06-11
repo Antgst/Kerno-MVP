@@ -1345,7 +1345,7 @@ It is also used to demonstrate:
 | Resource             | Link                                        |
 | -------------------- | ------------------------------------------- |
 | GitHub Repository    | https://github.com/Antgst/Kerno-MVP         |
-| GitHub Project Board | https://github.com/users/Antgst/projects/11 |
+| GitHub Project Board | https://github.com/users/Antgst/projects/1/views/1 |
 | Stage 3 mockups      | https://canva.link/qqyguvw0uxid4ys          |
 | Stage 3 report — EN  | https://canva.link/85zocsxjseziifk          |
 
