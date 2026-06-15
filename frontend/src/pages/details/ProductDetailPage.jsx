@@ -7,10 +7,12 @@ import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
 import StatusBadge from "../../components/ui/StatusBadge";
+import { getCurrentAuthRole } from "../../services/authService";
 import { getProductById } from "../../services/productService";
+import { getResource } from "../../utils/responseUtils";
 
 function getProductFromResponse(response) {
-  return response?.product || null;
+  return getResource(response, ["product"]);
 }
 
 function ProductDetailPage() {
@@ -53,6 +55,8 @@ function ProductDetailPage() {
 
   const supplier = product?.supplier;
   const category = product?.category;
+  const canContactSupplier =
+    String(getCurrentAuthRole() || "").toUpperCase() === "STORE";
 
   const requestPath = supplier?.id
     ? `/requests/new?supplierId=${supplier.id}&productId=${product.id}`
@@ -69,7 +73,7 @@ function ProductDetailPage() {
           <Button variant="secondary">Back to catalog</Button>
         </Link>
 
-        {product && (
+        {product && canContactSupplier && (
           <Link to={requestPath}>
             <Button>Contact supplier</Button>
           </Link>
@@ -168,36 +172,38 @@ function ProductDetailPage() {
               </div>
             </Card>
 
-            <Card>
-              <h2 className="m-0 text-xl font-black">Next step</h2>
+            {canContactSupplier && (
+              <Card>
+                <h2 className="m-0 text-xl font-black">Next step</h2>
 
-              <p className="mt-2 text-sm leading-6 text-slate-500">
-                Kerno focuses on the first business contact. No cart, payment,
-                order or review logic is included in the MVP detail page.
-              </p>
-
-              <div className="mt-5 rounded-3xl bg-emerald-950 p-6 text-white">
-                <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-300">
-                  Contact request
+                <p className="mt-2 text-sm leading-6 text-slate-500">
+                  Kerno focuses on the first business contact. No cart, payment,
+                  order or review logic is included in the MVP detail page.
                 </p>
 
-                <h3 className="mt-3 text-2xl font-black">
-                  Interested in this product?
-                </h3>
+                <div className="mt-5 rounded-3xl bg-emerald-950 p-6 text-white">
+                  <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-300">
+                    Contact request
+                  </p>
 
-                <p className="mt-3 text-sm leading-6 text-emerald-50">
-                  Send a structured request to the supplier to ask for details,
-                  lead time, quantity or quote information.
-                </p>
+                  <h3 className="mt-3 text-2xl font-black">
+                    Interested in this product?
+                  </h3>
 
-                <Link
-                  className="mt-5 inline-flex w-fit rounded-full bg-white px-5 py-3 text-sm font-black text-emerald-950 transition hover:bg-stone-100"
-                  to={requestPath}
-                >
-                  Create request
-                </Link>
-              </div>
-            </Card>
+                  <p className="mt-3 text-sm leading-6 text-emerald-50">
+                    Send a structured request to the supplier to ask for details,
+                    lead time, quantity or quote information.
+                  </p>
+
+                  <Link
+                    className="mt-5 inline-flex w-fit rounded-full bg-white px-5 py-3 text-sm font-black text-emerald-950 transition hover:bg-stone-100"
+                    to={requestPath}
+                  >
+                    Create request
+                  </Link>
+                </div>
+              </Card>
+            )}
           </div>
 
           <div className="grid gap-6">

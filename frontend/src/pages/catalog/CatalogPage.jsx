@@ -11,6 +11,7 @@ import Select from "../../components/ui/Select";
 import StatusBadge from "../../components/ui/StatusBadge";
 import { getProducts } from "../../services/productService";
 import { getSuppliers } from "../../services/supplierService";
+import { getListResource } from "../../utils/responseUtils";
 
 const initialFilters = {
   search: "",
@@ -20,11 +21,11 @@ const initialFilters = {
 };
 
 function getProductsFromResponse(response) {
-  return response?.products || [];
+  return getListResource(response, ["products"]);
 }
 
 function getSuppliersFromResponse(response) {
-  return response?.suppliers || [];
+  return getListResource(response, ["suppliers"]);
 }
 
 function getSupplierFromProduct(product) {

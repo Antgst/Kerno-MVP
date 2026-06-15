@@ -1,20 +1,99 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import NavigationLink from "./NavigationLink";
+import { logoutUser } from "../services/authService";
 
-function Header({ variant = "public" }) {
+function Header({ variant = "public", onMenuClick }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const isStoreSpace =
+    location.pathname.startsWith("/store") ||
+    location.pathname.startsWith("/requests/new");
+
+  const dashboardPath = isStoreSpace
+    ? "/store/dashboard"
+    : "/supplier/dashboard";
+
+  const profilePath = isStoreSpace
+    ? "/store/profile"
+    : "/supplier/profile";
+
+  function handleLogout() {
+    logoutUser();
+    setIsMenuOpen(false);
+    navigate("/login");
+  }
+
   if (variant === "app") {
     return (
-      <header className="site-header site-header--app">
-        <div>
-          <p className="app-header__eyebrow">KERNO MVP</p>
-          <strong>Frontend navigation shell</strong>
+      <header className="kerno-app-header">
+        <div className="kerno-app-header__left">
+          <button
+            type="button"
+            className="kerno-app-header__menu"
+            onClick={onMenuClick}
+            aria-label="Open navigation"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
+          <div className="kerno-app-header__search">
+            <span className="kerno-app-header__search-icon">⌕</span>
+            <input
+              type="text"
+              placeholder={
+                isStoreSpace
+                  ? "Rechercher un fournisseur ou un produit"
+                  : "Rechercher un produit, une demande ou un magasin"
+              }
+            />
+          </div>
         </div>
 
-        <div className="app-header__actions">
-          <span>Stage 4</span>
-          <NavigationLink to="/catalog" variant="header-cta">
-            Open catalog
-          </NavigationLink>
+        <div className="kerno-app-header__account">
+          <div className="kerno-app-header__avatar">
+            {isStoreSpace ? "M" : "F"}
+          </div>
+
+          <div className="kerno-app-header__account-copy">
+            <strong>Compte connecté</strong>
+            <small>{isStoreSpace ? "Espace magasin" : "Espace fournisseur"}</small>
+          </div>
+
+          <div className="kerno-app-header__menu-wrapper">
+            <button
+              type="button"
+              className="kerno-app-header__more"
+              aria-label="Open account menu"
+              onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
+            >
+              •••
+            </button>
+
+            {isMenuOpen && (
+              <div className="kerno-app-header__dropdown">
+                <Link to={dashboardPath} onClick={() => setIsMenuOpen(false)}>
+                  Tableau de bord
+                </Link>
+
+                <Link to={profilePath} onClick={() => setIsMenuOpen(false)}>
+                  Modifier le profil
+                </Link>
+
+                <Link to="/catalog" onClick={() => setIsMenuOpen(false)}>
+                  Catalogue
+                </Link>
+
+                <button type="button" onClick={handleLogout}>
+                  Se déconnecter
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
     );
@@ -34,9 +113,11 @@ function Header({ variant = "public" }) {
         <NavigationLink to="/" variant="header">
           Home
         </NavigationLink>
+
         <NavigationLink to="/login" variant="header">
           Login
         </NavigationLink>
+
         <NavigationLink to="/register" variant="header-cta">
           Get started
         </NavigationLink>

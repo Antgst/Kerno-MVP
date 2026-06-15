@@ -8,6 +8,7 @@ import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
 import StatusBadge from "../../components/ui/StatusBadge";
 import { getRequestById } from "../../services/requestService";
+import { getResource } from "../../utils/responseUtils";
 
 function StoreRequestDetailPage() {
   const { id } = useParams();
@@ -27,7 +28,7 @@ function StoreRequestDetailPage() {
         const response = await getRequestById(id);
 
         if (shouldUpdateState) {
-          setRequest(response.request);
+          setRequest(getResource(response, ["request"]));
         }
       } catch (error) {
         if (shouldUpdateState) {

@@ -6,11 +6,23 @@ import Card from "../../components/ui/Card";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
+import Select from "../../components/ui/Select";
 import StatusBadge from "../../components/ui/StatusBadge";
 import { getSentRequests } from "../../services/requestService";
+import { getListResource } from "../../utils/responseUtils";
+
+const statusFilterOptions = [
+  { value: "PENDING", label: "Pending" },
+  { value: "READ", label: "Read" },
+  { value: "ANSWERED", label: "Answered" },
+  { value: "CLOSED", label: "Closed" },
+  { value: "ACCEPTED", label: "Accepted" },
+  { value: "REJECTED", label: "Rejected" },
+];
 
 function StoreRequestsPage() {
   const [requests, setRequests] = useState([]);
+  const [statusFilter, setStatusFilter] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -25,7 +37,7 @@ function StoreRequestsPage() {
         const response = await getSentRequests();
 
         if (shouldUpdateState) {
-          setRequests(response.requests || []);
+          setRequests(getListResource(response, ["requests"]));
         }
       } catch (error) {
         if (shouldUpdateState) {
@@ -63,6 +75,19 @@ function StoreRequestsPage() {
         <ErrorState title="Sent requests unavailable" message={errorMessage} />
       )}
 
+      {!isLoading && !errorMessage && requests.length > 0 && (
+        <Card className="mb-5">
+          <Select
+            label="Filter by status"
+            name="statusFilter"
+            value={statusFilter}
+            onChange={(event) => setStatusFilter(event.target.value)}
+            options={statusFilterOptions}
+            placeholder="All statuses"
+          />
+        </Card>
+      )}
+
       {!isLoading && !errorMessage && requests.length === 0 && (
         <EmptyState
           title="No sent requests yet"
@@ -75,9 +100,29 @@ function StoreRequestsPage() {
         />
       )}
 
+      {!isLoading &&
+        !errorMessage &&
+        requests.length > 0 &&
+        requests.filter(
+          (request) =>
+            !statusFilter ||
+            String(request.status || "").toUpperCase() === statusFilter,
+        ).length === 0 && (
+          <EmptyState
+            title="No request for this status"
+            message="Change or clear the status filter to see more requests."
+          />
+        )}
+
       {!isLoading && !errorMessage && requests.length > 0 && (
         <div className="grid gap-4">
-          {requests.map((request) => (
+          {requests
+            .filter(
+              (request) =>
+                !statusFilter ||
+                String(request.status || "").toUpperCase() === statusFilter,
+            )
+            .map((request) => (
             <Card key={request.id}>
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>

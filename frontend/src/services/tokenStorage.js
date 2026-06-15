@@ -1,4 +1,7 @@
+import { getRoleFromToken } from "../utils/jwt";
+
 const AUTH_TOKEN_STORAGE_KEY = "kerno_auth_token";
+const AUTH_ROLE_STORAGE_KEY = "kerno_auth_role";
 
 export function getAuthToken() {
   try {
@@ -17,14 +20,42 @@ export function setAuthToken(token) {
 
     localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, token);
   } catch {
-    // Token persistence is optional for now.
+    // localStorage peut être indisponible.
+  }
+}
+
+export function getAuthRole() {
+  try {
+    const storedRole = localStorage.getItem(AUTH_ROLE_STORAGE_KEY);
+
+    if (storedRole) {
+      return storedRole;
+    }
+
+    return getRoleFromToken(getAuthToken());
+  } catch {
+    return getRoleFromToken(getAuthToken());
+  }
+}
+
+export function setAuthRole(role) {
+  try {
+    if (!role) {
+      localStorage.removeItem(AUTH_ROLE_STORAGE_KEY);
+      return;
+    }
+
+    localStorage.setItem(AUTH_ROLE_STORAGE_KEY, String(role).toUpperCase());
+  } catch {
+    // Le rôle reste récupérable depuis le token.
   }
 }
 
 export function clearAuthToken() {
   try {
     localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
+    localStorage.removeItem(AUTH_ROLE_STORAGE_KEY);
   } catch {
-    // Nothing to clear if localStorage is unavailable.
+    // Rien à faire.
   }
 }

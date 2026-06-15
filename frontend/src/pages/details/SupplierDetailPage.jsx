@@ -7,15 +7,17 @@ import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
 import StatusBadge from "../../components/ui/StatusBadge";
+import { getCurrentAuthRole } from "../../services/authService";
 import { getProducts } from "../../services/productService";
 import { getSupplierById } from "../../services/supplierService";
+import { getListResource, getResource } from "../../utils/responseUtils";
 
 function getSupplierFromResponse(response) {
-  return response?.supplier || null;
+  return getResource(response, ["supplier"]);
 }
 
 function getProductsFromResponse(response) {
-  return response?.products || [];
+  return getListResource(response, ["products"]);
 }
 
 function getProductSupplierId(product) {
@@ -82,6 +84,8 @@ function SupplierDetailPage() {
   }, [products, supplier]);
 
   const requestPath = supplier ? `/requests/new?supplierId=${supplier.id}` : "/requests/new";
+  const canContactSupplier =
+    String(getCurrentAuthRole() || "").toUpperCase() === "STORE";
 
   return (
     <div className="text-slate-950">
@@ -94,7 +98,7 @@ function SupplierDetailPage() {
           <Button variant="secondary">Back to catalog</Button>
         </Link>
 
-        {supplier && (
+        {supplier && canContactSupplier && (
           <Link to={requestPath}>
             <Button>Contact supplier</Button>
           </Link>
@@ -189,37 +193,39 @@ function SupplierDetailPage() {
               </div>
             </Card>
 
-            <Card>
-              <h2 className="m-0 text-xl font-black">Contact this supplier</h2>
+            {canContactSupplier && (
+              <Card>
+                <h2 className="m-0 text-xl font-black">Contact this supplier</h2>
 
-              <p className="mt-2 text-sm leading-6 text-slate-500">
-                Send a structured request to ask for availability, quote
-                information, quantities or next steps.
-              </p>
-
-              <div className="mt-5 rounded-3xl bg-emerald-950 p-6 text-white">
-                <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-300">
-                  Request flow
+                <p className="mt-2 text-sm leading-6 text-slate-500">
+                  Send a structured request to ask for availability, quote
+                  information, quantities or next steps.
                 </p>
 
-                <h3 className="mt-3 text-2xl font-black">
-                  Start a first business contact
-                </h3>
+                <div className="mt-5 rounded-3xl bg-emerald-950 p-6 text-white">
+                  <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-300">
+                    Request flow
+                  </p>
 
-                <p className="mt-3 text-sm leading-6 text-emerald-50">
-                  This CTA prepares the transition toward the contact request
-                  page. Payment, ordering and messaging are intentionally out of
-                  scope.
-                </p>
+                  <h3 className="mt-3 text-2xl font-black">
+                    Start a first business contact
+                  </h3>
 
-                <Link
-                  className="mt-5 inline-flex w-fit rounded-full bg-white px-5 py-3 text-sm font-black text-emerald-950 transition hover:bg-stone-100"
-                  to={requestPath}
-                >
-                  Create request
-                </Link>
-              </div>
-            </Card>
+                  <p className="mt-3 text-sm leading-6 text-emerald-50">
+                    This CTA prepares the transition toward the contact request
+                    page. Payment, ordering and messaging are intentionally out
+                    of scope.
+                  </p>
+
+                  <Link
+                    className="mt-5 inline-flex w-fit rounded-full bg-white px-5 py-3 text-sm font-black text-emerald-950 transition hover:bg-stone-100"
+                    to={requestPath}
+                  >
+                    Create request
+                  </Link>
+                </div>
+              </Card>
+            )}
           </div>
 
           <section>

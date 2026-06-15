@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import PageHeader from "../components/shared/PageHeader";
-import Button from "../components/ui/Button";
-import Card from "../components/ui/Card";
 import ErrorState from "../components/ui/ErrorState";
 import Input from "../components/ui/Input";
 import LoadingState from "../components/ui/LoadingState";
@@ -11,8 +8,8 @@ import { registerUser } from "../services/authService";
 import { getDashboardPathByRole } from "../utils/authNavigation";
 
 const roleOptions = [
-  { value: "SUPPLIER", label: "Supplier" },
-  { value: "STORE", label: "Store" },
+  { value: "SUPPLIER", label: "Fournisseur" },
+  { value: "STORE", label: "Magasin" },
 ];
 
 const initialFormData = {
@@ -22,6 +19,18 @@ const initialFormData = {
   password: "",
   role: "",
 };
+
+function getRoleFromResponse(response, fallbackRole) {
+  return (
+    response?.user?.role ||
+    response?.role ||
+    response?.account?.role ||
+    response?.data?.user?.role ||
+    response?.data?.role ||
+    response?.data?.account?.role ||
+    fallbackRole
+  );
+}
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -51,27 +60,27 @@ function RegisterPage() {
     const errors = {};
 
     if (!formData.firstName.trim()) {
-      errors.firstName = "First name is required.";
+      errors.firstName = "Le prénom est obligatoire.";
     }
 
     if (!formData.lastName.trim()) {
-      errors.lastName = "Last name is required.";
+      errors.lastName = "Le nom est obligatoire.";
     }
 
     if (!formData.email.trim()) {
-      errors.email = "Email is required.";
+      errors.email = "L'email est obligatoire.";
     }
 
     if (!formData.password) {
-      errors.password = "Password is required.";
+      errors.password = "Le mot de passe est obligatoire.";
     }
 
     if (formData.password && formData.password.length < 8) {
-      errors.password = "Password must contain at least 8 characters.";
+      errors.password = "Le mot de passe doit contenir au moins 8 caractères.";
     }
 
     if (!formData.role) {
-      errors.role = "Role is required.";
+      errors.role = "Le rôle est obligatoire.";
     }
 
     setFieldErrors(errors);
@@ -91,47 +100,56 @@ function RegisterPage() {
 
     try {
       const response = await registerUser({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim(),
         password: formData.password,
         role: formData.role,
       });
 
-      const dashboardPath = getDashboardPathByRole(response?.user?.role);
+      const role = getRoleFromResponse(response, formData.role);
+      const dashboardPath = getDashboardPathByRole(role);
 
       navigate(dashboardPath);
     } catch (error) {
-      setSubmitError(error.message || "Unable to create account.");
+      setSubmitError(error.message || "Création du compte impossible.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <main className="min-h-screen bg-stone-50 px-6 py-10 text-slate-950">
-      <div className="mx-auto max-w-5xl">
-        <PageHeader
-          eyebrow="KERNO onboarding"
-          title="Create your Kerno account"
-          description="Choose the role that matches your journey: supplier or store."
-        />
+    <main className="auth-page">
+      <section className="auth-shell">
+        <div className="auth-intro">
+          <p className="marketing-eyebrow">KERNO ONBOARDING</p>
+          <h1>Créez votre compte Kerno.</h1>
+          <p>
+            Choisissez le rôle qui correspond à votre usage : fournisseur pour
+            gérer vos produits, magasin pour rechercher et contacter.
+          </p>
+        </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_0.8fr]">
-          <Card>
-            <form className="space-y-5" onSubmit={handleSubmit}>
+        <div className="auth-grid auth-grid--register">
+          <section className="auth-card">
+            <div className="auth-card__header">
+              <h2>Inscription</h2>
+              <p>Quelques informations suffisent pour démarrer le MVP.</p>
+            </div>
+
+            <form className="auth-form" onSubmit={handleSubmit}>
               {submitError && (
                 <ErrorState
-                  title="Account creation failed"
+                  title="Échec de création du compte"
                   message={submitError}
                 />
               )}
 
-              {isSubmitting && <LoadingState message="Creating your account..." />}
+              {isSubmitting && <LoadingState message="Création du compte..." />}
 
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="auth-form__row">
                 <Input
-                  label="First name"
+                  label="Prénom"
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleChange}
@@ -141,7 +159,7 @@ function RegisterPage() {
                 />
 
                 <Input
-                  label="Last name"
+                  label="Nom"
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleChange}
@@ -157,64 +175,67 @@ function RegisterPage() {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="you@example.com"
+                placeholder="vous@example.com"
                 error={fieldErrors.email}
                 required
               />
 
               <Input
-                label="Password"
+                label="Mot de passe"
                 name="password"
                 type="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="At least 8 characters"
+                placeholder="Au moins 8 caractères"
                 error={fieldErrors.password}
-                helperText="Use at least 8 characters."
+                helperText="Utilisez au moins 8 caractères."
                 required
               />
 
               <Select
-                label="Account role"
+                label="Type de compte"
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
                 options={roleOptions}
-                placeholder="Choose your role"
+                placeholder="Choisir un rôle"
                 error={fieldErrors.role}
-                helperText="Suppliers manage products. Stores contact suppliers."
+                helperText="Fournisseur : produits. Magasin : catalogue et demandes."
                 required
               />
 
-              <Button className="w-full" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Creating account..." : "Create account"}
-              </Button>
+              <button
+                className="auth-submit"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Création..." : "Créer le compte"}
+              </button>
             </form>
-          </Card>
+          </section>
 
-          <aside className="flex flex-col justify-center rounded-3xl border border-emerald-900 bg-emerald-950 p-6 text-white shadow-sm">
-            <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-300">
-              Already registered?
-            </p>
+          <aside className="auth-panel auth-panel--orange">
+            <div>
+              <p className="auth-panel__eyebrow">DÉJÀ INSCRIT ?</p>
+              <h2>Connectez-vous et reprenez votre parcours.</h2>
+              <p>
+                Après connexion, les fournisseurs arrivent sur leur dashboard et
+                les magasins sur leur espace de sourcing.
+              </p>
+            </div>
 
-            <h2 className="mt-3 text-3xl font-black">
-              Sign in and continue your journey.
-            </h2>
+            <div className="auth-panel__features">
+              <span>Dashboard</span>
+              <span>Profil</span>
+              <span>Suivi</span>
+            </div>
 
-            <p className="mt-4 leading-7 text-emerald-50">
-              After signing in, suppliers are sent to the supplier dashboard and
-              stores are sent to the store dashboard.
-            </p>
-
-            <Link
-              className="mt-6 inline-flex w-fit rounded-full bg-white px-5 py-3 text-sm font-black text-emerald-950 hover:bg-stone-100"
-              to="/login"
-            >
-              Sign in
+            <Link className="auth-panel__button" to="/login">
+              Se connecter
             </Link>
           </aside>
         </div>
-      </div>
+      </section>
     </main>
   );
 }

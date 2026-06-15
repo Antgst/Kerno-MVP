@@ -1,77 +1,85 @@
-import routeConfig from "../routes/routeConfig";
+import { Link, useLocation } from "react-router-dom";
 import NavigationLink from "./NavigationLink";
 
-const navigationSections = [
+const storeSections = [
   {
-    title: "Supplier workspace",
-    paths: [
-      "/supplier/dashboard",
-      "/supplier/profile",
-      "/supplier/products",
-      "/supplier/requests",
-    ],
-  },
-  {
-    title: "Store workspace",
-    paths: [
-      "/store/dashboard",
-      "/store/profile",
-      "/store/requests",
-      "/requests/new",
+    title: "Espace magasin",
+    links: [
+      { to: "/store/dashboard", label: "Tableau de bord" },
+      { to: "/store/profile", label: "Profil magasin" },
+      { to: "/store/requests", label: "Demandes envoyées" },
+      { to: "/requests/new", label: "Nouvelle demande" },
     ],
   },
   {
     title: "Marketplace",
-    paths: ["/catalog"],
+    links: [{ to: "/catalog", label: "Catalogue" }],
   },
 ];
 
-function getRouteByPath(path) {
-  return routeConfig.find((route) => route.path === path);
-}
+const supplierSections = [
+  {
+    title: "Espace fournisseur",
+    links: [
+      { to: "/supplier/dashboard", label: "Tableau de bord" },
+      { to: "/supplier/profile", label: "Profil fournisseur" },
+      { to: "/supplier/products", label: "Produits" },
+      { to: "/supplier/requests", label: "Demandes reçues" },
+    ],
+  },
+  {
+    title: "Marketplace",
+    links: [{ to: "/catalog", label: "Catalogue" }],
+  },
+];
 
-function Sidebar() {
+function Sidebar({ onNavigate }) {
+  const location = useLocation();
+
+  const isStoreSpace =
+    location.pathname.startsWith("/store") ||
+    location.pathname.startsWith("/requests/new");
+
+  const sections = isStoreSpace ? storeSections : supplierSections;
+  const dashboardPath = isStoreSpace
+    ? "/store/dashboard"
+    : "/supplier/dashboard";
+
   return (
-    <aside className="sidebar" aria-label="Authenticated navigation">
-      <div className="sidebar__brand">
-        <span className="brand-mark brand-mark--sidebar">K</span>
-        <div>
+    <div className="kerno-sidebar">
+      <Link to={dashboardPath} className="kerno-sidebar__brand" onClick={onNavigate}>
+        <div className="kerno-sidebar__brand-mark">K</div>
+
+        <div className="kerno-sidebar__brand-copy">
           <strong>KERNO</strong>
-          <small>Marketplace MVP</small>
+          <small>{isStoreSpace ? "ESPACE MAGASIN" : "ESPACE FOURNISSEUR"}</small>
         </div>
-      </div>
+      </Link>
 
-      <nav className="sidebar__nav">
-        {navigationSections.map((section) => (
-          <section className="sidebar__section" key={section.title}>
-            <h2>{section.title}</h2>
+      <div className="kerno-sidebar__divider" />
 
-            <ul>
-              {section.paths.map((path) => {
-                const route = getRouteByPath(path);
+      <nav className="kerno-sidebar__nav">
+        {sections.map((section) => (
+          <section className="kerno-sidebar__section" key={section.title}>
+            <p className="kerno-sidebar__section-title">{section.title}</p>
 
-                if (!route) {
-                  return null;
-                }
-
-                return (
-                  <li key={route.path}>
-                    <NavigationLink to={route.path} variant="sidebar">
-                      {route.label}
-                    </NavigationLink>
-                  </li>
-                );
-              })}
+            <ul className="kerno-sidebar__list">
+              {section.links.map((link) => (
+                <li key={link.to}>
+                  <NavigationLink
+                    to={link.to}
+                    variant="sidebar"
+                    onClick={onNavigate}
+                  >
+                    {link.label}
+                  </NavigationLink>
+                </li>
+              ))}
             </ul>
           </section>
         ))}
       </nav>
-
-      <div className="sidebar__scope">
-        <span>MVP scope</span>
-        <p>Profiles, catalog, products and contact requests only.</p>
-      </div>
-    </aside>
+    </div>
   );
 }
 

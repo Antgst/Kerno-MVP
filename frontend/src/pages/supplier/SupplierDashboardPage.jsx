@@ -1,71 +1,160 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import DashboardStatCard from "../../components/shared/DashboardStatCard";
-import PageHeader from "../../components/shared/PageHeader";
 import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
-import EmptyState from "../../components/ui/EmptyState";
-import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
 import StatusBadge from "../../components/ui/StatusBadge";
+import { getProducts } from "../../services/productService";
+import { getReceivedRequests } from "../../services/requestService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
+import { getListResource, getResource } from "../../utils/responseUtils";
 
-function getProfileCompletionLabel(profile) {
+const demoSupplierProfile = {
+  companyName: "Les Vergers Rennais",
+  location: "Rennes",
+  businessType: "Producteur artisanal",
+  contactEmail: "contact@vergers-rennais.fr",
+  phone: "02 99 11 22 33",
+  website: "vergers-rennais.fr",
+  description:
+    "Producteur local de boissons et produits artisanaux à destination des magasins indépendants.",
+};
+
+const demoProducts = [
+  {
+    id: "prod-1",
+    name: "Jus de pomme artisanal",
+    category: "Boissons",
+    status: "ACTIVE",
+  },
+  {
+    id: "prod-2",
+    name: "Cidre brut fermier",
+    category: "Boissons",
+    status: "ACTIVE",
+  },
+  {
+    id: "prod-3",
+    name: "Confiture pomme-caramel",
+    category: "Épicerie",
+    status: "PENDING",
+  },
+];
+
+const demoRequests = [
+  {
+    id: "sr-1",
+    storeName: "Maison Briva Rennes",
+    product: "Jus de pomme artisanal",
+    status: "PENDING",
+  },
+  {
+    id: "sr-2",
+    storeName: "La Coupe Fongique",
+    product: "Cidre brut fermier",
+    status: "ACCEPTED",
+  },
+];
+
+function getCompletionPercent(profile) {
   if (!profile) {
-    return "Missing";
+    return 0;
   }
 
-  const optionalFields = [
-    profile.description,
+  const fields = [
+    profile.companyName,
     profile.location,
     profile.businessType,
     profile.contactEmail,
     profile.phone,
     profile.website,
+    profile.description,
   ];
 
-  const completedFields = optionalFields.filter(Boolean).length;
+  const completedFields = fields.filter(Boolean).length;
+  return Math.round((completedFields / fields.length) * 100);
+}
 
-  if (completedFields >= 4) {
-    return "Complete";
+function getCompletionLabel(percent) {
+  if (percent >= 80) {
+    return "Profil complété";
   }
 
-  if (completedFields >= 2) {
-    return "In progress";
+  if (percent >= 50) {
+    return "En bonne voie";
   }
 
-  return "Basic";
+  if (percent > 0) {
+    return "À compléter";
+  }
+
+  return "Profil manquant";
+}
+
+function ProgressRow({ label, value }) {
+  return (
+    <div className="dashboard-progress">
+      <div className="dashboard-progress__top">
+        <span>{label}</span>
+        <strong>{value}%</strong>
+      </div>
+
+      <div className="dashboard-progress__track">
+        <div
+          className="dashboard-progress__fill"
+          style={{ width: `${value}%` }}
+        />
+      </div>
+    </div>
+  );
 }
 
 function SupplierDashboardPage() {
   const [supplierProfile, setSupplierProfile] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [requests, setRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   useEffect(() => {
     let shouldUpdateState = true;
 
-    async function loadSupplierProfile() {
+    async function loadDashboard() {
       setIsLoading(true);
-      setErrorMessage("");
 
       try {
-        const response = await getCurrentSupplierProfile();
+        const [profileResponse, productsResponse, requestsResponse] =
+          await Promise.all([
+            getCurrentSupplierProfile(),
+            getProducts(),
+            getReceivedRequests(),
+          ]);
 
-        if (shouldUpdateState) {
-          setSupplierProfile(response.supplier);
-        }
-      } catch (error) {
         if (!shouldUpdateState) {
           return;
         }
 
-        if (error.status === 404) {
-          setSupplierProfile(null);
+        const profile = getResource(profileResponse, ["supplier"]);
+
+        setSupplierProfile(profile);
+        setProducts(
+          getListResource(productsResponse, ["products"]).filter(
+            (product) =>
+              !profile?.id ||
+              product.supplierId === profile.id ||
+              product.supplier?.id === profile.id,
+          ),
+        );
+        setRequests(getListResource(requestsResponse, ["requests"]));
+        setIsDemoMode(false);
+      } catch {
+        if (!shouldUpdateState) {
           return;
         }
 
-        setErrorMessage(error.message || "Unable to load supplier dashboard.");
+        setSupplierProfile(demoSupplierProfile);
+        setProducts(demoProducts);
+        setRequests(demoRequests);
+        setIsDemoMode(true);
       } finally {
         if (shouldUpdateState) {
           setIsLoading(false);
@@ -73,183 +162,255 @@ function SupplierDashboardPage() {
       }
     }
 
-    loadSupplierProfile();
+    loadDashboard();
 
     return () => {
       shouldUpdateState = false;
     };
   }, []);
 
-  const profileCompletionLabel = getProfileCompletionLabel(supplierProfile);
+  const completionPercent = getCompletionPercent(supplierProfile);
+  const completionLabel = getCompletionLabel(completionPercent);
+
+  const activeProducts = useMemo(
+    () =>
+      products.filter(
+        (product) =>
+          product.isActive !== false &&
+          String(product.status || "ACTIVE").toUpperCase() !== "INACTIVE",
+      ),
+    [products],
+  );
+
+  const pendingRequests = useMemo(
+    () =>
+      requests.filter(
+        (request) => String(request.status || "").toUpperCase() === "PENDING",
+      ),
+    [requests],
+  );
+
+  const latestRequests = requests.slice(0, 3);
+
+  if (isLoading) {
+    return <LoadingState message="Chargement du tableau de bord fournisseur..." />;
+  }
 
   return (
-    <div className="text-slate-950">
-      <PageHeader
-        eyebrow="Supplier workspace"
-        title="Supplier dashboard"
-        description="Manage your supplier presence and prepare your product and request workflow."
-      >
-        <Link to="/supplier/profile">
-          <Button variant="secondary">Edit profile</Button>
-        </Link>
-
-        <Link to="/supplier/products/new">
-          <Button>Add product</Button>
-        </Link>
-      </PageHeader>
-
-      {isLoading && <LoadingState message="Loading supplier dashboard..." />}
-
-      {errorMessage && (
-        <ErrorState
-          className="mb-6"
-          title="Dashboard unavailable"
-          message={errorMessage}
-        />
+    <div className="dashboard-page">
+      {isDemoMode && (
+        <div className="dashboard-demo-note">
+          Mode démo : le backend n’est pas joignable, on affiche des données de démonstration.
+        </div>
       )}
 
-      {!isLoading && !errorMessage && (
-        <>
-          <div className="grid gap-4 md:grid-cols-3">
-            <DashboardStatCard
-              label="Profile"
-              value={profileCompletionLabel}
-              trend={supplierProfile ? "Active" : "Missing"}
-              helperText={
-                supplierProfile
-                  ? "Your supplier profile is connected to your account."
-                  : "Create your supplier profile to become visible."
-              }
-            />
+      <section className="dashboard-hero dashboard-hero--supplier">
+        <div className="dashboard-hero__content">
+          <p className="dashboard-hero__eyebrow">ESPACE FOURNISSEUR</p>
+          <h1>Tableau de bord</h1>
+          <p>
+            Suivez la visibilité de votre profil, pilotez vos produits et gardez
+            un œil sur les demandes magasins.
+          </p>
+        </div>
 
-            <DashboardStatCard
-              label="Products"
-              value="Next"
-              trend="Issue #43"
-              helperText="Product management will be connected in the next supplier issue."
-            />
+        <div className="dashboard-hero__actions">
+          <Link to="/supplier/products">
+            <Button className="dashboard-hero__button dashboard-hero__button--orange">
+              Voir les produits
+            </Button>
+          </Link>
+        </div>
+      </section>
 
-            <DashboardStatCard
-              label="Requests"
-              value="Soon"
-              trend="MVP"
-              helperText="Received contact requests will appear here later."
-            />
+      <div className="dashboard-grid">
+        <article className="dashboard-card dashboard-card--wide">
+          <div className="dashboard-card__header">
+            <div>
+              <p className="dashboard-card__eyebrow">ACTIVITÉ</p>
+              <h2>Présence fournisseur</h2>
+            </div>
+
+            <span className="dashboard-chip">
+              {supplierProfile?.location || "France"}
+            </span>
           </div>
 
-          <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-            <Card>
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <h2 className="m-0 text-xl font-black">
-                    Supplier profile summary
-                  </h2>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    This area shows the public information used for supplier
-                    visibility.
-                  </p>
+          <div className="dashboard-progress-list">
+            <ProgressRow label="Profil complété" value={completionPercent} />
+            <ProgressRow
+              label="Produits publiés"
+              value={Math.min(activeProducts.length * 30, 100)}
+            />
+            <ProgressRow
+              label="Demandes en attente"
+              value={Math.min(pendingRequests.length * 35, 100)}
+            />
+          </div>
+        </article>
+
+        <article className="dashboard-card">
+          <div className="dashboard-card__header">
+            <div>
+              <p className="dashboard-card__eyebrow">PROFIL</p>
+              <h2>Profil fournisseur</h2>
+            </div>
+          </div>
+
+          <div className="dashboard-completion">
+            <div
+              className="dashboard-ring"
+              style={{ "--progress": completionPercent }}
+            >
+              <div className="dashboard-ring__inner">
+                <strong>{completionPercent}%</strong>
+                <span>complété</span>
+              </div>
+            </div>
+
+            <div className="dashboard-completion__copy">
+              <h3>{supplierProfile?.companyName || "Profil fournisseur"}</h3>
+              <p>
+                {supplierProfile?.description ||
+                  "Ajoutez davantage d’informations pour rassurer les magasins."}
+              </p>
+
+              <div className="dashboard-mini-progress">
+                <div className="dashboard-mini-progress__track">
+                  <div
+                    className="dashboard-mini-progress__fill"
+                    style={{ width: `${completionPercent}%` }}
+                  />
+                </div>
+
+                <small>{completionLabel}</small>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article className="dashboard-card">
+          <div className="dashboard-card__header">
+            <div>
+              <p className="dashboard-card__eyebrow">PRODUITS</p>
+              <h2>Produits récents</h2>
+            </div>
+
+            <Link className="dashboard-card__link" to="/supplier/products">
+              Voir tout
+            </Link>
+          </div>
+
+          <div className="dashboard-list">
+            {products.length === 0 ? (
+              <p className="dashboard-empty-copy">
+                Aucun produit pour le moment. Ajoutez votre première offre pour
+                apparaître dans le catalogue.
+              </p>
+            ) : products.slice(0, 3).map((product) => (
+              <div className="dashboard-list-item" key={product.id}>
+                <div className="dashboard-list-item__identity">
+                  <div className="dashboard-list-item__avatar">
+                    {product.name.slice(0, 1)}
+                  </div>
+
+                  <div>
+                    <strong>{product.name}</strong>
+                    <small>{product.category?.name || product.category || "Catégorie libre"}</small>
+                  </div>
                 </div>
 
                 <StatusBadge
-                  status={supplierProfile ? "ACTIVE" : "PENDING"}
-                  label={supplierProfile ? "Profile ready" : "Profile missing"}
+                  status={product.isActive === false ? "INACTIVE" : "ACTIVE"}
                 />
               </div>
+            ))}
+          </div>
+        </article>
 
-              {supplierProfile ? (
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                      Company
-                    </p>
-                    <p className="mt-1 text-lg font-black text-slate-950">
-                      {supplierProfile.companyName}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                      Location
-                    </p>
-                    <p className="mt-1 text-lg font-black text-slate-950">
-                      {supplierProfile.location || "Not provided"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                      Business type
-                    </p>
-                    <p className="mt-1 text-lg font-black text-slate-950">
-                      {supplierProfile.businessType || "Not provided"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                      Contact
-                    </p>
-                    <p className="mt-1 text-lg font-black text-slate-950">
-                      {supplierProfile.contactEmail || "Not provided"}
-                    </p>
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                      Description
-                    </p>
-                    <p className="mt-1 leading-7 text-slate-600">
-                      {supplierProfile.description || "No description yet."}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <EmptyState
-                  title="No supplier profile yet"
-                  message="Create your profile so stores can understand who you are and what you provide."
-                  action={
-                    <Link to="/supplier/profile">
-                      <Button>Create supplier profile</Button>
-                    </Link>
-                  }
-                />
-              )}
-            </Card>
-
-            <div className="grid gap-6">
-              <Card>
-                <h2 className="m-0 text-xl font-black">Product summary</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Product management is intentionally kept simple for now.
-                </p>
-
-                <EmptyState
-                  className="mt-5"
-                  title="Products are coming next"
-                  message="The product list and product creation page will be handled in issue #43."
-                  action={
-                    <Link to="/supplier/products">
-                      <Button variant="secondary">View products placeholder</Button>
-                    </Link>
-                  }
-                />
-              </Card>
-
-              <Card>
-                <h2 className="m-0 text-xl font-black">Received requests</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Requests from stores will be listed here once the request
-                  screens are connected.
-                </p>
-
-                <div className="mt-5 rounded-2xl bg-slate-50 p-4 text-sm font-semibold text-slate-500">
-                  No received requests to display yet.
-                </div>
-              </Card>
+        <article className="dashboard-card">
+          <div className="dashboard-card__header">
+            <div>
+              <p className="dashboard-card__eyebrow">DEMANDES</p>
+              <h2>Dernières sollicitations</h2>
             </div>
           </div>
-        </>
-      )}
+
+          <div className="dashboard-list">
+            {latestRequests.length === 0 ? (
+              <p className="dashboard-empty-copy">
+                Aucune demande reçue pour le moment.
+              </p>
+            ) : latestRequests.map((request) => (
+              <div className="dashboard-list-item" key={request.id}>
+                <div className="dashboard-list-item__identity">
+                  <div className="dashboard-list-item__avatar">
+                    {(request.storeName || request.store?.storeName || "M")
+                      .split(" ")
+                      .slice(0, 2)
+                      .map((part) => part[0])
+                      .join("")
+                      .toUpperCase()}
+                  </div>
+
+                  <div>
+                    <strong>
+                      {request.storeName || request.store?.storeName || "Magasin"}
+                    </strong>
+                    <small>
+                      {request.product?.name || request.product || "Demande générale"}
+                    </small>
+                  </div>
+                </div>
+
+                <StatusBadge status={request.status} />
+              </div>
+            ))}
+          </div>
+
+          <div className="dashboard-card__footer">
+            <Link to="/supplier/requests">
+              <Button className="w-full dashboard-footer-button">
+                Voir les demandes
+              </Button>
+            </Link>
+          </div>
+        </article>
+
+        <article className="dashboard-card dashboard-card--featured">
+          <div className="dashboard-card__header dashboard-card__header--centered">
+            <h2>Mettre en avant vos produits</h2>
+          </div>
+
+          <div className="featured-supplier featured-supplier--supplier">
+            <div className="featured-supplier__visual featured-supplier__visual--supplier">
+              <div className="featured-supplier__box" />
+              <div className="featured-supplier__box featured-supplier__box--small" />
+              <div className="featured-supplier__box featured-supplier__box--accent" />
+            </div>
+
+            <div className="featured-supplier__content">
+              <div className="featured-supplier__identity">
+                <div className="featured-supplier__initials">KP</div>
+
+                <div>
+                  <h3>Catalogue fournisseur</h3>
+                  <small>Mettez vos produits en avant</small>
+                </div>
+              </div>
+
+              <p>
+                Ajoutez des produits propres, avec une description claire et une
+                catégorie visible, pour donner envie aux magasins de vous contacter.
+              </p>
+
+              <Link to="/supplier/products/new">
+                <Button variant="primary">Ajouter un produit</Button>
+              </Link>
+            </div>
+          </div>
+        </article>
+      </div>
     </div>
   );
 }
