@@ -1502,3 +1502,202 @@
     padding-inline: 16px;
   }
 }
+
+/* Fix account dropdown click layer */
+.kerno-shell__main.kerno-page-bg > .kerno-app-header {
+  z-index: 5000;
+  overflow: visible;
+}
+
+.kerno-shell__main.kerno-page-bg > .kerno-shell__content {
+  z-index: 2;
+}
+
+.kerno-app-header__account,
+.kerno-app-header__menu-wrapper,
+.kerno-app-header__dropdown {
+  pointer-events: auto;
+}
+
+.kerno-app-header__dropdown a,
+.kerno-app-header__dropdown button {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+}
+
+/* Keep mobile sidebar above the header when opened */
+@media (max-width: 900px) {
+  .kerno-shell__main.kerno-page-bg > .kerno-app-header {
+    z-index: 2200;
+  }
+}
+
+/* Remove useless desktop scroll on supplier dashboard only */
+@media (min-width: 901px) {
+  body:has(.dashboard-page--supplier) {
+    overflow: hidden;
+  }
+
+  body:has(.dashboard-page--supplier) .kerno-shell {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  body:has(.dashboard-page--supplier) .kerno-shell__main {
+    height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  body:has(.dashboard-page--supplier) .kerno-shell__content {
+    height: calc(100vh - 82px);
+    min-height: 0;
+    overflow: hidden;
+    padding-top: 28px;
+    padding-bottom: 18px;
+  }
+
+  .dashboard-page--supplier {
+    margin-top: -16px;
+  }
+
+  .dashboard-page--supplier .dashboard-hero {
+    margin-bottom: 10px;
+  }
+
+  .dashboard-page--supplier .dashboard-grid {
+    gap: 14px;
+  }
+}
+
+/* Supplier dashboard button hover feedback */
+.dashboard-page--supplier .dashboard-hero__button,
+.dashboard-page--supplier .dashboard-footer-button,
+.dashboard-page--supplier .featured-supplier button,
+.dashboard-page--supplier .featured-supplier .inline-flex {
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    filter 160ms ease;
+}
+
+.dashboard-page--supplier .dashboard-hero__button:hover,
+.dashboard-page--supplier .dashboard-footer-button:hover {
+  background: #ff5f0a !important;
+  box-shadow: 0 10px 22px rgb(255 113 25 / 24%) !important;
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.dashboard-page--supplier .featured-supplier button:hover,
+.dashboard-page--supplier .featured-supplier .inline-flex:hover {
+  background: #005641 !important;
+  box-shadow: 0 10px 22px rgb(0 104 79 / 22%) !important;
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+}
+
+.dashboard-page--supplier .dashboard-hero__button:active,
+.dashboard-page--supplier .dashboard-footer-button:active,
+.dashboard-page--supplier .featured-supplier button:active,
+.dashboard-page--supplier .featured-supplier .inline-flex:active {
+  transform: translateY(0);
+  box-shadow: none !important;
+}
+
+.kerno-app-header__dropdown .kerno-app-header__logout {
+  color: #dc2626;
+}
+
+.kerno-app-header__dropdown .kerno-app-header__logout:hover {
+  color: #b91c1c;
+  background: #fef2f2;
+}
+
+/* Remove useless desktop scroll on store dashboard only */
+@media (min-width: 901px) {
+  body:has(.dashboard-page--store) {
+    overflow: hidden;
+  }
+
+  body:has(.dashboard-page--store) .kerno-shell {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  body:has(.dashboard-page--store) .kerno-shell__main {
+    height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  body:has(.dashboard-page--store) .kerno-shell__content {
+    height: calc(100vh - 82px);
+    min-height: 0;
+    overflow: hidden;
+    padding-top: 28px;
+    padding-bottom: 18px;
+  }
+
+  .dashboard-page--store {
+    margin-top: -16px;
+  }
+
+  .dashboard-page--store .dashboard-hero {
+    margin-bottom: 10px;
+  }
+
+  .dashboard-page--store .dashboard-grid {
+    gap: 14px;
+  }
+}
+
+/* Store dashboard clickable feedback */
+.dashboard-page--store a,
+.dashboard-page--store button {
+  cursor: pointer;
+}
+
+.dashboard-page--store .dashboard-hero__button,
+.dashboard-page--store .dashboard-footer-button,
+.dashboard-page--store .featured-supplier button,
+.dashboard-page--store .featured-supplier .inline-flex,
+.dashboard-page--store .dashboard-text-link {
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    filter 160ms ease;
+}
+
+.dashboard-page--store .dashboard-hero__button:hover,
+.dashboard-page--store .dashboard-footer-button:hover {
+  background: #ff5f0a !important;
+  box-shadow: 0 10px 22px rgb(255 113 25 / 24%) !important;
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.dashboard-page--store .featured-supplier button:hover,
+.dashboard-page--store .featured-supplier .inline-flex:hover {
+  background: #005641 !important;
+  box-shadow: 0 10px 22px rgb(0 104 79 / 22%) !important;
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+}
+
+.dashboard-page--store .dashboard-text-link:hover {
+  color: #005641;
+  text-decoration: underline;
+}
+
+.dashboard-page--store .dashboard-hero__button:active,
+.dashboard-page--store .dashboard-footer-button:active,
+.dashboard-page--store .featured-supplier button:active,
+.dashboard-page--store .featured-supplier .inline-flex:active {
+  transform: translateY(0);
+  box-shadow: none !important;
+}

@@ -88,7 +88,11 @@ function Header({ variant = "public", onMenuClick }) {
                   Catalogue
                 </Link>
 
-                <button type="button" onClick={handleLogout}>
+                <button
+                  type="button"
+                  className="kerno-app-header__logout"
+                  onClick={handleLogout}
+                >
                   Se déconnecter
                 </button>
               </div>

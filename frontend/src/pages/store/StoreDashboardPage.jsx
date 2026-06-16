@@ -7,41 +7,6 @@ import { getSentRequests } from "../../services/requestService";
 import { getCurrentStoreProfile } from "../../services/storeService";
 import { getListResource, getResource } from "../../utils/responseUtils";
 
-const demoProfile = {
-  storeName: "Maison Briva Rennes",
-  brandName: "Maison Briva",
-  location: "Rennes",
-  storeType: "Épicerie fine",
-  sourcingNeeds:
-    "Jus artisanaux, boissons fraîches et produits fermiers à forte identité locale.",
-  contactEmail: "contact@maisonbriva.fr",
-  phone: "02 99 00 00 00",
-};
-
-const demoRequests = [
-  {
-    id: "req-1",
-    subject: "Miel de fleurs breton",
-    message: "À relancer cette semaine",
-    status: "PENDING",
-    supplier: { companyName: "Maison Briva Rennes" },
-  },
-  {
-    id: "req-2",
-    subject: "Beurre fermier demi-sel",
-    message: "À relancer cette semaine",
-    status: "PENDING",
-    supplier: { companyName: "Laiterie des Portes de Rennes" },
-  },
-  {
-    id: "req-3",
-    subject: "Jus de pomme artisanal",
-    message: "Réponse reçue",
-    status: "ACCEPTED",
-    supplier: { companyName: "Maison Briva Rennes" },
-  },
-];
-
 function getRequestsFromResponse(response) {
   return getListResource(response, ["requests", "contactRequests"]);
 }
@@ -101,7 +66,7 @@ function StoreDashboardPage() {
   const [storeProfile, setStoreProfile] = useState(null);
   const [sentRequests, setSentRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [dashboardWarning, setDashboardWarning] = useState("");
 
   useEffect(() => {
     let shouldUpdateState = true;
@@ -110,24 +75,47 @@ function StoreDashboardPage() {
       setIsLoading(true);
 
       try {
-        const profileResponse = await getCurrentStoreProfile();
-        const requestsResponse = await getSentRequests();
+        const [profileResult, requestsResult] = await Promise.allSettled([
+          getCurrentStoreProfile(),
+          getSentRequests(),
+        ]);
 
         if (!shouldUpdateState) {
           return;
         }
 
-        setStoreProfile(getResource(profileResponse, ["store"]));
-        setSentRequests(getRequestsFromResponse(requestsResponse));
-        setIsDemoMode(false);
-      } catch {
+        const profile =
+          profileResult.status === "fulfilled"
+            ? getResource(profileResult.value, ["store"])
+            : null;
+
+        const loadedRequests =
+          requestsResult.status === "fulfilled"
+            ? getRequestsFromResponse(requestsResult.value)
+            : [];
+
+        setStoreProfile(profile);
+        setSentRequests(loadedRequests);
+
+        const hasFailedRequest = [profileResult, requestsResult].some(
+          (result) => result.status === "rejected",
+        );
+
+        setDashboardWarning(
+          hasFailedRequest
+            ? "Certaines données n'ont pas pu être chargées. Vérifiez que le backend est lancé et que le compte possède bien le rôle magasin."
+            : "",
+        );
+      } catch (error) {
         if (!shouldUpdateState) {
           return;
         }
 
-        setStoreProfile(demoProfile);
-        setSentRequests(demoRequests);
-        setIsDemoMode(true);
+        console.error("Store dashboard loading error:", error);
+
+        setStoreProfile(null);
+        setSentRequests([]);
+        setDashboardWarning("Impossible de charger le tableau de bord magasin.");
       } finally {
         if (shouldUpdateState) {
           setIsLoading(false);
@@ -161,9 +149,9 @@ function StoreDashboardPage() {
 
   return (
     <div className="dashboard-page dashboard-page--store">
-      {isDemoMode && (
-        <div className="dashboard-demo-note">
-          Mode démo : le backend n’est pas joignable, des données de démonstration sont affichées.
+      {dashboardWarning && (
+        <div className="dashboard-warning">
+          {dashboardWarning}
         </div>
       )}
 

@@ -8,53 +8,6 @@ import { getReceivedRequests } from "../../services/requestService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
 
-const demoSupplierProfile = {
-  companyName: "Les Vergers Rennais",
-  location: "Rennes",
-  businessType: "Producteur artisanal",
-  contactEmail: "contact@vergers-rennais.fr",
-  phone: "02 99 11 22 33",
-  website: "vergers-rennais.fr",
-  description:
-    "Producteur local de boissons et produits artisanaux à destination des magasins indépendants.",
-};
-
-const demoProducts = [
-  {
-    id: "prod-1",
-    name: "Jus de pomme artisanal",
-    category: "Boissons",
-    status: "ACTIVE",
-  },
-  {
-    id: "prod-2",
-    name: "Cidre brut fermier",
-    category: "Boissons",
-    status: "ACTIVE",
-  },
-  {
-    id: "prod-3",
-    name: "Confiture pomme-caramel",
-    category: "Épicerie",
-    status: "PENDING",
-  },
-];
-
-const demoRequests = [
-  {
-    id: "sr-1",
-    storeName: "Maison Briva Rennes",
-    product: "Jus de pomme artisanal",
-    status: "PENDING",
-  },
-  {
-    id: "sr-2",
-    storeName: "La Coupe Fongique",
-    product: "Cidre brut fermier",
-    status: "ACCEPTED",
-  },
-];
-
 function getCompletionPercent(profile) {
   if (!profile) {
     return 0;
@@ -113,7 +66,7 @@ function SupplierDashboardPage() {
   const [products, setProducts] = useState([]);
   const [requests, setRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [dashboardWarning, setDashboardWarning] = useState("");
 
   useEffect(() => {
     let shouldUpdateState = true;
@@ -122,8 +75,8 @@ function SupplierDashboardPage() {
       setIsLoading(true);
 
       try {
-        const [profileResponse, productsResponse, requestsResponse] =
-          await Promise.all([
+        const [profileResult, productsResult, requestsResult] =
+          await Promise.allSettled([
             getCurrentSupplierProfile(),
             getProducts(),
             getReceivedRequests(),
@@ -133,28 +86,56 @@ function SupplierDashboardPage() {
           return;
         }
 
-        const profile = getResource(profileResponse, ["supplier"]);
+        const profile =
+          profileResult.status === "fulfilled"
+            ? getResource(profileResult.value, ["supplier"])
+            : null;
+
+        const loadedProducts =
+          productsResult.status === "fulfilled"
+            ? getListResource(productsResult.value, ["products"])
+            : [];
+
+        const loadedRequests =
+          requestsResult.status === "fulfilled"
+            ? getListResource(requestsResult.value, ["requests"])
+            : [];
 
         setSupplierProfile(profile);
+
         setProducts(
-          getListResource(productsResponse, ["products"]).filter(
+          loadedProducts.filter(
             (product) =>
               !profile?.id ||
               product.supplierId === profile.id ||
               product.supplier?.id === profile.id,
           ),
         );
-        setRequests(getListResource(requestsResponse, ["requests"]));
-        setIsDemoMode(false);
-      } catch {
+
+        setRequests(loadedRequests);
+
+        const hasFailedRequest = [
+          profileResult,
+          productsResult,
+          requestsResult,
+        ].some((result) => result.status === "rejected");
+
+        setDashboardWarning(
+          hasFailedRequest
+            ? "Certaines données n'ont pas pu être chargées. Vérifiez que le backend est lancé et que le compte possède bien le rôle fournisseur."
+            : "",
+        );
+      } catch (error) {
         if (!shouldUpdateState) {
           return;
         }
 
-        setSupplierProfile(demoSupplierProfile);
-        setProducts(demoProducts);
-        setRequests(demoRequests);
-        setIsDemoMode(true);
+        console.error("Supplier dashboard loading error:", error);
+
+        setSupplierProfile(null);
+        setProducts([]);
+        setRequests([]);
+        setDashboardWarning("Impossible de charger le tableau de bord fournisseur.");
       } finally {
         if (shouldUpdateState) {
           setIsLoading(false);
@@ -197,10 +178,10 @@ function SupplierDashboardPage() {
   }
 
   return (
-    <div className="dashboard-page">
-      {isDemoMode && (
+    <div className="dashboard-page dashboard-page--supplier">
+      {dashboardWarning && (
         <div className="dashboard-demo-note">
-          Mode démo : le backend n’est pas joignable, on affiche des données de démonstration.
+          {dashboardWarning}
         </div>
       )}
 
