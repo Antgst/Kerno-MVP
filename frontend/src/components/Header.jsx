@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 import NavigationLink from "./NavigationLink";
 
+const publicNavLinks = [
+  { label: "Accueil", to: "/", isPrimaryRoute: true },
+  { label: "Catalogue", to: "/catalog", isPrimaryRoute: true },
+  { label: "Fournisseurs", to: "/catalog" },
+  { label: "Magasins", to: "/register" },
+];
+
 function Header({ variant = "public" }) {
   if (variant === "app") {
     return (
@@ -22,25 +29,43 @@ function Header({ variant = "public" }) {
 
   return (
     <header className="site-header site-header--public">
-      <Link to="/" className="brand-link" aria-label="Go to Kerno home">
+      <Link to="/" className="brand-link" aria-label="Retour à l'accueil KERNO">
         <span className="brand-mark">K</span>
         <span className="brand-copy">
           <strong>KERNO</strong>
-          <small>B2B supplier network</small>
         </span>
       </Link>
 
-      <nav className="public-nav" aria-label="Public navigation">
-        <NavigationLink to="/" variant="header">
-          Home
-        </NavigationLink>
+      <nav className="public-nav" aria-label="Navigation publique">
+        {publicNavLinks.map((link) =>
+          link.isPrimaryRoute ? (
+            <NavigationLink
+              key={`${link.label}-${link.to}`}
+              to={link.to}
+              variant="header"
+            >
+              {link.label}
+            </NavigationLink>
+          ) : (
+            <Link
+              className="navigation-link navigation-link--header"
+              key={`${link.label}-${link.to}`}
+              to={link.to}
+            >
+              {link.label}
+            </Link>
+          ),
+        )}
+      </nav>
+
+      <div className="public-header-actions">
         <NavigationLink to="/login" variant="header">
-          Login
+          Se connecter
         </NavigationLink>
         <NavigationLink to="/register" variant="header-cta">
-          Get started
+          Créer un compte
         </NavigationLink>
-      </nav>
+      </div>
     </header>
   );
 }
