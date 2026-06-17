@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import appleJuiceImage from "../assets/landing/supplier-product-apple-juice.png";
-import biscuitsImage from "../assets/landing/supplier-product-buckwheat-biscuits.png";
-import honeyImage from "../assets/landing/supplier-product-honey.png";
-import jamImage from "../assets/landing/supplier-product-jam.png";
-import breweryImage from "../assets/landing/store-supplier-brewery.png";
-import cheeseImage from "../assets/landing/store-supplier-cheese.png";
-import farmImage from "../assets/landing/store-supplier-farm.png";
-import provenceImage from "../assets/landing/store-supplier-provence.png";
+import appleJuiceImage from "../assets/landing/supplier-product-apple-juice.webp";
+import biscuitsImage from "../assets/landing/supplier-product-buckwheat-biscuits.webp";
+import honeyImage from "../assets/landing/supplier-product-honey.webp";
+import jamImage from "../assets/landing/supplier-product-jam.webp";
+import breweryImage from "../assets/landing/store-supplier-brewery.webp";
+import cheeseImage from "../assets/landing/store-supplier-cheese.webp";
+import farmImage from "../assets/landing/store-supplier-farm.webp";
+import provenceImage from "../assets/landing/store-supplier-provence.webp";
 
 const heroImages = [
   {

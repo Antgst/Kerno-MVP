@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import NavigationLink from "./NavigationLink";
 import { getCurrentAuthRole, logoutUser } from "../services/authService";
@@ -98,6 +98,9 @@ function Header({ variant = "public", onMenuClick }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isPublicHeaderScrolled, setIsPublicHeaderScrolled] = useState(
+    () => typeof window !== "undefined" && window.scrollY > 12,
+  );
   const role = getCurrentAuthRole();
 
   const isStoreSpace =
@@ -119,6 +122,22 @@ function Header({ variant = "public", onMenuClick }) {
     setIsMenuOpen(false);
     navigate("/login");
   }
+
+  useEffect(() => {
+    if (variant !== "public") {
+      return undefined;
+    }
+
+    function updateHeaderState() {
+      setIsPublicHeaderScrolled(window.scrollY > 12);
+    }
+
+    window.addEventListener("scroll", updateHeaderState, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", updateHeaderState);
+    };
+  }, [variant]);
 
   if (variant === "app") {
     return (
@@ -218,7 +237,16 @@ function Header({ variant = "public", onMenuClick }) {
   }
 
   return (
-    <header className="site-header site-header--public">
+    <header
+      className={[
+        "site-header",
+        "site-header--public",
+        "public-header--glass",
+        isPublicHeaderScrolled ? "public-header--scrolled" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <Link to="/" className="brand-link" aria-label="Retour à l'accueil KERNO">
         <span className="brand-mark">K</span>
         <span className="brand-copy">
