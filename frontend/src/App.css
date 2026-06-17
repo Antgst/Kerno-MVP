@@ -191,10 +191,15 @@
   isolation: isolate;
   display: grid;
   align-items: center;
-  gap: 34px;
-  grid-template-columns: minmax(0, 0.92fr) minmax(430px, 1.08fr);
+  gap: 38px;
+  grid-template-columns: minmax(0, 0.94fr) minmax(420px, 1.06fr);
   overflow: hidden;
-  padding: 62px 0 38px;
+  margin-top: 24px;
+  padding: 38px;
+  border: 1px solid rgb(229 231 235 / 92%);
+  border-radius: 24px;
+  background: rgb(255 255 255 / 74%);
+  box-shadow: 0 22px 54px rgb(15 23 42 / 7%);
 }
 
 .landing-hero__background {
@@ -202,7 +207,7 @@
   inset: 0;
   z-index: -2;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: inherit;
   pointer-events: none;
 }
 
@@ -221,12 +226,13 @@
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(90deg, rgb(248 245 239 / 88%) 0%, rgb(248 245 239 / 58%) 54%, rgb(248 245 239 / 78%) 100%),
-    rgb(248 245 239 / 56%);
+    linear-gradient(90deg, rgb(255 255 255 / 94%) 0%, rgb(255 255 255 / 72%) 50%, rgb(248 245 239 / 80%) 100%),
+    rgb(248 245 239 / 48%);
 }
 
 .landing-hero__content {
   min-width: 0;
+  padding-left: 4px;
 }
 
 .landing-eyebrow {
@@ -248,8 +254,8 @@
 }
 
 .landing-hero h1 {
-  max-width: 660px;
-  font-size: clamp(2.55rem, 5vw, 3.45rem);
+  max-width: 620px;
+  font-size: clamp(2.55rem, 4.6vw, 3.4rem);
   line-height: 1.04;
 }
 
@@ -272,7 +278,7 @@
 }
 
 .landing-hero__content > p:not(.landing-eyebrow) {
-  max-width: 610px;
+  max-width: 590px;
   margin: 18px 0 0;
   color: #77766e;
   font-size: 1rem;
@@ -281,7 +287,7 @@
 .landing-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   margin-top: 24px;
 }
 
@@ -289,12 +295,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 0 20px;
+  min-height: 46px;
+  padding: 0 22px;
   border: 1px solid transparent;
-  border-radius: 14px;
+  border-radius: 999px;
   font-size: 0.94rem;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   transition:
     background 160ms ease,
@@ -311,13 +317,24 @@
 .landing-button--primary {
   background: var(--color-deep-green);
   color: var(--color-white);
-  box-shadow: 0 12px 26px rgb(22 78 63 / 14%);
+  box-shadow: 0 14px 28px rgb(22 78 63 / 18%);
+}
+
+.landing-button--primary:hover {
+  background: #0f3d33;
+  box-shadow: 0 16px 32px rgb(22 78 63 / 20%);
 }
 
 .landing-button--secondary {
-  border-color: #d6ebe2;
+  border-color: var(--color-border);
   background: var(--color-white);
   color: var(--color-deep-green);
+  box-shadow: 0 8px 18px rgb(15 23 42 / 5%);
+}
+
+.landing-button--secondary:hover {
+  border-color: #cfe3dc;
+  background: #f7fbf9;
 }
 
 .landing-button--light {
@@ -357,10 +374,10 @@
   padding: 12px;
   border: 1px solid rgb(229 231 235 / 84%);
   border-radius: 24px;
-  background: rgb(255 255 255 / 82%);
+  background: rgb(255 255 255 / 88%);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 20px 48px rgb(15 23 42 / 9%);
+  box-shadow: 0 20px 44px rgb(15 23 42 / 10%);
 }
 
 .hero-showcase__frame {
@@ -481,10 +498,10 @@
 }
 
 .landing-card {
-  border: 1px solid #dedbd3;
-  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
   background: var(--color-white);
-  box-shadow: 0 2px 5px rgb(22 78 63 / 4%);
+  box-shadow: 0 10px 24px rgb(15 23 42 / 5%);
 }
 
 .landing-card {
@@ -493,15 +510,13 @@
 
 .benefit-card {
   display: grid;
-  min-height: 190px;
-  align-content: center;
+  min-height: 210px;
+  align-content: start;
   justify-items: center;
-  padding: 30px 26px;
-  border-color: rgb(214 235 226 / 92%);
+  padding: 30px 26px 28px;
+  border-color: rgb(229 231 235 / 96%);
   text-align: center;
-  background:
-    linear-gradient(180deg, rgb(234 247 242 / 42%) 0%, rgb(255 255 255 / 0%) 62%),
-    var(--color-white);
+  background: var(--color-white);
   transition:
     border-color 160ms ease,
     box-shadow 160ms ease,
@@ -510,24 +525,25 @@
 
 .benefit-card:hover {
   transform: translateY(-2px);
-  border-color: #c5e2d7;
-  box-shadow: 0 14px 30px rgb(22 78 63 / 8%);
+  border-color: #d3e4dd;
+  box-shadow: 0 18px 34px rgb(15 23 42 / 8%);
 }
 
 .benefit-card__icon {
   display: grid;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   place-items: center;
-  margin-bottom: 14px;
-  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #d6ebe2;
+  border-radius: 14px;
   background: #eaf7f2;
   color: var(--color-deep-green);
 }
 
 .benefit-card__icon svg {
-  width: 19px;
-  height: 19px;
+  width: 21px;
+  height: 21px;
 }
 
 .landing-card h3 {
@@ -538,8 +554,8 @@
 
 .benefit-card h3 {
   color: #123f34;
-  font-size: 1.08rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 800;
 }
 
 .landing-card p {
@@ -871,12 +887,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 16px;
   width: 100%;
-  min-height: 66px;
-  padding: 10px 24px;
-  border-bottom: 1px solid rgb(15 23 42 / 8%);
-  background: rgb(255 255 255 / 84%);
+  min-height: 64px;
+  padding: 8px 28px;
+  border-bottom: 1px solid var(--color-border);
+  background: rgb(255 255 255 / 92%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -886,8 +902,8 @@
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: minmax(160px, 1fr) auto minmax(160px, 1fr);
-  column-gap: 16px;
+  grid-template-columns: minmax(170px, 1fr) auto minmax(190px, 1fr);
+  column-gap: 18px;
 }
 
 .site-header--app {
@@ -907,10 +923,10 @@
 
 .brand-mark {
   display: inline-grid;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   place-items: center;
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--color-deep-green);
   color: var(--color-white);
   font-size: 0.96rem;
@@ -931,9 +947,9 @@
 
 .brand-copy strong,
 .sidebar__brand strong {
-  font-size: 0.96rem;
+  font-size: 0.98rem;
   font-weight: 750;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
 .brand-copy small,
@@ -955,6 +971,10 @@
   justify-content: center;
   min-width: 0;
   flex-wrap: wrap;
+  padding: 4px;
+  border: 1px solid rgb(229 231 235 / 82%);
+  border-radius: 999px;
+  background: rgb(248 245 239 / 62%);
 }
 
 .public-header-actions {
@@ -998,24 +1018,37 @@
 }
 
 .navigation-link--header {
-  padding: 0 12px;
-  color: var(--color-text-secondary);
+  padding: 0 14px;
+  color: #475569;
   font-size: 0.86rem;
 }
 
 .navigation-link--header:hover,
 .navigation-link--header.navigation-link--active {
   color: var(--color-deep-green);
-  background: rgb(22 78 63 / 8%);
+  background: #eaf7f2;
+}
+
+.navigation-link--header-ghost {
+  min-height: 36px;
+  padding: 0 12px;
+  color: #475569;
+  font-size: 0.86rem;
+}
+
+.navigation-link--header-ghost:hover,
+.navigation-link--header-ghost.navigation-link--active {
+  color: var(--color-deep-green);
+  background: rgb(22 78 63 / 6%);
 }
 
 .navigation-link--header-cta {
   min-height: 36px;
-  padding: 0 15px;
+  padding: 0 17px;
   background: var(--color-deep-green);
   color: var(--color-white);
   font-size: 0.86rem;
-  box-shadow: 0 10px 20px rgb(22 78 63 / 16%);
+  box-shadow: 0 10px 20px rgb(22 78 63 / 18%);
 }
 
 .navigation-link--header-cta:hover,
@@ -1157,7 +1190,7 @@
 
   .landing-hero {
     grid-template-columns: 1fr;
-    padding-top: 48px;
+    padding: 34px;
   }
 
   .landing-hero h1 {
@@ -1254,7 +1287,8 @@
   }
 
   .landing-hero {
-    padding-top: 38px;
+    padding: 24px;
+    border-radius: 20px;
   }
 
   .landing-hero h1 {

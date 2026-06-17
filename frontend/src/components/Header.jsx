@@ -59,7 +59,7 @@ function Header({ variant = "public" }) {
       </nav>
 
       <div className="public-header-actions">
-        <NavigationLink to="/login" variant="header">
+        <NavigationLink to="/login" variant="header-ghost">
           Se connecter
         </NavigationLink>
         <NavigationLink to="/register" variant="header-cta">
