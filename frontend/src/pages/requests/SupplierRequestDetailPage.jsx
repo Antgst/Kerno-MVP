@@ -12,6 +12,7 @@ import {
   getRequestById,
   updateRequestStatus,
 } from "../../services/requestService";
+import { getResource } from "../../utils/responseUtils";
 
 const statusOptions = [
   { value: "PENDING", label: "Pending" },
@@ -41,8 +42,10 @@ function SupplierRequestDetailPage() {
         const response = await getRequestById(id);
 
         if (shouldUpdateState) {
-          setRequest(response.request);
-          setSelectedStatus(response.request.status);
+          const loadedRequest = getResource(response, ["request"]);
+
+          setRequest(loadedRequest);
+          setSelectedStatus(loadedRequest?.status || "");
         }
       } catch (error) {
         if (shouldUpdateState) {
@@ -76,8 +79,13 @@ function SupplierRequestDetailPage() {
         status: selectedStatus,
       });
 
-      setRequest(response.request);
-      setSelectedStatus(response.request.status);
+      const updatedRequest = getResource(response, ["request"]) || {
+        ...request,
+        status: selectedStatus,
+      };
+
+      setRequest(updatedRequest);
+      setSelectedStatus(updatedRequest.status);
       setStatusMessage("Request status updated successfully.");
     } catch (error) {
       setErrorMessage(error.message || "Unable to update request status.");

@@ -34,6 +34,7 @@ body {
   min-height: 100vh;
   margin: 0;
   background: var(--color-warm-ivory);
+  overflow-x: clip;
 }
 
 button,
@@ -41,4 +42,25 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+::selection {
+  background: #f97316;
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 3px solid rgb(249 115 22 / 65%);
+  outline-offset: 3px;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
 }

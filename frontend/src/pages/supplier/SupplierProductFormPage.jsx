@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import PageHeader from "../../components/shared/PageHeader";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
@@ -10,8 +10,13 @@ import LoadingState from "../../components/ui/LoadingState";
 import Select from "../../components/ui/Select";
 import StatusBadge from "../../components/ui/StatusBadge";
 import { getCategories } from "../../services/categoryService";
-import { createProduct } from "../../services/productService";
+import {
+  createProduct,
+  getProductById,
+  updateProduct,
+} from "../../services/productService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
+import { getListResource, getResource } from "../../utils/responseUtils";
 
 const initialFormData = {
   name: "",
@@ -21,10 +26,26 @@ const initialFormData = {
   priceInfo: "",
   minimumOrder: "",
   imageUrl: "",
+  isActive: true,
 };
+
+function getFormDataFromProduct(product) {
+  return {
+    name: product?.name || "",
+    categoryId: product?.categoryId || product?.category?.id || "",
+    description: product?.description || "",
+    origin: product?.origin || "",
+    priceInfo: product?.priceInfo || "",
+    minimumOrder: product?.minimumOrder || "",
+    imageUrl: product?.imageUrl || "",
+    isActive: product?.isActive ?? true,
+  };
+}
 
 function SupplierProductFormPage() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
 
   const [formData, setFormData] = useState(initialFormData);
   const [categories, setCategories] = useState([]);
@@ -43,15 +64,25 @@ function SupplierProductFormPage() {
       setLoadErrorMessage("");
 
       try {
-        await getCurrentSupplierProfile();
-        const categoriesResponse = await getCategories();
+        const [supplierResponse, categoriesResponse, productResponse] =
+          await Promise.all([
+            getCurrentSupplierProfile(),
+            getCategories(),
+            isEditMode ? getProductById(id) : null,
+          ]);
 
         if (!shouldUpdateState) {
           return;
         }
 
-        setHasSupplierProfile(true);
-        setCategories(categoriesResponse.categories || []);
+        setHasSupplierProfile(Boolean(getResource(supplierResponse, ["supplier"])));
+        setCategories(getListResource(categoriesResponse, ["categories"]));
+
+        if (productResponse) {
+          setFormData(
+            getFormDataFromProduct(getResource(productResponse, ["product"])),
+          );
+        }
       } catch (error) {
         if (!shouldUpdateState) {
           return;
@@ -75,7 +106,7 @@ function SupplierProductFormPage() {
     return () => {
       shouldUpdateState = false;
     };
-  }, []);
+  }, [id, isEditMode]);
 
   const categoryOptions = categories.map((category) => ({
     value: category.id,
@@ -83,11 +114,11 @@ function SupplierProductFormPage() {
   }));
 
   function handleChange(event) {
-    const { name, value } = event.target;
+    const { checked, name, type, value } = event.target;
 
     setFormData((currentData) => ({
       ...currentData,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
 
     setFieldErrors((currentErrors) => ({
@@ -128,13 +159,19 @@ function SupplierProductFormPage() {
       priceInfo: formData.priceInfo,
       minimumOrder: formData.minimumOrder,
       imageUrl: formData.imageUrl,
+      isActive: formData.isActive,
     };
 
     try {
-      await createProduct(payload);
+      if (isEditMode) {
+        await updateProduct(id, payload);
+      } else {
+        await createProduct(payload);
+      }
+
       navigate("/supplier/products");
     } catch (error) {
-      setSubmitErrorMessage(error.message || "Unable to create product.");
+      setSubmitErrorMessage(error.message || "Unable to save product.");
     } finally {
       setIsSubmitting(false);
     }
@@ -144,8 +181,12 @@ function SupplierProductFormPage() {
     <div className="text-slate-950">
       <PageHeader
         eyebrow="Supplier products"
-        title="Add a product"
-        description="Create a structured product offer for stores browsing the Kerno catalog."
+        title={isEditMode ? "Edit product" : "Add a product"}
+        description={
+          isEditMode
+            ? "Update the product information visible in the Kerno catalog."
+            : "Create a structured product offer for stores browsing the Kerno catalog."
+        }
       >
         <Link to="/supplier/products">
           <Button variant="secondary">Back to products</Button>
@@ -179,13 +220,13 @@ function SupplierProductFormPage() {
             {submitErrorMessage && (
               <ErrorState
                 className="mb-5"
-                title="Product creation failed"
+                title="Product save failed"
                 message={submitErrorMessage}
               />
             )}
 
             {isSubmitting && (
-              <LoadingState className="mb-5" message="Creating product..." />
+              <LoadingState className="mb-5" message="Saving product..." />
             )}
 
             <form className="space-y-5" onSubmit={handleSubmit}>
@@ -268,8 +309,22 @@ function SupplierProductFormPage() {
                 />
               </div>
 
+              <label className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-800">
+                <input
+                  type="checkbox"
+                  name="isActive"
+                  checked={formData.isActive}
+                  onChange={handleChange}
+                />
+                Product active in catalog
+              </label>
+
               <Button className="w-full" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Creating..." : "Create product"}
+                {isSubmitting
+                  ? "Saving..."
+                  : isEditMode
+                    ? "Update product"
+                    : "Create product"}
               </Button>
             </form>
           </Card>
@@ -284,7 +339,10 @@ function SupplierProductFormPage() {
                 </p>
               </div>
 
-              <StatusBadge status="ACTIVE" label="Draft preview" />
+              <StatusBadge
+                status={formData.isActive ? "ACTIVE" : "INACTIVE"}
+                label={formData.isActive ? "Active preview" : "Inactive preview"}
+              />
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">

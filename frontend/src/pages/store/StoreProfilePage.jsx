@@ -12,6 +12,7 @@ import {
   getCurrentStoreProfile,
   updateCurrentStoreProfile,
 } from "../../services/storeService";
+import { getResource } from "../../utils/responseUtils";
 
 const initialFormData = {
   storeName: "",
@@ -56,7 +57,7 @@ function StoreProfilePage() {
         const response = await getCurrentStoreProfile();
 
         if (shouldUpdateState) {
-          setFormData(getFormDataFromStore(response.store));
+          setFormData(getFormDataFromStore(getResource(response, ["store"])));
           setHasExistingProfile(true);
         }
       } catch (error) {
@@ -140,7 +141,7 @@ function StoreProfilePage() {
         ? await updateCurrentStoreProfile(payload)
         : await createStoreProfile(payload);
 
-      setFormData(getFormDataFromStore(response.store));
+      setFormData(getFormDataFromStore(getResource(response, ["store"])));
       setHasExistingProfile(true);
       setSuccessMessage(
         hasExistingProfile

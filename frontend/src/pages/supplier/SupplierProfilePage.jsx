@@ -12,6 +12,7 @@ import {
   getCurrentSupplierProfile,
   updateCurrentSupplierProfile,
 } from "../../services/supplierService";
+import { getResource } from "../../utils/responseUtils";
 
 const initialFormData = {
   companyName: "",
@@ -56,7 +57,7 @@ function SupplierProfilePage() {
         const response = await getCurrentSupplierProfile();
 
         if (shouldUpdateState) {
-          setFormData(getFormDataFromSupplier(response.supplier));
+          setFormData(getFormDataFromSupplier(getResource(response, ["supplier"])));
           setHasExistingProfile(true);
         }
       } catch (error) {
@@ -140,7 +141,7 @@ function SupplierProfilePage() {
         ? await updateCurrentSupplierProfile(payload)
         : await createSupplierProfile(payload);
 
-      setFormData(getFormDataFromSupplier(response.supplier));
+      setFormData(getFormDataFromSupplier(getResource(response, ["supplier"])));
       setHasExistingProfile(true);
       setSuccessMessage(
         hasExistingProfile

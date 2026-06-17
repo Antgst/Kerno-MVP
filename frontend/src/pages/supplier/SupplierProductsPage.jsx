@@ -10,6 +10,7 @@ import LoadingState from "../../components/ui/LoadingState";
 import StatusBadge from "../../components/ui/StatusBadge";
 import { deleteProduct, getProducts } from "../../services/productService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
+import { getListResource, getResource } from "../../utils/responseUtils";
 
 function getProductSupplierId(product) {
   return product.supplierId || product.supplier?.id;
@@ -37,8 +38,8 @@ function SupplierProductsPage() {
           return;
         }
 
-        const profile = supplierResponse.supplier;
-        const allProducts = productsResponse.products || [];
+        const profile = getResource(supplierResponse, ["supplier"]);
+        const allProducts = getListResource(productsResponse, ["products"]);
 
         setSupplierProfile(profile);
         setProducts(allProducts);
@@ -81,7 +82,7 @@ function SupplierProductsPage() {
 
   async function handleDeactivateProduct(productId) {
     const confirmed = window.confirm(
-      "Do you want to deactivate this product?",
+      "Do you want to remove this product?",
     );
 
     if (!confirmed) {
@@ -98,7 +99,7 @@ function SupplierProductsPage() {
         currentProducts.filter((product) => product.id !== productId),
       );
     } catch (error) {
-      setErrorMessage(error.message || "Unable to deactivate product.");
+      setErrorMessage(error.message || "Unable to remove product.");
     } finally {
       setDeletingProductId("");
     }
@@ -257,9 +258,9 @@ function SupplierProductsPage() {
                       </div>
 
                       <div className="flex flex-wrap gap-3 lg:justify-end">
-                        <Button variant="ghost" disabled>
-                          Edit later
-                        </Button>
+                        <Link to={`/supplier/products/${product.id}/edit`}>
+                          <Button variant="ghost">Edit</Button>
+                        </Link>
 
                         <Button
                           variant="secondary"
@@ -267,8 +268,8 @@ function SupplierProductsPage() {
                           onClick={() => handleDeactivateProduct(product.id)}
                         >
                           {deletingProductId === product.id
-                            ? "Deactivating..."
-                            : "Deactivate"}
+                            ? "Removing..."
+                            : "Remove"}
                         </Button>
                       </div>
                     </div>

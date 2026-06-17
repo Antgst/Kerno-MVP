@@ -6,7 +6,8 @@ export const routeConfig = [
   { path: "/supplier/dashboard", label: "Supplier dashboard", access: "supplier" },
   { path: "/supplier/profile", label: "Supplier profile", access: "supplier" },
   { path: "/supplier/products", label: "Supplier products", access: "supplier" },
-  { path: "/supplier/products/new", label: "Add product", access: "supplier" },
+  { path: "/supplier/products/new", label: "Add product", access: "supplier", hidden: true },
+  { path: "/supplier/products/:id/edit", label: "Edit product", access: "supplier", hidden: true },
   { path: "/supplier/requests", label: "Received requests", access: "supplier" },
   { path: "/supplier/requests/:id", label: "Received request details", access: "supplier" },
 
