@@ -13,6 +13,8 @@ import {
   updateCurrentSupplierProfile,
 } from "../../services/supplierService";
 import { getResource } from "../../utils/responseUtils";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 const initialFormData = {
   companyName: "",
@@ -108,6 +110,10 @@ function SupplierProfilePage() {
 
     if (!formData.companyName.trim()) {
       errors.companyName = "Company name is required.";
+    }
+
+    if (formData.phone && !isValidPhoneNumber(formData.phone)) {
+      errors.phone = "Enter a valid phone number.";
     }
 
     setFieldErrors(errors);
@@ -264,13 +270,47 @@ function SupplierProfilePage() {
                   placeholder="sales@example.com"
                 />
 
-                <Input
-                  label="Phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="+33 1 23 45 67 89"
-                />
+                <div>
+                  <label
+                    className="mb-2 block text-sm font-bold text-slate-800"
+                    htmlFor="phone"
+                  >
+                    Phone
+                  </label>
+
+                  <PhoneInput
+                    id="phone"
+                    international
+                    defaultCountry="FR"
+                    value={formData.phone}
+                    onChange={(value) => {
+                      setFormData((currentData) => ({
+                        ...currentData,
+                        phone: value || "",
+                      }));
+
+                      setFieldErrors((currentErrors) => ({
+                        ...currentErrors,
+                        phone: "",
+                      }));
+
+                      setSubmitErrorMessage("");
+                      setSuccessMessage("");
+                    }}
+                    placeholder="Enter phone number"
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900"
+                  />
+
+                  {fieldErrors.phone && (
+                    <p className="mt-2 text-sm font-semibold text-red-600">
+                      {fieldErrors.phone}
+                    </p>
+                  )}
+
+                  <p className="mt-2 text-xs font-medium text-slate-500">
+                    Select a country and enter the phone number.
+                  </p>
+                </div>
               </div>
 
               <Input
