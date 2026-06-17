@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-function NavigationLink({ to, children, variant = "default", end }) {
+function NavigationLink({ to, children, variant = "default", end, ...props }) {
   const shouldMatchExactly = end ?? to === "/";
 
   return (
@@ -16,6 +16,7 @@ function NavigationLink({ to, children, variant = "default", end }) {
           .filter(Boolean)
           .join(" ")
       }
+      {...props}
     >
       {children}
     </NavLink>

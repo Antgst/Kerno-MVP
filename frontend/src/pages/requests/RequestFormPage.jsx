@@ -10,6 +10,7 @@ import StatusBadge from "../../components/ui/StatusBadge";
 import { getProductById } from "../../services/productService";
 import { createContactRequest } from "../../services/requestService";
 import { getSupplierById } from "../../services/supplierService";
+import { getResource } from "../../utils/responseUtils";
 
 const initialFormData = {
   supplierId: "",
@@ -58,8 +59,33 @@ function RequestFormPage() {
           return;
         }
 
-        setSupplier(supplierResponse?.supplier || null);
-        setProduct(productResponse?.product || null);
+        const loadedSupplier = getResource(supplierResponse, ["supplier"]);
+        const loadedProduct = getResource(productResponse, ["product"]);
+
+        setSupplier(loadedSupplier);
+        setProduct(loadedProduct);
+
+        setFormData((currentData) => {
+          if (currentData.subject) {
+            return currentData;
+          }
+
+          if (loadedProduct?.name) {
+            return {
+              ...currentData,
+              subject: `Demande pour ${loadedProduct.name}`,
+            };
+          }
+
+          if (loadedSupplier?.companyName) {
+            return {
+              ...currentData,
+              subject: `Demande de contact - ${loadedSupplier.companyName}`,
+            };
+          }
+
+          return currentData;
+        });
       } catch (error) {
         if (shouldUpdateState) {
           setLoadErrorMessage(
@@ -135,7 +161,9 @@ function RequestFormPage() {
         requestedQuantity: formData.requestedQuantity,
       });
 
-      navigate(`/store/requests/${response.request.id}`);
+      const createdRequest = getResource(response, ["request"]);
+
+      navigate(createdRequest?.id ? `/store/requests/${createdRequest.id}` : "/store/requests");
     } catch (error) {
       setSubmitErrorMessage(error.message || "Unable to create request.");
     } finally {

@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import PageHeader from "../components/shared/PageHeader";
-import Button from "../components/ui/Button";
-import Card from "../components/ui/Card";
 import ErrorState from "../components/ui/ErrorState";
 import Input from "../components/ui/Input";
 import LoadingState from "../components/ui/LoadingState";
@@ -13,6 +10,18 @@ const initialFormData = {
   email: "",
   password: "",
 };
+
+function getRoleFromResponse(response) {
+  return (
+    response?.user?.role ||
+    response?.role ||
+    response?.account?.role ||
+    response?.data?.user?.role ||
+    response?.data?.role ||
+    response?.data?.account?.role ||
+    null
+  );
+}
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -42,11 +51,11 @@ function LoginPage() {
     const errors = {};
 
     if (!formData.email.trim()) {
-      errors.email = "Email is required.";
+      errors.email = "L'email est obligatoire.";
     }
 
     if (!formData.password) {
-      errors.password = "Password is required.";
+      errors.password = "Le mot de passe est obligatoire.";
     }
 
     setFieldErrors(errors);
@@ -66,40 +75,46 @@ function LoginPage() {
 
     try {
       const response = await loginUser({
-        email: formData.email,
+        email: formData.email.trim(),
         password: formData.password,
       });
 
-      const dashboardPath = getDashboardPathByRole(response?.user?.role);
+      const role = getRoleFromResponse(response);
+      const dashboardPath = getDashboardPathByRole(role);
 
       navigate(dashboardPath);
     } catch (error) {
-      setSubmitError(error.message || "Unable to sign in.");
+      setSubmitError(error.message || "Connexion impossible.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <main className="min-h-screen bg-stone-50 px-6 py-10 text-slate-950">
-      <div className="mx-auto max-w-5xl">
-        <PageHeader
-          eyebrow="KERNO access"
-          title="Sign in to your workspace"
-          description="Access your supplier or store dashboard with your Kerno account."
-        />
+    <main className="auth-page">
+      <section className="auth-shell">
+        <div className="auth-intro">
+          <p className="marketing-eyebrow">KERNO ACCESS</p>
+          <h1>Connectez-vous à votre espace.</h1>
+          <p>
+            Retrouvez votre tableau de bord fournisseur ou magasin, vos profils,
+            vos produits et vos demandes de contact.
+          </p>
+        </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_0.8fr]">
-          <Card>
-            <form className="space-y-5" onSubmit={handleSubmit}>
+        <div className="auth-grid">
+          <section className="auth-card">
+            <div className="auth-card__header">
+              <h2>Connexion</h2>
+              <p>Utilisez les identifiants de votre compte Kerno.</p>
+            </div>
+
+            <form className="auth-form" onSubmit={handleSubmit}>
               {submitError && (
-                <ErrorState
-                  title="Sign-in failed"
-                  message={submitError}
-                />
+                <ErrorState title="Échec de connexion" message={submitError} />
               )}
 
-              {isSubmitting && <LoadingState message="Signing you in..." />}
+              {isSubmitting && <LoadingState message="Connexion en cours..." />}
 
               <Input
                 label="Email"
@@ -107,51 +122,54 @@ function LoginPage() {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="you@example.com"
+                placeholder="vous@example.com"
                 error={fieldErrors.email}
                 required
               />
 
               <Input
-                label="Password"
+                label="Mot de passe"
                 name="password"
                 type="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="Your password"
+                placeholder="Votre mot de passe"
                 error={fieldErrors.password}
                 required
               />
 
-              <Button className="w-full" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Signing in..." : "Sign in"}
-              </Button>
+              <button
+                className="auth-submit"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Connexion..." : "Se connecter"}
+              </button>
             </form>
-          </Card>
+          </section>
 
-          <aside className="flex flex-col justify-center rounded-3xl border border-emerald-900 bg-emerald-950 p-6 text-white shadow-sm">
-            <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-300">
-              New on Kerno?
-            </p>
+          <aside className="auth-panel">
+            <div>
+              <p className="auth-panel__eyebrow">NOUVEAU SUR KERNO ?</p>
+              <h2>Créez un compte fournisseur ou magasin.</h2>
+              <p>
+                Les fournisseurs gèrent leurs produits. Les magasins explorent
+                le catalogue et contactent les fournisseurs.
+              </p>
+            </div>
 
-            <h2 className="mt-3 text-3xl font-black">
-              Create a supplier or store account.
-            </h2>
+            <div className="auth-panel__features">
+              <span>Profil</span>
+              <span>Catalogue</span>
+              <span>Demandes</span>
+            </div>
 
-            <p className="mt-4 leading-7 text-emerald-50">
-              Suppliers can manage products and requests. Stores can explore
-              products and contact suppliers.
-            </p>
-
-            <Link
-              className="mt-6 inline-flex w-fit rounded-full bg-white px-5 py-3 text-sm font-black text-emerald-950 hover:bg-stone-100"
-              to="/register"
-            >
-              Create an account
+            <Link className="auth-panel__button" to="/register">
+              Créer un compte
             </Link>
           </aside>
         </div>
-      </div>
+      </section>
     </main>
   );
 }

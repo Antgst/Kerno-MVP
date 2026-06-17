@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "../components/layout/ProtectedRoute";
+import RoleRoute from "../components/layout/RoleRoute";
 import AppLayout from "../layouts/AppLayout";
 import PublicLayout from "../layouts/PublicLayout";
 import HomePage from "../pages/HomePage";
@@ -6,12 +8,6 @@ import LoginPage from "../pages/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import RegisterPage from "../pages/RegisterPage";
-import SupplierDashboardPage from "../pages/supplier/SupplierDashboardPage";
-import SupplierProductFormPage from "../pages/supplier/SupplierProductFormPage";
-import SupplierProductsPage from "../pages/supplier/SupplierProductsPage";
-import SupplierProfilePage from "../pages/supplier/SupplierProfilePage";
-import StoreDashboardPage from "../pages/store/StoreDashboardPage";
-import StoreProfilePage from "../pages/store/StoreProfilePage";
 import CatalogPage from "../pages/catalog/CatalogPage";
 import ProductDetailPage from "../pages/details/ProductDetailPage";
 import SupplierDetailPage from "../pages/details/SupplierDetailPage";
@@ -20,6 +16,12 @@ import StoreRequestDetailPage from "../pages/requests/StoreRequestDetailPage";
 import StoreRequestsPage from "../pages/requests/StoreRequestsPage";
 import SupplierRequestDetailPage from "../pages/requests/SupplierRequestDetailPage";
 import SupplierRequestsPage from "../pages/requests/SupplierRequestsPage";
+import StoreDashboardPage from "../pages/store/StoreDashboardPage";
+import StoreProfilePage from "../pages/store/StoreProfilePage";
+import SupplierDashboardPage from "../pages/supplier/SupplierDashboardPage";
+import SupplierProductFormPage from "../pages/supplier/SupplierProductFormPage";
+import SupplierProductsPage from "../pages/supplier/SupplierProductsPage";
+import SupplierProfilePage from "../pages/supplier/SupplierProfilePage";
 import routeConfig from "./routeConfig";
 
 function getRoutePage(route) {
@@ -51,12 +53,32 @@ function getRoutePage(route) {
     return <SupplierProductFormPage />;
   }
 
+  if (route.path === "/supplier/products/:id/edit") {
+    return <SupplierProductFormPage />;
+  }
+
+  if (route.path === "/supplier/requests") {
+    return <SupplierRequestsPage />;
+  }
+
+  if (route.path === "/supplier/requests/:id") {
+    return <SupplierRequestDetailPage />;
+  }
+
   if (route.path === "/store/dashboard") {
     return <StoreDashboardPage />;
   }
 
   if (route.path === "/store/profile") {
     return <StoreProfilePage />;
+  }
+
+  if (route.path === "/store/requests") {
+    return <StoreRequestsPage />;
+  }
+
+  if (route.path === "/store/requests/:id") {
+    return <StoreRequestDetailPage />;
   }
 
   if (route.path === "/catalog") {
@@ -75,27 +97,23 @@ function getRoutePage(route) {
     return <RequestFormPage />;
   }
 
-  if (route.path === "/store/requests") {
-    return <StoreRequestsPage />;
-  }
-
-  if (route.path === "/store/requests/:id") {
-    return <StoreRequestDetailPage />;
-  }
-
-  if (route.path === "/supplier/requests") {
-    return <SupplierRequestsPage />;
-  }
-
-  if (route.path === "/supplier/requests/:id") {
-    return <SupplierRequestDetailPage />;
-  }
-
   if (route.path === "*") {
     return <NotFoundPage />;
   }
 
   return <PlaceholderPage route={route} />;
+}
+
+function getRoleProtectedElement(route, element) {
+  if (route.access === "supplier") {
+    return <RoleRoute allowedRoles={["SUPPLIER"]}>{element}</RoleRoute>;
+  }
+
+  if (route.access === "store") {
+    return <RoleRoute allowedRoles={["STORE"]}>{element}</RoleRoute>;
+  }
+
+  return element;
 }
 
 function getRouteElement(route) {
@@ -105,7 +123,13 @@ function getRouteElement(route) {
     return <PublicLayout>{page}</PublicLayout>;
   }
 
-  return <AppLayout>{page}</AppLayout>;
+  const appPage = <AppLayout>{page}</AppLayout>;
+
+  return (
+    <ProtectedRoute>
+      {getRoleProtectedElement(route, appPage)}
+    </ProtectedRoute>
+  );
 }
 
 function AppRoutes() {
