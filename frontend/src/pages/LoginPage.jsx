@@ -3,8 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import ErrorState from "../components/ui/ErrorState";
 import Input from "../components/ui/Input";
 import LoadingState from "../components/ui/LoadingState";
+import registerLocalSourcingBanner from "../assets/register/register-local-sourcing-banner.webp";
 import { loginUser } from "../services/authService";
 import { getDashboardPathByRole } from "../utils/authNavigation";
+
+const loginBenefits = [
+  "Un accès rapide à votre tableau de bord",
+  "Vos demandes et profils centralisés",
+  "Un parcours adapté à votre rôle",
+];
 
 const initialFormData = {
   email: "",
@@ -91,84 +98,82 @@ function LoginPage() {
   }
 
   return (
-    <main className="auth-page">
-      <section className="auth-shell">
-        <div className="auth-intro">
-          <p className="marketing-eyebrow">KERNO ACCESS</p>
-          <h1>Connectez-vous à votre espace.</h1>
+    <main className="auth-page register-page">
+      <section className="register-shell">
+        <aside className="register-editorial" aria-labelledby="login-title">
+          <p className="register-eyebrow">CONNEXION</p>
+          <h1 id="login-title">Retrouvez votre espace KERNO</h1>
           <p>
-            Retrouvez votre tableau de bord fournisseur ou magasin, vos profils,
-            vos produits et vos demandes de contact.
+            Accédez à vos demandes, vos profils et vos premiers échanges
+            commerciaux dans un environnement clair et professionnel.
           </p>
-        </div>
 
-        <div className="auth-grid">
-          <section className="auth-card">
-            <div className="auth-card__header">
-              <h2>Connexion</h2>
-              <p>Utilisez les identifiants de votre compte Kerno.</p>
-            </div>
+          <figure className="register-visual">
+            <img
+              src={registerLocalSourcingBanner}
+              alt="Produits locaux présentés dans un espace professionnel KERNO"
+            />
+          </figure>
 
-            <form className="auth-form" onSubmit={handleSubmit}>
-              {submitError && (
-                <ErrorState title="Échec de connexion" message={submitError} />
-              )}
+          <ul className="register-benefits" aria-label="Bénéfices KERNO">
+            {loginBenefits.map((benefit) => (
+              <li key={benefit}>
+                <span aria-hidden="true" />
+                {benefit}
+              </li>
+            ))}
+          </ul>
+        </aside>
 
-              {isSubmitting && <LoadingState message="Connexion en cours..." />}
+        <section className="register-card" aria-labelledby="login-form-title">
+          <div className="register-card__header">
+            <p className="register-card__eyebrow">Espace professionnel</p>
+            <h2 id="login-form-title">Se connecter</h2>
+            <p>Renseignez vos identifiants pour accéder à votre espace.</p>
+          </div>
 
-              <Input
-                label="Email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="vous@example.com"
-                error={fieldErrors.email}
-                required
-              />
+          <form className="auth-form" onSubmit={handleSubmit}>
+            {submitError && (
+              <ErrorState title="Échec de connexion" message={submitError} />
+            )}
 
-              <Input
-                label="Mot de passe"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Votre mot de passe"
-                error={fieldErrors.password}
-                required
-              />
+            {isSubmitting && <LoadingState message="Connexion en cours..." />}
 
-              <button
-                className="auth-submit"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Connexion..." : "Se connecter"}
-              </button>
-            </form>
-          </section>
+            <Input
+              label="Email professionnel"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="vous@example.com"
+              error={fieldErrors.email}
+              required
+            />
 
-          <aside className="auth-panel">
-            <div>
-              <p className="auth-panel__eyebrow">NOUVEAU SUR KERNO ?</p>
-              <h2>Créez un compte fournisseur ou magasin.</h2>
-              <p>
-                Les fournisseurs gèrent leurs produits. Les magasins explorent
-                le catalogue et contactent les fournisseurs.
-              </p>
-            </div>
+            <Input
+              label="Mot de passe"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Votre mot de passe"
+              error={fieldErrors.password}
+              required
+            />
 
-            <div className="auth-panel__features">
-              <span>Profil</span>
-              <span>Catalogue</span>
-              <span>Demandes</span>
-            </div>
+            <button
+              className="auth-submit"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Connexion..." : "Se connecter"}
+            </button>
 
-            <Link className="auth-panel__button" to="/register">
-              Créer un compte
-            </Link>
-          </aside>
-        </div>
+            <p className="register-login-link">
+              Pas encore de compte ? <Link to="/register">Créer un compte</Link>
+            </p>
+          </form>
+        </section>
       </section>
     </main>
   );
