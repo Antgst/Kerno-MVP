@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
-import PageHeader from "../../components/shared/PageHeader";
-import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
-import EmptyState from "../../components/ui/EmptyState";
+import { useEffect, useMemo, useState } from "react";
 import ErrorState from "../../components/ui/ErrorState";
 import Input from "../../components/ui/Input";
 import LoadingState from "../../components/ui/LoadingState";
-import StatusBadge from "../../components/ui/StatusBadge";
 import {
   createStoreProfile,
   getCurrentStoreProfile,
@@ -26,6 +21,8 @@ const initialFormData = {
   phone: "",
 };
 
+const profileFieldNames = Object.keys(initialFormData);
+
 function getFormDataFromStore(store) {
   return {
     storeName: store?.storeName || "",
@@ -36,6 +33,37 @@ function getFormDataFromStore(store) {
     contactEmail: store?.contactEmail || "",
     phone: store?.phone || "",
   };
+}
+
+function StoreProfileIcon({ name }) {
+  const commonProps = {
+    width: "24",
+    height: "24",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": "true",
+  };
+
+  if (name === "store") {
+    return (
+      <svg {...commonProps}>
+        <path d="M4 10h16" />
+        <path d="M5 10l1.2-5h11.6L19 10" />
+        <path d="M6 10v9h12v-9" />
+        <path d="M9 19v-5h6v5" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...commonProps}>
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
 }
 
 function StoreProfilePage() {
@@ -73,7 +101,9 @@ function StoreProfilePage() {
           return;
         }
 
-        setLoadErrorMessage(error.message || "Unable to load store profile.");
+        setLoadErrorMessage(
+          error.message || "Impossible de charger le profil magasin.",
+        );
       } finally {
         if (shouldUpdateState) {
           setIsLoading(false);
@@ -88,6 +118,23 @@ function StoreProfilePage() {
     };
   }, []);
 
+  const completionPercent = useMemo(() => {
+    const completedFields = profileFieldNames.filter((fieldName) =>
+      String(formData[fieldName] || "").trim(),
+    ).length;
+
+    return Math.round((completedFields / profileFieldNames.length) * 100);
+  }, [formData]);
+
+  function clearFeedback(fieldName) {
+    setFieldErrors((currentErrors) => ({
+      ...currentErrors,
+      [fieldName]: "",
+    }));
+    setSubmitErrorMessage("");
+    setSuccessMessage("");
+  }
+
   function handleChange(event) {
     const { name, value } = event.target;
 
@@ -95,26 +142,19 @@ function StoreProfilePage() {
       ...currentData,
       [name]: value,
     }));
-
-    setFieldErrors((currentErrors) => ({
-      ...currentErrors,
-      [name]: "",
-    }));
-
-    setSubmitErrorMessage("");
-    setSuccessMessage("");
+    clearFeedback(name);
   }
 
   function validateForm() {
     const errors = {};
 
     if (!formData.storeName.trim()) {
-      errors.storeName = "Store name is required.";
+      errors.storeName = "Le nom du magasin est obligatoire.";
     }
 
     if (formData.phone && !isValidPhoneNumber(formData.phone)) {
-      errors.phone = "Enter a valid phone number.";
-    } 
+      errors.phone = "Saisissez un numéro de téléphone valide.";
+    }
 
     setFieldErrors(errors);
 
@@ -151,86 +191,120 @@ function StoreProfilePage() {
       setHasExistingProfile(true);
       setSuccessMessage(
         hasExistingProfile
-          ? "Store profile updated successfully."
-          : "Store profile created successfully.",
+          ? "Les modifications ont bien été enregistrées."
+          : "Votre profil magasin a bien été créé.",
       );
     } catch (error) {
-      setSubmitErrorMessage(error.message || "Unable to save store profile.");
+      setSubmitErrorMessage(
+        error.message || "Impossible d’enregistrer le profil magasin.",
+      );
     } finally {
       setIsSubmitting(false);
     }
   }
 
-  return (
-    <div className="text-slate-950">
-      <PageHeader
-        eyebrow="Store profile"
-        title="Manage your store profile"
-        description="This information helps suppliers understand your store, your positioning and your sourcing needs."
-      >
-        <StatusBadge
-          status={hasExistingProfile ? "ACTIVE" : "PENDING"}
-          label={hasExistingProfile ? "Existing profile" : "New profile"}
-        />
-      </PageHeader>
+  const fallback = "Non renseigné";
 
-      {isLoading && <LoadingState message="Loading store profile..." />}
+  return (
+    <div className="store-profile-page">
+      <header className="store-profile-page__intro">
+        <div>
+          <p className="store-profile-page__eyebrow">Espace magasin</p>
+          <h1>Profil magasin</h1>
+          <p className="store-profile-page__subtitle">
+            Complétez les informations qui seront visibles par les fournisseurs
+            lors de vos demandes.
+          </p>
+        </div>
+      </header>
+
+      {isLoading && (
+        <LoadingState
+          className="store-profile-page__loading"
+          message="Chargement du profil magasin..."
+        />
+      )}
 
       {loadErrorMessage && (
-        <ErrorState title="Profile unavailable" message={loadErrorMessage} />
+        <ErrorState
+          title="Profil indisponible"
+          message={loadErrorMessage}
+        />
       )}
 
       {!isLoading && !loadErrorMessage && (
-        <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          <Card>
-            {!hasExistingProfile && (
-              <EmptyState
-                className="mb-6"
-                title="Create your store profile"
-                message="You do not have a store profile yet. Fill the form below to create it."
-              />
-            )}
+        <div className="store-profile-page__layout">
+          <section
+            className="store-profile-page__card store-profile-page__form-card"
+            aria-labelledby="store-profile-form-title"
+          >
+            <div className="store-profile-page__card-header">
+              <div>
+                <p className="store-profile-page__card-eyebrow">
+                  Votre établissement
+                </p>
+                <h2 id="store-profile-form-title">
+                  Informations du magasin
+                </h2>
+                <p>
+                  Renseignez les éléments essentiels pour rendre vos futures
+                  demandes plus crédibles.
+                </p>
+              </div>
+
+              <span className="store-profile-page__header-icon">
+                <StoreProfileIcon name="store" />
+              </span>
+            </div>
 
             {submitErrorMessage && (
               <ErrorState
-                className="mb-5"
-                title="Profile save failed"
+                className="store-profile-page__feedback"
+                title="Échec de l’enregistrement"
                 message={submitErrorMessage}
               />
             )}
 
             {successMessage && (
-              <div className="mb-5 rounded-3xl border border-emerald-200 bg-emerald-50 px-6 py-5 text-sm font-bold text-emerald-800">
-                {successMessage}
+              <div
+                className="store-profile-page__success"
+                role="status"
+                aria-live="polite"
+              >
+                <StoreProfileIcon name="check" />
+                <span>{successMessage}</span>
               </div>
             )}
 
             {isSubmitting && (
-              <LoadingState className="mb-5" message="Saving profile..." />
+              <LoadingState
+                className="store-profile-page__feedback"
+                message="Enregistrement du profil..."
+              />
             )}
 
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form className="store-profile-form" onSubmit={handleSubmit}>
               <Input
-                label="Store name"
+                label="Nom du magasin"
                 name="storeName"
                 value={formData.storeName}
                 onChange={handleChange}
-                placeholder="Kerno Market"
+                placeholder="Marché KERNO"
                 error={fieldErrors.storeName}
                 required
               />
 
               <Input
-                label="Brand name"
+                label="Enseigne"
                 name="brandName"
                 value={formData.brandName}
                 onChange={handleChange}
-                placeholder="Kerno"
+                placeholder="KERNO"
               />
 
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="store-profile-form__row">
                 <Input
-                  label="Location"
+                  label="Localisation"
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
@@ -238,51 +312,38 @@ function StoreProfilePage() {
                 />
 
                 <Input
-                  label="Store type"
+                  label="Type de magasin"
                   name="storeType"
                   value={formData.storeType}
                   onChange={handleChange}
-                  placeholder="Concept store, grocery, coffee shop..."
+                  placeholder="Épicerie, concept store, café..."
                 />
               </div>
 
-              <div>
-                <label
-                  className="mb-2 block text-sm font-bold text-slate-800"
-                  htmlFor="sourcingNeeds"
-                >
-                  Sourcing needs
-                </label>
-
+              <div className="store-profile-form__field">
+                <label htmlFor="sourcingNeeds">Besoins de sourcing</label>
                 <textarea
                   id="sourcingNeeds"
                   name="sourcingNeeds"
                   value={formData.sourcingNeeds}
                   onChange={handleChange}
                   rows="5"
-                  placeholder="Describe the products, suppliers or quantities you are looking for."
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-800 focus:ring-2 focus:ring-emerald-100"
+                  placeholder="Décrivez les produits, fournisseurs ou quantités que vous recherchez."
                 />
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="store-profile-form__row">
                 <Input
-                  label="Contact email"
+                  label="Email professionnel"
                   name="contactEmail"
                   type="email"
                   value={formData.contactEmail}
                   onChange={handleChange}
-                  placeholder="buyer@example.com"
+                  placeholder="acheteur@exemple.fr"
                 />
 
-                <div>
-                  <label
-                    className="mb-2 block text-sm font-bold text-slate-800"
-                    htmlFor="phone"
-                  >
-                    Phone
-                  </label>
-
+                <div className="store-profile-form__field">
+                  <label htmlFor="phone">Téléphone</label>
                   <PhoneInput
                     id="phone"
                     international
@@ -293,116 +354,128 @@ function StoreProfilePage() {
                         ...currentData,
                         phone: value || "",
                       }));
-
-                      setFieldErrors((currentErrors) => ({
-                        ...currentErrors,
-                        phone: "",
-                      }));
-
-                      setSubmitErrorMessage("");
-                      setSuccessMessage("");
+                      clearFeedback("phone");
                     }}
-                    placeholder="Enter phone number"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900"
+                    placeholder="Saisissez votre numéro"
+                    className={[
+                      "store-profile-phone",
+                      fieldErrors.phone ? "store-profile-phone--error" : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
                   />
 
                   {fieldErrors.phone && (
-                    <p className="mt-2 text-sm font-semibold text-red-600">
+                    <p className="store-profile-form__error">
                       {fieldErrors.phone}
                     </p>
                   )}
 
-                  <p className="mt-2 text-xs font-medium text-slate-500">
-                    Select a country and enter the phone number.
+                  <p className="store-profile-form__helper">
+                    Sélectionnez un pays puis saisissez le numéro.
                   </p>
                 </div>
               </div>
 
-              <Button className="w-full" type="submit" disabled={isSubmitting}>
+              <button
+                className="store-profile-form__submit"
+                type="submit"
+                disabled={isSubmitting}
+              >
                 {isSubmitting
-                  ? "Saving..."
+                  ? "Enregistrement..."
                   : hasExistingProfile
-                    ? "Update profile"
-                    : "Create profile"}
-              </Button>
+                    ? "Enregistrer les modifications"
+                    : "Créer le profil"}
+              </button>
             </form>
-          </Card>
+          </section>
 
-          <Card>
-            <h2 className="m-0 text-xl font-black">Store preview</h2>
-
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              This preview helps you check the information that suppliers will
-              see when reviewing your requests.
-            </p>
-
-            <div className="mt-6 space-y-5">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                  Store
-                </p>
-                <p className="mt-1 text-2xl font-black text-slate-950">
-                  {formData.storeName || "Store name"}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                  Brand
-                </p>
-                <p className="mt-1 font-bold text-slate-800">
-                  {formData.brandName || "Not provided"}
-                </p>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
+          <aside className="store-profile-page__side">
+            <section
+              className="store-profile-page__card store-profile-preview"
+              aria-labelledby="store-profile-preview-title"
+            >
+              <div className="store-profile-page__card-header">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Location
+                  <p className="store-profile-page__card-eyebrow">
+                    Vue fournisseur
                   </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.location || "Not provided"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Store type
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.storeType || "Not provided"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Email
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.contactEmail || "Not provided"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Phone
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.phone || "Not provided"}
+                  <h2 id="store-profile-preview-title">
+                    Aperçu côté fournisseur
+                  </h2>
+                  <p>
+                    Voici les informations visibles lorsqu’un fournisseur
+                    consulte votre demande.
                   </p>
                 </div>
               </div>
 
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                  Sourcing needs
-                </p>
-                <p className="mt-1 leading-7 text-slate-600">
-                  {formData.sourcingNeeds || "No sourcing needs yet."}
+              <div className="store-profile-preview__identity">
+                <span className="store-profile-preview__mark">
+                  <StoreProfileIcon name="store" />
+                </span>
+                <div>
+                  <small>Magasin</small>
+                  <strong>{formData.storeName || fallback}</strong>
+                  <span>{formData.brandName || fallback}</span>
+                </div>
+              </div>
+
+              <dl className="store-profile-preview__details">
+                <div>
+                  <dt>Localisation</dt>
+                  <dd>{formData.location || fallback}</dd>
+                </div>
+                <div>
+                  <dt>Type de magasin</dt>
+                  <dd>{formData.storeType || fallback}</dd>
+                </div>
+                <div>
+                  <dt>Email</dt>
+                  <dd>{formData.contactEmail || fallback}</dd>
+                </div>
+                <div>
+                  <dt>Téléphone</dt>
+                  <dd>{formData.phone || fallback}</dd>
+                </div>
+              </dl>
+
+              <div className="store-profile-preview__needs">
+                <small>Besoins de sourcing</small>
+                <p>
+                  {formData.sourcingNeeds ||
+                    "Aucun besoin de sourcing renseigné"}
                 </p>
               </div>
-            </div>
-          </Card>
+            </section>
+
+            <section className="store-profile-completion">
+              <div className="store-profile-completion__content">
+                <div>
+                  <p>Profil magasin</p>
+                  <h2>Complétez votre profil</h2>
+                  <span>
+                    Un profil clair améliore la crédibilité de vos demandes
+                    auprès des fournisseurs.
+                  </span>
+                </div>
+
+                <div
+                  className="store-profile-completion__gauge"
+                  style={{ "--progress": completionPercent }}
+                  aria-label={`Profil complété à ${completionPercent}%`}
+                >
+                  <strong>{completionPercent}%</strong>
+                </div>
+              </div>
+
+              <div className="store-profile-completion__progress">
+                <span style={{ width: `${completionPercent}%` }} />
+              </div>
+              <small>{completionPercent} % des informations renseignées</small>
+            </section>
+          </aside>
         </div>
       )}
     </div>
