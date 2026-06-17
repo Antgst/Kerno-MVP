@@ -1,4 +1,5 @@
 const prisma = require("../../lib/prisma");
+const { isValidPhone, normalizePhone } = require("../../utils/phone");
 
 function getStatus() {
   return "Suppliers module is ready";
@@ -69,6 +70,12 @@ async function createSupplierProfile(userId, payload) {
 
   validateRequiredString(companyName, "Company name");
 
+  if (phone) {
+    if (!isValidPhone(phone)) {
+      throw createError("Invalid phone number", 400);
+    }
+  }
+
   const existingProfile = await prisma.supplierProfile.findUnique({
     where: {
       userId,
@@ -87,7 +94,7 @@ async function createSupplierProfile(userId, payload) {
       location: location?.trim() || null,
       businessType: businessType?.trim() || null,
       contactEmail: contactEmail?.trim() || null,
-      phone: phone?.trim() || null,
+      phone: phone ? normalizePhone(phone) : null,
       website: website?.trim() || null,
     },
   });
@@ -134,6 +141,12 @@ async function updateCurrentSupplierProfile(userId, payload) {
     validateRequiredString(companyName, "Company name");
   }
 
+  if (phone !== undefined && phone) {
+    if (!isValidPhone(phone)) {
+      throw createError("Invalid phone number", 400);
+    }
+  }
+
   const updatedProfile = await prisma.supplierProfile.update({
     where: {
       userId,
@@ -150,7 +163,7 @@ async function updateCurrentSupplierProfile(userId, payload) {
       contactEmail:
         contactEmail !== undefined ? contactEmail?.trim() || null : undefined,
       phone:
-        phone !== undefined ? phone?.trim() || null : undefined,
+        phone !== undefined ? phone ? normalizePhone(phone) : null : undefined,
       website:
         website !== undefined ? website?.trim() || null : undefined,
     },
