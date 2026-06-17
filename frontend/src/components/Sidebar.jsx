@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import NavigationLink from "./NavigationLink";
+import kernoLogo from "../assets/brand/kerno-logo.webp";
 
 const storeSections = [
   {
@@ -48,7 +49,7 @@ function Sidebar({ onNavigate }) {
   return (
     <div className="kerno-sidebar">
       <Link to={dashboardPath} className="kerno-sidebar__brand" onClick={onNavigate}>
-        <div className="kerno-sidebar__brand-mark">K</div>
+        <img className="kerno-sidebar__brand-logo" src={kernoLogo} alt="" />
 
         <div className="kerno-sidebar__brand-copy">
           <strong>KERNO</strong>

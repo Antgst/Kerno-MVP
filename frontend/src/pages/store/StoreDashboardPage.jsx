@@ -10,82 +10,6 @@ import farmSupplierImage from "../../assets/store-dashboard/store-supplier-farm.
 import provenceSupplierImage from "../../assets/store-dashboard/store-supplier-provence.webp";
 import { getListResource, getResource } from "../../utils/responseUtils";
 
-const STORE_DASHBOARD_FALLBACK = {
-  storeName: "Épicerie Martin",
-  profileCompletion: 60,
-  stats: {
-    savedSuppliers: 8,
-    savedSuppliersTrend: "+2 ce mois-ci",
-    sentRequests: 12,
-    pendingRequests: 3,
-    viewedProducts: 47,
-    recommendedSuppliers: 5,
-  },
-};
-
-const RECENT_REQUESTS_FALLBACK = [
-  {
-    id: "fallback-honey",
-    subject: "Miel artisanal",
-    supplierName: "Ferme des Trois Vallées",
-    status: "REPLIED",
-    createdAt: "2025-06-12T10:00:00.000Z",
-  },
-  {
-    id: "fallback-beer",
-    subject: "Bière blonde locale",
-    supplierName: "Brasserie du Nord",
-    status: "PENDING",
-    createdAt: "2025-06-10T10:00:00.000Z",
-  },
-  {
-    id: "fallback-cheese",
-    subject: "Fromage fermier",
-    supplierName: "Maison Dupont",
-    status: "PENDING",
-    createdAt: "2025-06-08T10:00:00.000Z",
-  },
-];
-
-const RECOMMENDED_SUPPLIERS_FALLBACK = [
-  {
-    id: "fallback-farm",
-    companyName: "Ferme des Trois Vallées",
-    location: "Normandie",
-    businessType: "Produits fermiers",
-    productCount: 14,
-    rating: "4.8",
-    visual: "farm",
-  },
-  {
-    id: "fallback-brewery",
-    companyName: "Brasserie du Nord",
-    location: "Hauts-de-France",
-    businessType: "Boissons artisanales",
-    productCount: 8,
-    rating: "4.6",
-    visual: "brewery",
-  },
-  {
-    id: "fallback-cheese",
-    companyName: "Maison Dupont",
-    location: "Normandie",
-    businessType: "Fromages & Laitages",
-    productCount: 22,
-    rating: "4.9",
-    visual: "cheese",
-  },
-  {
-    id: "fallback-provence",
-    companyName: "Jardins de Provence",
-    location: "Provence",
-    businessType: "Herbes & Épices",
-    productCount: 17,
-    rating: "4.7",
-    visual: "provence",
-  },
-];
-
 const supplierVisuals = ["farm", "brewery", "cheese", "provence"];
 
 const supplierImages = {
@@ -202,7 +126,7 @@ function getSuppliersFromResponse(response) {
 
 function getCompletionPercent(profile) {
   if (!profile) {
-    return STORE_DASHBOARD_FALLBACK.profileCompletion;
+    return 0;
   }
 
   const fields = [
@@ -272,7 +196,7 @@ function formatFrenchDate(value) {
   }).format(new Date(value));
 }
 
-function getSupplierProductCount(supplier, fallback) {
+function getSupplierProductCount(supplier) {
   if (Array.isArray(supplier.products)) {
     return supplier.products.length;
   }
@@ -281,21 +205,7 @@ function getSupplierProductCount(supplier, fallback) {
     return supplier.productCount;
   }
 
-  return fallback.productCount;
-}
-
-function getLoadedSupplierProductCount(suppliers) {
-  return suppliers.reduce((total, supplier) => {
-    if (Array.isArray(supplier.products)) {
-      return total + supplier.products.length;
-    }
-
-    if (Number.isFinite(Number(supplier.productCount))) {
-      return total + Number(supplier.productCount);
-    }
-
-    return total;
-  }, 0);
+  return 0;
 }
 
 function StoreDashboardPage() {
@@ -372,31 +282,20 @@ function StoreDashboardPage() {
     [sentRequests],
   );
 
-  const recentRequests = sentRequests.length
-    ? sentRequests.slice(0, 3)
-    : RECENT_REQUESTS_FALLBACK;
+  const recentRequests = sentRequests.slice(0, 3);
 
-  const recommendedSuppliers = useMemo(() => {
-    const connectedSuppliers = suppliers.slice(0, 4).map((supplier, index) => {
-      const fallback = RECOMMENDED_SUPPLIERS_FALLBACK[index];
-
-      return {
-        ...fallback,
+  const recommendedSuppliers = useMemo(
+    () =>
+      suppliers.slice(0, 4).map((supplier, index) => ({
         ...supplier,
-        companyName: supplier.companyName || fallback.companyName,
-        location: supplier.location || fallback.location,
-        businessType: supplier.businessType || fallback.businessType,
-        productCount: getSupplierProductCount(supplier, fallback),
-        rating: supplier.rating || fallback.rating,
+        companyName: supplier.companyName || "Fournisseur",
+        location: supplier.location || "France",
+        businessType: supplier.businessType || "Fournisseur local",
+        productCount: getSupplierProductCount(supplier),
         visual: supplierVisuals[index % supplierVisuals.length],
-      };
-    });
-
-    return [
-      ...connectedSuppliers,
-      ...RECOMMENDED_SUPPLIERS_FALLBACK.slice(connectedSuppliers.length),
-    ].slice(0, 4);
-  }, [suppliers]);
+      })),
+    [suppliers],
+  );
 
   if (isLoading) {
     return <LoadingState message="Chargement du tableau de bord magasin..." />;
@@ -405,27 +304,24 @@ function StoreDashboardPage() {
   const storeDisplayName =
     storeProfile?.storeName ||
     storeProfile?.brandName ||
-    STORE_DASHBOARD_FALLBACK.storeName;
+    "Profil à compléter";
   const completionPercent = getCompletionPercent(storeProfile);
-  const sentRequestCount =
-    sentRequests.length || STORE_DASHBOARD_FALLBACK.stats.sentRequests;
-  const pendingRequestCount = sentRequests.length
-    ? pendingRequests.length
-    : STORE_DASHBOARD_FALLBACK.stats.pendingRequests;
-  const loadedSupplierProductCount = getLoadedSupplierProductCount(suppliers);
-  const savedSupplierCount =
-    suppliers.length || STORE_DASHBOARD_FALLBACK.stats.savedSuppliers;
-  const viewedProductCount =
-    loadedSupplierProductCount || STORE_DASHBOARD_FALLBACK.stats.viewedProducts;
-  const recommendedSupplierCount =
-    suppliers.length || STORE_DASHBOARD_FALLBACK.stats.recommendedSuppliers;
+  const sentRequestCount = sentRequests.length;
+  const pendingRequestCount = pendingRequests.length;
+  const savedSupplierCount = Array.isArray(storeProfile?.savedSuppliers)
+    ? storeProfile.savedSuppliers.length
+    : 0;
+  const viewedProductCount = Array.isArray(storeProfile?.viewedProducts)
+    ? storeProfile.viewedProducts.length
+    : 0;
+  const recommendedSupplierCount = suppliers.length;
 
   const stats = [
     {
       icon: "building",
       value: savedSupplierCount,
       label: "Fournisseurs sauvegardés",
-      helper: STORE_DASHBOARD_FALLBACK.stats.savedSuppliersTrend,
+      helper: "Dans votre sélection",
     },
     {
       icon: "mail",
@@ -496,16 +392,13 @@ function StoreDashboardPage() {
           </div>
 
           <div className="store-dashboard__request-list">
-            {recentRequests.map((request) => (
-              <Link
-                className="store-dashboard__request-row"
-                key={request.id}
-                to={
-                  request.id && !String(request.id).startsWith("fallback")
-                    ? `/store/requests/${request.id}`
-                    : "/store/requests"
-                }
-              >
+            {recentRequests.length ? (
+              recentRequests.map((request) => (
+                <Link
+                  className="store-dashboard__request-row"
+                  key={request.id}
+                  to={`/store/requests/${request.id}`}
+                >
                 <span className="store-dashboard__request-icon">
                   <DashboardIcon name="mail" />
                 </span>
@@ -524,8 +417,19 @@ function StoreDashboardPage() {
                 >
                   {getStatusLabel(request.status)}
                 </span>
-              </Link>
-            ))}
+                </Link>
+              ))
+            ) : (
+              <div className="store-dashboard__request-empty">
+                <span className="store-dashboard__request-icon">
+                  <DashboardIcon name="mail" />
+                </span>
+                <div>
+                  <strong>Aucune demande récente</strong>
+                  <p>Créez une demande pour commencer un échange fournisseur.</p>
+                </div>
+              </div>
+            )}
           </div>
 
           <Link className="store-dashboard__new-request" to="/requests/new">
@@ -590,61 +494,76 @@ function StoreDashboardPage() {
         </div>
 
         <div className="store-dashboard__supplier-grid">
-          {recommendedSuppliers.map((supplier) => {
-            const isFallback = String(supplier.id).startsWith("fallback");
-            const supplierPath = isFallback ? "/catalog" : `/suppliers/${supplier.id}`;
-            const supplierImage =
-              supplierImages[supplier.visual] || supplierImages.farm;
+          {recommendedSuppliers.length ? (
+            recommendedSuppliers.map((supplier) => {
+              const supplierPath = `/suppliers/${supplier.id}`;
+              const supplierImage =
+                supplierImages[supplier.visual] || supplierImages.farm;
 
-            return (
-              <article className="store-dashboard__supplier-card" key={supplier.id}>
-                <div
-                  className={`store-dashboard__supplier-visual store-dashboard__supplier-visual--${supplier.visual}`}
+              return (
+                <article
+                  className="store-dashboard__supplier-card"
+                  key={supplier.id}
                 >
-                  <img
-                    className="store-dashboard__supplier-image"
-                    src={supplierImage}
-                    alt={`Aperçu du fournisseur ${supplier.companyName}`}
-                    loading="lazy"
-                  />
-
-                  <span>
-                    <DashboardIcon name="leaf" />
-                  </span>
-                </div>
-
-                <div className="store-dashboard__supplier-body">
-                  <h3>{supplier.companyName}</h3>
-
-                  <div className="store-dashboard__supplier-meta">
-                    <span>
-                      <DashboardIcon name="map" />
-                      {supplier.location || "France"}
-                    </span>
+                  <div
+                    className={`store-dashboard__supplier-visual store-dashboard__supplier-visual--${supplier.visual}`}
+                  >
+                    <img
+                      className="store-dashboard__supplier-image"
+                      src={supplierImage}
+                      alt={`Aperçu du fournisseur ${supplier.companyName}`}
+                      loading="lazy"
+                    />
 
                     <span>
-                      <DashboardIcon name="tag" />
-                      {supplier.businessType || "Fournisseur local"}
+                      <DashboardIcon name="leaf" />
                     </span>
                   </div>
 
-                  <div className="store-dashboard__supplier-footer">
-                    <span>
-                      <DashboardIcon name="package" />
-                      {supplier.productCount} produits
-                    </span>
+                  <div className="store-dashboard__supplier-body">
+                    <h3>{supplier.companyName}</h3>
 
-                    <span>
-                      <DashboardIcon name="star" />
-                      {supplier.rating}
-                    </span>
+                    <div className="store-dashboard__supplier-meta">
+                      <span>
+                        <DashboardIcon name="map" />
+                        {supplier.location}
+                      </span>
+
+                      <span>
+                        <DashboardIcon name="tag" />
+                        {supplier.businessType}
+                      </span>
+                    </div>
+
+                    <div className="store-dashboard__supplier-footer">
+                      <span>
+                        <DashboardIcon name="package" />
+                        {supplier.productCount} produits
+                      </span>
+
+                      <span>
+                        <DashboardIcon name="star" />
+                        {supplier.rating || "Nouveau"}
+                      </span>
+                    </div>
+
+                    <Link to={supplierPath}>Voir le fournisseur</Link>
                   </div>
-
-                  <Link to={supplierPath}>Voir le fournisseur</Link>
-                </div>
-              </article>
-            );
-          })}
+                </article>
+              );
+            })
+          ) : (
+            <div className="store-dashboard__recommended-empty">
+              <DashboardIcon name="building" />
+              <div>
+                <strong>Aucun fournisseur recommandé</strong>
+                <p>
+                  Les fournisseurs correspondant à votre profil apparaîtront
+                  ici.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>

@@ -141,39 +141,30 @@ const products = [
 const pricingPlans = [
   {
     name: "Freemium",
-    description: "Un premier niveau pour présenter son activité et tester la plateforme.",
-    bullets: [
-      "Profil fournisseur public",
-      "Catalogue essentiel",
-      "Demandes structurées",
-    ],
+    price: "0 €",
+    description: "Découvrir la plateforme avec une présence simple.",
   },
   {
-    name: "Découverte",
-    description: "Une présence simple pour rendre les produits plus lisibles auprès des magasins.",
-    bullets: [
-      "Présentation enrichie",
-      "Produits mis en forme",
-      "Contact facilité",
-    ],
+    name: "Hebdomadaire",
+    price: "15 €",
+    period: "/ semaine",
+    description:
+      "Tester une visibilité renforcée sans engagement long.",
   },
   {
-    name: "Visibilité",
-    description: "Une mise en avant plus forte dans le catalogue professionnel KERNO.",
-    bullets: [
-      "Mise en avant dans le catalogue",
-      "Présentation fournisseur enrichie",
-      "Sélections éditoriales",
-    ],
+    name: "Mensuel",
+    price: "49 €",
+    period: "/ mois",
+    description:
+      "Structurer sa présence fournisseur avec plus de visibilité.",
   },
   {
-    name: "Partenaire",
-    description: "Un accompagnement plus complet pour structurer une présence commerciale locale.",
-    bullets: [
-      "Accompagnement de lancement",
-      "Valorisation multi-produits",
-      "Suivi commercial préparé",
-    ],
+    name: "Annuel",
+    price: "490 €",
+    period: "/ an",
+    description:
+      "L’offre la plus avantageuse pour une présence durable.",
+    featured: true,
   },
 ];
 
@@ -483,22 +474,32 @@ function HomePage() {
         <SectionHeading
           eyebrow="Offres"
           title="Des offres adaptées aux fournisseurs"
-          subtitle="Les plans seront précisés après validation du modèle commercial."
+          subtitle="Choisissez le rythme qui correspond à votre besoin de visibilité."
         />
 
         <div className="pricing-grid">
           {pricingPlans.map((plan) => (
-            <article className="landing-card pricing-card" key={plan.name}>
+            <article
+              className={[
+                "landing-card",
+                "pricing-card",
+                plan.featured ? "pricing-card--featured" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              key={plan.name}
+            >
+              {plan.featured && (
+                <span className="pricing-card__badge">Meilleure valeur</span>
+              )}
               <div className="pricing-card__header">
                 <h3>{plan.name}</h3>
-                <strong>À définir</strong>
               </div>
+              <p className="pricing-card__price">
+                <strong>{plan.price}</strong>
+                {plan.period && <span>{plan.period}</span>}
+              </p>
               <p>{plan.description}</p>
-              <ul>
-                {plan.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
             </article>
           ))}
         </div>
