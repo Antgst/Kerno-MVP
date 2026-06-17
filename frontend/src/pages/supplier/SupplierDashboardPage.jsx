@@ -17,89 +17,11 @@ const productImages = {
   buckwheatBiscuits: buckwheatBiscuitsImage,
 };
 
-const SUPPLIER_DASHBOARD_FALLBACK = {
-  supplierName: "Ferme des Trois Vallées",
-  profileCompletion: 64,
-  stats: {
-    publishedProducts: 18,
-    receivedRequests: 12,
-    pendingRequests: 4,
-    catalogViews: 148,
-  },
-};
-
-const RECEIVED_REQUESTS_FALLBACK = [
-  {
-    id: "fallback-request-honey",
-    storeName: "Épicerie Martin",
-    subject: "Réassort miel de printemps",
-    productName: "Miel de fleurs sauvages",
-    status: "PENDING",
-    createdAt: "2026-06-12T10:00:00.000Z",
-  },
-  {
-    id: "fallback-request-jam",
-    storeName: "Maison Locale",
-    subject: "Tarif confitures artisanales",
-    productName: "Confiture fraise rhubarbe",
-    status: "ANSWERED",
-    createdAt: "2026-06-10T10:00:00.000Z",
-  },
-  {
-    id: "fallback-request-cider",
-    storeName: "Comptoir Bio Rennes",
-    subject: "Disponibilité boisson fermière",
-    productName: "Jus de pomme fermier",
-    status: "READ",
-    createdAt: "2026-06-08T10:00:00.000Z",
-  },
-];
-
-const FEATURED_PRODUCTS_FALLBACK = [
-  {
-    id: "fallback-product-honey",
-    name: "Miel de fleurs sauvages",
-    categoryName: "Épicerie sucrée",
-    priceInfo: "8,90 €",
-    availability: "Disponible",
-    views: 42,
-    visualKey: "honey",
-    imageUrl: productImages.honey,
-    isFallback: true,
-  },
-  {
-    id: "fallback-product-jam",
-    name: "Confiture fraise rhubarbe",
-    categoryName: "Confitures",
-    priceInfo: "5,40 €",
-    availability: "Disponible",
-    views: 36,
-    visualKey: "jam",
-    imageUrl: productImages.jam,
-    isFallback: true,
-  },
-  {
-    id: "fallback-product-cider",
-    name: "Jus de pomme fermier",
-    categoryName: "Boissons",
-    priceInfo: "3,80 €",
-    availability: "Stock limité",
-    views: 31,
-    visualKey: "appleJuice",
-    imageUrl: productImages.appleJuice,
-    isFallback: true,
-  },
-  {
-    id: "fallback-product-biscuits",
-    name: "Biscuits au sarrasin",
-    categoryName: "Biscuits",
-    priceInfo: "4,20 €",
-    availability: "Disponible",
-    views: 26,
-    visualKey: "buckwheatBiscuits",
-    imageUrl: productImages.buckwheatBiscuits,
-    isFallback: true,
-  },
+const productVisualKeys = [
+  "honey",
+  "jam",
+  "appleJuice",
+  "buckwheatBiscuits",
 ];
 
 function DashboardIcon({ name }) {
@@ -178,7 +100,7 @@ function DashboardIcon({ name }) {
 
 function getCompletionPercent(profile) {
   if (!profile) {
-    return SUPPLIER_DASHBOARD_FALLBACK.profileCompletion;
+    return 0;
   }
 
   const fields = [
@@ -241,7 +163,7 @@ function getCatalogViewCount(products) {
     return knownViews.reduce((total, views) => total + views, 0);
   }
 
-  return SUPPLIER_DASHBOARD_FALLBACK.stats.catalogViews;
+  return 0;
 }
 
 function getStoreName(request) {
@@ -314,7 +236,7 @@ function formatFrenchDate(value) {
 }
 
 function getProductCard(product, index) {
-  const fallbackProduct = FEATURED_PRODUCTS_FALLBACK[index];
+  const visualKey = productVisualKeys[index % productVisualKeys.length];
 
   return {
     ...product,
@@ -324,10 +246,9 @@ function getProductCard(product, index) {
       product.availability ||
       product.minimumOrder ||
       (isProductPublished(product) ? "Disponible" : "Masqué"),
-    views: getProductViews(product) ?? fallbackProduct?.views,
-    visualKey: fallbackProduct?.visualKey,
-    imageUrl: product.imageUrl || fallbackProduct?.imageUrl,
-    isFallback: false,
+    views: getProductViews(product) ?? 0,
+    visualKey,
+    imageUrl: product.imageUrl || productImages[visualKey],
   };
 }
 
@@ -372,10 +293,11 @@ function SupplierDashboardPage() {
 
         setSupplierProfile(profile);
         setProducts(
-          loadedProducts.filter(
-            (product) =>
-              !profile?.id || getProductSupplierId(product) === profile.id,
-          ),
+          profile?.id
+            ? loadedProducts.filter(
+                (product) => getProductSupplierId(product) === profile.id,
+              )
+            : [],
         );
         setRequests(loadedRequests);
       } catch (error) {
@@ -415,18 +337,12 @@ function SupplierDashboardPage() {
     [requests],
   );
 
-  const recentRequests = requests.length
-    ? requests.slice(0, 3)
-    : RECEIVED_REQUESTS_FALLBACK;
+  const recentRequests = requests.slice(0, 3);
 
-  const featuredProducts = useMemo(() => {
-    const connectedProducts = publishedProducts.slice(0, 4).map(getProductCard);
-
-    return [
-      ...connectedProducts,
-      ...FEATURED_PRODUCTS_FALLBACK.slice(connectedProducts.length),
-    ].slice(0, 4);
-  }, [publishedProducts]);
+  const featuredProducts = useMemo(
+    () => publishedProducts.slice(0, 4).map(getProductCard),
+    [publishedProducts],
+  );
 
   if (isLoading) {
     return <LoadingState message="Chargement du tableau de bord fournisseur..." />;
@@ -435,21 +351,12 @@ function SupplierDashboardPage() {
   const supplierDisplayName =
     supplierProfile?.companyName ||
     supplierProfile?.supplierName ||
-    SUPPLIER_DASHBOARD_FALLBACK.supplierName;
+    "Profil à compléter";
   const completionPercent = getCompletionPercent(supplierProfile);
-  const publishedProductCount =
-    products.length
-      ? publishedProducts.length
-      : SUPPLIER_DASHBOARD_FALLBACK.stats.publishedProducts;
-  const receivedRequestCount =
-    requests.length || SUPPLIER_DASHBOARD_FALLBACK.stats.receivedRequests;
-  const pendingRequestCount =
-    requests.length
-      ? pendingRequests.length
-      : SUPPLIER_DASHBOARD_FALLBACK.stats.pendingRequests;
-  const catalogViewCount = products.length
-    ? getCatalogViewCount(products)
-    : SUPPLIER_DASHBOARD_FALLBACK.stats.catalogViews;
+  const publishedProductCount = publishedProducts.length;
+  const receivedRequestCount = requests.length;
+  const pendingRequestCount = pendingRequests.length;
+  const catalogViewCount = getCatalogViewCount(products);
 
   const stats = [
     {
@@ -552,18 +459,12 @@ function SupplierDashboardPage() {
           </div>
 
           <div className="supplier-dashboard__request-list">
-            {recentRequests.map((request) => {
-              const isFallback = String(request.id).startsWith("fallback");
-
-              return (
+            {recentRequests.length ? (
+              recentRequests.map((request) => (
                 <Link
                   className="supplier-dashboard__request-row"
                   key={request.id}
-                  to={
-                    isFallback
-                      ? "/supplier/requests"
-                      : `/supplier/requests/${request.id}`
-                  }
+                  to={`/supplier/requests/${request.id}`}
                 >
                   <span className="supplier-dashboard__request-icon">
                     <DashboardIcon name="mail" />
@@ -585,8 +486,18 @@ function SupplierDashboardPage() {
                     {getStatusLabel(request.status)}
                   </span>
                 </Link>
-              );
-            })}
+              ))
+            ) : (
+              <div className="supplier-dashboard__request-empty">
+                <span className="supplier-dashboard__request-icon">
+                  <DashboardIcon name="mail" />
+                </span>
+                <div>
+                  <strong>Aucune demande reçue</strong>
+                  <p>Les nouvelles demandes des magasins apparaîtront ici.</p>
+                </div>
+              </div>
+            )}
           </div>
         </article>
 
@@ -649,12 +560,8 @@ function SupplierDashboardPage() {
         </div>
 
         <div className="supplier-dashboard__product-grid">
-          {featuredProducts.map((product) => {
-            const productPath = product.isFallback
-              ? "/supplier/products"
-              : `/supplier/products/${product.id}/edit`;
-
-            return (
+          {featuredProducts.length ? (
+            featuredProducts.map((product) => (
               <article className="supplier-dashboard__product-card" key={product.id}>
                 <div className="supplier-dashboard__product-visual">
                   <img
@@ -680,14 +587,20 @@ function SupplierDashboardPage() {
                       {product.views} vues
                     </span>
 
-                    <Link to={productPath}>
-                      {product.isFallback ? "Voir le produit" : "Gérer"}
-                    </Link>
+                    <Link to={`/supplier/products/${product.id}/edit`}>Gérer</Link>
                   </div>
                 </div>
               </article>
-            );
-          })}
+            ))
+          ) : (
+            <div className="supplier-dashboard__featured-empty">
+              <DashboardIcon name="products" />
+              <div>
+                <strong>Aucun produit publié</strong>
+                <p>Ajoutez un produit pour le voir apparaître dans cet aperçu.</p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>

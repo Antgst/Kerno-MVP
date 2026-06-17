@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import NavigationLink from "./NavigationLink";
 import { getCurrentAuthRole, logoutUser } from "../services/authService";
+import { getCurrentUser } from "../services/userService";
+import { getAuthToken } from "../services/tokenStorage";
+import { getUserFromToken } from "../utils/jwt";
+import { getResource } from "../utils/responseUtils";
+import kernoLogo from "../assets/brand/kerno-logo.webp";
 
 const storeNavigation = [
   { to: "/store/dashboard", label: "Tableau de bord", icon: "grid", end: true },
@@ -101,6 +106,9 @@ function Header({ variant = "public", onMenuClick }) {
   const [isPublicHeaderScrolled, setIsPublicHeaderScrolled] = useState(
     () => typeof window !== "undefined" && window.scrollY > 12,
   );
+  const [accountIdentity, setAccountIdentity] = useState({
+    user: getUserFromToken(getAuthToken()),
+  });
   const role = getCurrentAuthRole();
 
   const isStoreSpace =
@@ -114,13 +122,39 @@ function Header({ variant = "public", onMenuClick }) {
 
   const profilePath = isStoreSpace ? "/store/profile" : "/supplier/profile";
   const navigationItems = isStoreSpace ? storeNavigation : supplierNavigation;
-  const accountName = isStoreSpace ? "Épicerie Martin" : "Fournisseur KERNO";
-  const accountRoleLabel = isStoreSpace ? "Magasin" : "Fournisseur";
+  const userDisplayName =
+    accountIdentity.user?.displayName || accountIdentity.user?.name;
+  const userFullName = [
+    accountIdentity.user?.firstName,
+    accountIdentity.user?.lastName,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const accountName =
+    userDisplayName ||
+    userFullName ||
+    accountIdentity.user?.email ||
+    "Profil à compléter";
+  const accountRoleLabel = role
+    ? isStoreSpace
+      ? "Magasin"
+      : "Fournisseur"
+    : "Profil à compléter";
+  const accountInitials =
+    accountName === "Profil à compléter"
+      ? "K"
+      : accountName
+          .split(/\s+/)
+          .filter(Boolean)
+          .slice(0, 2)
+          .map((part) => part[0])
+          .join("")
+          .toUpperCase();
 
   function handleLogout() {
     logoutUser();
     setIsMenuOpen(false);
-    navigate("/login");
+    navigate("/");
   }
 
   useEffect(() => {
@@ -139,6 +173,33 @@ function Header({ variant = "public", onMenuClick }) {
     };
   }, [variant]);
 
+  useEffect(() => {
+    if (variant !== "app") {
+      return undefined;
+    }
+
+    let shouldUpdateState = true;
+
+    async function loadAccountIdentity() {
+      const userResult = await getCurrentUser().catch(() => null);
+
+      if (!shouldUpdateState) {
+        return;
+      }
+
+      const user =
+        getResource(userResult, ["user"]) || getUserFromToken(getAuthToken());
+
+      setAccountIdentity({ user });
+    }
+
+    loadAccountIdentity();
+
+    return () => {
+      shouldUpdateState = false;
+    };
+  }, [isStoreSpace, variant]);
+
   if (variant === "app") {
     return (
       <header className="kerno-app-header">
@@ -156,7 +217,7 @@ function Header({ variant = "public", onMenuClick }) {
 
           <Link to={dashboardPath} className="kerno-app-header__brand">
             <span className="kerno-app-header__brand-mark">
-              <HeaderIcon name="leaf" />
+              <img src={kernoLogo} alt="" />
             </span>
             <span className="kerno-app-header__brand-name">KERNO</span>
           </Link>
@@ -188,9 +249,7 @@ function Header({ variant = "public", onMenuClick }) {
             <HeaderIcon name="bell" />
           </button>
 
-          <div className="kerno-app-header__avatar">
-            {isStoreSpace ? "EM" : "FK"}
-          </div>
+          <div className="kerno-app-header__avatar">{accountInitials}</div>
 
           <div className="kerno-app-header__account-copy">
             <strong>{accountName}</strong>
@@ -248,7 +307,7 @@ function Header({ variant = "public", onMenuClick }) {
         .join(" ")}
     >
       <Link to="/" className="brand-link" aria-label="Retour à l'accueil KERNO">
-        <span className="brand-mark">K</span>
+        <img className="brand-logo" src={kernoLogo} alt="" />
         <span className="brand-copy">
           <strong>KERNO</strong>
         </span>
