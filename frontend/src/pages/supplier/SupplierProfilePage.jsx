@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
-import PageHeader from "../../components/shared/PageHeader";
-import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
-import EmptyState from "../../components/ui/EmptyState";
+import { useEffect, useMemo, useState } from "react";
 import ErrorState from "../../components/ui/ErrorState";
 import Input from "../../components/ui/Input";
 import LoadingState from "../../components/ui/LoadingState";
-import StatusBadge from "../../components/ui/StatusBadge";
 import {
   createSupplierProfile,
   getCurrentSupplierProfile,
@@ -26,6 +21,8 @@ const initialFormData = {
   website: "",
 };
 
+const profileFieldNames = Object.keys(initialFormData);
+
 function getFormDataFromSupplier(supplier) {
   return {
     companyName: supplier?.companyName || "",
@@ -36,6 +33,41 @@ function getFormDataFromSupplier(supplier) {
     phone: supplier?.phone || "",
     website: supplier?.website || "",
   };
+}
+
+function SupplierProfileIcon({ name }) {
+  const commonProps = {
+    width: "24",
+    height: "24",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": "true",
+  };
+
+  if (name === "company") {
+    return (
+      <svg {...commonProps}>
+        <path d="M4 21h16" />
+        <path d="M6 21V7l6-3v17" />
+        <path d="M12 9h6v12" />
+        <path d="M8.5 9.5h1" />
+        <path d="M8.5 13h1" />
+        <path d="M8.5 16.5h1" />
+        <path d="M14.5 12h1" />
+        <path d="M14.5 15.5h1" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...commonProps}>
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
 }
 
 function SupplierProfilePage() {
@@ -73,7 +105,9 @@ function SupplierProfilePage() {
           return;
         }
 
-        setLoadErrorMessage(error.message || "Unable to load supplier profile.");
+        setLoadErrorMessage(
+          error.message || "Impossible de charger le profil fournisseur.",
+        );
       } finally {
         if (shouldUpdateState) {
           setIsLoading(false);
@@ -88,6 +122,23 @@ function SupplierProfilePage() {
     };
   }, []);
 
+  const completionPercent = useMemo(() => {
+    const completedFields = profileFieldNames.filter((fieldName) =>
+      String(formData[fieldName] || "").trim(),
+    ).length;
+
+    return Math.round((completedFields / profileFieldNames.length) * 100);
+  }, [formData]);
+
+  function clearFeedback(fieldName) {
+    setFieldErrors((currentErrors) => ({
+      ...currentErrors,
+      [fieldName]: "",
+    }));
+    setSubmitErrorMessage("");
+    setSuccessMessage("");
+  }
+
   function handleChange(event) {
     const { name, value } = event.target;
 
@@ -95,25 +146,18 @@ function SupplierProfilePage() {
       ...currentData,
       [name]: value,
     }));
-
-    setFieldErrors((currentErrors) => ({
-      ...currentErrors,
-      [name]: "",
-    }));
-
-    setSubmitErrorMessage("");
-    setSuccessMessage("");
+    clearFeedback(name);
   }
 
   function validateForm() {
     const errors = {};
 
     if (!formData.companyName.trim()) {
-      errors.companyName = "Company name is required.";
+      errors.companyName = "Le nom de l’entreprise est obligatoire.";
     }
 
     if (formData.phone && !isValidPhoneNumber(formData.phone)) {
-      errors.phone = "Enter a valid phone number.";
+      errors.phone = "Saisissez un numéro de téléphone valide.";
     }
 
     setFieldErrors(errors);
@@ -151,100 +195,121 @@ function SupplierProfilePage() {
       setHasExistingProfile(true);
       setSuccessMessage(
         hasExistingProfile
-          ? "Supplier profile updated successfully."
-          : "Supplier profile created successfully.",
+          ? "Les modifications ont bien été enregistrées."
+          : "Votre profil fournisseur a bien été créé.",
       );
     } catch (error) {
-      setSubmitErrorMessage(error.message || "Unable to save supplier profile.");
+      setSubmitErrorMessage(
+        error.message || "Impossible d’enregistrer le profil fournisseur.",
+      );
     } finally {
       setIsSubmitting(false);
     }
   }
 
+  const fallback = "Non renseigné";
+
   return (
-    <div className="text-slate-950">
-      <PageHeader
-        eyebrow="Supplier profile"
-        title="Manage your supplier profile"
-        description="This information helps stores understand your company, your location and how to contact you."
-      >
-        <StatusBadge
-          status={hasExistingProfile ? "ACTIVE" : "PENDING"}
-          label={hasExistingProfile ? "Existing profile" : "New profile"}
-        />
-      </PageHeader>
+    <div className="supplier-profile-page">
+      <header className="supplier-profile-page__intro">
+        <div>
+          <p className="supplier-profile-page__eyebrow">Espace fournisseur</p>
+          <h1>Profil fournisseur</h1>
+          <p className="supplier-profile-page__subtitle">
+            Complétez les informations visibles par les magasins lorsqu’ils
+            découvrent votre activité ou vos produits.
+          </p>
+        </div>
+      </header>
 
-      {isLoading && <LoadingState message="Loading supplier profile..." />}
-
-      {loadErrorMessage && (
-        <ErrorState
-          title="Profile unavailable"
-          message={loadErrorMessage}
+      {isLoading && (
+        <LoadingState
+          className="supplier-profile-page__loading"
+          message="Chargement du profil fournisseur..."
         />
       )}
 
+      {loadErrorMessage && (
+        <ErrorState title="Profil indisponible" message={loadErrorMessage} />
+      )}
+
       {!isLoading && !loadErrorMessage && (
-        <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          <Card>
-            {!hasExistingProfile && (
-              <EmptyState
-                className="mb-6"
-                title="Create your supplier profile"
-                message="You do not have a supplier profile yet. Fill the form below to create it."
-              />
-            )}
+        <div className="supplier-profile-page__layout">
+          <section
+            className="supplier-profile-page__card supplier-profile-page__form-card"
+            aria-labelledby="supplier-profile-form-title"
+          >
+            <div className="supplier-profile-page__card-header">
+              <div>
+                <p className="supplier-profile-page__card-eyebrow">
+                  Votre entreprise
+                </p>
+                <h2 id="supplier-profile-form-title">
+                  Informations du fournisseur
+                </h2>
+                <p>
+                  Renseignez les éléments essentiels pour renforcer la
+                  crédibilité de votre profil auprès des magasins.
+                </p>
+              </div>
+
+              <span className="supplier-profile-page__header-icon">
+                <SupplierProfileIcon name="company" />
+              </span>
+            </div>
 
             {submitErrorMessage && (
               <ErrorState
-                className="mb-5"
-                title="Profile save failed"
+                className="supplier-profile-page__feedback"
+                title="Échec de l’enregistrement"
                 message={submitErrorMessage}
               />
             )}
 
             {successMessage && (
-              <div className="mb-5 rounded-3xl border border-emerald-200 bg-emerald-50 px-6 py-5 text-sm font-bold text-emerald-800">
-                {successMessage}
+              <div
+                className="supplier-profile-page__success"
+                role="status"
+                aria-live="polite"
+              >
+                <SupplierProfileIcon name="check" />
+                <span>{successMessage}</span>
               </div>
             )}
 
             {isSubmitting && (
-              <LoadingState className="mb-5" message="Saving profile..." />
+              <LoadingState
+                className="supplier-profile-page__feedback"
+                message="Enregistrement du profil..."
+              />
             )}
 
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form className="supplier-profile-form" onSubmit={handleSubmit}>
               <Input
-                label="Company name"
+                label="Nom de l’entreprise"
                 name="companyName"
                 value={formData.companyName}
                 onChange={handleChange}
-                placeholder="Kerno Roasters"
+                placeholder="Maison KERNO"
                 error={fieldErrors.companyName}
                 required
               />
 
-              <div>
-                <label
-                  className="mb-2 block text-sm font-bold text-slate-800"
-                  htmlFor="description"
-                >
-                  Description
-                </label>
-
+              <div className="supplier-profile-form__field">
+                <label htmlFor="description">Description</label>
                 <textarea
                   id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
                   rows="5"
-                  placeholder="Describe your company, your products and what makes you different."
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-800 focus:ring-2 focus:ring-emerald-100"
+                  placeholder="Présentez votre entreprise, vos produits et ce qui vous distingue."
                 />
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="supplier-profile-form__row">
                 <Input
-                  label="Location"
+                  label="Localisation"
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
@@ -252,32 +317,26 @@ function SupplierProfilePage() {
                 />
 
                 <Input
-                  label="Business type"
+                  label="Type d’activité"
                   name="businessType"
                   value={formData.businessType}
                   onChange={handleChange}
-                  placeholder="Manufacturer, wholesaler, local producer..."
+                  placeholder="Producteur, fabricant, grossiste..."
                 />
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="supplier-profile-form__row">
                 <Input
-                  label="Contact email"
+                  label="Email professionnel"
                   name="contactEmail"
                   type="email"
                   value={formData.contactEmail}
                   onChange={handleChange}
-                  placeholder="sales@example.com"
+                  placeholder="contact@exemple.fr"
                 />
 
-                <div>
-                  <label
-                    className="mb-2 block text-sm font-bold text-slate-800"
-                    htmlFor="phone"
-                  >
-                    Phone
-                  </label>
-
+                <div className="supplier-profile-form__field">
+                  <label htmlFor="phone">Téléphone</label>
                   <PhoneInput
                     id="phone"
                     international
@@ -288,124 +347,142 @@ function SupplierProfilePage() {
                         ...currentData,
                         phone: value || "",
                       }));
-
-                      setFieldErrors((currentErrors) => ({
-                        ...currentErrors,
-                        phone: "",
-                      }));
-
-                      setSubmitErrorMessage("");
-                      setSuccessMessage("");
+                      clearFeedback("phone");
                     }}
-                    placeholder="Enter phone number"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900"
+                    placeholder="Saisissez votre numéro"
+                    className={[
+                      "supplier-profile-phone",
+                      fieldErrors.phone ? "supplier-profile-phone--error" : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
                   />
 
                   {fieldErrors.phone && (
-                    <p className="mt-2 text-sm font-semibold text-red-600">
+                    <p className="supplier-profile-form__error">
                       {fieldErrors.phone}
                     </p>
                   )}
 
-                  <p className="mt-2 text-xs font-medium text-slate-500">
-                    Select a country and enter the phone number.
+                  <p className="supplier-profile-form__helper">
+                    Sélectionnez un pays puis saisissez le numéro.
                   </p>
                 </div>
               </div>
 
               <Input
-                label="Website"
+                label="Site web"
                 name="website"
                 value={formData.website}
                 onChange={handleChange}
-                placeholder="https://example.com"
+                placeholder="https://exemple.fr"
               />
 
-              <Button className="w-full" type="submit" disabled={isSubmitting}>
+              <button
+                className="supplier-profile-form__submit"
+                type="submit"
+                disabled={isSubmitting}
+              >
                 {isSubmitting
-                  ? "Saving..."
+                  ? "Enregistrement..."
                   : hasExistingProfile
-                    ? "Update profile"
-                    : "Create profile"}
-              </Button>
+                    ? "Enregistrer les modifications"
+                    : "Créer le profil"}
+              </button>
             </form>
-          </Card>
+          </section>
 
-          <Card>
-            <h2 className="m-0 text-xl font-black">Profile preview</h2>
-
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              This preview helps you check the information that will be visible
-              to stores.
-            </p>
-
-            <div className="mt-6 space-y-5">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                  Company
-                </p>
-                <p className="mt-1 text-2xl font-black text-slate-950">
-                  {formData.companyName || "Company name"}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                  Description
-                </p>
-                <p className="mt-1 leading-7 text-slate-600">
-                  {formData.description || "No description yet."}
-                </p>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
+          <aside className="supplier-profile-page__side">
+            <section
+              className="supplier-profile-page__card supplier-profile-preview"
+              aria-labelledby="supplier-profile-preview-title"
+            >
+              <div className="supplier-profile-page__card-header">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Location
+                  <p className="supplier-profile-page__card-eyebrow">
+                    Vue magasin
                   </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.location || "Not provided"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Type
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.businessType || "Not provided"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Email
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.contactEmail || "Not provided"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Phone
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.phone || "Not provided"}
+                  <h2 id="supplier-profile-preview-title">
+                    Aperçu côté magasin
+                  </h2>
+                  <p>
+                    Voici les informations visibles lorsqu’un magasin découvre
+                    votre profil fournisseur.
                   </p>
                 </div>
               </div>
 
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                  Website
-                </p>
-                <p className="mt-1 break-all font-bold text-slate-800">
-                  {formData.website || "Not provided"}
+              <div className="supplier-profile-preview__identity">
+                <span className="supplier-profile-preview__mark">
+                  <SupplierProfileIcon name="company" />
+                </span>
+                <div>
+                  <small>Fournisseur</small>
+                  <strong>{formData.companyName || fallback}</strong>
+                  <span>{formData.businessType || fallback}</span>
+                </div>
+              </div>
+
+              <dl className="supplier-profile-preview__details">
+                <div>
+                  <dt>Localisation</dt>
+                  <dd>{formData.location || fallback}</dd>
+                </div>
+                <div>
+                  <dt>Type d’activité</dt>
+                  <dd>{formData.businessType || fallback}</dd>
+                </div>
+                <div>
+                  <dt>Email</dt>
+                  <dd>{formData.contactEmail || fallback}</dd>
+                </div>
+                <div>
+                  <dt>Téléphone</dt>
+                  <dd>{formData.phone || fallback}</dd>
+                </div>
+              </dl>
+
+              <div className="supplier-profile-preview__section">
+                <small>Description</small>
+                <p>
+                  {formData.description || "Aucune description renseignée"}
                 </p>
               </div>
-            </div>
-          </Card>
+
+              <div className="supplier-profile-preview__section">
+                <small>Site web</small>
+                <p className="supplier-profile-preview__website">
+                  {formData.website || "Aucun site web renseigné"}
+                </p>
+              </div>
+            </section>
+
+            <section className="supplier-profile-completion">
+              <div className="supplier-profile-completion__content">
+                <div>
+                  <p>Profil fournisseur</p>
+                  <h2>Complétez votre profil</h2>
+                  <span>
+                    Un profil clair renforce votre visibilité auprès des
+                    magasins.
+                  </span>
+                </div>
+
+                <div
+                  className="supplier-profile-completion__gauge"
+                  style={{ "--progress": completionPercent }}
+                  aria-label={`Profil complété à ${completionPercent}%`}
+                >
+                  <strong>{completionPercent}%</strong>
+                </div>
+              </div>
+
+              <div className="supplier-profile-completion__progress">
+                <span style={{ width: `${completionPercent}%` }} />
+              </div>
+              <small>{completionPercent} % des informations renseignées</small>
+            </section>
+          </aside>
         </div>
       )}
     </div>
