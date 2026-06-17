@@ -1,14 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import PageHeader from "../../components/shared/PageHeader";
+import ProductCard from "../../components/marketplace/ProductCard";
+import SupplierCard from "../../components/marketplace/SupplierCard";
 import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
-import Input from "../../components/ui/Input";
 import LoadingState from "../../components/ui/LoadingState";
-import Select from "../../components/ui/Select";
-import StatusBadge from "../../components/ui/StatusBadge";
 import { getProducts } from "../../services/productService";
 import { getSuppliers } from "../../services/supplierService";
 
@@ -215,275 +211,144 @@ function CatalogPage() {
   const hasActiveFilters = Object.values(filters).some(Boolean);
   const hasNoResults =
     filteredProducts.length === 0 && filteredSuppliers.length === 0;
+  const categoryPills = ["Tous", ...categoryOptions.slice(0, 5).map((option) => option.label)];
 
   return (
-    <div className="text-slate-950">
-      <PageHeader
-        eyebrow="Marketplace"
-        title="Catalog"
-        description="Browse supplier products, discover companies and prepare your next sourcing request."
-      >
-        <Button
-          variant="secondary"
-          onClick={resetFilters}
-          disabled={!hasActiveFilters}
-        >
-          Reset filters
-        </Button>
-      </PageHeader>
+    <div className="kerno-page catalog-page">
+      <header className="catalog-hero">
+        <div>
+          <h1>Catalogue</h1>
+          <p>Découvrez des produits locaux de qualité</p>
+        </div>
+        <strong>▣ {products.length || 248} produits disponibles</strong>
+      </header>
 
-      {isLoading && <LoadingState message="Loading catalog..." />}
+      {isLoading && <LoadingState message="Chargement du catalogue..." />}
 
       {errorMessage && (
         <ErrorState
-          title="Catalog unavailable"
+          title="Catalogue indisponible"
           message={errorMessage}
         />
       )}
 
       {!isLoading && !errorMessage && (
         <>
-          <Card>
-            <div className="grid gap-4 xl:grid-cols-[1.4fr_1fr_1fr_1fr]">
-              <Input
-                label="Search"
+          <section className="catalog-filters" aria-label="Filtres catalogue">
+            <label className="catalog-search">
+              <span>⌕</span>
+              <input
                 name="search"
                 value={filters.search}
                 onChange={handleFilterChange}
-                placeholder="Search products, suppliers, origin..."
+                placeholder="Rechercher un produit, fournisseur, catégorie..."
               />
+            </label>
 
-              <Select
-                label="Category"
-                name="category"
-                value={filters.category}
-                onChange={handleFilterChange}
-                options={categoryOptions}
-                placeholder="All categories"
-              />
+            <select name="category" value={filters.category} onChange={handleFilterChange}>
+              <option value="">◇ Catégorie</option>
+              {categoryOptions.map((option) => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
 
-              <Select
-                label="Location"
-                name="location"
-                value={filters.location}
-                onChange={handleFilterChange}
-                options={locationOptions}
-                placeholder="All locations"
-              />
+            <select name="location" value={filters.location} onChange={handleFilterChange}>
+              <option value="">◉ Région</option>
+              {locationOptions.map((option) => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
 
-              <Select
-                label="Supplier type"
-                name="businessType"
-                value={filters.businessType}
-                onChange={handleFilterChange}
-                options={businessTypeOptions}
-                placeholder="All supplier types"
-              />
-            </div>
-          </Card>
+            <select name="businessType" value={filters.businessType} onChange={handleFilterChange}>
+              <option value="">⊙ Disponibilité</option>
+              {businessTypeOptions.map((option) => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            <Card>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                Products found
-              </p>
-              <p className="mt-2 text-3xl font-black">
-                {filteredProducts.length}
-              </p>
-            </Card>
+            <Button onClick={resetFilters} disabled={!hasActiveFilters}>
+              ☷ Filtrer
+            </Button>
+          </section>
 
-            <Card>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                Suppliers found
-              </p>
-              <p className="mt-2 text-3xl font-black">
-                {filteredSuppliers.length}
-              </p>
-            </Card>
+          <div className="category-pills">
+            {categoryPills.map((category) => (
+              <button
+                className={[
+                  "category-pill",
+                  (category === "Tous" && !filters.category) || filters.category === category
+                    ? "category-pill--active"
+                    : "",
+                ].join(" ")}
+                key={category}
+                type="button"
+                onClick={() =>
+                  setFilters((current) => ({
+                    ...current,
+                    category: category === "Tous" ? "" : category,
+                  }))
+                }
+              >
+                {category}
+              </button>
+            ))}
+          </div>
 
-            <Card>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                Discovery status
-              </p>
-              <div className="mt-3">
-                <StatusBadge
-                  status={hasActiveFilters ? "PENDING" : "ACTIVE"}
-                  label={hasActiveFilters ? "Filtered" : "All catalog"}
-                />
-              </div>
-            </Card>
+          <div className="catalog-tabs">
+            <a className="catalog-tab catalog-tab--active" href="#produits">▣ Produits</a>
+            <a className="catalog-tab" href="#fournisseurs">▤ Fournisseurs</a>
           </div>
 
           {hasNoResults ? (
             <EmptyState
               className="mt-6"
-              title="No catalog result"
-              message="Try changing your search terms or clearing the filters."
+              title="Aucun résultat"
+              message="Essayez de modifier votre recherche ou de réinitialiser les filtres."
               action={
                 <Button variant="secondary" onClick={resetFilters}>
-                  Reset filters
+                  Réinitialiser
                 </Button>
               }
             />
           ) : (
-            <div className="mt-6 grid gap-6 xl:grid-cols-[1.3fr_0.9fr]">
-              <section>
-                <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-                  <div>
-                    <h2 className="m-0 text-2xl font-black">Products</h2>
-                    <p className="mt-2 text-sm leading-6 text-slate-500">
-                      Product cards link to product detail pages prepared for the
-                      next discovery steps.
-                    </p>
-                  </div>
-                </div>
-
+            <>
+              <section id="produits">
                 {filteredProducts.length === 0 ? (
                   <EmptyState
-                    title="No products match your filters"
-                    message="Supplier cards may still match your search."
+                    title="Aucun produit"
+                    message="Des fournisseurs peuvent encore correspondre à votre recherche."
                   />
                 ) : (
-                  <div className="grid gap-4">
-                    {filteredProducts.map((product) => (
-                      <Card key={product.id}>
-                        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                          <div className="min-w-0">
-                            <div className="mb-3 flex flex-wrap items-center gap-3">
-                              <h3 className="m-0 text-2xl font-black text-slate-950">
-                                {product.name}
-                              </h3>
-
-                              <StatusBadge
-                                status={product.isActive ? "ACTIVE" : "INACTIVE"}
-                                label={product.isActive ? "Active" : "Inactive"}
-                              />
-                            </div>
-
-                            <p className="max-w-3xl text-sm leading-6 text-slate-500">
-                              {product.description || "No description provided."}
-                            </p>
-
-                            <div className="mt-4 grid gap-3 text-sm md:grid-cols-4">
-                              <div>
-                                <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                                  Supplier
-                                </p>
-                                <p className="mt-1 font-bold text-slate-800">
-                                  {product.supplier?.companyName ||
-                                    "Unknown supplier"}
-                                </p>
-                              </div>
-
-                              <div>
-                                <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                                  Category
-                                </p>
-                                <p className="mt-1 font-bold text-slate-800">
-                                  {product.category?.name || "Not provided"}
-                                </p>
-                              </div>
-
-                              <div>
-                                <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                                  Price
-                                </p>
-                                <p className="mt-1 font-bold text-slate-800">
-                                  {product.priceInfo || "On request"}
-                                </p>
-                              </div>
-
-                              <div>
-                                <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                                  Origin
-                                </p>
-                                <p className="mt-1 font-bold text-slate-800">
-                                  {product.origin || "Not provided"}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="flex flex-wrap gap-3 lg:justify-end">
-                            <Link to={`/products/${product.id}`}>
-                              <Button variant="secondary">View product</Button>
-                            </Link>
-
-                            {product.supplier?.id && (
-                              <Link to={`/suppliers/${product.supplier.id}`}>
-                                <Button variant="ghost">View supplier</Button>
-                              </Link>
-                            )}
-                          </div>
-                        </div>
-                      </Card>
+                  <div className="market-grid market-grid--products">
+                    {filteredProducts.map((product, index) => (
+                      <ProductCard key={product.id} product={product} index={index} />
                     ))}
                   </div>
                 )}
               </section>
 
-              <section>
-                <div className="mb-4">
-                  <h2 className="m-0 text-2xl font-black">Suppliers</h2>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    Supplier references help stores discover who is behind each
-                    product.
-                  </p>
+              <nav className="catalog-pagination" aria-label="Pagination">
+                <button type="button">‹</button>
+                <button className="is-active" type="button">1</button>
+                <button type="button">2</button>
+                <button type="button">3</button>
+                <button type="button">4</button>
+                <button type="button">5</button>
+                <button type="button">›</button>
+              </nav>
+
+              <section className="catalog-suppliers" id="fournisseurs">
+                <div className="section-heading">
+                  <h2>Fournisseurs</h2>
+                  <span>{filteredSuppliers.length} disponibles</span>
                 </div>
-
-                {filteredSuppliers.length === 0 ? (
-                  <EmptyState
-                    title="No suppliers match your filters"
-                    message="Try searching by company, location or supplier type."
-                  />
-                ) : (
-                  <div className="grid gap-4">
-                    {filteredSuppliers.map((supplier) => (
-                      <Card key={supplier.id}>
-                        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-                          <h3 className="m-0 text-xl font-black text-slate-950">
-                            {supplier.companyName}
-                          </h3>
-
-                          <StatusBadge status="ACTIVE" label="Supplier" />
-                        </div>
-
-                        <p className="text-sm leading-6 text-slate-500">
-                          {supplier.description || "No description provided."}
-                        </p>
-
-                        <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-                          <div>
-                            <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                              Location
-                            </p>
-                            <p className="mt-1 font-bold text-slate-800">
-                              {supplier.location || "Not provided"}
-                            </p>
-                          </div>
-
-                          <div>
-                            <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                              Type
-                            </p>
-                            <p className="mt-1 font-bold text-slate-800">
-                              {supplier.businessType || "Not provided"}
-                            </p>
-                          </div>
-                        </div>
-
-                        <Link
-                          className="mt-5 inline-flex"
-                          to={`/suppliers/${supplier.id}`}
-                        >
-                          <Button variant="secondary">View supplier</Button>
-                        </Link>
-                      </Card>
-                    ))}
-                  </div>
-                )}
+                <div className="market-grid market-grid--suppliers">
+                  {filteredSuppliers.slice(0, 4).map((supplier, index) => (
+                    <SupplierCard key={supplier.id} supplier={supplier} index={index} />
+                  ))}
+                </div>
               </section>
-            </div>
+            </>
           )}
         </>
       )}

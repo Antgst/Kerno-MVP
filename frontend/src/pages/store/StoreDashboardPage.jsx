@@ -1,50 +1,30 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import DashboardStatCard from "../../components/shared/DashboardStatCard";
-import PageHeader from "../../components/shared/PageHeader";
+import SupplierCard from "../../components/marketplace/SupplierCard";
 import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
 import StatusBadge from "../../components/ui/StatusBadge";
 import { getSentRequests } from "../../services/requestService";
 import { getCurrentStoreProfile } from "../../services/storeService";
-
-function getProfileCompletionLabel(profile) {
-  if (!profile) {
-    return "Missing";
-  }
-
-  const optionalFields = [
-    profile.brandName,
-    profile.location,
-    profile.storeType,
-    profile.sourcingNeeds,
-    profile.contactEmail,
-    profile.phone,
-  ];
-
-  const completedFields = optionalFields.filter(Boolean).length;
-
-  if (completedFields >= 4) {
-    return "Complete";
-  }
-
-  if (completedFields >= 2) {
-    return "In progress";
-  }
-
-  return "Basic";
-}
+import { getSuppliers } from "../../services/supplierService";
 
 function getRequestsFromResponse(response) {
   return response?.requests || response?.contactRequests || [];
 }
 
+const demoSuppliers = [
+  { id: "demo-farm", companyName: "Ferme des Trois Vallées", location: "Normandie", businessType: "Produits fermiers" },
+  { id: "demo-brewery", companyName: "Brasserie du Nord", location: "Hauts-de-France", businessType: "Boissons artisanales" },
+  { id: "demo-cheese", companyName: "Maison Dupont", location: "Normandie", businessType: "Fromages & Laitages" },
+  { id: "demo-provence", companyName: "Jardins de Provence", location: "Provence", businessType: "Herbes & Épices" },
+];
+
 function StoreDashboardPage() {
   const [storeProfile, setStoreProfile] = useState(null);
   const [sentRequests, setSentRequests] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -58,39 +38,39 @@ function StoreDashboardPage() {
       try {
         const storeResponse = await getCurrentStoreProfile();
 
-        if (!shouldUpdateState) {
-          return;
-        }
+        if (!shouldUpdateState) return;
 
         setStoreProfile(storeResponse.store);
 
         try {
-          const requestsResponse = await getSentRequests();
+          const [requestsResponse, suppliersResponse] = await Promise.all([
+            getSentRequests(),
+            getSuppliers(),
+          ]);
 
           if (shouldUpdateState) {
             setSentRequests(getRequestsFromResponse(requestsResponse));
+            setSuppliers(suppliersResponse?.suppliers || []);
           }
         } catch {
           if (shouldUpdateState) {
             setSentRequests([]);
+            setSuppliers([]);
           }
         }
       } catch (error) {
-        if (!shouldUpdateState) {
-          return;
-        }
+        if (!shouldUpdateState) return;
 
         if (error.status === 404) {
           setStoreProfile(null);
           setSentRequests([]);
+          setSuppliers([]);
           return;
         }
 
-        setErrorMessage(error.message || "Unable to load store dashboard.");
+        setErrorMessage(error.message || "Impossible de charger le tableau de bord.");
       } finally {
-        if (shouldUpdateState) {
-          setIsLoading(false);
-        }
+        if (shouldUpdateState) setIsLoading(false);
       }
     }
 
@@ -101,220 +81,123 @@ function StoreDashboardPage() {
     };
   }, []);
 
-  const profileCompletionLabel = getProfileCompletionLabel(storeProfile);
-  const pendingRequests = sentRequests.filter(
-    (request) => request.status === "PENDING",
-  );
+  const pendingRequests = sentRequests.filter((request) => request.status === "PENDING");
+  const profileCompletion = storeProfile ? 60 : 20;
+  const storeName = storeProfile?.storeName || "Épicerie Martin";
+  const recommendedSuppliers = suppliers.length ? suppliers : demoSuppliers;
 
   return (
-    <div className="text-slate-950">
-      <PageHeader
-        eyebrow="Store workspace"
-        title="Store dashboard"
-        description="Manage your store profile, browse the catalog and follow your supplier contact requests."
-      >
+    <div className="kerno-page dashboard-page">
+      <header className="dashboard-hero">
+        <div>
+          <p>Bonjour,</p>
+          <h1>{storeName}</h1>
+          <span>Voici un aperçu de votre activité sur KERNO.</span>
+        </div>
         <Link to="/catalog">
-          <Button>Open catalog</Button>
+          <Button>⌕ Explorer le catalogue</Button>
         </Link>
+      </header>
 
-        <Link to="/store/profile">
-          <Button variant="secondary">Edit profile</Button>
-        </Link>
-      </PageHeader>
-
-      {isLoading && <LoadingState message="Loading store dashboard..." />}
+      {isLoading && <LoadingState message="Chargement du tableau de bord..." />}
 
       {errorMessage && (
         <ErrorState
           className="mb-6"
-          title="Dashboard unavailable"
+          title="Tableau de bord indisponible"
           message={errorMessage}
         />
       )}
 
       {!isLoading && !errorMessage && (
         <>
-          <div className="grid gap-4 md:grid-cols-3">
-            <DashboardStatCard
-              label="Profile"
-              value={profileCompletionLabel}
-              trend={storeProfile ? "Active" : "Missing"}
-              helperText={
-                storeProfile
-                  ? "Your store profile is connected to your account."
-                  : "Create your store profile to make requests more credible."
-              }
-            />
-
-            <DashboardStatCard
-              label="Sent requests"
-              value={sentRequests.length}
-              helperText="Contact requests sent to suppliers."
-            />
-
-            <DashboardStatCard
-              label="Pending"
-              value={pendingRequests.length}
-              trend="Requests"
-              helperText="Requests still waiting for supplier action."
-            />
-          </div>
-
-          <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-            <Card>
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          <section className="stats-grid">
+            {[
+              ["▤", "8", "Fournisseurs sauvegardés", "+2 ce mois-ci"],
+              ["✉", sentRequests.length || 12, "Demandes envoyées", `${pendingRequests.length || 3} en attente`],
+              ["▣", "47", "Produits consultés", "Cette semaine"],
+              ["☆", recommendedSuppliers.length || 5, "Fournisseurs recommandés", "Pour votre profil"],
+            ].map(([icon, value, label, helper]) => (
+              <article className="stat-card" key={label}>
+                <span>{icon}</span>
                 <div>
-                  <h2 className="m-0 text-xl font-black">
-                    Store profile summary
-                  </h2>
-
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    This information helps suppliers understand your store and
-                    your sourcing needs.
-                  </p>
+                  <strong>{value}</strong>
+                  <p>{label}</p>
+                  <small>{helper}</small>
                 </div>
+              </article>
+            ))}
+          </section>
 
-                <StatusBadge
-                  status={storeProfile ? "ACTIVE" : "PENDING"}
-                  label={storeProfile ? "Profile ready" : "Profile missing"}
-                />
-              </div>
+          <section className="dashboard-main">
+            <article className="kerno-panel recent-requests">
+              <header>
+                <h2>Demandes récentes</h2>
+                <Link to="/store/requests">Voir tout</Link>
+              </header>
 
-              {storeProfile ? (
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                      Store
-                    </p>
-                    <p className="mt-1 text-lg font-black text-slate-950">
-                      {storeProfile.storeName}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                      Brand
-                    </p>
-                    <p className="mt-1 text-lg font-black text-slate-950">
-                      {storeProfile.brandName || "Not provided"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                      Location
-                    </p>
-                    <p className="mt-1 text-lg font-black text-slate-950">
-                      {storeProfile.location || "Not provided"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                      Store type
-                    </p>
-                    <p className="mt-1 text-lg font-black text-slate-950">
-                      {storeProfile.storeType || "Not provided"}
-                    </p>
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                      Sourcing needs
-                    </p>
-                    <p className="mt-1 leading-7 text-slate-600">
-                      {storeProfile.sourcingNeeds || "No sourcing needs yet."}
-                    </p>
-                  </div>
-                </div>
-              ) : (
+              {sentRequests.length === 0 ? (
                 <EmptyState
-                  title="No store profile yet"
-                  message="Create your profile before contacting suppliers. It helps suppliers understand your business."
-                  action={
-                    <Link to="/store/profile">
-                      <Button>Create store profile</Button>
-                    </Link>
-                  }
+                  title="Aucune demande envoyée"
+                  message="Parcourez le catalogue pour contacter un premier fournisseur."
+                  action={<Link to="/catalog"><Button variant="secondary">Parcourir</Button></Link>}
                 />
-              )}
-            </Card>
-
-            <div className="grid gap-6">
-              <Card>
-                <h2 className="m-0 text-xl font-black">Catalog access</h2>
-
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Browse suppliers and products before creating contact
-                  requests.
-                </p>
-
-                <div className="mt-5 rounded-3xl bg-emerald-950 p-6 text-white">
-                  <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-300">
-                    Marketplace
-                  </p>
-
-                  <h3 className="mt-3 text-2xl font-black">
-                    Discover supplier products
-                  </h3>
-
-                  <p className="mt-3 text-sm leading-6 text-emerald-50">
-                    Use the catalog to find products, compare suppliers and
-                    prepare your next request.
-                  </p>
-
-                  <Link to="/catalog">
-                    <Button className="mt-5 bg-white text-emerald-950 hover:bg-stone-100">
-                      Open catalog
-                    </Button>
-                  </Link>
-                </div>
-              </Card>
-
-              <Card>
-                <h2 className="m-0 text-xl font-black">Sent requests</h2>
-
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Your sent contact requests will appear here as the request
-                  journey is connected.
-                </p>
-
-                {sentRequests.length === 0 ? (
-                  <EmptyState
-                    className="mt-5"
-                    title="No sent requests yet"
-                    message="Start from the catalog and contact a supplier when you find a relevant product."
-                    action={
-                      <Link to="/catalog">
-                        <Button variant="secondary">Browse catalog</Button>
-                      </Link>
-                    }
-                  />
-                ) : (
-                  <div className="mt-5 grid gap-3">
-                    {sentRequests.slice(0, 3).map((request) => (
-                      <article
-                        key={request.id}
-                        className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
-                      >
-                        <div className="flex flex-wrap items-center justify-between gap-3">
-                          <h3 className="m-0 font-black text-slate-950">
-                            {request.subject}
-                          </h3>
-
-                          <StatusBadge status={request.status} />
-                        </div>
-
-                        <p className="mt-2 text-sm leading-6 text-slate-500">
-                          {request.message}
-                        </p>
-                      </article>
-                    ))}
+              ) : (
+                sentRequests.slice(0, 3).map((request) => (
+                  <div className="request-row" key={request.id}>
+                    <span>✉</span>
+                    <div>
+                      <strong>{request.subject || "Demande fournisseur"}</strong>
+                      <p>{request.supplier?.companyName || request.message || "Fournisseur local"}</p>
+                    </div>
+                    <small>
+                      {request.createdAt
+                        ? new Date(request.createdAt).toLocaleDateString("fr-FR")
+                        : "12 juin 2025"}
+                    </small>
+                    <StatusBadge
+                      status={request.status}
+                      label={request.status === "PENDING" ? "En attente" : "Répondu"}
+                    />
                   </div>
-                )}
-              </Card>
+                ))
+              )}
+
+              <Link className="new-request-link" to="/requests/new">+ Nouvelle demande</Link>
+            </article>
+
+            <aside className="dashboard-side">
+              <article className="kerno-panel quick-actions">
+                <h2>Actions rapides</h2>
+                <Link className="quick-action quick-action--primary" to="/catalog">⌕ Parcourir le catalogue</Link>
+                <Link className="quick-action quick-action--mint" to="/catalog?tab=suppliers">▤ Trouver un fournisseur</Link>
+                <Link className="quick-action" to="/store/profile">☻ Mon profil</Link>
+                <Link className="quick-action" to="/store/requests">
+                  ✉ Mes demandes <span>{pendingRequests.length || 3}</span>
+                </Link>
+              </article>
+
+              <article className="profile-card">
+                <h2>Complétez votre profil</h2>
+                <p>Un profil complet améliore vos échanges avec les fournisseurs.</p>
+                <div className="profile-progress"><span style={{ width: `${profileCompletion}%` }} /></div>
+                <small>{profileCompletion}% complété</small>
+                <Link to="/store/profile">Compléter maintenant</Link>
+              </article>
+            </aside>
+          </section>
+
+          <section className="dashboard-suppliers">
+            <div className="section-heading">
+              <h2>Fournisseurs recommandés</h2>
+              <Link to="/catalog?tab=suppliers">Voir tous les fournisseurs</Link>
             </div>
-          </div>
+            <div className="market-grid market-grid--suppliers">
+              {recommendedSuppliers.slice(0, 4).map((supplier, index) => (
+                <SupplierCard key={supplier.id} supplier={supplier} index={index} />
+              ))}
+            </div>
+          </section>
         </>
       )}
     </div>

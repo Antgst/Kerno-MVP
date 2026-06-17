@@ -1,13 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --color-deep-green: #164e3f;
-  --color-ink: #0f172a;
-  --color-warm-ivory: #f8f5ef;
+  --color-bg: #f5f2ec;
+  --color-surface: #fffdfa;
+  --color-primary: #18533f;
+  --color-primary-hover: #103d30;
+  --color-primary-soft: #d7eadf;
+  --color-border: #ded8cf;
+  --color-text: #172826;
+  --color-muted: #746f66;
+  --color-deep-green: var(--color-primary);
+  --color-ink: var(--color-text);
+  --color-warm-ivory: var(--color-bg);
   --color-white: #ffffff;
   --color-orange: #f97316;
-  --color-text-secondary: #6b7280;
-  --color-border: #e5e7eb;
+  --color-text-secondary: var(--color-muted);
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --shadow-soft: 0 8px 24px rgb(23 40 38 / 6%);
 
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -41,4 +52,17 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+button,
+a,
+select,
+summary,
+[role="button"] {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
 }

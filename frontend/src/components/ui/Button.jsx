@@ -1,10 +1,9 @@
 const variantClasses = {
-  primary:
-    "bg-emerald-900 text-white hover:bg-emerald-800 focus-visible:ring-emerald-700",
+  primary: "kerno-button kerno-button--primary",
   secondary:
-    "border border-slate-200 bg-white text-slate-900 hover:bg-slate-50 focus-visible:ring-slate-300",
-  ghost:
-    "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-300",
+    "kerno-button kerno-button--secondary",
+  ghost: "kerno-button kerno-button--ghost",
+  mint: "kerno-button kerno-button--mint",
   danger: "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500",
 };
 
@@ -28,9 +27,6 @@ function Button({
       type={type}
       disabled={disabled}
       className={[
-        "inline-flex items-center justify-center rounded-full font-bold transition",
-        "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-        "disabled:cursor-not-allowed disabled:opacity-50",
         variantClasses[variant] ?? variantClasses.primary,
         sizeClasses[size] ?? sizeClasses.md,
         className,
