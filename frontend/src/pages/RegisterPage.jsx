@@ -3,13 +3,27 @@ import { Link, useNavigate } from "react-router-dom";
 import ErrorState from "../components/ui/ErrorState";
 import Input from "../components/ui/Input";
 import LoadingState from "../components/ui/LoadingState";
-import Select from "../components/ui/Select";
+import registerLocalSourcingBanner from "../assets/register/register-local-sourcing-banner.webp";
 import { registerUser } from "../services/authService";
 import { getDashboardPathByRole } from "../utils/authNavigation";
 
-const roleOptions = [
-  { value: "SUPPLIER", label: "Fournisseur" },
-  { value: "STORE", label: "Magasin" },
+const registerBenefits = [
+  "Un parcours adapté à votre rôle",
+  "Des profils professionnels plus crédibles",
+  "Un premier contact commercial structuré",
+];
+
+const roleCards = [
+  {
+    value: "STORE",
+    title: "Magasin",
+    description: "Je recherche des fournisseurs ou des produits.",
+  },
+  {
+    value: "SUPPLIER",
+    title: "Fournisseur",
+    description: "Je souhaite présenter mon activité et mes produits.",
+  },
 ];
 
 const initialFormData = {
@@ -51,6 +65,20 @@ function RegisterPage() {
     setFieldErrors((currentErrors) => ({
       ...currentErrors,
       [name]: "",
+    }));
+
+    setSubmitError("");
+  }
+
+  function handleRoleSelect(role) {
+    setFormData((currentData) => ({
+      ...currentData,
+      role,
+    }));
+
+    setFieldErrors((currentErrors) => ({
+      ...currentErrors,
+      role: "",
     }));
 
     setSubmitError("");
@@ -119,122 +147,154 @@ function RegisterPage() {
   }
 
   return (
-    <main className="auth-page">
-      <section className="auth-shell">
-        <div className="auth-intro">
-          <p className="marketing-eyebrow">KERNO ONBOARDING</p>
-          <h1>Créez votre compte Kerno.</h1>
+    <main className="auth-page register-page">
+      <section className="register-shell">
+        <aside className="register-editorial" aria-labelledby="register-title">
+          <p className="register-eyebrow">INSCRIPTION</p>
+          <h1 id="register-title">Créez votre espace KERNO</h1>
           <p>
-            Choisissez le rôle qui correspond à votre usage : fournisseur pour
-            gérer vos produits, magasin pour rechercher et contacter.
+            Rejoignez une plateforme pensée pour connecter fournisseurs directs,
+            producteurs locaux et magasins.
           </p>
-        </div>
 
-        <div className="auth-grid auth-grid--register">
-          <section className="auth-card">
-            <div className="auth-card__header">
-              <h2>Inscription</h2>
-              <p>Quelques informations suffisent pour démarrer le MVP.</p>
-            </div>
+          <figure className="register-visual">
+            <img
+              src={registerLocalSourcingBanner}
+              alt="Produits locaux présentés dans un espace professionnel KERNO"
+            />
+          </figure>
 
-            <form className="auth-form" onSubmit={handleSubmit}>
-              {submitError && (
-                <ErrorState
-                  title="Échec de création du compte"
-                  message={submitError}
-                />
-              )}
+          <ul className="register-benefits" aria-label="Bénéfices KERNO">
+            {registerBenefits.map((benefit) => (
+              <li key={benefit}>
+                <span aria-hidden="true" />
+                {benefit}
+              </li>
+            ))}
+          </ul>
+        </aside>
 
-              {isSubmitting && <LoadingState message="Création du compte..." />}
+        <section className="register-card" aria-labelledby="register-form-title">
+          <div className="register-card__header">
+            <p className="register-card__eyebrow">Compte professionnel</p>
+            <h2 id="register-form-title">Créer un compte</h2>
+            <p>Choisissez votre rôle puis renseignez vos informations.</p>
+          </div>
 
-              <div className="auth-form__row">
-                <Input
-                  label="Prénom"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  placeholder="Ada"
-                  error={fieldErrors.firstName}
-                  required
-                />
+          <form className="auth-form" onSubmit={handleSubmit}>
+            {submitError && (
+              <ErrorState
+                title="Échec de création du compte"
+                message={submitError}
+              />
+            )}
 
-                <Input
-                  label="Nom"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  placeholder="Lovelace"
-                  error={fieldErrors.lastName}
-                  required
-                />
+            {isSubmitting && <LoadingState message="Création du compte..." />}
+
+            <div className="register-role-group">
+              <div className="register-role-group__label">
+                <span>Type de compte</span>
+                <strong aria-hidden="true">*</strong>
               </div>
 
-              <Input
-                label="Email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="vous@example.com"
-                error={fieldErrors.email}
-                required
-              />
-
-              <Input
-                label="Mot de passe"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Au moins 8 caractères"
-                error={fieldErrors.password}
-                helperText="Utilisez au moins 8 caractères."
-                required
-              />
-
-              <Select
-                label="Type de compte"
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                options={roleOptions}
-                placeholder="Choisir un rôle"
-                error={fieldErrors.role}
-                helperText="Fournisseur : produits. Magasin : catalogue et demandes."
-                required
-              />
-
-              <button
-                className="auth-submit"
-                type="submit"
-                disabled={isSubmitting}
+              <div
+                className="register-role-grid"
+                role="radiogroup"
+                aria-label="Type de compte"
+                aria-describedby={
+                  fieldErrors.role ? "register-role-error" : undefined
+                }
               >
-                {isSubmitting ? "Création..." : "Créer le compte"}
-              </button>
-            </form>
-          </section>
+                {roleCards.map((role) => (
+                  <button
+                    type="button"
+                    key={role.value}
+                    className={[
+                      "register-role-card",
+                      formData.role === role.value
+                        ? "register-role-card--selected"
+                        : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    role="radio"
+                    aria-checked={formData.role === role.value}
+                    onClick={() => handleRoleSelect(role.value)}
+                  >
+                    <span className="register-role-card__indicator" />
+                    <span className="register-role-card__content">
+                      <strong>{role.title}</strong>
+                      <small>{role.description}</small>
+                    </span>
+                  </button>
+                ))}
+              </div>
 
-          <aside className="auth-panel auth-panel--orange">
-            <div>
-              <p className="auth-panel__eyebrow">DÉJÀ INSCRIT ?</p>
-              <h2>Connectez-vous et reprenez votre parcours.</h2>
-              <p>
-                Après connexion, les fournisseurs arrivent sur leur dashboard et
-                les magasins sur leur espace de sourcing.
-              </p>
+              {fieldErrors.role && (
+                <p id="register-role-error" className="register-field-error">
+                  {fieldErrors.role}
+                </p>
+              )}
             </div>
 
-            <div className="auth-panel__features">
-              <span>Dashboard</span>
-              <span>Profil</span>
-              <span>Suivi</span>
+            <div className="auth-form__row">
+              <Input
+                label="Prénom"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                placeholder="Ada"
+                error={fieldErrors.firstName}
+                required
+              />
+
+              <Input
+                label="Nom"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                placeholder="Lovelace"
+                error={fieldErrors.lastName}
+                required
+              />
             </div>
 
-            <Link className="auth-panel__button" to="/login">
-              Se connecter
-            </Link>
-          </aside>
-        </div>
+            <Input
+              label="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="vous@example.com"
+              error={fieldErrors.email}
+              required
+            />
+
+            <Input
+              label="Mot de passe"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Au moins 8 caractères"
+              error={fieldErrors.password}
+              helperText="Utilisez au moins 8 caractères."
+              required
+            />
+
+            <button
+              className="auth-submit"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Création..." : "Créer mon compte"}
+            </button>
+
+            <p className="register-login-link">
+              Déjà un compte ? <Link to="/login">Se connecter</Link>
+            </p>
+          </form>
+        </section>
       </section>
     </main>
   );
