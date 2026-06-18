@@ -1,4 +1,4 @@
-function LoadingState({ message = "Loading...", className = "" }) {
+function LoadingState({ message = "Chargement...", className = "" }) {
   return (
     <div
       className={[

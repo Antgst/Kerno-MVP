@@ -241,14 +241,6 @@ function Header({ variant = "public", onMenuClick }) {
         </div>
 
         <div className="kerno-app-header__account">
-          <button
-            type="button"
-            className="kerno-app-header__notification"
-            aria-label="Notifications"
-          >
-            <HeaderIcon name="bell" />
-          </button>
-
           <div className="kerno-app-header__avatar">{accountInitials}</div>
 
           <div className="kerno-app-header__account-copy">
@@ -336,13 +328,17 @@ function Header({ variant = "public", onMenuClick }) {
       </nav>
 
       <div className="public-header-actions">
-        <NavigationLink to="/login" variant="header-ghost">
-          Se connecter
-        </NavigationLink>
+        {location.pathname !== "/login" && (
+          <NavigationLink to="/login" variant="header-ghost">
+            Se connecter
+          </NavigationLink>
+        )}
 
-        <NavigationLink to="/register" variant="header-cta">
-          Créer un compte
-        </NavigationLink>
+        {location.pathname !== "/register" && (
+          <NavigationLink to="/register" variant="header-cta">
+            Créer un compte
+          </NavigationLink>
+        )}
       </div>
     </header>
   );

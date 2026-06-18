@@ -89,7 +89,7 @@ function RequestFormPage() {
       } catch (error) {
         if (shouldUpdateState) {
           setLoadErrorMessage(
-            error.message || "Unable to load request context.",
+            error.message || "Impossible de charger le contexte de la demande.",
           );
         }
       } finally {
@@ -126,15 +126,15 @@ function RequestFormPage() {
     const errors = {};
 
     if (!formData.supplierId.trim()) {
-      errors.supplierId = "Supplier id is required.";
+      errors.supplierId = "L’identifiant du fournisseur est obligatoire.";
     }
 
     if (!formData.subject.trim()) {
-      errors.subject = "Subject is required.";
+      errors.subject = "L’objet est obligatoire.";
     }
 
     if (!formData.message.trim()) {
-      errors.message = "Message is required.";
+      errors.message = "Le message est obligatoire.";
     }
 
     setFieldErrors(errors);
@@ -165,7 +165,7 @@ function RequestFormPage() {
 
       navigate(createdRequest?.id ? `/store/requests/${createdRequest.id}` : "/store/requests");
     } catch (error) {
-      setSubmitErrorMessage(error.message || "Unable to create request.");
+      setSubmitErrorMessage(error.message || "Impossible de créer la demande.");
     } finally {
       setIsSubmitting(false);
     }
@@ -174,21 +174,23 @@ function RequestFormPage() {
   return (
     <div className="text-slate-950">
       <PageHeader
-        eyebrow="Contact request"
-        title="Create a request"
-        description="Send a structured contact or quote request to a supplier."
+        eyebrow="Demande de contact"
+        title="Faire une demande"
+        description="Envoyez une demande de contact ou de devis structurée à un fournisseur."
       >
         <Link to="/catalog">
-          <Button variant="secondary">Back to catalog</Button>
+          <Button variant="secondary">Retour au catalogue</Button>
         </Link>
       </PageHeader>
 
-      {isLoadingContext && <LoadingState message="Loading request context..." />}
+      {isLoadingContext && (
+        <LoadingState message="Chargement du contexte de la demande..." />
+      )}
 
       {loadErrorMessage && (
         <ErrorState
           className="mb-6"
-          title="Context unavailable"
+          title="Contexte indisponible"
           message={loadErrorMessage}
         />
       )}
@@ -198,42 +200,42 @@ function RequestFormPage() {
           {submitErrorMessage && (
             <ErrorState
               className="mb-5"
-              title="Request creation failed"
+              title="Échec de création de la demande"
               message={submitErrorMessage}
             />
           )}
 
           {isSubmitting && (
-            <LoadingState className="mb-5" message="Creating request..." />
+            <LoadingState className="mb-5" message="Création de la demande..." />
           )}
 
           <form className="space-y-5" onSubmit={handleSubmit}>
             <Input
-              label="Supplier id"
+              label="Identifiant fournisseur"
               name="supplierId"
               value={formData.supplierId}
               onChange={handleChange}
-              placeholder="Supplier UUID"
+              placeholder="Identifiant du fournisseur"
               error={fieldErrors.supplierId}
-              helperText="This is automatically filled when coming from a supplier or product page."
+              helperText="Ce champ est rempli automatiquement depuis une fiche fournisseur ou produit."
               required
             />
 
             <Input
-              label="Product id"
+              label="Identifiant produit"
               name="productId"
               value={formData.productId}
               onChange={handleChange}
-              placeholder="Optional product UUID"
-              helperText="Optional. Used when the request is about a specific product."
+              placeholder="Identifiant du produit (facultatif)"
+              helperText="Facultatif, si la demande concerne un produit précis."
             />
 
             <Input
-              label="Subject"
+              label="Objet"
               name="subject"
               value={formData.subject}
               onChange={handleChange}
-              placeholder="Wholesale inquiry"
+              placeholder="Demande de tarifs professionnels"
               error={fieldErrors.subject}
               required
             />
@@ -252,7 +254,7 @@ function RequestFormPage() {
                 value={formData.message}
                 onChange={handleChange}
                 rows="6"
-                placeholder="Explain your need, expected timing, questions, or quote request."
+                placeholder="Décrivez votre besoin, les délais souhaités et vos questions."
                 className={[
                   "w-full rounded-2xl border bg-white px-4 py-3 text-sm text-slate-900",
                   "outline-none transition placeholder:text-slate-400 focus:ring-2",
@@ -270,16 +272,16 @@ function RequestFormPage() {
             </div>
 
             <Input
-              label="Quantity or business need"
+              label="Quantité ou besoin professionnel"
               name="requestedQuantity"
               value={formData.requestedQuantity}
               onChange={handleChange}
-              placeholder="50 kg, 100 units, recurring supply..."
-              helperText="Optional. Keep it simple for the MVP."
+              placeholder="50 kg, 100 unités, approvisionnement régulier..."
+              helperText="Facultatif. Indiquez simplement votre besoin."
             />
 
             <Button className="w-full" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create request"}
+              {isSubmitting ? "Création..." : "Envoyer la demande"}
             </Button>
           </form>
         </Card>
@@ -287,52 +289,54 @@ function RequestFormPage() {
         <Card>
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="m-0 text-xl font-black">Request context</h2>
+              <h2 className="m-0 text-xl font-black">
+                Contexte de la demande
+              </h2>
               <p className="mt-2 text-sm leading-6 text-slate-500">
-                This preview helps confirm who the request will be sent to.
+                Vérifiez le fournisseur et le produit concernés avant l’envoi.
               </p>
             </div>
 
-            <StatusBadge status="PENDING" label="Draft" />
+            <StatusBadge status="DRAFT" />
           </div>
 
           <div className="space-y-5">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                Supplier
+                Fournisseur
               </p>
               <p className="mt-1 text-xl font-black text-slate-950">
-                {supplier?.companyName || "Supplier not loaded"}
+                {supplier?.companyName || "Fournisseur non chargé"}
               </p>
               <p className="mt-1 text-sm leading-6 text-slate-500">
-                {supplier?.location || "No location available"}
+                {supplier?.location || "Localisation non renseignée"}
               </p>
             </div>
 
             <div>
               <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                Product
+                Produit
               </p>
               <p className="mt-1 text-xl font-black text-slate-950">
-                {product?.name || "No specific product"}
+                {product?.name || "Aucun produit spécifique"}
               </p>
               <p className="mt-1 text-sm leading-6 text-slate-500">
-                {product?.priceInfo || "Price information not provided"}
+                {product?.priceInfo || "Tarif sur demande"}
               </p>
             </div>
 
             <div className="rounded-3xl bg-emerald-950 p-6 text-white">
               <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-300">
-                MVP scope
+                Périmètre du MVP
               </p>
 
               <h3 className="mt-3 text-2xl font-black">
-                First business contact only
+                Un premier contact professionnel
               </h3>
 
               <p className="mt-3 text-sm leading-6 text-emerald-50">
-                This form creates a contact request. It does not create an
-                order, invoice, payment, delivery flow or advanced chat.
+                Ce formulaire transmet une demande de contact. Il ne crée ni
+                commande, ni paiement, ni échange de messagerie avancé.
               </p>
             </div>
           </div>

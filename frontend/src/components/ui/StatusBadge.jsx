@@ -1,21 +1,19 @@
+import { formatStatus } from "../../utils/status";
+
 const statusClasses = {
   ACTIVE: "bg-emerald-100 text-emerald-800 ring-emerald-200",
   ACCEPTED: "bg-emerald-100 text-emerald-800 ring-emerald-200",
+  ANSWERED: "bg-emerald-50 text-emerald-800 ring-emerald-200",
+  REPLIED: "bg-emerald-50 text-emerald-800 ring-emerald-200",
   PENDING: "bg-amber-100 text-amber-800 ring-amber-200",
   DRAFT: "bg-slate-100 text-slate-700 ring-slate-200",
   INACTIVE: "bg-slate-100 text-slate-700 ring-slate-200",
   REJECTED: "bg-red-100 text-red-700 ring-red-200",
+  COMPLETED: "bg-sky-50 text-sky-900 ring-sky-200",
+  DONE: "bg-sky-50 text-sky-900 ring-sky-200",
+  RESOLVED: "bg-sky-50 text-sky-900 ring-sky-200",
+  CLOSED: "bg-sky-50 text-sky-900 ring-sky-200",
   ERROR: "bg-red-100 text-red-700 ring-red-200",
-};
-
-const statusLabels = {
-  ACTIVE: "Active",
-  ACCEPTED: "Accepted",
-  PENDING: "Pending",
-  DRAFT: "Draft",
-  INACTIVE: "Inactive",
-  REJECTED: "Rejected",
-  ERROR: "Error",
 };
 
 function StatusBadge({ status = "DRAFT", label, className = "" }) {
@@ -32,7 +30,7 @@ function StatusBadge({ status = "DRAFT", label, className = "" }) {
         .filter(Boolean)
         .join(" ")}
     >
-      {label ?? statusLabels[normalizedStatus] ?? normalizedStatus}
+      {label ?? formatStatus(normalizedStatus)}
     </span>
   );
 }

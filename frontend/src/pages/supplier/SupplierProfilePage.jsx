@@ -216,8 +216,9 @@ function SupplierProfilePage() {
           <p className="supplier-profile-page__eyebrow">Espace fournisseur</p>
           <h1>Profil fournisseur</h1>
           <p className="supplier-profile-page__subtitle">
-            Complétez les informations visibles par les magasins lorsqu’ils
-            découvrent votre activité ou vos produits.
+            {completionPercent === 100
+              ? "Gérez les informations visibles par les magasins lorsqu’ils découvrent votre activité ou vos produits."
+              : "Ajoutez les informations manquantes pour renforcer votre crédibilité."}
           </p>
         </div>
       </header>
@@ -461,10 +462,15 @@ function SupplierProfilePage() {
               <div className="supplier-profile-completion__content">
                 <div>
                   <p>Profil fournisseur</p>
-                  <h2>Complétez votre profil</h2>
+                  <h2>
+                    {completionPercent === 100
+                      ? "Profil complet"
+                      : "Complétez votre profil"}
+                  </h2>
                   <span>
-                    Un profil clair renforce votre visibilité auprès des
-                    magasins.
+                    {completionPercent === 100
+                      ? "Gérez les informations visibles par les magasins lorsqu’ils découvrent votre activité ou vos produits."
+                      : "Ajoutez les informations manquantes pour renforcer votre crédibilité."}
                   </span>
                 </div>
 

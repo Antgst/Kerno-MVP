@@ -8817,12 +8817,20 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
   padding: 17px;
 }
 
+.catalog-product-content {
+  min-width: 0;
+}
+
 .catalog-product-card--list .catalog-product-body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(150px, auto);
   align-content: center;
   column-gap: 34px;
   padding: 21px 22px;
+}
+
+.catalog-product-card--list .catalog-product-content {
+  grid-column: 1;
 }
 
 .catalog-product-heading {
@@ -8856,12 +8864,6 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
   color: #164e3f;
   font-size: 0.79rem;
   font-weight: 650;
-}
-
-.catalog-product-card--list .catalog-product-heading,
-.catalog-product-card--list .catalog-product-supplier,
-.catalog-product-card--list .catalog-product-meta {
-  grid-column: 1;
 }
 
 .catalog-product-meta {
@@ -8902,20 +8904,35 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
 }
 
 .catalog-product-price {
-  margin: auto 0 0;
-  padding-top: 22px;
+  min-width: 0;
+  margin: 0;
   color: #164e3f;
   font-size: 1.08rem;
   font-weight: 750;
   line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
-.catalog-product-card--list .catalog-product-price {
+.catalog-product-footer {
+  display: flex;
+  min-width: 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid #ece9e2;
+}
+
+.catalog-product-card--list .catalog-product-footer {
   grid-column: 2;
-  grid-row: 1 / 4;
+  grid-row: 1;
+  flex-direction: column;
   align-self: center;
-  margin: 0;
-  padding: 0;
+  align-items: flex-end;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
   text-align: right;
 }
 
@@ -9007,11 +9024,15 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
     grid-template-columns: 1fr;
   }
 
-  .catalog-product-card--list .catalog-product-price {
+  .catalog-product-card--list .catalog-product-footer {
     grid-column: 1;
     grid-row: auto;
+    align-items: flex-end;
+    flex-direction: row;
     margin-top: 20px;
-    text-align: left;
+    padding-top: 18px;
+    border-top: 1px solid #ece9e2;
+    text-align: right;
   }
 }
 
@@ -9066,9 +9087,8 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
     padding: 18px;
   }
 
-  .catalog-product-card--list .catalog-product-price {
+  .catalog-product-card--list .catalog-product-footer {
     margin-top: auto;
-    padding-top: 22px;
   }
 }
 
@@ -9084,6 +9104,21 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
 
   .catalog-product-meta {
     grid-template-columns: 1fr;
+  }
+
+  .catalog-product-footer,
+  .catalog-product-card--list .catalog-product-footer {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .catalog-product-price {
+    text-align: right;
+  }
+
+  .catalog-product-action {
+    width: 100%;
   }
 }
 
@@ -9484,7 +9519,7 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
 .supplier-request-actions {
   display: flex;
   align-items: center;
-  padding: 20px 22px;
+  padding: 18px 16px;
   border-left: 1px solid #e5e2db;
   background: #fcfbf8;
 }
@@ -9495,7 +9530,7 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 0 17px;
+  padding: 0 15px;
   border: 1px solid #164e3f;
   border-radius: 11px;
   background: #164e3f;
@@ -10087,6 +10122,12 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
   cursor: default;
 }
 
+.supplier-request-status-form__helper {
+  color: #77766e;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
 @media (min-width: 1321px) {
   body:has(.supplier-request-detail-page) .kerno-shell__content {
     padding: 0 24px 48px;
@@ -10176,5 +10217,125 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
 
   .supplier-request-detail-header h1 {
     font-size: 1.65rem;
+  }
+}
+
+/* Global UX polish — store requests, catalog actions and compact account menu */
+.product-image-neutral {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 30% 25%, rgb(255 255 255 / 86%), transparent 34%),
+    linear-gradient(145deg, #f8f5ef 0%, #e4f0eb 100%);
+  color: #164e3f;
+}
+
+.product-image-neutral svg {
+  width: 44px;
+  height: 44px;
+  opacity: 0.72;
+}
+
+.product-detail-hero__media > .product-image-neutral {
+  min-height: 100%;
+}
+
+.store-requests-header__action {
+  display: inline-flex;
+  min-height: 43px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border-radius: 11px;
+  background: #164e3f;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgb(22 78 63 / 14%);
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.store-requests-header__action:hover {
+  background: #0f3d33;
+  transform: translateY(-1px);
+}
+
+.supplier-request-status--processed {
+  border-color: #c8d6df;
+  background: #edf3f6;
+  color: #0b2d4d;
+}
+
+.supplier-request-status--neutral {
+  border-color: #d6d4ce;
+  background: #f7f6f3;
+  color: #59635f;
+}
+
+.store-dashboard__status--accepted,
+.supplier-dashboard__status--accepted {
+  background: #2fbf6a;
+}
+
+.store-dashboard__status--processed,
+.supplier-dashboard__status--processed {
+  background: #0b2d4d;
+}
+
+.catalog-product-action {
+  display: inline-flex;
+  width: fit-content;
+  min-width: 100px;
+  min-height: 36px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border: 1px solid #164e3f;
+  border-radius: 10px;
+  background: #164e3f;
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 8px 16px rgb(22 78 63 / 12%);
+}
+
+.catalog-product-card:hover .catalog-product-action,
+.catalog-product-card:focus-visible .catalog-product-action {
+  background: #0f3d33;
+}
+
+.supplier-dashboard__product-footer {
+  justify-content: flex-end;
+}
+
+.kerno-app-header__dropdown {
+  width: min(220px, calc(100vw - 28px));
+  padding: 7px;
+}
+
+.kerno-app-header__dropdown a,
+.kerno-app-header__dropdown button {
+  min-height: 38px;
+  padding: 8px 11px;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 700px) {
+  .store-requests-header__action {
+    width: 100%;
+  }
+
+  .store-request-detail-page .supplier-request-product-grid {
+    grid-template-columns: 1fr;
   }
 }

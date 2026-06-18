@@ -93,7 +93,9 @@ function SupplierProductFormPage() {
           return;
         }
 
-        setLoadErrorMessage(error.message || "Unable to load product form.");
+        setLoadErrorMessage(
+          error.message || "Impossible de charger le formulaire produit.",
+        );
       } finally {
         if (shouldUpdateState) {
           setIsLoading(false);
@@ -133,7 +135,7 @@ function SupplierProductFormPage() {
     const errors = {};
 
     if (!formData.name.trim()) {
-      errors.name = "Product name is required.";
+      errors.name = "Le nom du produit est obligatoire.";
     }
 
     setFieldErrors(errors);
@@ -171,7 +173,7 @@ function SupplierProductFormPage() {
 
       navigate("/supplier/products");
     } catch (error) {
-      setSubmitErrorMessage(error.message || "Unable to save product.");
+      setSubmitErrorMessage(error.message || "Impossible d’enregistrer le produit.");
     } finally {
       setIsSubmitting(false);
     }
@@ -180,35 +182,35 @@ function SupplierProductFormPage() {
   return (
     <div className="text-slate-950">
       <PageHeader
-        eyebrow="Supplier products"
-        title={isEditMode ? "Edit product" : "Add a product"}
+        eyebrow="Produits fournisseur"
+        title={isEditMode ? "Modifier le produit" : "Ajouter un produit"}
         description={
           isEditMode
-            ? "Update the product information visible in the Kerno catalog."
-            : "Create a structured product offer for stores browsing the Kerno catalog."
+            ? "Mettez à jour les informations visibles dans le catalogue KERNO."
+            : "Créez une fiche produit claire pour les magasins qui consultent le catalogue."
         }
       >
         <Link to="/supplier/products">
-          <Button variant="secondary">Back to products</Button>
+          <Button variant="secondary">Retour aux produits</Button>
         </Link>
       </PageHeader>
 
-      {isLoading && <LoadingState message="Loading product form..." />}
+      {isLoading && <LoadingState message="Chargement du formulaire produit..." />}
 
       {loadErrorMessage && (
         <ErrorState
-          title="Product form unavailable"
+          title="Formulaire produit indisponible"
           message={loadErrorMessage}
         />
       )}
 
       {!isLoading && !loadErrorMessage && !hasSupplierProfile && (
         <EmptyState
-          title="Supplier profile required"
-          message="You need a supplier profile before creating products."
+          title="Profil fournisseur requis"
+          message="Créez votre profil fournisseur avant d’ajouter des produits."
           action={
             <Link to="/supplier/profile">
-              <Button>Create supplier profile</Button>
+              <Button>Créer mon profil fournisseur</Button>
             </Link>
           }
         />
@@ -220,38 +222,38 @@ function SupplierProductFormPage() {
             {submitErrorMessage && (
               <ErrorState
                 className="mb-5"
-                title="Product save failed"
+                title="Échec de l’enregistrement"
                 message={submitErrorMessage}
               />
             )}
 
             {isSubmitting && (
-              <LoadingState className="mb-5" message="Saving product..." />
+              <LoadingState className="mb-5" message="Enregistrement du produit..." />
             )}
 
             <form className="space-y-5" onSubmit={handleSubmit}>
               <Input
-                label="Product name"
+                label="Nom du produit"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Single-origin coffee beans"
+                placeholder="Miel de fleurs sauvages"
                 error={fieldErrors.name}
                 required
               />
 
               <Select
-                label="Category"
+                label="Catégorie"
                 name="categoryId"
                 value={formData.categoryId}
                 onChange={handleChange}
                 options={categoryOptions}
                 placeholder={
                   categoryOptions.length > 0
-                    ? "Choose a category"
-                    : "No category available"
+                    ? "Choisir une catégorie"
+                    : "Aucune catégorie disponible"
                 }
-                helperText="Optional for now. Categories can be managed from the backend/admin side."
+                helperText="Facultatif pour le moment."
               />
 
               <div>
@@ -268,40 +270,40 @@ function SupplierProductFormPage() {
                   value={formData.description}
                   onChange={handleChange}
                   rows="5"
-                  placeholder="Describe the product, its quality, usage or production details."
+                  placeholder="Décrivez le produit, sa qualité, son usage ou sa fabrication."
                   className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-800 focus:ring-2 focus:ring-emerald-100"
                 />
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <Input
-                  label="Origin or location"
+                  label="Origine ou localisation"
                   name="origin"
                   value={formData.origin}
                   onChange={handleChange}
-                  placeholder="Colombia, France, Brittany..."
+                  placeholder="Bretagne, France..."
                 />
 
                 <Input
-                  label="Indicative price"
+                  label="Prix indicatif"
                   name="priceInfo"
                   value={formData.priceInfo}
                   onChange={handleChange}
-                  placeholder="12 EUR / kg, on request..."
+                  placeholder="12 € / kg, tarif sur demande..."
                 />
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <Input
-                  label="Minimum order"
+                  label="Commande minimale"
                   name="minimumOrder"
                   value={formData.minimumOrder}
                   onChange={handleChange}
-                  placeholder="10 kg, 24 units..."
+                  placeholder="10 kg, 24 unités..."
                 />
 
                 <Input
-                  label="Image URL"
+                  label="Adresse de l’image"
                   name="imageUrl"
                   value={formData.imageUrl}
                   onChange={handleChange}
@@ -316,15 +318,15 @@ function SupplierProductFormPage() {
                   checked={formData.isActive}
                   onChange={handleChange}
                 />
-                Product active in catalog
+                Produit visible dans le catalogue
               </label>
 
               <Button className="w-full" type="submit" disabled={isSubmitting}>
                 {isSubmitting
-                  ? "Saving..."
+                  ? "Enregistrement..."
                   : isEditMode
-                    ? "Update product"
-                    : "Create product"}
+                    ? "Mettre à jour le produit"
+                    : "Créer le produit"}
               </Button>
             </form>
           </Card>
@@ -332,64 +334,64 @@ function SupplierProductFormPage() {
           <Card>
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 className="m-0 text-xl font-black">Product preview</h2>
+                <h2 className="m-0 text-xl font-black">Aperçu du produit</h2>
                 <p className="mt-2 text-sm leading-6 text-slate-500">
-                  This is a simple preview of how the product information may
-                  appear later in the catalog.
+                  Vérifiez les principales informations qui seront visibles
+                  dans le catalogue.
                 </p>
               </div>
 
               <StatusBadge
                 status={formData.isActive ? "ACTIVE" : "INACTIVE"}
-                label={formData.isActive ? "Active preview" : "Inactive preview"}
+                label={formData.isActive ? "Disponible" : "Indisponible"}
               />
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
               <h3 className="m-0 text-2xl font-black text-slate-950">
-                {formData.name || "Product name"}
+                {formData.name || "Nom du produit"}
               </h3>
 
               <p className="mt-3 text-sm leading-6 text-slate-500">
-                {formData.description || "No description yet."}
+                {formData.description || "Aucune description pour le moment."}
               </p>
 
               <div className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
                 <div>
                   <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                    Category
+                    Catégorie
                   </p>
                   <p className="mt-1 font-bold text-slate-800">
                     {categories.find(
                       (category) => category.id === formData.categoryId,
-                    )?.name || "Not provided"}
+                    )?.name || "Non renseignée"}
                   </p>
                 </div>
 
                 <div>
                   <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                    Origin
+                    Origine
                   </p>
                   <p className="mt-1 font-bold text-slate-800">
-                    {formData.origin || "Not provided"}
+                    {formData.origin || "Non renseignée"}
                   </p>
                 </div>
 
                 <div>
                   <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                    Price
+                    Prix indicatif
                   </p>
                   <p className="mt-1 font-bold text-slate-800">
-                    {formData.priceInfo || "On request"}
+                    {formData.priceInfo || "Tarif sur demande"}
                   </p>
                 </div>
 
                 <div>
                   <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                    Minimum order
+                    Commande minimale
                   </p>
                   <p className="mt-1 font-bold text-slate-800">
-                    {formData.minimumOrder || "Not provided"}
+                    {formData.minimumOrder || "Non renseignée"}
                   </p>
                 </div>
               </div>

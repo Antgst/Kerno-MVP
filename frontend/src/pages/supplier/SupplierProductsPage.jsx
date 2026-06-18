@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
+import ProductImage from "../../components/ui/ProductImage";
 import { deleteProduct, getProducts } from "../../services/productService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
@@ -112,25 +113,12 @@ function SupplierProductsIcon({ name }) {
 }
 
 function ProductVisual({ product }) {
-  const [imageHasError, setImageHasError] = useState(false);
-  const hasImage = product.imageUrl && !imageHasError;
-
   return (
     <div className="supplier-product-card__visual">
-      {hasImage ? (
-        <img
-          src={product.imageUrl}
-          alt={product.name}
-          onError={() => setImageHasError(true)}
-        />
-      ) : (
-        <div className="supplier-product-card__placeholder">
-          <span>
-            <SupplierProductsIcon name="image" />
-          </span>
-          <small>Visuel produit à venir</small>
-        </div>
-      )}
+      <ProductImage
+        product={product}
+        alt={`Aperçu du produit ${product.name || "KERNO"}`}
+      />
 
       <span
         className={[

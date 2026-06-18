@@ -212,8 +212,9 @@ function StoreProfilePage() {
           <p className="store-profile-page__eyebrow">Espace magasin</p>
           <h1>Profil magasin</h1>
           <p className="store-profile-page__subtitle">
-            Complétez les informations qui seront visibles par les fournisseurs
-            lors de vos demandes.
+            {completionPercent === 100
+              ? "Gérez les informations visibles par les fournisseurs lorsqu’ils consultent vos demandes."
+              : "Ajoutez les informations manquantes pour renforcer votre crédibilité."}
           </p>
         </div>
       </header>
@@ -454,10 +455,15 @@ function StoreProfilePage() {
               <div className="store-profile-completion__content">
                 <div>
                   <p>Profil magasin</p>
-                  <h2>Complétez votre profil</h2>
+                  <h2>
+                    {completionPercent === 100
+                      ? "Profil complet"
+                      : "Complétez votre profil"}
+                  </h2>
                   <span>
-                    Un profil clair améliore la crédibilité de vos demandes
-                    auprès des fournisseurs.
+                    {completionPercent === 100
+                      ? "Gérez les informations visibles par les fournisseurs lorsqu’ils consultent vos demandes."
+                      : "Ajoutez les informations manquantes pour renforcer votre crédibilité."}
                   </span>
                 </div>
 

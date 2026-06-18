@@ -473,7 +473,7 @@ function HomePage() {
       <section className="landing-section">
         <SectionHeading
           eyebrow="Offres"
-          title="Des offres adaptées aux fournisseurs"
+          title="Des offres adaptées à la visibilité fournisseur"
           subtitle="Choisissez le rythme qui correspond à votre besoin de visibilité."
         />
 

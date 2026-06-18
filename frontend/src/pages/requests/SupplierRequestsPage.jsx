@@ -5,38 +5,18 @@ import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
 import { getReceivedRequests } from "../../services/requestService";
 import { getListResource } from "../../utils/responseUtils";
+import {
+  formatStatus,
+  getStatusTone,
+  normalizeStatus,
+  requestStatusOptions,
+} from "../../utils/status";
 
 const initialFilters = {
   search: "",
   status: "",
   sort: "recent",
 };
-
-const statusFilterOptions = [
-  { value: "PENDING", label: "En attente" },
-  { value: "READ", label: "Lue" },
-  { value: "ANSWERED", label: "Répondue" },
-  { value: "ACCEPTED", label: "Acceptée" },
-  { value: "REJECTED", label: "Refusée" },
-  { value: "COMPLETED", label: "Terminée" },
-  { value: "CLOSED", label: "Clôturée" },
-  { value: "CANCELLED", label: "Annulée" },
-];
-
-const statusLabels = {
-  PENDING: "En attente",
-  READ: "Lue",
-  ANSWERED: "Répondue",
-  ACCEPTED: "Acceptée",
-  REJECTED: "Refusée",
-  COMPLETED: "Terminée",
-  CLOSED: "Clôturée",
-  CANCELLED: "Annulée",
-};
-
-function normalizeStatus(status) {
-  return String(status || "UNKNOWN").toUpperCase();
-}
 
 function normalizeValue(value) {
   return String(value || "")
@@ -129,9 +109,9 @@ function RequestStatusBadge({ status }) {
 
   return (
     <span
-      className={`supplier-request-status supplier-request-status--${normalizedStatus.toLowerCase()}`}
+      className={`supplier-request-status supplier-request-status--${getStatusTone(normalizedStatus)}`}
     >
-      {statusLabels[normalizedStatus] || "Statut inconnu"}
+      {formatStatus(normalizedStatus)}
     </span>
   );
 }
@@ -416,7 +396,7 @@ function SupplierRequestsPage() {
                   aria-label="Filtrer par statut"
                 >
                   <option value="">Tous les statuts</option>
-                  {statusFilterOptions.map((option) => (
+              {requestStatusOptions.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>

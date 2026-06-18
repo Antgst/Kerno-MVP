@@ -5,7 +5,7 @@ function Select({
   options = [],
   error,
   helperText,
-  placeholder = "Select an option",
+  placeholder = "Sélectionner une option",
   className = "",
   required = false,
   ...props

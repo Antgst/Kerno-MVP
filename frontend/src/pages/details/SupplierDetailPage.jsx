@@ -7,6 +7,7 @@ import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
 import StatusBadge from "../../components/ui/StatusBadge";
+import ProductImage from "../../components/ui/ProductImage";
 import { getCurrentAuthRole } from "../../services/authService";
 import { getProducts } from "../../services/productService";
 import { getSupplierById } from "../../services/supplierService";
@@ -55,7 +56,9 @@ function SupplierDetailPage() {
         setProducts(getProductsFromResponse(productsResponse));
       } catch (error) {
         if (shouldUpdateState) {
-          setErrorMessage(error.message || "Unable to load supplier details.");
+          setErrorMessage(
+            error.message || "Impossible de charger le fournisseur.",
+          );
         }
       } finally {
         if (shouldUpdateState) {
@@ -90,34 +93,34 @@ function SupplierDetailPage() {
   return (
     <div className="text-slate-950">
       <PageHeader
-        eyebrow="Supplier detail"
-        title={supplier?.companyName || "Supplier details"}
-        description="Review supplier information and related products before starting a contact request."
+        eyebrow="Fiche fournisseur"
+        title={supplier?.companyName || "Détail du fournisseur"}
+        description="Consultez le profil du fournisseur et ses produits avant d’envoyer une demande."
       >
         <Link to="/catalog">
-          <Button variant="secondary">Back to catalog</Button>
+          <Button variant="secondary">Retour au catalogue</Button>
         </Link>
 
         {supplier && canContactSupplier && (
           <Link to={requestPath}>
-            <Button>Contact supplier</Button>
+            <Button>Contacter le fournisseur</Button>
           </Link>
         )}
       </PageHeader>
 
-      {isLoading && <LoadingState message="Loading supplier details..." />}
+      {isLoading && <LoadingState message="Chargement du fournisseur..." />}
 
       {errorMessage && (
-        <ErrorState title="Supplier unavailable" message={errorMessage} />
+        <ErrorState title="Fournisseur indisponible" message={errorMessage} />
       )}
 
       {!isLoading && !errorMessage && !supplier && (
         <EmptyState
-          title="Supplier not found"
-          message="The supplier may not exist or may no longer be available."
+          title="Fournisseur introuvable"
+          message="Ce fournisseur n’existe peut-être plus ou n’est plus disponible."
           action={
             <Link to="/catalog">
-              <Button variant="secondary">Back to catalog</Button>
+              <Button variant="secondary">Retour au catalogue</Button>
             </Link>
           }
         />
@@ -130,7 +133,7 @@ function SupplierDetailPage() {
               <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Supplier
+                    Fournisseur
                   </p>
 
                   <h2 className="mt-2 text-3xl font-black text-slate-950">
@@ -138,56 +141,57 @@ function SupplierDetailPage() {
                   </h2>
                 </div>
 
-                <StatusBadge status="ACTIVE" label="Supplier profile" />
+                <StatusBadge status="ACTIVE" label="Profil fournisseur" />
               </div>
 
               <p className="text-base leading-8 text-slate-600">
-                {supplier.description || "No supplier description provided."}
+                {supplier.description ||
+                  "Ce fournisseur n’a pas encore ajouté de description."}
               </p>
 
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 <div className="rounded-2xl bg-slate-50 p-4">
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                    Location
+                    Localisation
                   </p>
                   <p className="mt-1 font-black text-slate-900">
-                    {supplier.location || "Not provided"}
+                    {supplier.location || "Non renseignée"}
                   </p>
                 </div>
 
                 <div className="rounded-2xl bg-slate-50 p-4">
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                    Business type
+                    Type d’activité
                   </p>
                   <p className="mt-1 font-black text-slate-900">
-                    {supplier.businessType || "Not provided"}
+                    {supplier.businessType || "Non renseigné"}
                   </p>
                 </div>
 
                 <div className="rounded-2xl bg-slate-50 p-4">
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                    Contact email
+                    Email professionnel
                   </p>
                   <p className="mt-1 break-all font-black text-slate-900">
-                    {supplier.contactEmail || "Not provided"}
+                    {supplier.contactEmail || "Non renseigné"}
                   </p>
                 </div>
 
                 <div className="rounded-2xl bg-slate-50 p-4">
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                    Phone
+                    Téléphone
                   </p>
                   <p className="mt-1 font-black text-slate-900">
-                    {supplier.phone || "Not provided"}
+                    {supplier.phone || "Non renseigné"}
                   </p>
                 </div>
 
                 <div className="rounded-2xl bg-slate-50 p-4 md:col-span-2">
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                    Website
+                    Site internet
                   </p>
                   <p className="mt-1 break-all font-black text-slate-900">
-                    {supplier.website || "Not provided"}
+                    {supplier.website || "Non renseigné"}
                   </p>
                 </div>
               </div>
@@ -195,33 +199,34 @@ function SupplierDetailPage() {
 
             {canContactSupplier && (
               <Card>
-                <h2 className="m-0 text-xl font-black">Contact this supplier</h2>
+                <h2 className="m-0 text-xl font-black">
+                  Contacter ce fournisseur
+                </h2>
 
                 <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Send a structured request to ask for availability, quote
-                  information, quantities or next steps.
+                  Envoyez une demande structurée pour préciser vos besoins,
+                  quantités ou questions tarifaires.
                 </p>
 
                 <div className="mt-5 rounded-3xl bg-emerald-950 p-6 text-white">
                   <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-300">
-                    Request flow
+                    Premier contact
                   </p>
 
                   <h3 className="mt-3 text-2xl font-black">
-                    Start a first business contact
+                    Démarrer un échange professionnel
                   </h3>
 
                   <p className="mt-3 text-sm leading-6 text-emerald-50">
-                    This CTA prepares the transition toward the contact request
-                    page. Payment, ordering and messaging are intentionally out
-                    of scope.
+                    Votre demande sera transmise au fournisseur avec les
+                    informations utiles pour engager l’échange.
                   </p>
 
                   <Link
                     className="mt-5 inline-flex w-fit rounded-full bg-white px-5 py-3 text-sm font-black text-emerald-950 transition hover:bg-stone-100"
                     to={requestPath}
                   >
-                    Create request
+                    Faire une demande
                   </Link>
                 </div>
               </Card>
@@ -232,16 +237,16 @@ function SupplierDetailPage() {
             <Card>
               <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <h2 className="m-0 text-xl font-black">Related products</h2>
+                  <h2 className="m-0 text-xl font-black">Produits proposés</h2>
 
                   <p className="mt-2 text-sm leading-6 text-slate-500">
-                    Products linked to this supplier.
+                    Produits publiés par ce fournisseur.
                   </p>
                 </div>
 
                 <StatusBadge
                   status={relatedProducts.length > 0 ? "ACTIVE" : "PENDING"}
-                  label={`${relatedProducts.length} product${
+                  label={`${relatedProducts.length} produit${
                     relatedProducts.length > 1 ? "s" : ""
                   }`}
                 />
@@ -249,8 +254,8 @@ function SupplierDetailPage() {
 
               {relatedProducts.length === 0 ? (
                 <EmptyState
-                  title="No related products"
-                  message="This supplier does not have visible products yet."
+                  title="Aucun produit visible"
+                  message="Ce fournisseur n’a pas encore publié de produit."
                 />
               ) : (
                 <div className="grid gap-4">
@@ -259,37 +264,46 @@ function SupplierDetailPage() {
                       key={product.id}
                       className="rounded-3xl border border-slate-200 bg-slate-50 p-5"
                     >
+                      <ProductImage
+                        className="mb-4 h-40 w-full rounded-2xl object-cover"
+                        product={product}
+                        alt={`Aperçu du produit ${product.name || "KERNO"}`}
+                      />
                       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                         <h3 className="m-0 text-xl font-black text-slate-950">
                           {product.name}
                         </h3>
 
                         <StatusBadge
-                          status={product.isActive ? "ACTIVE" : "INACTIVE"}
-                          label={product.isActive ? "Active" : "Inactive"}
+                          status={product.isActive === false ? "INACTIVE" : "ACTIVE"}
+                          label={
+                            product.isActive === false
+                              ? "Indisponible"
+                              : "Disponible"
+                          }
                         />
                       </div>
 
                       <p className="text-sm leading-6 text-slate-500">
-                        {product.description || "No description provided."}
+                        {product.description || "Aucune description renseignée."}
                       </p>
 
                       <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
                         <div>
                           <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                            Price
+                            Prix indicatif
                           </p>
                           <p className="mt-1 font-bold text-slate-800">
-                            {product.priceInfo || "On request"}
+                            {product.priceInfo || "Tarif sur demande"}
                           </p>
                         </div>
 
                         <div>
                           <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                            Minimum order
+                            Commande minimale
                           </p>
                           <p className="mt-1 font-bold text-slate-800">
-                            {product.minimumOrder || "Not provided"}
+                            {product.minimumOrder || "Non renseignée"}
                           </p>
                         </div>
                       </div>
@@ -298,7 +312,7 @@ function SupplierDetailPage() {
                         className="mt-5 inline-flex"
                         to={`/products/${product.id}`}
                       >
-                        <Button variant="secondary">View product</Button>
+                        <Button variant="secondary">Voir le produit</Button>
                       </Link>
                     </article>
                   ))}
