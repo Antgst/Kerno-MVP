@@ -1,14 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import PageHeader from "../../components/shared/PageHeader";
-import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
-import Input from "../../components/ui/Input";
 import LoadingState from "../../components/ui/LoadingState";
-import Select from "../../components/ui/Select";
-import StatusBadge from "../../components/ui/StatusBadge";
 import { getProducts } from "../../services/productService";
 import { getSuppliers } from "../../services/supplierService";
 import { getListResource } from "../../utils/responseUtils";
@@ -17,6 +11,7 @@ const initialFilters = {
   search: "",
   category: "",
   location: "",
+  availability: "",
   businessType: "",
 };
 
@@ -28,27 +23,214 @@ function getSuppliersFromResponse(response) {
   return getListResource(response, ["suppliers"]);
 }
 
-function getSupplierFromProduct(product) {
-  return product.supplier || null;
+function getSupplierFromProduct(product, suppliersById) {
+  const supplierId = product.supplierId || product.supplier?.id;
+  const supplierFromList = suppliersById.get(supplierId);
+
+  if (supplierFromList || product.supplier) {
+    return {
+      ...supplierFromList,
+      ...product.supplier,
+    };
+  }
+
+  return null;
 }
 
 function normalizeValue(value) {
-  return String(value || "").toLowerCase();
+  return String(value || "")
+    .trim()
+    .toLocaleLowerCase("fr-FR");
 }
 
 function getUniqueOptions(values) {
-  return [...new Set(values.filter(Boolean))].sort().map((value) => ({
-    value,
-    label: value,
-  }));
+  return [...new Set(values.filter(Boolean))].sort((first, second) =>
+    first.localeCompare(second, "fr-FR"),
+  );
+}
+
+function CatalogIcon({ name }) {
+  const commonProps = {
+    width: "20",
+    height: "20",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": "true",
+  };
+
+  const icons = {
+    box: (
+      <svg {...commonProps}>
+        <path d="m21 8-9 5-9-5 9-5 9 5Z" />
+        <path d="M3 8v8l9 5 9-5V8M12 13v8" />
+      </svg>
+    ),
+    grid: (
+      <svg {...commonProps}>
+        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+        <rect x="14" y="14" width="7" height="7" rx="1.5" />
+      </svg>
+    ),
+    image: (
+      <svg {...commonProps}>
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <circle cx="9" cy="10" r="2" />
+        <path d="m21 15-5-5L5 20" />
+      </svg>
+    ),
+    list: (
+      <svg {...commonProps}>
+        <path d="M8 6h13M8 12h13M8 18h13" />
+        <path d="M3 6h.01M3 12h.01M3 18h.01" />
+      </svg>
+    ),
+    map: (
+      <svg {...commonProps}>
+        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </svg>
+    ),
+    search: (
+      <svg {...commonProps}>
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </svg>
+    ),
+  };
+
+  return icons[name] || null;
+}
+
+function ProductVisual({ product }) {
+  const [imageHasError, setImageHasError] = useState(false);
+  const hasImage = product.imageUrl && !imageHasError;
+
+  return (
+    <div className="catalog-product-visual">
+      {hasImage ? (
+        <img
+          src={product.imageUrl}
+          alt={product.name || "Produit"}
+          onError={() => setImageHasError(true)}
+        />
+      ) : (
+        <div className="catalog-product-visual__placeholder">
+          <span>
+            <CatalogIcon name="image" />
+          </span>
+          <small>Visuel produit à venir</small>
+        </div>
+      )}
+
+      <span
+        className={[
+          "catalog-product-status",
+          product.isActive === false ? "catalog-product-status--inactive" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        {product.isActive === false ? "Indisponible" : "Disponible"}
+      </span>
+    </div>
+  );
+}
+
+function ProductInformation({ product, supplier }) {
+  return (
+    <>
+      <div className="catalog-product-heading">
+        <h2>{product.name || "Produit sans nom"}</h2>
+      </div>
+
+      {supplier?.companyName && (
+        <p className="catalog-product-supplier">{supplier.companyName}</p>
+      )}
+
+      <dl className="catalog-product-meta">
+        {product.origin && (
+          <div>
+            <dt>
+              <CatalogIcon name="map" />
+              Origine
+            </dt>
+            <dd>{product.origin}</dd>
+          </div>
+        )}
+
+        {product.minimumOrder && (
+          <div>
+            <dt>
+              <CatalogIcon name="box" />
+              Colisage
+            </dt>
+            <dd>{product.minimumOrder}</dd>
+          </div>
+        )}
+      </dl>
+
+      {product.priceInfo && (
+        <p className="catalog-product-price">{product.priceInfo}</p>
+      )}
+    </>
+  );
+}
+
+function ProductCard({ product, supplier, viewMode }) {
+  const productName = product.name || "Produit sans nom";
+
+  function handleKeyDown(event) {
+    if (event.key === " ") {
+      event.preventDefault();
+      event.currentTarget.click();
+    }
+  }
+
+  const cardContent = (
+    <>
+      <ProductVisual product={product} />
+      <div className="catalog-product-body">
+        <ProductInformation product={product} supplier={supplier} />
+      </div>
+    </>
+  );
+
+  if (!product.id) {
+    return (
+      <article
+        className={`catalog-product-card catalog-product-card--${viewMode}`}
+      >
+        {cardContent}
+      </article>
+    );
+  }
+
+  return (
+    <Link
+      className={`catalog-product-card catalog-product-card--${viewMode}`}
+      to={`/products/${product.id}`}
+      aria-label={`Voir le produit ${productName}`}
+      onKeyDown={handleKeyDown}
+    >
+      {cardContent}
+    </Link>
+  );
 }
 
 function CatalogPage() {
   const [products, setProducts] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [filters, setFilters] = useState(initialFilters);
+  const [viewMode, setViewMode] = useState("grid");
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let shouldUpdateState = true;
@@ -58,7 +240,7 @@ function CatalogPage() {
       setErrorMessage("");
 
       try {
-        const [productsResponse, suppliersResponse] = await Promise.all([
+        const [productsResult, suppliersResult] = await Promise.allSettled([
           getProducts(),
           getSuppliers(),
         ]);
@@ -67,14 +249,22 @@ function CatalogPage() {
           return;
         }
 
-        setProducts(getProductsFromResponse(productsResponse));
-        setSuppliers(getSuppliersFromResponse(suppliersResponse));
-      } catch (error) {
-        if (!shouldUpdateState) {
-          return;
+        if (productsResult.status === "rejected") {
+          throw productsResult.reason;
         }
 
-        setErrorMessage(error.message || "Unable to load catalog.");
+        setProducts(getProductsFromResponse(productsResult.value));
+        setSuppliers(
+          suppliersResult.status === "fulfilled"
+            ? getSuppliersFromResponse(suppliersResult.value)
+            : [],
+        );
+      } catch (error) {
+        if (shouldUpdateState) {
+          setErrorMessage(
+            error.message || "Impossible de charger le catalogue.",
+          );
+        }
       } finally {
         if (shouldUpdateState) {
           setIsLoading(false);
@@ -87,58 +277,45 @@ function CatalogPage() {
     return () => {
       shouldUpdateState = false;
     };
-  }, []);
+  }, [reloadKey]);
 
-  const supplierCards = useMemo(() => {
-    const supplierMap = new Map();
-
-    suppliers.forEach((supplier) => {
-      supplierMap.set(supplier.id, supplier);
-    });
-
-    products.forEach((product) => {
-      const productSupplier = getSupplierFromProduct(product);
-
-      if (productSupplier?.id && !supplierMap.has(productSupplier.id)) {
-        supplierMap.set(productSupplier.id, productSupplier);
-      }
-    });
-
-    return [...supplierMap.values()];
-  }, [products, suppliers]);
+  const suppliersById = useMemo(
+    () => new Map(suppliers.map((supplier) => [supplier.id, supplier])),
+    [suppliers],
+  );
 
   const categoryOptions = useMemo(
-    () =>
-      getUniqueOptions(
-        products.map((product) => product.category?.name),
-      ),
+    () => getUniqueOptions(products.map((product) => product.category?.name)),
     [products],
   );
 
   const locationOptions = useMemo(
     () =>
-      getUniqueOptions([
-        ...products.map((product) => product.supplier?.location),
-        ...supplierCards.map((supplier) => supplier.location),
-      ]),
-    [products, supplierCards],
+      getUniqueOptions(
+        products.flatMap((product) => {
+          const supplier = getSupplierFromProduct(product, suppliersById);
+          return [product.origin, supplier?.location];
+        }),
+      ),
+    [products, suppliersById],
   );
 
   const businessTypeOptions = useMemo(
     () =>
-      getUniqueOptions([
-        ...products.map((product) => product.supplier?.businessType),
-        ...supplierCards.map((supplier) => supplier.businessType),
-      ]),
-    [products, supplierCards],
+      getUniqueOptions(
+        products.map(
+          (product) =>
+            getSupplierFromProduct(product, suppliersById)?.businessType,
+        ),
+      ),
+    [products, suppliersById],
   );
 
   const filteredProducts = useMemo(() => {
     const search = normalizeValue(filters.search);
 
     return products.filter((product) => {
-      const supplier = getSupplierFromProduct(product);
-
+      const supplier = getSupplierFromProduct(product, suppliersById);
       const searchableContent = normalizeValue(
         [
           product.name,
@@ -154,13 +331,17 @@ function CatalogPage() {
       );
 
       const matchesSearch = !search || searchableContent.includes(search);
-
       const matchesCategory =
         !filters.category || product.category?.name === filters.category;
-
       const matchesLocation =
-        !filters.location || supplier?.location === filters.location;
-
+        !filters.location ||
+        product.origin === filters.location ||
+        supplier?.location === filters.location;
+      const matchesAvailability =
+        !filters.availability ||
+        (filters.availability === "active"
+          ? product.isActive !== false
+          : product.isActive === false);
       const matchesBusinessType =
         !filters.businessType ||
         supplier?.businessType === filters.businessType;
@@ -169,36 +350,27 @@ function CatalogPage() {
         matchesSearch &&
         matchesCategory &&
         matchesLocation &&
+        matchesAvailability &&
         matchesBusinessType
       );
     });
-  }, [products, filters]);
+  }, [filters, products, suppliersById]);
 
-  const filteredSuppliers = useMemo(() => {
-    const search = normalizeValue(filters.search);
+  const visibleSupplierCount = useMemo(
+    () =>
+      new Set(
+        filteredProducts
+          .map((product) => {
+            const supplier = getSupplierFromProduct(product, suppliersById);
+            return supplier?.id || supplier?.companyName;
+          })
+          .filter(Boolean),
+      ).size,
+    [filteredProducts, suppliersById],
+  );
 
-    return supplierCards.filter((supplier) => {
-      const searchableContent = normalizeValue(
-        [
-          supplier.companyName,
-          supplier.description,
-          supplier.location,
-          supplier.businessType,
-        ].join(" "),
-      );
-
-      const matchesSearch = !search || searchableContent.includes(search);
-
-      const matchesLocation =
-        !filters.location || supplier.location === filters.location;
-
-      const matchesBusinessType =
-        !filters.businessType ||
-        supplier.businessType === filters.businessType;
-
-      return matchesSearch && matchesLocation && matchesBusinessType;
-    });
-  }, [supplierCards, filters]);
+  const hasActiveFilters = Object.values(filters).some(Boolean);
+  const activeFilterCount = Object.values(filters).filter(Boolean).length;
 
   function handleFilterChange(event) {
     const { name, value } = event.target;
@@ -213,278 +385,210 @@ function CatalogPage() {
     setFilters(initialFilters);
   }
 
-  const hasActiveFilters = Object.values(filters).some(Boolean);
-  const hasNoResults =
-    filteredProducts.length === 0 && filteredSuppliers.length === 0;
+  function changeViewMode(nextViewMode) {
+    setViewMode(nextViewMode);
+  }
 
   return (
-    <div className="text-slate-950">
-      <PageHeader
-        eyebrow="Marketplace"
-        title="Catalog"
-        description="Browse supplier products, discover companies and prepare your next sourcing request."
-      >
-        <Button
-          variant="secondary"
-          onClick={resetFilters}
-          disabled={!hasActiveFilters}
-        >
-          Reset filters
-        </Button>
-      </PageHeader>
+    <div className="catalog-page">
+      <header className="catalog-header">
+        <p className="catalog-header__eyebrow">Catalogue</p>
+        <h1>Catalogue</h1>
+        <p>Découvrez les produits proposés par les fournisseurs.</p>
+      </header>
 
-      {isLoading && <LoadingState message="Loading catalog..." />}
+      {isLoading && (
+        <LoadingState
+          className="catalog-page__feedback"
+          message="Chargement du catalogue..."
+        />
+      )}
 
       {errorMessage && (
-        <ErrorState
-          title="Catalog unavailable"
-          message={errorMessage}
-        />
+        <div className="catalog-page__error">
+          <ErrorState
+            className="catalog-page__feedback"
+            title="Catalogue indisponible"
+            message={errorMessage}
+          />
+          <button
+            className="catalog-empty-action"
+            type="button"
+            onClick={() => setReloadKey((currentKey) => currentKey + 1)}
+          >
+            Réessayer
+          </button>
+        </div>
       )}
 
       {!isLoading && !errorMessage && (
         <>
-          <Card>
-            <div className="grid gap-4 xl:grid-cols-[1.4fr_1fr_1fr_1fr]">
-              <Input
-                label="Search"
+          <section
+            className="catalog-toolbar"
+            aria-label="Recherche et filtres du catalogue"
+          >
+            <label className="catalog-search">
+              <span className="sr-only">Rechercher dans le catalogue</span>
+              <CatalogIcon name="search" />
+              <input
                 name="search"
                 value={filters.search}
                 onChange={handleFilterChange}
-                placeholder="Search products, suppliers, origin..."
+                placeholder="Rechercher un produit, fournisseur, lieu..."
               />
+            </label>
 
-              <Select
-                label="Category"
-                name="category"
-                value={filters.category}
-                onChange={handleFilterChange}
-                options={categoryOptions}
-                placeholder="All categories"
-              />
+            <select
+              name="category"
+              value={filters.category}
+              onChange={handleFilterChange}
+              aria-label="Filtrer par catégorie"
+            >
+              <option value="">Toutes les catégories</option>
+              {categoryOptions.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
 
-              <Select
-                label="Location"
-                name="location"
-                value={filters.location}
-                onChange={handleFilterChange}
-                options={locationOptions}
-                placeholder="All locations"
-              />
+            <select
+              name="location"
+              value={filters.location}
+              onChange={handleFilterChange}
+              aria-label="Filtrer par origine ou localisation"
+            >
+              <option value="">Toutes les localisations</option>
+              {locationOptions.map((location) => (
+                <option key={location} value={location}>
+                  {location}
+                </option>
+              ))}
+            </select>
 
-              <Select
-                label="Supplier type"
-                name="businessType"
-                value={filters.businessType}
-                onChange={handleFilterChange}
-                options={businessTypeOptions}
-                placeholder="All supplier types"
-              />
+            <select
+              name="availability"
+              value={filters.availability}
+              onChange={handleFilterChange}
+              aria-label="Filtrer par disponibilité"
+            >
+              <option value="">Toutes les disponibilités</option>
+              <option value="active">Disponible</option>
+              <option value="inactive">Indisponible</option>
+            </select>
+
+            <select
+              name="businessType"
+              value={filters.businessType}
+              onChange={handleFilterChange}
+              aria-label="Filtrer par type de fournisseur"
+            >
+              <option value="">Tous les types de fournisseurs</option>
+              {businessTypeOptions.map((businessType) => (
+                <option key={businessType} value={businessType}>
+                  {businessType}
+                </option>
+              ))}
+            </select>
+
+            <div
+              className="catalog-view-toggle"
+              role="group"
+              aria-label="Mode d’affichage"
+            >
+              <button
+                type="button"
+                className={viewMode === "grid" ? "is-active" : ""}
+                onClick={() => changeViewMode("grid")}
+                aria-label="Afficher en grille"
+                aria-pressed={viewMode === "grid"}
+                title="Afficher en grille"
+              >
+                <CatalogIcon name="grid" />
+              </button>
+              <button
+                type="button"
+                className={viewMode === "list" ? "is-active" : ""}
+                onClick={() => changeViewMode("list")}
+                aria-label="Afficher en liste"
+                aria-pressed={viewMode === "list"}
+                title="Afficher en liste"
+              >
+                <CatalogIcon name="list" />
+              </button>
             </div>
-          </Card>
+          </section>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            <Card>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                Products found
-              </p>
-              <p className="mt-2 text-3xl font-black">
-                {filteredProducts.length}
-              </p>
-            </Card>
+          <div className="catalog-summary">
+            <p>
+              <strong>{filteredProducts.length}</strong>{" "}
+              {filteredProducts.length !== 1
+                ? "produits affichés"
+                : "produit affiché"}
+              <span>
+                {visibleSupplierCount}{" "}
+                {visibleSupplierCount !== 1
+                  ? "fournisseurs"
+                  : "fournisseur"}
+              </span>
+              <span>
+                {hasActiveFilters
+                  ? `${activeFilterCount} filtre${activeFilterCount > 1 ? "s" : ""} actif${activeFilterCount > 1 ? "s" : ""}`
+                  : "Catalogue complet"}
+              </span>
+            </p>
 
-            <Card>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                Suppliers found
-              </p>
-              <p className="mt-2 text-3xl font-black">
-                {filteredSuppliers.length}
-              </p>
-            </Card>
-
-            <Card>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                Discovery status
-              </p>
-              <div className="mt-3">
-                <StatusBadge
-                  status={hasActiveFilters ? "PENDING" : "ACTIVE"}
-                  label={hasActiveFilters ? "Filtered" : "All catalog"}
-                />
-              </div>
-            </Card>
+            {hasActiveFilters && (
+              <button type="button" onClick={resetFilters}>
+                Réinitialiser les filtres
+              </button>
+            )}
           </div>
 
-          {hasNoResults ? (
+          {products.length === 0 ? (
             <EmptyState
-              className="mt-6"
-              title="No catalog result"
-              message="Try changing your search terms or clearing the filters."
+              className="catalog-page__empty"
+              title="Aucun produit disponible pour le moment."
+              message="Les produits publiés par les fournisseurs apparaîtront ici."
+            />
+          ) : filteredProducts.length === 0 ? (
+            <EmptyState
+              className="catalog-page__empty"
+              title="Aucun produit ne correspond à votre recherche."
+              message="Modifiez votre recherche ou réinitialisez les filtres."
               action={
-                <Button variant="secondary" onClick={resetFilters}>
-                  Reset filters
-                </Button>
+                <button
+                  className="catalog-empty-action"
+                  type="button"
+                  onClick={resetFilters}
+                >
+                  Réinitialiser les filtres
+                </button>
               }
             />
           ) : (
-            <div className="mt-6 grid gap-6 xl:grid-cols-[1.3fr_0.9fr]">
-              <section>
-                <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-                  <div>
-                    <h2 className="m-0 text-2xl font-black">Products</h2>
-                    <p className="mt-2 text-sm leading-6 text-slate-500">
-                      Product cards link to product detail pages prepared for the
-                      next discovery steps.
-                    </p>
-                  </div>
-                </div>
+            <section
+              className={`catalog-products catalog-products--${viewMode}`}
+              aria-live="polite"
+              aria-label="Produits du catalogue"
+            >
+              {filteredProducts.map((product, index) => {
+                const supplier = getSupplierFromProduct(
+                  product,
+                  suppliersById,
+                );
+                const productKey = product.id || `product-${index}`;
 
-                {filteredProducts.length === 0 ? (
-                  <EmptyState
-                    title="No products match your filters"
-                    message="Supplier cards may still match your search."
+                return (
+                  <ProductCard
+                    key={productKey}
+                    product={product}
+                    supplier={supplier}
+                    viewMode={viewMode}
                   />
-                ) : (
-                  <div className="grid gap-4">
-                    {filteredProducts.map((product) => (
-                      <Card key={product.id}>
-                        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                          <div className="min-w-0">
-                            <div className="mb-3 flex flex-wrap items-center gap-3">
-                              <h3 className="m-0 text-2xl font-black text-slate-950">
-                                {product.name}
-                              </h3>
-
-                              <StatusBadge
-                                status={product.isActive ? "ACTIVE" : "INACTIVE"}
-                                label={product.isActive ? "Active" : "Inactive"}
-                              />
-                            </div>
-
-                            <p className="max-w-3xl text-sm leading-6 text-slate-500">
-                              {product.description || "No description provided."}
-                            </p>
-
-                            <div className="mt-4 grid gap-3 text-sm md:grid-cols-4">
-                              <div>
-                                <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                                  Supplier
-                                </p>
-                                <p className="mt-1 font-bold text-slate-800">
-                                  {product.supplier?.companyName ||
-                                    "Unknown supplier"}
-                                </p>
-                              </div>
-
-                              <div>
-                                <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                                  Category
-                                </p>
-                                <p className="mt-1 font-bold text-slate-800">
-                                  {product.category?.name || "Not provided"}
-                                </p>
-                              </div>
-
-                              <div>
-                                <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                                  Price
-                                </p>
-                                <p className="mt-1 font-bold text-slate-800">
-                                  {product.priceInfo || "On request"}
-                                </p>
-                              </div>
-
-                              <div>
-                                <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                                  Origin
-                                </p>
-                                <p className="mt-1 font-bold text-slate-800">
-                                  {product.origin || "Not provided"}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="flex flex-wrap gap-3 lg:justify-end">
-                            <Link to={`/products/${product.id}`}>
-                              <Button variant="secondary">View product</Button>
-                            </Link>
-
-                            {product.supplier?.id && (
-                              <Link to={`/suppliers/${product.supplier.id}`}>
-                                <Button variant="ghost">View supplier</Button>
-                              </Link>
-                            )}
-                          </div>
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-              </section>
-
-              <section>
-                <div className="mb-4">
-                  <h2 className="m-0 text-2xl font-black">Suppliers</h2>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    Supplier references help stores discover who is behind each
-                    product.
-                  </p>
-                </div>
-
-                {filteredSuppliers.length === 0 ? (
-                  <EmptyState
-                    title="No suppliers match your filters"
-                    message="Try searching by company, location or supplier type."
-                  />
-                ) : (
-                  <div className="grid gap-4">
-                    {filteredSuppliers.map((supplier) => (
-                      <Card key={supplier.id}>
-                        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-                          <h3 className="m-0 text-xl font-black text-slate-950">
-                            {supplier.companyName}
-                          </h3>
-
-                          <StatusBadge status="ACTIVE" label="Supplier" />
-                        </div>
-
-                        <p className="text-sm leading-6 text-slate-500">
-                          {supplier.description || "No description provided."}
-                        </p>
-
-                        <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-                          <div>
-                            <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                              Location
-                            </p>
-                            <p className="mt-1 font-bold text-slate-800">
-                              {supplier.location || "Not provided"}
-                            </p>
-                          </div>
-
-                          <div>
-                            <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                              Type
-                            </p>
-                            <p className="mt-1 font-bold text-slate-800">
-                              {supplier.businessType || "Not provided"}
-                            </p>
-                          </div>
-                        </div>
-
-                        <Link
-                          className="mt-5 inline-flex"
-                          to={`/suppliers/${supplier.id}`}
-                        >
-                          <Button variant="secondary">View supplier</Button>
-                        </Link>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-              </section>
-            </div>
+                );
+              })}
+            </section>
           )}
         </>
       )}
