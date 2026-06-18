@@ -10,6 +10,7 @@ import {
 import { getResource } from "../../utils/responseUtils";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import LocationSelect from "../../components/shared/LocationSelect";
 
 const initialFormData = {
   companyName: "",
@@ -308,12 +309,9 @@ function SupplierProfilePage() {
               </div>
 
               <div className="supplier-profile-form__row">
-                <Input
-                  label="Localisation"
-                  name="location"
+                <LocationSelect
                   value={formData.location}
                   onChange={handleChange}
-                  placeholder="Rennes, France"
                 />
 
                 <Input
