@@ -59,14 +59,6 @@ function ProductIcon({ name }) {
         <path d="M9 9h.01M9 13h.01M9 17h.01M15 13h.01M15 17h.01" />
       </svg>
     ),
-    category: (
-      <svg {...commonProps}>
-        <rect x="3" y="3" width="7" height="7" rx="2" />
-        <rect x="14" y="3" width="7" height="7" rx="2" />
-        <rect x="3" y="14" width="7" height="7" rx="2" />
-        <rect x="14" y="14" width="7" height="7" rx="2" />
-      </svg>
-    ),
     check: (
       <svg {...commonProps}>
         <path d="m5 12 4 4L19 6" />
@@ -179,6 +171,7 @@ function ProductDetailPage() {
     ? `/requests/new?supplierId=${supplier.id}&productId=${product.id}`
     : "/requests/new";
   const websiteHref = getWebsiteHref(supplier?.website);
+  const productIsAvailable = product?.isActive !== false;
 
   return (
     <div className="product-detail-page">
@@ -256,9 +249,20 @@ function ProductDetailPage() {
                   </div>
                 )}
 
-                <span className="product-detail-hero__status">
-                  <ProductIcon name="check" />
-                  Produit disponible
+                <span
+                  className={[
+                    "product-detail-hero__status",
+                    productIsAvailable
+                      ? ""
+                      : "product-detail-hero__status--inactive",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  <ProductIcon name={productIsAvailable ? "check" : "box"} />
+                  {productIsAvailable
+                    ? "Produit disponible"
+                    : "Produit indisponible"}
                 </span>
               </div>
 
@@ -293,54 +297,6 @@ function ProductDetailPage() {
                 <dl className="product-detail-hero__facts">
                   <div>
                     <dt>
-                      <ProductIcon name="box" />
-                      Commande minimale
-                    </dt>
-                    <dd>{product.minimumOrder || "À définir"}</dd>
-                  </div>
-                  <div>
-                    <dt>
-                      <ProductIcon name="map" />
-                      Origine
-                    </dt>
-                    <dd>{product.origin || "Non renseignée"}</dd>
-                  </div>
-                </dl>
-              </div>
-            </article>
-
-            <section className="product-detail-card product-detail-information">
-              <div className="product-detail-section-heading">
-                <div>
-                  <p className="product-detail-page__card-eyebrow">
-                    Informations produit
-                  </p>
-                  <h2>Tout ce qu’il faut savoir</h2>
-                </div>
-                <span className="product-detail-section-heading__icon">
-                  <ProductIcon name="box" />
-                </span>
-              </div>
-
-              <div className="product-detail-information__grid">
-                <div className="product-detail-information__description">
-                  <h3>Description</h3>
-                  <p>
-                    {product.description ||
-                      "Aucune description complémentaire n’a été renseignée."}
-                  </p>
-                </div>
-
-                <dl className="product-detail-information__details">
-                  <div>
-                    <dt>
-                      <ProductIcon name="category" />
-                      Catégorie
-                    </dt>
-                    <dd>{category?.name || "Non renseignée"}</dd>
-                  </div>
-                  <div>
-                    <dt>
                       <ProductIcon name="map" />
                       Provenance
                     </dt>
@@ -349,20 +305,24 @@ function ProductDetailPage() {
                   <div>
                     <dt>
                       <ProductIcon name="box" />
-                      Minimum de commande
+                      Commande minimale
                     </dt>
                     <dd>{product.minimumOrder || "À convenir"}</dd>
                   </div>
                   <div>
                     <dt>
-                      <ProductIcon name="check" />
+                      <ProductIcon
+                        name={productIsAvailable ? "check" : "box"}
+                      />
                       Disponibilité
                     </dt>
-                    <dd>{product.isActive ? "Disponible" : "Indisponible"}</dd>
+                    <dd>
+                      {productIsAvailable ? "Disponible" : "Indisponible"}
+                    </dd>
                   </div>
                 </dl>
               </div>
-            </section>
+            </article>
           </main>
 
           <aside className="product-detail-page__side">
@@ -449,12 +409,24 @@ function ProductDetailPage() {
                     )}
                   </dl>
 
-                  <Link
-                    className="product-detail-page__secondary-action"
-                    to={`/suppliers/${supplier.id}`}
-                  >
-                    Voir le profil fournisseur
-                  </Link>
+                  <div className="product-detail-supplier__actions">
+                    {canContactSupplier && (
+                      <Link
+                        className="product-detail-page__primary-action"
+                        to={requestPath}
+                      >
+                        <ProductIcon name="request" />
+                        Envoyer une demande
+                      </Link>
+                    )}
+
+                    <Link
+                      className="product-detail-page__secondary-action"
+                      to={`/suppliers/${supplier.id}`}
+                    >
+                      Voir le profil fournisseur
+                    </Link>
+                  </div>
                 </>
               ) : (
                 <p className="product-detail-supplier__empty">
@@ -462,22 +434,6 @@ function ProductDetailPage() {
                 </p>
               )}
             </section>
-
-            {canContactSupplier && (
-              <section className="product-detail-request">
-                <span className="product-detail-request__icon">
-                  <ProductIcon name="request" />
-                </span>
-                <p>Votre prochain approvisionnement</p>
-                <h2>Intéressé par ce produit ?</h2>
-                <span>
-                  Précisez vos quantités et vos besoins pour recevoir une
-                  réponse adaptée du fournisseur.
-                </span>
-                <Link to={requestPath}>Envoyer une demande</Link>
-                <small>Sans engagement · Échange direct avec le fournisseur</small>
-              </section>
-            )}
           </aside>
         </div>
       )}
