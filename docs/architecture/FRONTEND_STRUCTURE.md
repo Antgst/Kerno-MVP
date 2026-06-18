@@ -602,7 +602,7 @@ frontend/public/
 Current public assets include:
 
 ```text
-favicon.svg
+favicon.webp
 icons.svg
 ```
 
