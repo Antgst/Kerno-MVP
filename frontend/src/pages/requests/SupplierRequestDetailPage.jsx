@@ -1,25 +1,158 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import PageHeader from "../../components/shared/PageHeader";
-import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
-import Select from "../../components/ui/Select";
-import StatusBadge from "../../components/ui/StatusBadge";
 import {
   getRequestById,
   updateRequestStatus,
 } from "../../services/requestService";
 import { getResource } from "../../utils/responseUtils";
 
-const statusOptions = [
-  { value: "PENDING", label: "Pending" },
-  { value: "READ", label: "Read" },
-  { value: "ANSWERED", label: "Answered" },
-  { value: "CLOSED", label: "Closed" },
+const editableStatusOptions = [
+  { value: "PENDING", label: "En attente" },
+  { value: "READ", label: "Lue" },
+  { value: "ANSWERED", label: "Répondue" },
+  { value: "CLOSED", label: "Clôturée" },
 ];
+
+const statusLabels = {
+  PENDING: "En attente",
+  READ: "Lue",
+  ANSWERED: "Répondue",
+  ACCEPTED: "Acceptée",
+  REJECTED: "Refusée",
+  COMPLETED: "Terminée",
+  CLOSED: "Clôturée",
+  CANCELLED: "Annulée",
+};
+
+function normalizeStatus(status) {
+  return String(status || "UNKNOWN").toUpperCase();
+}
+
+function formatDate(dateValue) {
+  if (!dateValue) {
+    return "";
+  }
+
+  const date = new Date(dateValue);
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function getStoreName(store) {
+  return store?.storeName || store?.name || "";
+}
+
+function SupplierRequestDetailIcon({ name }) {
+  const commonProps = {
+    width: "20",
+    height: "20",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": "true",
+  };
+
+  const icons = {
+    arrow: (
+      <svg {...commonProps}>
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+    ),
+    box: (
+      <svg {...commonProps}>
+        <path d="m21 8-9 5-9-5 9-5 9 5Z" />
+        <path d="M3 8v8l9 5 9-5V8M12 13v8" />
+      </svg>
+    ),
+    calendar: (
+      <svg {...commonProps}>
+        <rect x="3" y="5" width="18" height="16" rx="2" />
+        <path d="M16 3v4M8 3v4M3 11h18" />
+      </svg>
+    ),
+    check: (
+      <svg {...commonProps}>
+        <path d="m5 12 4 4L19 6" />
+      </svg>
+    ),
+    mail: (
+      <svg {...commonProps}>
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m3 7 9 6 9-6" />
+      </svg>
+    ),
+    map: (
+      <svg {...commonProps}>
+        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </svg>
+    ),
+    message: (
+      <svg {...commonProps}>
+        <path d="M4 4h16v12H7l-3 3V4Z" />
+        <path d="M8 8h8M8 12h5" />
+      </svg>
+    ),
+    phone: (
+      <svg {...commonProps}>
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.63a2 2 0 0 1-.45 2.11L8 9.73a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.85.29 1.73.5 2.63.62A2 2 0 0 1 22 16.92Z" />
+      </svg>
+    ),
+    store: (
+      <svg {...commonProps}>
+        <path d="M3 9l2-5h14l2 5" />
+        <path d="M5 13v8h14v-8M9 21v-6h6v6" />
+        <path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0" />
+      </svg>
+    ),
+  };
+
+  return icons[name] || null;
+}
+
+function RequestStatusBadge({ status }) {
+  const normalizedStatus = normalizeStatus(status);
+
+  return (
+    <span
+      className={`supplier-request-status supplier-request-status--${normalizedStatus.toLowerCase()}`}
+    >
+      {statusLabels[normalizedStatus] || "Statut inconnu"}
+    </span>
+  );
+}
+
+function DetailField({ icon, label, value }) {
+  if (!value) {
+    return null;
+  }
+
+  return (
+    <div>
+      <dt>
+        <SupplierRequestDetailIcon name={icon} />
+        {label}
+      </dt>
+      <dd>{value}</dd>
+    </div>
+  );
+}
 
 function SupplierRequestDetailPage() {
   const { id } = useParams();
@@ -28,7 +161,8 @@ function SupplierRequestDetailPage() {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [loadErrorMessage, setLoadErrorMessage] = useState("");
+  const [actionErrorMessage, setActionErrorMessage] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
 
   useEffect(() => {
@@ -36,7 +170,7 @@ function SupplierRequestDetailPage() {
 
     async function loadRequest() {
       setIsLoading(true);
-      setErrorMessage("");
+      setLoadErrorMessage("");
 
       try {
         const response = await getRequestById(id);
@@ -45,11 +179,11 @@ function SupplierRequestDetailPage() {
           const loadedRequest = getResource(response, ["request"]);
 
           setRequest(loadedRequest);
-          setSelectedStatus(loadedRequest?.status || "");
+          setSelectedStatus(normalizeStatus(loadedRequest?.status || ""));
         }
-      } catch (error) {
+      } catch {
         if (shouldUpdateState) {
-          setErrorMessage(error.message || "Unable to load request details.");
+          setLoadErrorMessage("Impossible de charger la demande.");
         }
       } finally {
         if (shouldUpdateState) {
@@ -65,14 +199,54 @@ function SupplierRequestDetailPage() {
     };
   }, [id]);
 
+  const currentStatus = normalizeStatus(request?.status);
+  const statusOptions = useMemo(() => {
+    if (
+      !selectedStatus ||
+      editableStatusOptions.some((option) => option.value === selectedStatus)
+    ) {
+      return editableStatusOptions;
+    }
+
+    return [
+      {
+        value: selectedStatus,
+        label: statusLabels[selectedStatus] || "Statut actuel",
+      },
+      ...editableStatusOptions,
+    ];
+  }, [selectedStatus]);
+
+  const store = request?.store;
+  const product = request?.product;
+  const storeName = getStoreName(store);
+  const createdAt = formatDate(request?.createdAt);
+  const updatedAt = formatDate(request?.updatedAt);
+  const hasStoreDetails = Boolean(
+    storeName ||
+      store?.brandName ||
+      store?.location ||
+      store?.contactEmail ||
+      store?.email ||
+      store?.phone ||
+      store?.businessType ||
+      store?.storeType,
+  );
+  const hasProductDetails = Boolean(
+    product?.name ||
+      product?.priceInfo ||
+      product?.minimumOrder ||
+      product?.origin,
+  );
+
   async function handleStatusUpdate() {
-    if (!selectedStatus || selectedStatus === request.status) {
+    if (!selectedStatus || selectedStatus === currentStatus || !request?.id) {
       return;
     }
 
     setIsUpdatingStatus(true);
     setStatusMessage("");
-    setErrorMessage("");
+    setActionErrorMessage("");
 
     try {
       const response = await updateRequestStatus(request.id, {
@@ -85,160 +259,267 @@ function SupplierRequestDetailPage() {
       };
 
       setRequest(updatedRequest);
-      setSelectedStatus(updatedRequest.status);
-      setStatusMessage("Request status updated successfully.");
-    } catch (error) {
-      setErrorMessage(error.message || "Unable to update request status.");
+      setSelectedStatus(normalizeStatus(updatedRequest.status));
+      setStatusMessage("Le statut de la demande a bien été mis à jour.");
+    } catch {
+      setActionErrorMessage(
+        "Impossible de mettre à jour le statut de la demande.",
+      );
     } finally {
       setIsUpdatingStatus(false);
     }
   }
 
+  const backAction = (
+    <Link
+      className="supplier-request-detail-back"
+      to="/supplier/requests"
+    >
+      <SupplierRequestDetailIcon name="arrow" />
+      Retour aux demandes
+    </Link>
+  );
+
   return (
-    <div className="text-slate-950">
-      <PageHeader
-        eyebrow="Received request"
-        title={request?.subject || "Request details"}
-        description="Review the contact request received from a store."
-      >
-        <Link to="/supplier/requests">
-          <Button variant="secondary">Back to received requests</Button>
-        </Link>
-      </PageHeader>
+    <div className="supplier-request-detail-page">
+      <header className="supplier-request-detail-header">
+        <div>
+          <p className="supplier-request-detail-header__eyebrow">
+            Demande reçue
+          </p>
+          <h1>{request?.subject || "Détail de la demande"}</h1>
+          <p>Consultez le détail de la demande reçue d’un magasin.</p>
+        </div>
+        {backAction}
+      </header>
 
-      {isLoading && <LoadingState message="Loading request details..." />}
+      {isLoading && (
+        <LoadingState
+          className="supplier-request-detail-page__feedback"
+          message="Chargement de la demande..."
+        />
+      )}
 
-      {errorMessage && (
+      {loadErrorMessage && (
         <ErrorState
-          className="mb-6"
-          title="Request unavailable"
-          message={errorMessage}
+          className="supplier-request-detail-page__feedback"
+          title="Demande indisponible"
+          message={loadErrorMessage}
         />
       )}
 
-      {!isLoading && !errorMessage && !request && (
+      {!isLoading && !loadErrorMessage && !request && (
         <EmptyState
-          title="Request not found"
-          message="The request may no longer exist."
+          className="supplier-request-detail-page__feedback"
+          title="Demande introuvable."
+          message="Cette demande a peut-être été supprimée ou n’est plus disponible."
+          action={backAction}
         />
       )}
 
-      {!isLoading && request && (
-        <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          <Card>
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                  Request subject
-                </p>
-                <h2 className="mt-2 text-3xl font-black">{request.subject}</h2>
-              </div>
-
-              <StatusBadge status={request.status} />
-            </div>
-
-            <p className="text-base leading-8 text-slate-600">
-              {request.message}
-            </p>
-
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div className="rounded-2xl bg-slate-50 p-4">
-                <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                  Requested quantity / need
-                </p>
-                <p className="mt-1 font-black text-slate-900">
-                  {request.requestedQuantity || "Not provided"}
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-slate-50 p-4">
-                <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                  Product
-                </p>
-                <p className="mt-1 font-black text-slate-900">
-                  {request.product?.name || "General request"}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <div className="grid gap-6">
-            <Card>
-              <h2 className="m-0 text-xl font-black">Store information</h2>
-
-              <div className="mt-5 space-y-4">
+      {!isLoading && !loadErrorMessage && request && (
+        <div className="supplier-request-detail-layout">
+          <main className="supplier-request-detail-main">
+            <article className="supplier-request-detail-card supplier-request-detail-card--message">
+              <div className="supplier-request-detail-card__heading">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Store
+                  <p className="supplier-request-detail-card__eyebrow">
+                    Détail de la demande
                   </p>
-                  <p className="mt-1 text-xl font-black text-slate-950">
-                    {request.store?.storeName || "Unknown store"}
-                  </p>
+                  <h2>{request.subject || "Demande sans objet"}</h2>
+                </div>
+                <RequestStatusBadge status={request.status} />
+              </div>
+
+              {request.message && (
+                <div className="supplier-request-detail-message">
+                  <span>
+                    <SupplierRequestDetailIcon name="message" />
+                  </span>
+                  <p>{request.message}</p>
+                </div>
+              )}
+
+              <dl className="supplier-request-meta-grid">
+                <DetailField
+                  icon="message"
+                  label="Quantité / besoin"
+                  value={request.requestedQuantity}
+                />
+                <DetailField
+                  icon="calendar"
+                  label="Créée le"
+                  value={createdAt}
+                />
+                {updatedAt && updatedAt !== createdAt && (
+                  <DetailField
+                    icon="calendar"
+                    label="Mise à jour le"
+                    value={updatedAt}
+                  />
+                )}
+              </dl>
+            </article>
+
+            {hasProductDetails && (
+              <article className="supplier-request-detail-card supplier-request-product-card">
+                <div className="supplier-request-detail-section-heading">
+                  <span>
+                    <SupplierRequestDetailIcon name="box" />
+                  </span>
+                  <div>
+                    <p>Produit concerné</p>
+                    <h2>{product?.name || "Produit"}</h2>
+                  </div>
                 </div>
 
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Brand
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {request.store?.brandName || "Not provided"}
-                  </p>
-                </div>
+                <dl className="supplier-request-product-grid">
+                  <DetailField
+                    icon="box"
+                    label="Information tarifaire"
+                    value={product?.priceInfo}
+                  />
+                  <DetailField
+                    icon="box"
+                    label="Commande minimale"
+                    value={product?.minimumOrder}
+                  />
+                  <DetailField
+                    icon="map"
+                    label="Origine"
+                    value={product?.origin}
+                  />
+                </dl>
+              </article>
+            )}
+          </main>
 
+          <aside className="supplier-request-detail-sidebar">
+            <article className="supplier-request-detail-card supplier-request-store-card">
+              <div className="supplier-request-detail-section-heading">
+                <span>
+                  <SupplierRequestDetailIcon name="store" />
+                </span>
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Location
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {request.store?.location || "Not provided"}
-                  </p>
+                  <p>Magasin demandeur</p>
+                  <h2>Informations magasin</h2>
                 </div>
               </div>
-            </Card>
 
-            <Card>
-              <h2 className="m-0 text-xl font-black">Request status</h2>
+              {hasStoreDetails ? (
+                <dl className="supplier-request-store-grid">
+                  <DetailField
+                    icon="store"
+                    label="Magasin"
+                    value={storeName}
+                  />
+                  <DetailField
+                    icon="store"
+                    label="Enseigne"
+                    value={store?.brandName}
+                  />
+                  <DetailField
+                    icon="map"
+                    label="Localisation"
+                    value={store?.location}
+                  />
+                  <DetailField
+                    icon="mail"
+                    label="Email"
+                    value={store?.contactEmail || store?.email}
+                  />
+                  <DetailField
+                    icon="phone"
+                    label="Téléphone"
+                    value={store?.phone}
+                  />
+                  <DetailField
+                    icon="store"
+                    label="Type de magasin"
+                    value={store?.businessType || store?.storeType}
+                  />
+                </dl>
+              ) : (
+                <p className="supplier-request-detail-empty-copy">
+                  Les informations du magasin ne sont pas renseignées.
+                </p>
+              )}
+            </article>
 
-              <p className="mt-2 text-sm leading-6 text-slate-500">
-                Keep request tracking simple. This is not a full messaging or
-                order management system.
+            <article className="supplier-request-detail-card supplier-request-status-card">
+              <div className="supplier-request-status-card__top">
+                <div>
+                  <p className="supplier-request-detail-card__eyebrow">
+                    Suivi
+                  </p>
+                  <h2>Statut de la demande</h2>
+                </div>
+                <RequestStatusBadge status={request.status} />
+              </div>
+
+              <p className="supplier-request-status-card__copy">
+                Suivez simplement l’état de cette demande. KERNO ne remplace
+                pas encore un outil complet de commande ou de messagerie.
               </p>
 
               {statusMessage && (
-                <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800">
+                <div
+                  className="supplier-request-status-card__success"
+                  role="status"
+                >
+                  <SupplierRequestDetailIcon name="check" />
                   {statusMessage}
                 </div>
               )}
 
-              {isUpdatingStatus && (
-                <LoadingState
-                  className="mt-5"
-                  message="Updating request status..."
+              {actionErrorMessage && (
+                <ErrorState
+                  className="supplier-request-status-card__error"
+                  title="Mise à jour impossible"
+                  message={actionErrorMessage}
                 />
               )}
 
-              <div className="mt-5 space-y-4">
-                <Select
-                  label="Status"
+              {isUpdatingStatus && (
+                <LoadingState
+                  className="supplier-request-status-card__loading"
+                  message="Mise à jour du statut..."
+                />
+              )}
+
+              <div className="supplier-request-status-form">
+                <label htmlFor="request-status">Statut</label>
+                <select
+                  id="request-status"
                   name="status"
                   value={selectedStatus}
-                  onChange={(event) => setSelectedStatus(event.target.value)}
-                  options={statusOptions}
-                  placeholder="Choose a status"
-                />
+                  onChange={(event) => {
+                    setSelectedStatus(event.target.value);
+                    setStatusMessage("");
+                    setActionErrorMessage("");
+                  }}
+                >
+                  {statusOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
 
-                <Button
-                  className="w-full"
+                <button
+                  type="button"
                   disabled={
-                    isUpdatingStatus || selectedStatus === request.status
+                    isUpdatingStatus ||
+                    !selectedStatus ||
+                    selectedStatus === currentStatus
                   }
                   onClick={handleStatusUpdate}
                 >
-                  Update status
-                </Button>
+                  Mettre à jour le statut
+                </button>
               </div>
-            </Card>
-          </div>
+            </article>
+          </aside>
         </div>
       )}
     </div>
