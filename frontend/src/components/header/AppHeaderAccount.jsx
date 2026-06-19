@@ -24,8 +24,16 @@ function AppHeaderAccount({
       <div className="kerno-app-header__menu-wrapper">
         <button
           type="button"
-          className="kerno-app-header__more"
-          aria-label="Ouvrir le menu du compte"
+          className={[
+            "kerno-app-header__more",
+            isMenuOpen ? "kerno-app-header__more--open" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          aria-label={
+            isMenuOpen ? "Fermer le menu du compte" : "Ouvrir le menu du compte"
+          }
+          aria-expanded={isMenuOpen}
           onClick={onMenuToggle}
         >
           <HeaderIcon name="chevron" />

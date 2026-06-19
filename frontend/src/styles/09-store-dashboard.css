@@ -720,6 +720,10 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
   justify-content: flex-start;
 }
 
+.store-dashboard__supplier-product-count {
+  margin-left: auto;
+}
+
 .store-dashboard__supplier-meta span,
 .store-dashboard__supplier-footer span {
   display: inline-flex;

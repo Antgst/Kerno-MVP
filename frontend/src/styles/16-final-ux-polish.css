@@ -141,15 +141,61 @@
 }
 
 .kerno-app-header__dropdown {
-  width: min(220px, calc(100vw - 28px));
-  padding: 7px;
+  width: min(238px, calc(100vw - 28px));
+  padding: 9px;
+  border: 1px solid rgb(214 219 215 / 92%);
+  border-radius: 17px;
+  background: rgb(255 255 255 / 98%);
+  box-shadow:
+    0 22px 48px rgb(22 78 63 / 13%),
+    0 6px 16px rgb(15 23 42 / 6%);
 }
 
 .kerno-app-header__dropdown a,
 .kerno-app-header__dropdown button {
-  min-height: 38px;
-  padding: 8px 11px;
-  font-size: 0.78rem;
+  min-height: 42px;
+  padding: 9px 12px;
+  border-radius: 11px;
+  color: #263936;
+  font-size: 0.8rem;
+  font-weight: 650;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.kerno-app-header__dropdown a:hover,
+.kerno-app-header__dropdown a:focus-visible,
+.kerno-app-header__dropdown button:hover,
+.kerno-app-header__dropdown button:focus-visible {
+  background: #edf6f3;
+  color: #164e3f;
+  transform: translateX(2px);
+}
+
+.kerno-app-header__dropdown .kerno-app-header__logout {
+  min-height: 43px;
+  margin-top: 7px;
+  padding-top: 10px;
+  border-top: 1px solid #e8e6e0;
+  border-radius: 0 0 11px 11px;
+  color: #b5473c;
+}
+
+.kerno-app-header__dropdown .kerno-app-header__logout:hover,
+.kerno-app-header__dropdown .kerno-app-header__logout:focus-visible {
+  background: #fff3f0;
+  color: #9f352d;
+}
+
+.kerno-app-header__more svg {
+  transform: rotate(90deg);
+  transition: transform 180ms ease;
+}
+
+.kerno-app-header__more--open svg {
+  transform: rotate(0deg);
 }
 
 @media (max-width: 700px) {

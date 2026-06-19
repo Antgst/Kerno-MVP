@@ -185,7 +185,7 @@ function getSupplierProductCount(supplier, productCounts, productsAreLoaded) {
       return productCounts.get(nameKey);
     }
 
-    return null;
+    return 0;
   }
 
   if (Array.isArray(supplier.products)) {
@@ -194,11 +194,11 @@ function getSupplierProductCount(supplier, productCounts, productsAreLoaded) {
 
   const explicitCount = supplier.productCount ?? supplier.productsCount;
 
-  if (Number.isFinite(Number(explicitCount)) && Number(explicitCount) > 0) {
+  if (Number.isFinite(Number(explicitCount)) && Number(explicitCount) >= 0) {
     return Number(explicitCount);
   }
 
-  return null;
+  return 0;
 }
 
 function StoreDashboardPage() {
@@ -552,24 +552,20 @@ function StoreDashboardPage() {
                       </span>
                     </div>
 
-                    {(supplier.productCount !== null || supplier.rating) && (
-                      <div className="store-dashboard__supplier-footer">
-                        {supplier.productCount !== null && (
-                          <span>
-                            <DashboardIcon name="package" />
-                            {supplier.productCount} produit
-                            {supplier.productCount > 1 ? "s" : ""}
-                          </span>
-                        )}
+                    <div className="store-dashboard__supplier-footer">
+                      {supplier.rating && (
+                        <span>
+                          <DashboardIcon name="star" />
+                          {supplier.rating}
+                        </span>
+                      )}
 
-                        {supplier.rating && (
-                          <span>
-                            <DashboardIcon name="star" />
-                            {supplier.rating}
-                          </span>
-                        )}
-                      </div>
-                    )}
+                      <span className="store-dashboard__supplier-product-count">
+                        <DashboardIcon name="package" />
+                        {supplier.productCount} produit
+                        {supplier.productCount > 1 ? "s" : ""}
+                      </span>
+                    </div>
 
                     <Link to={supplierPath}>Voir le fournisseur</Link>
                   </div>
