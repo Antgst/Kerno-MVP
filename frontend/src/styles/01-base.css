@@ -1,0 +1,89 @@
+#root {
+  min-height: 100vh;
+}
+
+/* Base shared pages */
+.page-shell {
+  min-height: 100vh;
+  padding: 48px 24px;
+  color: var(--color-ink);
+}
+
+.page-card,
+.hero-card,
+.route-section {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 32px;
+  border: 1px solid rgb(15 23 42 / 8%);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 18px 45px rgb(15 23 42 / 8%);
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: var(--color-orange);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.text-link {
+  display: inline-flex;
+  margin-top: 16px;
+  color: var(--color-deep-green);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+/* Global background */
+.kerno-page-bg,
+.kerno-shell__main.kerno-page-bg,
+.public-layout.kerno-page-bg {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+}
+
+.kerno-shell__main.kerno-page-bg::before,
+.public-layout.kerno-page-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--kerno-global-bg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(10px);
+  opacity: 0.46;
+  pointer-events: none;
+  transform: scale(1.06);
+}
+
+.kerno-shell__main.kerno-page-bg::after,
+.public-layout.kerno-page-bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgb(248 245 239 / 64%) 0%,
+    rgb(248 245 239 / 74%) 45%,
+    rgb(248 245 239 / 84%) 100%
+  );
+  pointer-events: none;
+}
+
+.kerno-shell__main.kerno-page-bg > *,
+.public-layout.kerno-page-bg > * {
+  position: relative;
+  z-index: 2;
+}
