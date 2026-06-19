@@ -82,6 +82,14 @@
   pointer-events: none;
 }
 
+.kerno-shell__main.kerno-page-bg::before {
+  display: none;
+}
+
+.kerno-shell__main.kerno-page-bg::after {
+  position: absolute;
+}
+
 .kerno-shell__main.kerno-page-bg > *,
 .public-layout.kerno-page-bg > * {
   position: relative;
