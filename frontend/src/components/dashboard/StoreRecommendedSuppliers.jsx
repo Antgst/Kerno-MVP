@@ -29,6 +29,9 @@ function StoreRecommendedSuppliers({ suppliers }) {
             const supplierPath = `/suppliers/${supplier.id}`;
             const supplierImage =
               supplierImages[supplier.visual] || supplierImages.farm;
+            const productCount = Number.isFinite(Number(supplier.productCount))
+              ? Number(supplier.productCount)
+              : 0;
 
             return (
               <article
@@ -65,24 +68,19 @@ function StoreRecommendedSuppliers({ suppliers }) {
                     </span>
                   </div>
 
-                  {(supplier.productCount !== null || supplier.rating) && (
-                    <div className="store-dashboard__supplier-footer">
-                      {supplier.productCount !== null && (
-                        <span>
-                          <DashboardIcon name="package" />
-                          {supplier.productCount} produit
-                          {supplier.productCount > 1 ? "s" : ""}
-                        </span>
-                      )}
+                  <div className="store-dashboard__supplier-footer">
+                    {supplier.rating && (
+                      <span>
+                        <DashboardIcon name="star" />
+                        {supplier.rating}
+                      </span>
+                    )}
 
-                      {supplier.rating && (
-                        <span>
-                          <DashboardIcon name="star" />
-                          {supplier.rating}
-                        </span>
-                      )}
-                    </div>
-                  )}
+                    <span className="store-dashboard__supplier-product-count">
+                      <DashboardIcon name="package" />
+                      {productCount} produit{productCount > 1 ? "s" : ""}
+                    </span>
+                  </div>
 
                   <Link to={supplierPath}>Voir le fournisseur</Link>
                 </div>
