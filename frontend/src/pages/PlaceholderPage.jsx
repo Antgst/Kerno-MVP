@@ -9,16 +9,23 @@ import Select from "../components/ui/Select";
 import StatusBadge from "../components/ui/StatusBadge";
 
 const accessMessages = {
-  public: "Public page.",
-  auth: "Protected page for authenticated users.",
-  supplier: "Protected page for supplier users.",
-  store: "Protected page for store users.",
+  public: "Page publique.",
+  auth: "Page réservée aux utilisateurs connectés.",
+  supplier: "Page réservée aux fournisseurs.",
+  store: "Page réservée aux magasins.",
 };
 
 const roleOptions = [
-  { value: "SUPPLIER", label: "Supplier" },
-  { value: "STORE", label: "Store" },
+  { value: "SUPPLIER", label: "Fournisseur" },
+  { value: "STORE", label: "Magasin" },
 ];
+
+const accessLabels = {
+  public: "Public",
+  auth: "Authentifié",
+  supplier: "Fournisseur",
+  store: "Magasin",
+};
 
 function PlaceholderPage({ route }) {
   const params = useParams();
@@ -28,31 +35,31 @@ function PlaceholderPage({ route }) {
     <main className="min-h-screen bg-stone-50 px-6 py-10 text-slate-950">
       <div className="mx-auto max-w-6xl">
         <PageHeader
-          eyebrow="KERNO MVP route"
+          eyebrow="Route KERNO MVP"
           title={route.label}
-          description="This placeholder now uses the shared UI components required by issue #39. It keeps the MVP pages consistent while the real screens are being built."
+          description="Cette page temporaire utilise les composants partagés du MVP KERNO."
         >
           <Link className="font-black text-emerald-900 hover:underline" to="/">
-            Back to route map
+            Retour à l’accueil
           </Link>
         </PageHeader>
 
         <div className="grid gap-4 md:grid-cols-3">
           <DashboardStatCard
-            label="Path"
+            label="Chemin"
             value={route.path}
-            helperText="Current route pattern"
+            helperText="Route actuelle"
           />
 
           <DashboardStatCard
-            label="Access"
-            value={route.access}
-            helperText="Expected access level"
+            label="Accès"
+            value={accessLabels[route.access] || "À confirmer"}
+            helperText="Niveau d’accès attendu"
           />
 
           <DashboardStatCard
-            label="Status"
-            value="Ready"
+            label="Statut"
+            value="Prête"
             trend="UI"
             helperText={accessMessages[route.access]}
           />
@@ -63,12 +70,12 @@ function PlaceholderPage({ route }) {
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 className="m-0 text-xl font-black">
-                  Shared component preview
+                  Aperçu des composants partagés
                 </h2>
 
                 <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Buttons, form fields, cards and badges can now be reused
-                  across the supplier, store, catalog and request pages.
+                  Les boutons, champs, cartes et badges sont réutilisables dans
+                  les différents espaces KERNO.
                 </p>
               </div>
 
@@ -77,32 +84,34 @@ function PlaceholderPage({ route }) {
 
             <div className="grid gap-4 md:grid-cols-2">
               <Input
-                label="Example field"
+                label="Champ d’exemple"
                 name="exampleField"
-                placeholder="Reusable input"
-                helperText="Used for login, profile, product and request forms."
+                placeholder="Champ réutilisable"
+                helperText="Utilisé dans les formulaires de l’application."
               />
 
               <Select
-                label="Example role"
+                label="Rôle d’exemple"
                 name="exampleRole"
                 options={roleOptions}
-                placeholder="Choose a role"
-                helperText="Reusable select with simple options."
+                placeholder="Choisir un rôle"
+                helperText="Liste réutilisable avec des options simples."
               />
             </div>
 
             <div className="mt-5 flex flex-wrap gap-3">
-              <Button>Primary action</Button>
-              <Button variant="secondary">Secondary action</Button>
-              <Button variant="ghost">Ghost action</Button>
+              <Button>Action principale</Button>
+              <Button variant="secondary">Action secondaire</Button>
+              <Button variant="ghost">Action discrète</Button>
             </div>
           </Card>
 
           <Card>
             {hasParams ? (
               <div>
-                <h2 className="m-0 text-xl font-black">Route parameters</h2>
+                <h2 className="m-0 text-xl font-black">
+                  Paramètres de la route
+                </h2>
 
                 <pre className="mt-4 overflow-x-auto rounded-2xl bg-slate-950 p-4 text-sm text-white">
                   {JSON.stringify(params, null, 2)}
@@ -110,8 +119,8 @@ function PlaceholderPage({ route }) {
               </div>
             ) : (
               <EmptyState
-                title="No route parameters"
-                message="Dynamic route values will appear here on detail pages such as products, suppliers and requests."
+                title="Aucun paramètre de route"
+                message="Les valeurs dynamiques apparaîtront ici sur les pages de détail."
               />
             )}
           </Card>

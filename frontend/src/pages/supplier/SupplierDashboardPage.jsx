@@ -5,24 +5,8 @@ import { getProducts } from "../../services/productService";
 import { getReceivedRequests } from "../../services/requestService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
-import appleJuiceImage from "../../assets/supplier-dashboard/supplier-product-apple-juice.webp";
-import buckwheatBiscuitsImage from "../../assets/supplier-dashboard/supplier-product-buckwheat-biscuits.webp";
-import honeyImage from "../../assets/supplier-dashboard/supplier-product-honey.webp";
-import jamImage from "../../assets/supplier-dashboard/supplier-product-jam.webp";
-
-const productImages = {
-  honey: honeyImage,
-  jam: jamImage,
-  appleJuice: appleJuiceImage,
-  buckwheatBiscuits: buckwheatBiscuitsImage,
-};
-
-const productVisualKeys = [
-  "honey",
-  "jam",
-  "appleJuice",
-  "buckwheatBiscuits",
-];
+import ProductImage from "../../components/ui/ProductImage";
+import { formatStatus, getStatusTone } from "../../utils/status";
 
 function DashboardIcon({ name }) {
   const commonProps = {
@@ -38,6 +22,12 @@ function DashboardIcon({ name }) {
   };
 
   const icons = {
+    check: (
+      <svg {...commonProps}>
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="m8.5 12 2.3 2.3 4.8-5" />
+      </svg>
+    ),
     clock: (
       <svg {...commonProps}>
         <circle cx="12" cy="12" r="8.5" />
@@ -137,11 +127,6 @@ function getProductCategory(product) {
   );
 }
 
-function getProductViews(product) {
-  const views = product?.catalogViews ?? product?.viewCount ?? product?.views;
-  return Number.isFinite(Number(views)) ? Number(views) : null;
-}
-
 function getProductPrice(product) {
   if (product?.priceInfo) {
     return product.priceInfo;
@@ -152,18 +137,6 @@ function getProductPrice(product) {
   }
 
   return "Prix sur demande";
-}
-
-function getCatalogViewCount(products) {
-  const knownViews = products
-    .map((product) => getProductViews(product))
-    .filter((views) => views !== null);
-
-  if (knownViews.length) {
-    return knownViews.reduce((total, views) => total + views, 0);
-  }
-
-  return 0;
 }
 
 function getStoreName(request) {
@@ -183,46 +156,6 @@ function getRequestProduct(request) {
   return request?.product?.name || request?.productName || "Demande générale";
 }
 
-function getStatusLabel(status) {
-  const normalizedStatus = String(status || "").toUpperCase();
-
-  if (normalizedStatus === "PENDING") {
-    return "En attente";
-  }
-
-  if (["ANSWERED", "ACCEPTED", "REPLIED"].includes(normalizedStatus)) {
-    return "Répondu";
-  }
-
-  if (normalizedStatus === "READ") {
-    return "Lu";
-  }
-
-  if (normalizedStatus === "CLOSED") {
-    return "Clôturé";
-  }
-
-  if (normalizedStatus === "REJECTED") {
-    return "Refusé";
-  }
-
-  return normalizedStatus || "Nouveau";
-}
-
-function getStatusTone(status) {
-  const normalizedStatus = String(status || "").toUpperCase();
-
-  if (normalizedStatus === "PENDING") {
-    return "pending";
-  }
-
-  if (normalizedStatus === "REJECTED") {
-    return "rejected";
-  }
-
-  return "answered";
-}
-
 function formatFrenchDate(value) {
   if (!value) {
     return "";
@@ -235,9 +168,7 @@ function formatFrenchDate(value) {
   }).format(new Date(value));
 }
 
-function getProductCard(product, index) {
-  const visualKey = productVisualKeys[index % productVisualKeys.length];
-
+function getProductCard(product) {
   return {
     ...product,
     categoryName: getProductCategory(product),
@@ -246,9 +177,6 @@ function getProductCard(product, index) {
       product.availability ||
       product.minimumOrder ||
       (isProductPublished(product) ? "Disponible" : "Masqué"),
-    views: getProductViews(product) ?? 0,
-    visualKey,
-    imageUrl: product.imageUrl || productImages[visualKey],
   };
 }
 
@@ -356,7 +284,12 @@ function SupplierDashboardPage() {
   const publishedProductCount = publishedProducts.length;
   const receivedRequestCount = requests.length;
   const pendingRequestCount = pendingRequests.length;
-  const catalogViewCount = getCatalogViewCount(products);
+  const processedRequestCount = requests.filter((request) =>
+    ["ANSWERED", "ACCEPTED", "REJECTED", "COMPLETED", "DONE", "RESOLVED", "CLOSED"].includes(
+      String(request.status || "").toUpperCase(),
+    ),
+  ).length;
+  const profileIsComplete = completionPercent === 100;
 
   const stats = [
     {
@@ -378,33 +311,32 @@ function SupplierDashboardPage() {
       helper: "À traiter",
     },
     {
-      icon: "eye",
-      value: catalogViewCount,
-      label: "Vues catalogue",
-      helper: "Activité produit",
+      icon: "check",
+      value: processedRequestCount,
+      label: "Demandes traitées",
+      helper: "Suivi commercial",
       featured: true,
     },
   ];
 
   const quickActions = [
     {
-      icon: "plus",
-      label: "Ajouter un produit",
-      to: "/supplier/products/new",
-      variant: "primary",
-    },
-    {
       icon: "stack",
       label: "Gérer mes produits",
       to: "/supplier/products",
-      variant: "soft",
+      variant: "primary",
     },
-    { icon: "user", label: "Mon profil", to: "/supplier/profile" },
     {
       icon: "mail",
-      label: "Demandes reçues",
+      label: "Voir les demandes reçues",
       to: "/supplier/requests",
       count: pendingRequestCount,
+    },
+    {
+      icon: "user",
+      label: "Modifier mon profil",
+      to: "/supplier/profile",
+      variant: "soft",
     },
   ];
 
@@ -483,7 +415,7 @@ function SupplierDashboardPage() {
                   <span
                     className={`supplier-dashboard__status supplier-dashboard__status--${getStatusTone(request.status)}`}
                   >
-                    {getStatusLabel(request.status)}
+                    {formatStatus(request.status)}
                   </span>
                 </Link>
               ))
@@ -530,9 +462,15 @@ function SupplierDashboardPage() {
           <article className="supplier-dashboard__profile-card">
             <div className="supplier-dashboard__profile-content">
               <div className="supplier-dashboard__profile-copy">
-                <h2>Complétez votre profil fournisseur</h2>
+                <h2>
+                  {profileIsComplete
+                    ? "Profil complet"
+                    : "Complétez votre profil"}
+                </h2>
                 <p>
-                  Un profil complet améliore votre visibilité auprès des magasins.
+                  {profileIsComplete
+                    ? "Gérez les informations visibles par les magasins lorsqu’ils découvrent votre activité ou vos produits."
+                    : "Ajoutez les informations manquantes pour renforcer votre crédibilité."}
                 </p>
               </div>
 
@@ -545,7 +483,9 @@ function SupplierDashboardPage() {
               </div>
             </div>
 
-            <Link to="/supplier/profile">Compléter maintenant</Link>
+            <Link to="/supplier/profile">
+              {profileIsComplete ? "Modifier le profil" : "Compléter maintenant"}
+            </Link>
           </article>
         </aside>
       </section>
@@ -555,7 +495,7 @@ function SupplierDashboardPage() {
         aria-labelledby="featured-products-title"
       >
         <div className="supplier-dashboard__section-header">
-          <h2 id="featured-products-title">Produits les plus consultés</h2>
+          <h2 id="featured-products-title">Produits publiés</h2>
           <Link to="/supplier/products">Voir tous les produits</Link>
         </div>
 
@@ -564,11 +504,10 @@ function SupplierDashboardPage() {
             featuredProducts.map((product) => (
               <article className="supplier-dashboard__product-card" key={product.id}>
                 <div className="supplier-dashboard__product-visual">
-                  <img
+                  <ProductImage
                     className="supplier-dashboard__product-image"
-                    src={product.imageUrl}
+                    product={product}
                     alt={`Aperçu du produit ${product.name}`}
-                    loading="lazy"
                   />
                 </div>
 
@@ -582,11 +521,6 @@ function SupplierDashboardPage() {
                   </div>
 
                   <div className="supplier-dashboard__product-footer">
-                    <span>
-                      <DashboardIcon name="eye" />
-                      {product.views} vues
-                    </span>
-
                     <Link to={`/supplier/products/${product.id}/edit`}>Gérer</Link>
                   </div>
                 </div>

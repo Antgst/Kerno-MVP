@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
+import ProductImage from "../../components/ui/ProductImage";
 import { getProducts } from "../../services/productService";
 import { getSuppliers } from "../../services/supplierService";
 import { getListResource } from "../../utils/responseUtils";
@@ -108,25 +109,12 @@ function CatalogIcon({ name }) {
 }
 
 function ProductVisual({ product }) {
-  const [imageHasError, setImageHasError] = useState(false);
-  const hasImage = product.imageUrl && !imageHasError;
-
   return (
     <div className="catalog-product-visual">
-      {hasImage ? (
-        <img
-          src={product.imageUrl}
-          alt={product.name || "Produit"}
-          onError={() => setImageHasError(true)}
-        />
-      ) : (
-        <div className="catalog-product-visual__placeholder">
-          <span>
-            <CatalogIcon name="image" />
-          </span>
-          <small>Visuel produit à venir</small>
-        </div>
-      )}
+      <ProductImage
+        product={product}
+        alt={`Aperçu du produit ${product.name || "KERNO"}`}
+      />
 
       <span
         className={[
@@ -174,10 +162,6 @@ function ProductInformation({ product, supplier }) {
           </div>
         )}
       </dl>
-
-      {product.priceInfo && (
-        <p className="catalog-product-price">{product.priceInfo}</p>
-      )}
     </>
   );
 }
@@ -196,7 +180,16 @@ function ProductCard({ product, supplier, viewMode }) {
     <>
       <ProductVisual product={product} />
       <div className="catalog-product-body">
-        <ProductInformation product={product} supplier={supplier} />
+        <div className="catalog-product-content">
+          <ProductInformation product={product} supplier={supplier} />
+        </div>
+
+        <div className="catalog-product-footer">
+          <p className="catalog-product-price">
+            {product.priceInfo || "Tarif sur demande"}
+          </p>
+          <span className="catalog-product-action">Voir le produit</span>
+        </div>
       </div>
     </>
   );

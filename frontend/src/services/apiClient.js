@@ -40,7 +40,7 @@ async function parseResponse(response) {
     const message =
       typeof data === "object" && data?.message
         ? data.message
-        : "API request failed";
+        : "La requête vers l’API a échoué";
 
     throw new ApiError(message, response.status, data);
   }
@@ -85,7 +85,7 @@ export async function apiRequest(path, options = {}) {
       throw error;
     }
 
-    throw new ApiError("Unable to reach the API server", 0, {
+    throw new ApiError("Impossible de joindre le serveur API", 0, {
       originalMessage: error.message,
     });
   }

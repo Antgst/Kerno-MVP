@@ -9,7 +9,6 @@ const storeSections = [
       { to: "/store/dashboard", label: "Tableau de bord" },
       { to: "/store/profile", label: "Profil magasin" },
       { to: "/store/requests", label: "Demandes envoyées" },
-      { to: "/requests/new", label: "Nouvelle demande" },
     ],
   },
   {

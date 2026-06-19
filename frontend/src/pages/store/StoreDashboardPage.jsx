@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import LoadingState from "../../components/ui/LoadingState";
+import { getProducts } from "../../services/productService";
 import { getSentRequests } from "../../services/requestService";
 import { getCurrentStoreProfile } from "../../services/storeService";
 import { getSuppliers } from "../../services/supplierService";
@@ -9,6 +10,7 @@ import cheeseSupplierImage from "../../assets/store-dashboard/store-supplier-che
 import farmSupplierImage from "../../assets/store-dashboard/store-supplier-farm.webp";
 import provenceSupplierImage from "../../assets/store-dashboard/store-supplier-provence.webp";
 import { getListResource, getResource } from "../../utils/responseUtils";
+import { formatStatus, getStatusTone } from "../../utils/status";
 
 const supplierVisuals = ["farm", "brewery", "cheese", "provence"];
 
@@ -152,38 +154,6 @@ function getRequestTitle(request) {
   return request?.subject || request?.product?.name || "Demande fournisseur";
 }
 
-function getStatusLabel(status) {
-  const normalizedStatus = String(status || "").toUpperCase();
-
-  if (normalizedStatus === "PENDING") {
-    return "En attente";
-  }
-
-  if (normalizedStatus === "ACCEPTED" || normalizedStatus === "REPLIED") {
-    return "Répondu";
-  }
-
-  if (normalizedStatus === "REJECTED") {
-    return "Refusé";
-  }
-
-  return normalizedStatus || "Brouillon";
-}
-
-function getStatusTone(status) {
-  const normalizedStatus = String(status || "").toUpperCase();
-
-  if (normalizedStatus === "PENDING") {
-    return "pending";
-  }
-
-  if (normalizedStatus === "REJECTED") {
-    return "rejected";
-  }
-
-  return "answered";
-}
-
 function formatFrenchDate(value) {
   if (!value) {
     return "";
@@ -196,22 +166,47 @@ function formatFrenchDate(value) {
   }).format(new Date(value));
 }
 
-function getSupplierProductCount(supplier) {
+function getProductSupplierId(product) {
+  return product?.supplierId || product?.supplier?.id;
+}
+
+function getSupplierProductCount(supplier, productCounts, productsAreLoaded) {
+  if (productsAreLoaded) {
+    const idKey = supplier?.id ? `id:${supplier.id}` : "";
+    const nameKey = supplier?.companyName
+      ? `name:${supplier.companyName.toLocaleLowerCase("fr-FR")}`
+      : "";
+
+    if (idKey && productCounts.has(idKey)) {
+      return productCounts.get(idKey);
+    }
+
+    if (nameKey && productCounts.has(nameKey)) {
+      return productCounts.get(nameKey);
+    }
+
+    return null;
+  }
+
   if (Array.isArray(supplier.products)) {
     return supplier.products.length;
   }
 
-  if (supplier.productCount !== undefined) {
-    return supplier.productCount;
+  const explicitCount = supplier.productCount ?? supplier.productsCount;
+
+  if (Number.isFinite(Number(explicitCount)) && Number(explicitCount) > 0) {
+    return Number(explicitCount);
   }
 
-  return 0;
+  return null;
 }
 
 function StoreDashboardPage() {
   const [storeProfile, setStoreProfile] = useState(null);
   const [sentRequests, setSentRequests] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [productsAreLoaded, setProductsAreLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -221,11 +216,12 @@ function StoreDashboardPage() {
       setIsLoading(true);
 
       try {
-        const [profileResult, requestsResult, suppliersResult] =
+        const [profileResult, requestsResult, suppliersResult, productsResult] =
           await Promise.allSettled([
             getCurrentStoreProfile(),
             getSentRequests(),
             getSuppliers(),
+            getProducts(),
           ]);
 
         if (!shouldUpdateState) {
@@ -246,10 +242,16 @@ function StoreDashboardPage() {
           suppliersResult.status === "fulfilled"
             ? getSuppliersFromResponse(suppliersResult.value)
             : [];
+        const loadedProducts =
+          productsResult.status === "fulfilled"
+            ? getListResource(productsResult.value, ["products"])
+            : [];
 
         setStoreProfile(profile);
         setSentRequests(loadedRequests);
         setSuppliers(loadedSuppliers);
+        setProducts(loadedProducts);
+        setProductsAreLoaded(productsResult.status === "fulfilled");
       } catch (error) {
         if (!shouldUpdateState) {
           return;
@@ -260,6 +262,8 @@ function StoreDashboardPage() {
         setStoreProfile(null);
         setSentRequests([]);
         setSuppliers([]);
+        setProducts([]);
+        setProductsAreLoaded(false);
       } finally {
         if (shouldUpdateState) {
           setIsLoading(false);
@@ -284,6 +288,28 @@ function StoreDashboardPage() {
 
   const recentRequests = sentRequests.slice(0, 3);
 
+  const productCountsBySupplier = useMemo(() => {
+    const counts = new Map();
+
+    products.forEach((product) => {
+      const supplierId = getProductSupplierId(product);
+      const supplierName =
+        product?.supplier?.companyName || product?.supplierName;
+
+      if (supplierId) {
+        const key = `id:${supplierId}`;
+        counts.set(key, (counts.get(key) || 0) + 1);
+      }
+
+      if (supplierName) {
+        const key = `name:${supplierName.toLocaleLowerCase("fr-FR")}`;
+        counts.set(key, (counts.get(key) || 0) + 1);
+      }
+    });
+
+    return counts;
+  }, [products]);
+
   const recommendedSuppliers = useMemo(
     () =>
       suppliers.slice(0, 4).map((supplier, index) => ({
@@ -291,10 +317,14 @@ function StoreDashboardPage() {
         companyName: supplier.companyName || "Fournisseur",
         location: supplier.location || "France",
         businessType: supplier.businessType || "Fournisseur local",
-        productCount: getSupplierProductCount(supplier),
+        productCount: getSupplierProductCount(
+          supplier,
+          productCountsBySupplier,
+          productsAreLoaded,
+        ),
         visual: supplierVisuals[index % supplierVisuals.length],
       })),
-    [suppliers],
+    [productCountsBySupplier, productsAreLoaded, suppliers],
   );
 
   if (isLoading) {
@@ -308,20 +338,15 @@ function StoreDashboardPage() {
   const completionPercent = getCompletionPercent(storeProfile);
   const sentRequestCount = sentRequests.length;
   const pendingRequestCount = pendingRequests.length;
-  const savedSupplierCount = Array.isArray(storeProfile?.savedSuppliers)
-    ? storeProfile.savedSuppliers.length
-    : 0;
-  const viewedProductCount = Array.isArray(storeProfile?.viewedProducts)
-    ? storeProfile.viewedProducts.length
-    : 0;
   const recommendedSupplierCount = suppliers.length;
+  const profileIsComplete = completionPercent === 100;
 
   const stats = [
     {
       icon: "building",
-      value: savedSupplierCount,
-      label: "Fournisseurs sauvegardés",
-      helper: "Dans votre sélection",
+      value: recommendedSupplierCount,
+      label: "Fournisseurs disponibles",
+      helper: "Dans le catalogue",
     },
     {
       icon: "mail",
@@ -331,15 +356,15 @@ function StoreDashboardPage() {
     },
     {
       icon: "eye",
-      value: viewedProductCount,
-      label: "Produits consultés",
-      helper: "Cette semaine",
+      value: pendingRequestCount,
+      label: "Demandes en attente",
+      helper: "À suivre",
     },
     {
       icon: "star",
-      value: recommendedSupplierCount,
-      label: "Fournisseurs recommandés",
-      helper: "Pour votre profil",
+      value: `${completionPercent}%`,
+      label: "Profil complété",
+      helper: profileIsComplete ? "Prêt à être utilisé" : "À finaliser",
       featured: true,
     },
   ];
@@ -415,7 +440,7 @@ function StoreDashboardPage() {
                 <span
                   className={`store-dashboard__status store-dashboard__status--${getStatusTone(request.status)}`}
                 >
-                  {getStatusLabel(request.status)}
+                  {formatStatus(request.status)}
                 </span>
                 </Link>
               ))
@@ -432,10 +457,6 @@ function StoreDashboardPage() {
             )}
           </div>
 
-          <Link className="store-dashboard__new-request" to="/requests/new">
-            <DashboardIcon name="plus" />
-            <span>Nouvelle demande</span>
-          </Link>
         </article>
 
         <aside className="store-dashboard__side-stack" aria-label="Actions du magasin">
@@ -443,24 +464,14 @@ function StoreDashboardPage() {
             <h2>Actions rapides</h2>
 
             <div className="store-dashboard__quick-actions">
-              <Link className="store-dashboard__quick-action store-dashboard__quick-action--primary" to="/catalog">
-                <DashboardIcon name="search" />
-                <span>Parcourir le catalogue</span>
-              </Link>
-
-              <Link className="store-dashboard__quick-action store-dashboard__quick-action--soft" to="/catalog">
-                <DashboardIcon name="building" />
-                <span>Trouver un fournisseur</span>
-              </Link>
-
               <Link className="store-dashboard__quick-action" to="/store/profile">
                 <DashboardIcon name="user" />
-                <span>Mon profil</span>
+                <span>Modifier mon profil</span>
               </Link>
 
               <Link className="store-dashboard__quick-action" to="/store/requests">
                 <DashboardIcon name="mail" />
-                <span>Mes demandes</span>
+                <span>Voir mes demandes</span>
                 <strong>{pendingRequestCount}</strong>
               </Link>
             </div>
@@ -469,8 +480,12 @@ function StoreDashboardPage() {
           <article className="store-dashboard__profile-card">
             <div className="store-dashboard__profile-content">
               <div className="store-dashboard__profile-copy">
-                <h2>Complétez votre profil</h2>
-                <p>Un profil complet améliore vos échanges avec les fournisseurs.</p>
+                <h2>{profileIsComplete ? "Profil complet" : "Complétez votre profil"}</h2>
+                <p>
+                  {profileIsComplete
+                    ? "Gérez les informations visibles par les fournisseurs lorsqu’ils consultent vos demandes."
+                    : "Ajoutez les informations manquantes pour renforcer votre crédibilité."}
+                </p>
               </div>
 
               <div
@@ -482,7 +497,9 @@ function StoreDashboardPage() {
               </div>
             </div>
 
-            <Link to="/store/profile">Compléter maintenant</Link>
+            <Link to="/store/profile">
+              {profileIsComplete ? "Modifier le profil" : "Compléter maintenant"}
+            </Link>
           </article>
         </aside>
       </section>
@@ -490,7 +507,7 @@ function StoreDashboardPage() {
       <section className="store-dashboard__recommended" aria-labelledby="recommended-suppliers-title">
         <div className="store-dashboard__section-header">
           <h2 id="recommended-suppliers-title">Fournisseurs recommandés</h2>
-          <Link to="/catalog">Voir tous les fournisseurs</Link>
+          <Link to="/catalog">Découvrir les fournisseurs</Link>
         </div>
 
         <div className="store-dashboard__supplier-grid">
@@ -535,17 +552,24 @@ function StoreDashboardPage() {
                       </span>
                     </div>
 
-                    <div className="store-dashboard__supplier-footer">
-                      <span>
-                        <DashboardIcon name="package" />
-                        {supplier.productCount} produits
-                      </span>
+                    {(supplier.productCount !== null || supplier.rating) && (
+                      <div className="store-dashboard__supplier-footer">
+                        {supplier.productCount !== null && (
+                          <span>
+                            <DashboardIcon name="package" />
+                            {supplier.productCount} produit
+                            {supplier.productCount > 1 ? "s" : ""}
+                          </span>
+                        )}
 
-                      <span>
-                        <DashboardIcon name="star" />
-                        {supplier.rating || "Nouveau"}
-                      </span>
-                    </div>
+                        {supplier.rating && (
+                          <span>
+                            <DashboardIcon name="star" />
+                            {supplier.rating}
+                          </span>
+                        )}
+                      </div>
+                    )}
 
                     <Link to={supplierPath}>Voir le fournisseur</Link>
                   </div>

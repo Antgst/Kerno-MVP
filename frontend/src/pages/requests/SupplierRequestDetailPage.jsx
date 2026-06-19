@@ -8,28 +8,17 @@ import {
   updateRequestStatus,
 } from "../../services/requestService";
 import { getResource } from "../../utils/responseUtils";
+import { formatStatus, getStatusTone, normalizeStatus } from "../../utils/status";
 
 const editableStatusOptions = [
-  { value: "PENDING", label: "En attente" },
-  { value: "READ", label: "Lue" },
-  { value: "ANSWERED", label: "Répondue" },
-  { value: "CLOSED", label: "Clôturée" },
-];
-
-const statusLabels = {
-  PENDING: "En attente",
-  READ: "Lue",
-  ANSWERED: "Répondue",
-  ACCEPTED: "Acceptée",
-  REJECTED: "Refusée",
-  COMPLETED: "Terminée",
-  CLOSED: "Clôturée",
-  CANCELLED: "Annulée",
-};
-
-function normalizeStatus(status) {
-  return String(status || "UNKNOWN").toUpperCase();
-}
+  "PENDING",
+  "READ",
+  "ANSWERED",
+  "CLOSED",
+].map((status) => ({
+  value: status,
+  label: formatStatus(status),
+}));
 
 function formatDate(dateValue) {
   if (!dateValue) {
@@ -131,9 +120,9 @@ function RequestStatusBadge({ status }) {
 
   return (
     <span
-      className={`supplier-request-status supplier-request-status--${normalizedStatus.toLowerCase()}`}
+      className={`supplier-request-status supplier-request-status--${getStatusTone(normalizedStatus)}`}
     >
-      {statusLabels[normalizedStatus] || "Statut inconnu"}
+      {formatStatus(normalizedStatus)}
     </span>
   );
 }
@@ -211,7 +200,7 @@ function SupplierRequestDetailPage() {
     return [
       {
         value: selectedStatus,
-        label: statusLabels[selectedStatus] || "Statut actuel",
+        label: formatStatus(selectedStatus, "Statut actuel"),
       },
       ...editableStatusOptions,
     ];
@@ -458,8 +447,8 @@ function SupplierRequestDetailPage() {
               </div>
 
               <p className="supplier-request-status-card__copy">
-                Suivez simplement l’état de cette demande. KERNO ne remplace
-                pas encore un outil complet de commande ou de messagerie.
+                Actualisez le statut pour garder un suivi clair de la demande
+                reçue.
               </p>
 
               {statusMessage && (
@@ -517,6 +506,11 @@ function SupplierRequestDetailPage() {
                 >
                   Mettre à jour le statut
                 </button>
+                {selectedStatus === currentStatus && (
+                  <small className="supplier-request-status-form__helper">
+                    Choisissez un nouveau statut pour activer la mise à jour.
+                  </small>
+                )}
               </div>
             </article>
           </aside>

@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
+import ProductImage from "../../components/ui/ProductImage";
 import { getCurrentAuthRole } from "../../services/authService";
 import { getProductById } from "../../services/productService";
 import { getSupplierById } from "../../services/supplierService";
@@ -110,7 +111,6 @@ function ProductDetailPage() {
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [imageHasError, setImageHasError] = useState(false);
 
   useEffect(() => {
     let shouldUpdateState = true;
@@ -118,7 +118,6 @@ function ProductDetailPage() {
     async function loadProduct() {
       setIsLoading(true);
       setErrorMessage("");
-      setImageHasError(false);
 
       try {
         const productResponse = await getProductById(id);
@@ -165,8 +164,10 @@ function ProductDetailPage() {
 
   const supplier = product?.supplier;
   const category = product?.category;
-  const canContactSupplier =
-    String(getCurrentAuthRole() || "").toUpperCase() === "STORE";
+  const authRole = String(getCurrentAuthRole() || "").toUpperCase();
+  const canContactSupplier = authRole === "STORE";
+  const shouldShowSupplierProfileAction =
+    Boolean(supplier?.id) && authRole !== "STORE";
   const requestPath = supplier?.id
     ? `/requests/new?supplierId=${supplier.id}&productId=${product.id}`
     : "/requests/new";
@@ -195,7 +196,17 @@ function ProductDetailPage() {
             to={requestPath}
           >
             <ProductIcon name="request" />
-            Demander un devis
+            Faire une demande
+          </Link>
+        )}
+
+        {product && shouldShowSupplierProfileAction && (
+          <Link
+            className="product-detail-page__intro-action"
+            to={`/suppliers/${supplier.id}`}
+          >
+            <ProductIcon name="building" />
+            Voir le profil fournisseur
           </Link>
         )}
       </header>
@@ -233,21 +244,11 @@ function ProductDetailPage() {
           <main className="product-detail-page__main">
             <article className="product-detail-card product-detail-hero">
               <div className="product-detail-hero__media">
-                {product.imageUrl && !imageHasError ? (
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    onError={() => setImageHasError(true)}
-                  />
-                ) : (
-                  <div className="product-detail-hero__placeholder">
-                    <span>
-                      <ProductIcon name="image" />
-                    </span>
-                    <strong>{product.name}</strong>
-                    <small>Visuel produit à venir</small>
-                  </div>
-                )}
+                <ProductImage
+                  product={product}
+                  alt={`Aperçu du produit ${product.name}`}
+                  loading="eager"
+                />
 
                 <span
                   className={[
@@ -412,20 +413,12 @@ function ProductDetailPage() {
                   <div className="product-detail-supplier__actions">
                     {canContactSupplier && (
                       <Link
-                        className="product-detail-page__primary-action"
-                        to={requestPath}
+                        className="product-detail-page__secondary-action"
+                        to={`/suppliers/${supplier.id}`}
                       >
-                        <ProductIcon name="request" />
-                        Envoyer une demande
+                        Voir le profil fournisseur
                       </Link>
                     )}
-
-                    <Link
-                      className="product-detail-page__secondary-action"
-                      to={`/suppliers/${supplier.id}`}
-                    >
-                      Voir le profil fournisseur
-                    </Link>
                   </div>
                 </>
               ) : (
