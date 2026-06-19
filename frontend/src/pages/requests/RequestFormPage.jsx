@@ -126,7 +126,8 @@ function RequestFormPage() {
     const errors = {};
 
     if (!formData.supplierId.trim()) {
-      errors.supplierId = "L’identifiant du fournisseur est obligatoire.";
+      errors.supplierId =
+        "Sélectionnez un fournisseur depuis le catalogue avant d’envoyer votre demande.";
     }
 
     if (!formData.subject.trim()) {
@@ -174,11 +175,12 @@ function RequestFormPage() {
   }
 
   return (
-    <div className="text-slate-950">
+    <div className="request-form-page">
       <PageHeader
+        className="request-form-page__header"
         eyebrow="Demande de contact"
-        title="Faire une demande"
-        description="Envoyez une demande de contact ou de devis structurée à un fournisseur."
+        title="Envoyer une demande"
+        description="Présentez votre besoin au fournisseur en quelques informations essentielles."
       >
         <Link to="/catalog">
           <Button variant="secondary">Retour au catalogue</Button>
@@ -197,8 +199,16 @@ function RequestFormPage() {
         />
       )}
 
-      <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <Card>
+      <div className="request-form-page__layout">
+        <Card className="request-form-page__card request-form-page__card--main">
+          <div className="request-form-page__card-heading">
+            <p>Message professionnel</p>
+            <h2>Préparer votre demande</h2>
+            <span>
+              Le fournisseur recevra ces informations pour vous répondre de
+              façon précise.
+            </span>
+          </div>
           <RequestFormFields
             fieldErrors={fieldErrors}
             formData={formData}
@@ -209,7 +219,7 @@ function RequestFormPage() {
           />
         </Card>
 
-        <Card>
+        <Card className="request-form-page__card request-form-page__context">
           <RequestContextCard product={product} supplier={supplier} />
         </Card>
       </div>

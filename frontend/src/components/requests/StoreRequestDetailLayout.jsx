@@ -28,7 +28,7 @@ function StoreRequestDetailLayout({ formatDate, request }) {
           <dl className="supplier-request-meta-grid">
             <RequestDetailField
               icon="message"
-              label="Quantité / besoin"
+              label="Volume / besoin"
               value={request.requestedQuantity}
             />
             <RequestDetailField
@@ -51,7 +51,7 @@ function StoreRequestDetailLayout({ formatDate, request }) {
             </span>
             <div>
               <p>Produit associé</p>
-              <h2>{product?.name || "Aucun produit spécifique"}</h2>
+              <h2>{product?.name || "Demande générale"}</h2>
             </div>
           </div>
           <dl className="supplier-request-product-grid">
@@ -67,7 +67,7 @@ function StoreRequestDetailLayout({ formatDate, request }) {
             />
             <RequestDetailField
               icon="box"
-              label="Commande minimale"
+              label="Volume minimum"
               value={product?.minimumOrder}
             />
             <RequestDetailField
@@ -87,7 +87,7 @@ function StoreRequestDetailLayout({ formatDate, request }) {
             </span>
             <div>
               <p>Fournisseur associé</p>
-              <h2>{supplier?.companyName || "Fournisseur non renseigné"}</h2>
+              <h2>{supplier?.companyName || "Fournisseur indisponible"}</h2>
             </div>
           </div>
           <dl className="supplier-request-store-grid">

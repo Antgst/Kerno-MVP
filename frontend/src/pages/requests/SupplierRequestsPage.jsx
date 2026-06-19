@@ -15,6 +15,7 @@ const initialFilters = {
   status: "",
   sort: "recent",
 };
+const REQUESTS_BATCH_SIZE = 8;
 
 function normalizeValue(value) {
   return String(value || "")
@@ -53,6 +54,7 @@ function SupplierRequestsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [reloadKey, setReloadKey] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(REQUESTS_BATCH_SIZE);
 
   useEffect(() => {
     let shouldUpdateState = true;
@@ -164,6 +166,8 @@ function SupplierRequestsPage() {
     Boolean(filters.search) ||
     Boolean(filters.status) ||
     filters.sort !== initialFilters.sort;
+  const visibleRequests = filteredRequests.slice(0, visibleCount);
+  const hasMoreRequests = visibleCount < filteredRequests.length;
 
   function handleFilterChange(event) {
     const { name, value } = event.target;
@@ -172,10 +176,12 @@ function SupplierRequestsPage() {
       ...currentFilters,
       [name]: value,
     }));
+    setVisibleCount(REQUESTS_BATCH_SIZE);
   }
 
   function resetFilters() {
     setFilters(initialFilters);
+    setVisibleCount(REQUESTS_BATCH_SIZE);
   }
 
   return (
@@ -258,7 +264,7 @@ function SupplierRequestsPage() {
               aria-live="polite"
               aria-label="Liste des demandes reçues"
             >
-              {filteredRequests.map((request, index) => (
+              {visibleRequests.map((request, index) => (
                 <SupplierRequestCard
                   key={request.id || `request-${index}`}
                   request={request}
@@ -266,6 +272,43 @@ function SupplierRequestsPage() {
                   formatRequestDate={formatRequestDate}
                 />
               ))}
+
+              {filteredRequests.length > REQUESTS_BATCH_SIZE && (
+                <div className="supplier-requests-list__footer">
+                  <p>
+                    {visibleRequests.length} demande
+                    {visibleRequests.length > 1 ? "s" : ""} affichée
+                    {visibleRequests.length > 1 ? "s" : ""} sur{" "}
+                    {filteredRequests.length}
+                  </p>
+                  <div>
+                    {visibleCount > REQUESTS_BATCH_SIZE && (
+                      <button
+                        type="button"
+                        onClick={() => setVisibleCount(REQUESTS_BATCH_SIZE)}
+                      >
+                        Afficher moins
+                      </button>
+                    )}
+                    {hasMoreRequests && (
+                      <button
+                        className="supplier-requests-list__more"
+                        type="button"
+                        onClick={() =>
+                          setVisibleCount((count) =>
+                            Math.min(
+                              count + REQUESTS_BATCH_SIZE,
+                              filteredRequests.length,
+                            ),
+                          )
+                        }
+                      >
+                        Afficher plus
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
             </section>
           )}
         </>

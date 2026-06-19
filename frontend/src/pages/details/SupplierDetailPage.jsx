@@ -1,13 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import PageHeader from "../../components/shared/PageHeader";
-import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
-import StatusBadge from "../../components/ui/StatusBadge";
 import ProductImage from "../../components/ui/ProductImage";
+import StatusBadge from "../../components/ui/StatusBadge";
 import { getCurrentAuthRole } from "../../services/authService";
 import { getProducts } from "../../services/productService";
 import { getSupplierById } from "../../services/supplierService";
@@ -25,9 +22,80 @@ function getProductSupplierId(product) {
   return product.supplierId || product.supplier?.id;
 }
 
+function getWebsiteHref(website) {
+  if (!website) {
+    return "";
+  }
+
+  return /^https?:\/\//i.test(website) ? website : `https://${website}`;
+}
+
+function getInitials(companyName) {
+  return String(companyName || "K")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+}
+
+function SupplierIcon({ name }) {
+  const commonProps = {
+    width: "20",
+    height: "20",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": "true",
+  };
+
+  const icons = {
+    arrow: <path d="m15 18-6-6 6-6" />,
+    building: (
+      <>
+        <path d="M3 21h18" />
+        <path d="M6 21V7l6-4v18" />
+        <path d="M18 21V11l-6-4" />
+      </>
+    ),
+    globe: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+      </>
+    ),
+    mail: (
+      <>
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m3 7 9 6 9-6" />
+      </>
+    ),
+    map: (
+      <>
+        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </>
+    ),
+    phone: (
+      <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.6.6a2 2 0 0 1 2 2.3Z" />
+    ),
+    request: (
+      <>
+        <path d="M4 4h16v12H7l-3 3V4Z" />
+        <path d="M8 8h8M8 12h5" />
+      </>
+    ),
+  };
+
+  return <svg {...commonProps}>{icons[name]}</svg>;
+}
+
 function SupplierDetailPage() {
   const { id } = useParams();
-
   const [supplier, setSupplier] = useState(null);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,9 +118,7 @@ function SupplierDetailPage() {
           return;
         }
 
-        const loadedSupplier = getSupplierFromResponse(supplierResponse);
-
-        setSupplier(loadedSupplier);
+        setSupplier(getSupplierFromResponse(supplierResponse));
         setProducts(getProductsFromResponse(productsResponse));
       } catch (error) {
         if (shouldUpdateState) {
@@ -83,169 +149,188 @@ function SupplierDetailPage() {
       return supplier.products;
     }
 
-    return products.filter((product) => getProductSupplierId(product) === supplier.id);
+    return products.filter(
+      (product) => getProductSupplierId(product) === supplier.id,
+    );
   }, [products, supplier]);
 
-  const requestPath = supplier ? `/requests/new?supplierId=${supplier.id}` : "/requests/new";
+  const requestPath = supplier
+    ? `/requests/new?supplierId=${supplier.id}`
+    : "/requests/new";
   const canContactSupplier =
     String(getCurrentAuthRole() || "").toUpperCase() === "STORE";
+  const websiteHref = getWebsiteHref(supplier?.website);
 
   return (
-    <div className="text-slate-950">
-      <PageHeader
-        eyebrow="Fiche fournisseur"
-        title={supplier?.companyName || "Détail du fournisseur"}
-        description="Consultez le profil du fournisseur et ses produits avant d’envoyer une demande."
-      >
-        <Link to="/catalog">
-          <Button variant="secondary">Retour au catalogue</Button>
-        </Link>
+    <div className="supplier-detail-page">
+      <header className="supplier-detail-page__intro">
+        <div>
+          <Link className="supplier-detail-page__back" to="/catalog">
+            <SupplierIcon name="arrow" />
+            Retour au catalogue
+          </Link>
+          <p className="supplier-detail-page__eyebrow">Fiche fournisseur</p>
+          <h1>{supplier?.companyName || "Détail du fournisseur"}</h1>
+          <p className="supplier-detail-page__subtitle">
+            Découvrez son activité, ses coordonnées professionnelles et les
+            produits proposés sur KERNO.
+          </p>
+        </div>
 
         {supplier && canContactSupplier && (
-          <Link to={requestPath}>
-            <Button>Contacter le fournisseur</Button>
+          <Link className="supplier-detail-page__primary-action" to={requestPath}>
+            <SupplierIcon name="request" />
+            Contacter le fournisseur
           </Link>
         )}
-      </PageHeader>
+      </header>
 
-      {isLoading && <LoadingState message="Chargement du fournisseur..." />}
+      {isLoading && (
+        <LoadingState
+          className="supplier-detail-page__feedback"
+          message="Chargement du fournisseur..."
+        />
+      )}
 
       {errorMessage && (
-        <ErrorState title="Fournisseur indisponible" message={errorMessage} />
+        <ErrorState
+          className="supplier-detail-page__feedback"
+          title="Fournisseur indisponible"
+          message={errorMessage}
+        />
       )}
 
       {!isLoading && !errorMessage && !supplier && (
         <EmptyState
+          className="supplier-detail-page__feedback"
           title="Fournisseur introuvable"
           message="Ce fournisseur n’existe peut-être plus ou n’est plus disponible."
           action={
-            <Link to="/catalog">
-              <Button variant="secondary">Retour au catalogue</Button>
+            <Link className="supplier-detail-page__secondary-action" to="/catalog">
+              Retour au catalogue
             </Link>
           }
         />
       )}
 
       {!isLoading && !errorMessage && supplier && (
-        <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-          <div className="grid gap-6">
-            <Card>
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
-                    Fournisseur
-                  </p>
-
-                  <h2 className="mt-2 text-3xl font-black text-slate-950">
-                    {supplier.companyName}
-                  </h2>
+        <>
+          <div className="supplier-detail-page__layout">
+            <main className="supplier-detail-page__main">
+              <section className="supplier-detail-card supplier-detail-identity">
+                <div className="supplier-detail-identity__heading">
+                  <span className="supplier-detail-identity__mark">
+                    {getInitials(supplier.companyName)}
+                  </span>
+                  <div>
+                    <p className="supplier-detail-page__card-eyebrow">
+                      Fournisseur KERNO
+                    </p>
+                    <h2>{supplier.companyName}</h2>
+                    <p>
+                      {supplier.businessType ||
+                        "Activité professionnelle à préciser"}
+                    </p>
+                  </div>
+                  <StatusBadge status="ACTIVE" label="Actif" />
                 </div>
 
-                <StatusBadge status="ACTIVE" label="Profil fournisseur" />
-              </div>
-
-              <p className="text-base leading-8 text-slate-600">
-                {supplier.description ||
-                  "Ce fournisseur n’a pas encore ajouté de description."}
-              </p>
-
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl bg-slate-50 p-4">
-                  <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                    Localisation
-                  </p>
-                  <p className="mt-1 font-black text-slate-900">
-                    {supplier.location || "Non renseignée"}
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-slate-50 p-4">
-                  <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                    Type d’activité
-                  </p>
-                  <p className="mt-1 font-black text-slate-900">
-                    {supplier.businessType || "Non renseigné"}
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-slate-50 p-4">
-                  <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                    Email professionnel
-                  </p>
-                  <p className="mt-1 break-all font-black text-slate-900">
-                    {supplier.contactEmail || "Non renseigné"}
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-slate-50 p-4">
-                  <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                    Téléphone
-                  </p>
-                  <p className="mt-1 font-black text-slate-900">
-                    {supplier.phone || "Non renseigné"}
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-slate-50 p-4 md:col-span-2">
-                  <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                    Site internet
-                  </p>
-                  <p className="mt-1 break-all font-black text-slate-900">
-                    {supplier.website || "Non renseigné"}
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            {canContactSupplier && (
-              <Card>
-                <h2 className="m-0 text-xl font-black">
-                  Contacter ce fournisseur
-                </h2>
-
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Envoyez une demande structurée pour préciser vos besoins,
-                  quantités ou questions tarifaires.
+                <p className="supplier-detail-identity__description">
+                  {supplier.description ||
+                    "Ce fournisseur n’a pas encore ajouté de présentation détaillée."}
                 </p>
 
-                <div className="mt-5 rounded-3xl bg-emerald-950 p-6 text-white">
-                  <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-300">
-                    Premier contact
-                  </p>
+                <dl className="supplier-detail-facts">
+                  <div>
+                    <dt>
+                      <SupplierIcon name="map" />
+                      Localisation
+                    </dt>
+                    <dd>{supplier.location || "À préciser"}</dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <SupplierIcon name="building" />
+                      Type d’activité
+                    </dt>
+                    <dd>{supplier.businessType || "À préciser"}</dd>
+                  </div>
+                </dl>
+              </section>
 
-                  <h3 className="mt-3 text-2xl font-black">
-                    Démarrer un échange professionnel
-                  </h3>
-
-                  <p className="mt-3 text-sm leading-6 text-emerald-50">
-                    Votre demande sera transmise au fournisseur avec les
-                    informations utiles pour engager l’échange.
-                  </p>
-
-                  <Link
-                    className="mt-5 inline-flex w-fit rounded-full bg-white px-5 py-3 text-sm font-black text-emerald-950 transition hover:bg-stone-100"
-                    to={requestPath}
-                  >
-                    Faire une demande
-                  </Link>
+              <section className="supplier-detail-card supplier-detail-contact">
+                <div className="supplier-detail-section-heading">
+                  <div>
+                    <p className="supplier-detail-page__card-eyebrow">
+                      Coordonnées
+                    </p>
+                    <h2>Informations professionnelles</h2>
+                    <p>
+                      Les coordonnées communiquées par le fournisseur pour les
+                      échanges B2B.
+                    </p>
+                  </div>
                 </div>
-              </Card>
-            )}
-          </div>
 
-          <section>
-            <Card>
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                <dl className="supplier-detail-contact__list">
+                  <div>
+                    <dt>
+                      <SupplierIcon name="mail" />
+                      Email
+                    </dt>
+                    <dd>
+                      {supplier.contactEmail ? (
+                        <a href={`mailto:${supplier.contactEmail}`}>
+                          {supplier.contactEmail}
+                        </a>
+                      ) : (
+                        "À préciser"
+                      )}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <SupplierIcon name="phone" />
+                      Téléphone
+                    </dt>
+                    <dd>
+                      {supplier.phone ? (
+                        <a href={`tel:${supplier.phone}`}>{supplier.phone}</a>
+                      ) : (
+                        "À préciser"
+                      )}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <SupplierIcon name="globe" />
+                      Site internet
+                    </dt>
+                    <dd>
+                      {websiteHref ? (
+                        <a href={websiteHref} target="_blank" rel="noreferrer">
+                          {supplier.website}
+                        </a>
+                      ) : (
+                        "À préciser"
+                      )}
+                    </dd>
+                  </div>
+                </dl>
+              </section>
+            </main>
+
+            <aside className="supplier-detail-card supplier-detail-products">
+              <div className="supplier-detail-section-heading supplier-detail-products__heading">
                 <div>
-                  <h2 className="m-0 text-xl font-black">Produits proposés</h2>
-
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    Produits publiés par ce fournisseur.
+                  <p className="supplier-detail-page__card-eyebrow">
+                    Catalogue fournisseur
                   </p>
+                  <h2>Produits proposés</h2>
+                  <p>Les produits actuellement publiés par ce fournisseur.</p>
                 </div>
-
                 <StatusBadge
-                  status={relatedProducts.length > 0 ? "ACTIVE" : "PENDING"}
+                  status={relatedProducts.length > 0 ? "ACTIVE" : "DRAFT"}
                   label={`${relatedProducts.length} produit${
                     relatedProducts.length > 1 ? "s" : ""
                   }`}
@@ -254,73 +339,77 @@ function SupplierDetailPage() {
 
               {relatedProducts.length === 0 ? (
                 <EmptyState
+                  className="supplier-detail-products__empty"
                   title="Aucun produit visible"
                   message="Ce fournisseur n’a pas encore publié de produit."
                 />
               ) : (
-                <div className="grid gap-4">
+                <div className="supplier-detail-products__list">
                   {relatedProducts.map((product) => (
                     <article
+                      className="supplier-detail-product"
                       key={product.id}
-                      className="rounded-3xl border border-slate-200 bg-slate-50 p-5"
                     >
                       <ProductImage
-                        className="mb-4 h-40 w-full rounded-2xl object-cover"
                         product={product}
                         alt={`Aperçu du produit ${product.name || "KERNO"}`}
                       />
-                      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-                        <h3 className="m-0 text-xl font-black text-slate-950">
-                          {product.name}
-                        </h3>
-
-                        <StatusBadge
-                          status={product.isActive === false ? "INACTIVE" : "ACTIVE"}
-                          label={
-                            product.isActive === false
-                              ? "Indisponible"
-                              : "Disponible"
-                          }
-                        />
-                      </div>
-
-                      <p className="text-sm leading-6 text-slate-500">
-                        {product.description || "Aucune description renseignée."}
-                      </p>
-
-                      <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+                      <div className="supplier-detail-product__content">
                         <div>
-                          <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                            Prix indicatif
-                          </p>
-                          <p className="mt-1 font-bold text-slate-800">
-                            {product.priceInfo || "Tarif sur demande"}
-                          </p>
+                          <h3>{product.name}</h3>
+                          <StatusBadge
+                            status={
+                              product.isActive === false ? "INACTIVE" : "ACTIVE"
+                            }
+                            label={
+                              product.isActive === false
+                                ? "Indisponible"
+                                : "Disponible"
+                            }
+                          />
                         </div>
-
-                        <div>
-                          <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                            Commande minimale
-                          </p>
-                          <p className="mt-1 font-bold text-slate-800">
-                            {product.minimumOrder || "Non renseignée"}
-                          </p>
-                        </div>
+                        <p>
+                          {product.description ||
+                            "Aucune description renseignée."}
+                        </p>
+                        <dl>
+                          <div>
+                            <dt>Prix indicatif</dt>
+                            <dd>{product.priceInfo || "Tarif sur demande"}</dd>
+                          </div>
+                          <div>
+                            <dt>Volume minimum</dt>
+                            <dd>{product.minimumOrder || "À convenir"}</dd>
+                          </div>
+                        </dl>
+                        <Link to={`/products/${product.id}`}>
+                          Voir le produit
+                        </Link>
                       </div>
-
-                      <Link
-                        className="mt-5 inline-flex"
-                        to={`/products/${product.id}`}
-                      >
-                        <Button variant="secondary">Voir le produit</Button>
-                      </Link>
                     </article>
                   ))}
                 </div>
               )}
-            </Card>
-          </section>
-        </div>
+            </aside>
+          </div>
+
+          {canContactSupplier && (
+            <section className="supplier-detail-contact-cta">
+              <span className="supplier-detail-contact-cta__icon">
+                <SupplierIcon name="request" />
+              </span>
+              <div>
+                <p>Premier contact professionnel</p>
+                <h2>Présentez votre besoin au fournisseur</h2>
+                <span>
+                  Précisez le produit, la quantité ou les informations dont
+                  votre magasin a besoin.
+                </span>
+              </div>
+              <Link to={requestPath}>Envoyer une demande</Link>
+            </section>
+          )}
+        </>
       )}
     </div>
   );

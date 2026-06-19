@@ -50,13 +50,13 @@ function SupplierRequestDetailLayout({
             <RequestDetailField
               hideWhenEmpty
               icon="message"
-              label="Quantité / besoin"
+              label="Volume / besoin"
               value={request.requestedQuantity}
             />
             <RequestDetailField
               hideWhenEmpty
               icon="calendar"
-              label="Créée le"
+                label="Reçue le"
               value={createdAt}
             />
             {updatedAt && updatedAt !== createdAt && (
@@ -92,7 +92,7 @@ function SupplierRequestDetailLayout({
               <RequestDetailField
                 hideWhenEmpty
                 icon="box"
-                label="Commande minimale"
+                label="Volume minimum"
                 value={product?.minimumOrder}
               />
               <RequestDetailField

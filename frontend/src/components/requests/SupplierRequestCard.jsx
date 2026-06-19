@@ -46,7 +46,7 @@ function SupplierRequestCard({ formatRequestDate, getStoreName, request }) {
             <div>
               <dt>
                 <RequestIcon name="message" />
-                Quantité / besoin
+                Volume / besoin
               </dt>
               <dd>{request.requestedQuantity}</dd>
             </div>
@@ -67,7 +67,7 @@ function SupplierRequestCard({ formatRequestDate, getStoreName, request }) {
       {request.id && (
         <div className="supplier-request-actions">
           <Link to={`/supplier/requests/${request.id}`}>
-            Voir le détail
+            Consulter
             <RequestIcon name="arrow" />
           </Link>
         </div>

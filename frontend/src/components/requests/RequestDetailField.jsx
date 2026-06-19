@@ -1,7 +1,7 @@
 import RequestIcon from "./RequestIcon";
 
 function RequestDetailField({
-  fallback = "Non renseigné",
+  fallback = "À préciser",
   hideWhenEmpty = false,
   icon,
   label,

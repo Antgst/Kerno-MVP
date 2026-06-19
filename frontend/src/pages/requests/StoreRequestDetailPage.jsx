@@ -9,9 +9,9 @@ import { getRequestById } from "../../services/requestService";
 import { getResource } from "../../utils/responseUtils";
 
 function formatDate(value) {
-  if (!value) return "Date non renseignée";
+  if (!value) return "Date indisponible";
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Date non renseignée";
+  if (Number.isNaN(date.getTime())) return "Date indisponible";
   return new Intl.DateTimeFormat("fr-FR", {
     day: "numeric",
     month: "long",

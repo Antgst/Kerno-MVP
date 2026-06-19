@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "../ui/Button";
 import ErrorState from "../ui/ErrorState";
 import Input from "../ui/Input";
@@ -25,40 +26,65 @@ function RequestFormFields({
         <LoadingState className="mb-5" message="Création de la demande..." />
       )}
 
-      <form className="space-y-5" onSubmit={onSubmit}>
-        <Input
-          label="Identifiant fournisseur"
+      <form className="request-form-fields" onSubmit={onSubmit}>
+        <input
+          type="hidden"
           name="supplierId"
           value={formData.supplierId}
           onChange={onChange}
-          placeholder="Identifiant du fournisseur"
-          error={fieldErrors.supplierId}
-          helperText="Ce champ est rempli automatiquement depuis une fiche fournisseur ou produit."
-          required
         />
-
-        <Input
-          label="Identifiant produit"
+        <input
+          type="hidden"
           name="productId"
           value={formData.productId}
           onChange={onChange}
-          placeholder="Identifiant du produit (facultatif)"
-          helperText="Facultatif, si la demande concerne un produit précis."
         />
 
-        <Input
-          label="Objet"
-          name="subject"
-          value={formData.subject}
-          onChange={onChange}
-          placeholder="Demande de tarifs professionnels"
-          error={fieldErrors.subject}
-          required
-        />
+        {fieldErrors.supplierId && (
+          <p className="request-form-fields__target-error">
+            {fieldErrors.supplierId}
+          </p>
+        )}
 
-        <div>
+        <div className="request-form-fields__section">
+          <div className="request-form-fields__heading">
+            <span>01</span>
+            <div>
+              <h2>Votre besoin</h2>
+              <p>Donnez un objet clair à votre demande.</p>
+            </div>
+          </div>
+
+          <Input
+            label="Objet de la demande"
+            name="subject"
+            value={formData.subject}
+            onChange={onChange}
+            placeholder="Demande de tarifs professionnels"
+            error={fieldErrors.subject}
+            required
+          />
+
+          <Input
+          label="Volume ou besoin professionnel"
+            name="requestedQuantity"
+            value={formData.requestedQuantity}
+            onChange={onChange}
+            placeholder="50 kg, 100 unités, approvisionnement régulier..."
+            helperText="Indiquez, si possible, le volume ou le besoin envisagé."
+          />
+        </div>
+
+        <div className="request-form-fields__section">
+          <div className="request-form-fields__heading">
+            <span>02</span>
+            <div>
+              <h2>Votre message</h2>
+              <p>Précisez vos attentes et les informations souhaitées.</p>
+            </div>
+          </div>
+
           <label
-            className="mb-2 block text-sm font-bold text-slate-800"
             htmlFor="message"
           >
             Message <span className="text-orange-500">*</span>
@@ -71,34 +97,22 @@ function RequestFormFields({
             onChange={onChange}
             rows="6"
             placeholder="Décrivez votre besoin, les délais souhaités et vos questions."
-            className={[
-              "w-full rounded-2xl border bg-white px-4 py-3 text-sm text-slate-900",
-              "outline-none transition placeholder:text-slate-400 focus:ring-2",
-              fieldErrors.message
-                ? "border-red-300 focus:border-red-500 focus:ring-red-100"
-                : "border-slate-200 focus:border-emerald-800 focus:ring-emerald-100",
-            ].join(" ")}
+            aria-invalid={Boolean(fieldErrors.message)}
           />
 
           {fieldErrors.message && (
-            <p className="mt-2 text-sm font-semibold text-red-600">
+            <p className="request-form-fields__error">
               {fieldErrors.message}
             </p>
           )}
         </div>
 
-        <Input
-          label="Quantité ou besoin professionnel"
-          name="requestedQuantity"
-          value={formData.requestedQuantity}
-          onChange={onChange}
-          placeholder="50 kg, 100 unités, approvisionnement régulier..."
-          helperText="Facultatif. Indiquez simplement votre besoin."
-        />
-
-        <Button className="w-full" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Création..." : "Envoyer la demande"}
-        </Button>
+        <div className="request-form-fields__actions">
+          <Link to="/catalog">Annuler</Link>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Envoi..." : "Envoyer la demande"}
+          </Button>
+        </div>
       </form>
     </>
   );
