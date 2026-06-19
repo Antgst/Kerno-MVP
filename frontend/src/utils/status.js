@@ -45,14 +45,16 @@ export function getStatusTone(status) {
     return "accepted";
   }
 
-  if (normalizedStatus === "REJECTED") {
-    return "rejected";
+  if (["REJECTED", "CANCELLED"].includes(normalizedStatus)) {
+    return normalizedStatus.toLocaleLowerCase("fr-FR");
   }
 
-  if (
-    ["COMPLETED", "DONE", "RESOLVED", "CLOSED"].includes(normalizedStatus)
-  ) {
+  if (["COMPLETED", "DONE", "RESOLVED"].includes(normalizedStatus)) {
     return "processed";
+  }
+
+  if (normalizedStatus === "CLOSED") {
+    return "closed";
   }
 
   return "neutral";

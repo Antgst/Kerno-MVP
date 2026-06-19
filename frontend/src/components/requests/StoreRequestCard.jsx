@@ -24,7 +24,7 @@ function StoreRequestCard({ formatRequestDate, request }) {
               Fournisseur
             </dt>
             <dd>
-              {request.supplier?.companyName || "Fournisseur non renseigné"}
+              {request.supplier?.companyName || "Fournisseur à préciser"}
             </dd>
           </div>
           <div>
@@ -37,9 +37,9 @@ function StoreRequestCard({ formatRequestDate, request }) {
           <div>
             <dt>
               <RequestIcon name="message" />
-              Quantité / besoin
+              Volume / besoin
             </dt>
-            <dd>{request.requestedQuantity || "Non renseigné"}</dd>
+            <dd>{request.requestedQuantity || "À préciser"}</dd>
           </div>
           <div>
             <dt>
@@ -54,7 +54,7 @@ function StoreRequestCard({ formatRequestDate, request }) {
       {request.id && (
         <div className="supplier-request-actions">
           <Link to={`/store/requests/${request.id}`}>
-            Voir le détail
+            Consulter
             <RequestIcon name="arrow" />
           </Link>
         </div>

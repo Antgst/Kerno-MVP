@@ -1,6 +1,6 @@
 function EmptyState({
-  title = "Nothing to show yet",
-  message = "Content will appear here once data is available.",
+  title = "Aucun élément à afficher",
+  message = "Les informations apparaîtront ici dès qu’elles seront disponibles.",
   action,
   className = "",
 }) {
@@ -18,7 +18,7 @@ function EmptyState({
         ⌀
       </div>
 
-      <h3 className="m-0 text-lg font-black text-slate-900">{title}</h3>
+      <h3 className="m-0 text-lg font-semibold text-slate-900">{title}</h3>
 
       <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
         {message}

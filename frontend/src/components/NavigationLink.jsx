@@ -1,6 +1,13 @@
 import { NavLink } from "react-router-dom";
 
-function NavigationLink({ to, children, variant = "default", end, ...props }) {
+function NavigationLink({
+  to,
+  children,
+  variant = "default",
+  end,
+  forceActive = false,
+  ...props
+}) {
   const shouldMatchExactly = end ?? to === "/";
 
   return (
@@ -11,7 +18,7 @@ function NavigationLink({ to, children, variant = "default", end, ...props }) {
         [
           "navigation-link",
           `navigation-link--${variant}`,
-          isActive ? "navigation-link--active" : "",
+          isActive || forceActive ? "navigation-link--active" : "",
         ]
           .filter(Boolean)
           .join(" ")

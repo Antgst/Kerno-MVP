@@ -204,7 +204,7 @@ function SupplierRequestDetailPage() {
       {!isLoading && !loadErrorMessage && !request && (
         <EmptyState
           className="supplier-request-detail-page__feedback"
-          title="Demande introuvable."
+          title="Demande introuvable"
           message="Cette demande a peut-être été supprimée ou n’est plus disponible."
           action={backAction}
         />

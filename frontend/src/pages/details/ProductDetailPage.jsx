@@ -166,8 +166,7 @@ function ProductDetailPage() {
   const category = product?.category;
   const authRole = String(getCurrentAuthRole() || "").toUpperCase();
   const canContactSupplier = authRole === "STORE";
-  const shouldShowSupplierProfileAction =
-    Boolean(supplier?.id) && authRole !== "STORE";
+  const canManageProduct = authRole === "SUPPLIER";
   const requestPath = supplier?.id
     ? `/requests/new?supplierId=${supplier.id}&productId=${product.id}`
     : "/requests/new";
@@ -196,17 +195,17 @@ function ProductDetailPage() {
             to={requestPath}
           >
             <ProductIcon name="request" />
-            Faire une demande
+            Contacter le fournisseur
           </Link>
         )}
 
-        {product && shouldShowSupplierProfileAction && (
+        {product && canManageProduct && (
           <Link
-            className="product-detail-page__intro-action"
-            to={`/suppliers/${supplier.id}`}
+            className="product-detail-page__intro-action product-detail-page__intro-action--manage"
+            to={`/supplier/products/${product.id}/edit`}
           >
-            <ProductIcon name="building" />
-            Voir le profil fournisseur
+            <ProductIcon name="box" />
+            Modifier le produit
           </Link>
         )}
       </header>
@@ -301,12 +300,12 @@ function ProductDetailPage() {
                       <ProductIcon name="map" />
                       Provenance
                     </dt>
-                    <dd>{product.origin || "Non renseignée"}</dd>
+                    <dd>{product.origin || "À préciser"}</dd>
                   </div>
                   <div>
                     <dt>
                       <ProductIcon name="box" />
-                      Commande minimale
+                      Volume minimum
                     </dt>
                     <dd>{product.minimumOrder || "À convenir"}</dd>
                   </div>
@@ -346,7 +345,7 @@ function ProductDetailPage() {
                     <div>
                       <small>Fournisseur KERNO</small>
                       <strong>{supplier.companyName}</strong>
-                      <span>{supplier.businessType || "Activité non renseignée"}</span>
+                      <span>{supplier.businessType || "Activité à préciser"}</span>
                     </div>
                   </div>
 
@@ -362,7 +361,7 @@ function ProductDetailPage() {
                         <ProductIcon name="map" />
                         Localisation
                       </dt>
-                      <dd>{supplier.location || "Non renseignée"}</dd>
+                      <dd>{supplier.location || "À préciser"}</dd>
                     </div>
 
                     {supplier.contactEmail && (

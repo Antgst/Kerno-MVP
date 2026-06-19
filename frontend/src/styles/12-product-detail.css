@@ -103,6 +103,16 @@
   transform: translateY(-1px);
 }
 
+.product-detail-page__intro-action--manage {
+  background: #164e3f;
+  box-shadow: 0 13px 25px rgb(22 78 63 / 18%);
+}
+
+.product-detail-page__intro-action--manage:hover {
+  background: #0f3d33;
+  box-shadow: 0 16px 30px rgb(22 78 63 / 22%);
+}
+
 .product-detail-page__intro-action svg {
   width: 19px;
   height: 19px;
@@ -293,8 +303,8 @@
 .product-detail-hero__content h2 {
   margin: 18px 0 0;
   color: #1b302e;
-  font-size: clamp(1.8rem, 2.65vw, 2.55rem);
-  font-weight: 550;
+  font-size: clamp(1.7rem, 2.35vw, 2.25rem);
+  font-weight: 520;
   letter-spacing: -0.035em;
   line-height: 1.06;
 }
@@ -307,7 +317,7 @@
 
 .product-detail-hero__supplier-name strong {
   color: #164e3f;
-  font-weight: 700;
+  font-weight: 650;
 }
 
 .product-detail-hero__description {
@@ -340,8 +350,8 @@
 
 .product-detail-hero__price strong {
   color: #164e3f;
-  font-size: 1.55rem;
-  font-weight: 650;
+  font-size: 1.45rem;
+  font-weight: 600;
   letter-spacing: -0.025em;
 }
 
@@ -390,7 +400,7 @@
   margin: 5px 0 0;
   color: #263936;
   font-size: 0.88rem;
-  font-weight: 650;
+  font-weight: 600;
   overflow-wrap: anywhere;
 }
 
@@ -479,7 +489,7 @@
   overflow: hidden;
   color: #1b302e;
   font-size: 1.02rem;
-  font-weight: 700;
+  font-weight: 650;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import PageHeader from "../../components/shared/PageHeader";
-import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import Input from "../../components/ui/Input";
 import LoadingState from "../../components/ui/LoadingState";
+import ProductImage from "../../components/ui/ProductImage";
 import Select from "../../components/ui/Select";
 import StatusBadge from "../../components/ui/StatusBadge";
 import { getCategories } from "../../services/categoryService";
@@ -40,6 +38,45 @@ function getFormDataFromProduct(product) {
     imageUrl: product?.imageUrl || "",
     isActive: product?.isActive ?? true,
   };
+}
+
+function ProductFormIcon({ name }) {
+  const commonProps = {
+    width: "22",
+    height: "22",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": "true",
+  };
+
+  if (name === "arrow") {
+    return (
+      <svg {...commonProps}>
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+    );
+  }
+
+  if (name === "image") {
+    return (
+      <svg {...commonProps}>
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <circle cx="9" cy="10" r="2" />
+        <path d="m21 15-5-5L5 20" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...commonProps}>
+      <path d="m21 8-9 5-9-5 9-5 9 5Z" />
+      <path d="m3 8 9 5 9-5M3 8v8l9 5 9-5V8M12 13v8" />
+    </svg>
+  );
 }
 
 function SupplierProductFormPage() {
@@ -179,26 +216,43 @@ function SupplierProductFormPage() {
     }
   }
 
-  return (
-    <div className="text-slate-950">
-      <PageHeader
-        eyebrow="Produits fournisseur"
-        title={isEditMode ? "Modifier le produit" : "Ajouter un produit"}
-        description={
-          isEditMode
-            ? "Mettez à jour les informations visibles dans le catalogue KERNO."
-            : "Créez une fiche produit claire pour les magasins qui consultent le catalogue."
-        }
-      >
-        <Link to="/supplier/products">
-          <Button variant="secondary">Retour aux produits</Button>
-        </Link>
-      </PageHeader>
+  const selectedCategory = categories.find(
+    (category) => category.id === formData.categoryId,
+  );
 
-      {isLoading && <LoadingState message="Chargement du formulaire produit..." />}
+  return (
+    <div className="supplier-product-form-page">
+      <header className="supplier-product-form-page__intro">
+        <div>
+          <p className="supplier-product-form-page__eyebrow">
+            Produits fournisseur
+          </p>
+          <h1>{isEditMode ? "Modifier le produit" : "Ajouter un produit"}</h1>
+          <p>
+            {isEditMode
+              ? "Mettez à jour la fiche visible par les magasins dans le catalogue KERNO."
+              : "Présentez votre produit avec les informations essentielles pour les magasins."}
+          </p>
+        </div>
+        <Link
+          className="supplier-product-form-page__back"
+          to="/supplier/products"
+        >
+          <ProductFormIcon name="arrow" />
+          Retour aux produits
+        </Link>
+      </header>
+
+      {isLoading && (
+        <LoadingState
+          className="supplier-product-form-page__feedback"
+          message="Chargement du formulaire produit..."
+        />
+      )}
 
       {loadErrorMessage && (
         <ErrorState
+          className="supplier-product-form-page__feedback"
           title="Formulaire produit indisponible"
           message={loadErrorMessage}
         />
@@ -209,56 +263,85 @@ function SupplierProductFormPage() {
           title="Profil fournisseur requis"
           message="Créez votre profil fournisseur avant d’ajouter des produits."
           action={
-            <Link to="/supplier/profile">
-              <Button>Créer mon profil fournisseur</Button>
+            <Link
+              className="supplier-product-form-page__primary-link"
+              to="/supplier/profile"
+            >
+              Créer mon profil fournisseur
             </Link>
           }
         />
       )}
 
       {!isLoading && !loadErrorMessage && hasSupplierProfile && (
-        <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          <Card>
+        <div className="supplier-product-form-page__layout">
+          <section className="supplier-product-form-card supplier-product-form-card--main">
+            <div className="supplier-product-form-card__heading">
+              <div>
+                <p>Informations produit</p>
+                <h2>Compléter la fiche produit</h2>
+                <span>
+                  Les champs peuvent être complétés progressivement, seul le
+                  nom du produit est obligatoire.
+                </span>
+              </div>
+              <span className="supplier-product-form-card__icon">
+                <ProductFormIcon name="box" />
+              </span>
+            </div>
+
             {submitErrorMessage && (
               <ErrorState
-                className="mb-5"
+                className="supplier-product-form-page__message"
                 title="Échec de l’enregistrement"
                 message={submitErrorMessage}
               />
             )}
 
             {isSubmitting && (
-              <LoadingState className="mb-5" message="Enregistrement du produit..." />
+              <LoadingState
+                className="supplier-product-form-page__message"
+                message="Enregistrement du produit..."
+              />
             )}
 
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              <Input
-                label="Nom du produit"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Miel de fleurs sauvages"
-                error={fieldErrors.name}
-                required
-              />
+            <form className="supplier-product-form" onSubmit={handleSubmit}>
+              <div className="supplier-product-form__section">
+                <div className="supplier-product-form__section-heading">
+                  <span>01</span>
+                  <div>
+                    <h3>Présentation</h3>
+                    <p>Le nom, la catégorie et une description utile.</p>
+                  </div>
+                </div>
 
-              <Select
-                label="Catégorie"
-                name="categoryId"
-                value={formData.categoryId}
-                onChange={handleChange}
-                options={categoryOptions}
-                placeholder={
-                  categoryOptions.length > 0
-                    ? "Choisir une catégorie"
-                    : "Aucune catégorie disponible"
-                }
-                helperText="Facultatif pour le moment."
-              />
+                <div className="supplier-product-form__fields">
+                  <Input
+                    label="Nom du produit"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Miel de fleurs sauvages"
+                    error={fieldErrors.name}
+                    required
+                  />
 
-              <div>
+                  <Select
+                    label="Catégorie"
+                    name="categoryId"
+                    value={formData.categoryId}
+                    onChange={handleChange}
+                    options={categoryOptions}
+                    placeholder={
+                      categoryOptions.length > 0
+                        ? "Choisir une catégorie"
+                        : "Aucune catégorie disponible"
+                    }
+                    helperText="Cette information peut être ajoutée ultérieurement."
+                  />
+                </div>
+
                 <label
-                  className="mb-2 block text-sm font-bold text-slate-800"
                   htmlFor="description"
                 >
                   Description
@@ -271,132 +354,148 @@ function SupplierProductFormPage() {
                   onChange={handleChange}
                   rows="5"
                   placeholder="Décrivez le produit, sa qualité, son usage ou sa fabrication."
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-800 focus:ring-2 focus:ring-emerald-100"
                 />
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <Input
-                  label="Origine ou localisation"
-                  name="origin"
-                  value={formData.origin}
-                  onChange={handleChange}
-                  placeholder="Bretagne, France..."
-                />
+              <div className="supplier-product-form__section">
+                <div className="supplier-product-form__section-heading">
+                  <span>02</span>
+                  <div>
+                    <h3>Conditions professionnelles</h3>
+                    <p>Les repères utiles avant une première demande.</p>
+                  </div>
+                </div>
 
-                <Input
-                  label="Prix indicatif"
-                  name="priceInfo"
-                  value={formData.priceInfo}
-                  onChange={handleChange}
-                  placeholder="12 € / kg, tarif sur demande..."
-                />
+                <div className="supplier-product-form__fields">
+                  <Input
+                    label="Origine ou localisation"
+                    name="origin"
+                    value={formData.origin}
+                    onChange={handleChange}
+                    placeholder="Bretagne, France..."
+                  />
+
+                  <Input
+                    label="Prix indicatif"
+                    name="priceInfo"
+                    value={formData.priceInfo}
+                    onChange={handleChange}
+                    placeholder="12 € / kg, tarif sur demande..."
+                  />
+
+                  <Input
+                    label="Volume minimum"
+                    name="minimumOrder"
+                    value={formData.minimumOrder}
+                    onChange={handleChange}
+                    placeholder="10 kg, 24 unités..."
+                  />
+                </div>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <Input
-                  label="Commande minimale"
-                  name="minimumOrder"
-                  value={formData.minimumOrder}
-                  onChange={handleChange}
-                  placeholder="10 kg, 24 unités..."
-                />
+              <div className="supplier-product-form__section">
+                <div className="supplier-product-form__section-heading">
+                  <span>03</span>
+                  <div>
+                    <h3>Visuel et publication</h3>
+                    <p>Ajoutez un lien d’image si vous en disposez.</p>
+                  </div>
+                </div>
 
                 <Input
-                  label="Adresse de l’image"
+                  label="Lien vers l’image du produit"
                   name="imageUrl"
                   value={formData.imageUrl}
                   onChange={handleChange}
-                  placeholder="https://example.com/product.jpg"
+                  placeholder="https://exemple.fr/produit.jpg"
+                  helperText="Renseignez une adresse d’image accessible. Un visuel KERNO s’affiche à défaut."
                 />
+
+                <label className="supplier-product-form__visibility">
+                  <input
+                    type="checkbox"
+                    name="isActive"
+                    checked={formData.isActive}
+                    onChange={handleChange}
+                  />
+                  <span>
+                    <strong>Produit visible dans le catalogue</strong>
+                    <small>
+                      Les magasins pourront consulter cette fiche produit.
+                    </small>
+                  </span>
+                </label>
               </div>
 
-              <label className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-800">
-                <input
-                  type="checkbox"
-                  name="isActive"
-                  checked={formData.isActive}
-                  onChange={handleChange}
-                />
-                Produit visible dans le catalogue
-              </label>
-
-              <Button className="w-full" type="submit" disabled={isSubmitting}>
+              <button
+                className="supplier-product-form__submit"
+                type="submit"
+                disabled={isSubmitting}
+              >
                 {isSubmitting
                   ? "Enregistrement..."
                   : isEditMode
                     ? "Mettre à jour le produit"
                     : "Créer le produit"}
-              </Button>
+              </button>
             </form>
-          </Card>
+          </section>
 
-          <Card>
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          <aside className="supplier-product-form-card supplier-product-preview">
+            <div className="supplier-product-preview__heading">
               <div>
-                <h2 className="m-0 text-xl font-black">Aperçu du produit</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Vérifiez les principales informations qui seront visibles
-                  dans le catalogue.
-                </p>
+                <p>Prévisualisation</p>
+                <h2>Aperçu catalogue</h2>
+                <span>Vérifiez les informations principales avant l’enregistrement.</span>
               </div>
-
               <StatusBadge
                 status={formData.isActive ? "ACTIVE" : "INACTIVE"}
                 label={formData.isActive ? "Disponible" : "Indisponible"}
               />
             </div>
 
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <h3 className="m-0 text-2xl font-black text-slate-950">
-                {formData.name || "Nom du produit"}
-              </h3>
+            <div className="supplier-product-preview__card">
+              <div className="supplier-product-preview__media">
+                <ProductImage
+                  product={{
+                    ...formData,
+                    category: selectedCategory,
+                  }}
+                  alt={`Aperçu du produit ${formData.name || "KERNO"}`}
+                />
+                <span>
+                  <ProductFormIcon name="image" />
+                  Aperçu du visuel
+                </span>
+              </div>
 
-              <p className="mt-3 text-sm leading-6 text-slate-500">
-                {formData.description || "Aucune description pour le moment."}
-              </p>
+              <div className="supplier-product-preview__content">
+                <span className="supplier-product-preview__category">
+                  {selectedCategory?.name || "Produit fournisseur"}
+                </span>
+                <h3>{formData.name || "Nom du produit"}</h3>
+                <p>
+                  {formData.description ||
+                    "Ajoutez une description pour présenter la qualité et l’usage du produit."}
+                </p>
 
-              <div className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
-                <div>
-                  <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                    Catégorie
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {categories.find(
-                      (category) => category.id === formData.categoryId,
-                    )?.name || "Non renseignée"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                    Origine
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.origin || "Non renseignée"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                    Prix indicatif
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.priceInfo || "Tarif sur demande"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="font-black uppercase tracking-[0.16em] text-slate-400">
-                    Commande minimale
-                  </p>
-                  <p className="mt-1 font-bold text-slate-800">
-                    {formData.minimumOrder || "Non renseignée"}
-                  </p>
-                </div>
+                <dl>
+                  <div>
+                    <dt>Origine</dt>
+                    <dd>{formData.origin || "À préciser"}</dd>
+                  </div>
+                  <div>
+                    <dt>Prix indicatif</dt>
+                    <dd>{formData.priceInfo || "Tarif sur demande"}</dd>
+                  </div>
+                  <div>
+                    <dt>Volume minimum</dt>
+                    <dd>{formData.minimumOrder || "À convenir"}</dd>
+                  </div>
+                </dl>
               </div>
             </div>
-          </Card>
+          </aside>
         </div>
       )}
     </div>
