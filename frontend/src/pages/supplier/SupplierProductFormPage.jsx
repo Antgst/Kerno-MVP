@@ -17,6 +17,7 @@ import { getCurrentSupplierProfile } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
 import {
   PRODUCT_PRICE_UNIT_OPTIONS,
+  formatMinimumOrder,
   formatProductPrice,
 } from "../../utils/productPrice";
 
@@ -26,8 +27,9 @@ const initialFormData = {
   description: "",
   origin: "",
   priceEuros: "",
-  priceUnit: "",
-  minimumOrder: "",
+  priceUnit: "UNIT",
+  minimumOrderQuantity: "",
+  minimumOrderUnit: "UNIT",
   imageUrl: "",
   isActive: true,
 };
@@ -42,8 +44,12 @@ function getFormDataFromProduct(product) {
       product?.priceCents !== null && product?.priceCents !== undefined
         ? String(product.priceCents / 100)
         : "",
-    priceUnit: product?.priceUnit || "",
-    minimumOrder: product?.minimumOrder || "",
+    priceUnit: product?.priceUnit || "UNIT",
+    minimumOrderQuantity:
+      product?.minimumOrderQuantity !== null && product?.minimumOrderQuantity !== undefined
+        ? String(product.minimumOrderQuantity)
+        : "",
+    minimumOrderUnit: product?.minimumOrderUnit || "UNIT",
     imageUrl: product?.imageUrl || "",
     isActive: product?.isActive ?? true,
   };
@@ -66,6 +72,22 @@ function isValidPriceEurosInput(value) {
     normalizedValue === "" ||
     /^\d+(?:[,.]\d{1,2})?$/.test(normalizedValue)
   );
+}
+
+function getMinimumOrderQuantityFromInput(value) {
+  const normalizedValue = String(value || "").trim();
+
+  if (normalizedValue === "") {
+    return null;
+  }
+
+  return Number(normalizedValue);
+}
+
+function isValidMinimumOrderQuantityInput(value) {
+  const normalizedValue = String(value || "").trim();
+
+  return normalizedValue === "" || /^[1-9]\d*$/.test(normalizedValue);
 }
 
 function ProductFormIcon({ name }) {
@@ -207,6 +229,10 @@ function SupplierProductFormPage() {
       errors.priceEuros = "Indiquez un montant avec deux décimales maximum.";
     }
 
+    if (!isValidMinimumOrderQuantityInput(formData.minimumOrderQuantity)) {
+      errors.minimumOrderQuantity = "Indiquez un nombre entier supérieur à 0.";
+    }
+
     setFieldErrors(errors);
 
     return Object.keys(errors).length === 0;
@@ -220,6 +246,9 @@ function SupplierProductFormPage() {
     }
 
     const priceCents = getPriceCentsFromEurosInput(formData.priceEuros);
+    const minimumOrderQuantity = getMinimumOrderQuantityFromInput(
+      formData.minimumOrderQuantity,
+    );
 
     const payload = {
       name: formData.name,
@@ -228,7 +257,8 @@ function SupplierProductFormPage() {
       origin: formData.origin,
       priceCents,
       priceUnit: formData.priceUnit || null,
-      minimumOrder: formData.minimumOrder,
+      minimumOrderQuantity,
+      minimumOrderUnit: formData.minimumOrderUnit || null,
       imageUrl: formData.imageUrl,
       isActive: formData.isActive,
     };
@@ -400,6 +430,7 @@ function SupplierProductFormPage() {
 
                 <div className="supplier-product-form__fields">
                   <Input
+                    className="supplier-product-form__full-row"
                     label="Origine ou localisation"
                     name="origin"
                     value={formData.origin}
@@ -428,13 +459,27 @@ function SupplierProductFormPage() {
                     />
                   </div>
 
-                  <Input
-                    label="Volume minimum"
-                    name="minimumOrder"
-                    value={formData.minimumOrder}
-                    onChange={handleChange}
-                    placeholder="10 kg, 24 unités..."
-                  />
+                  <div className="supplier-product-form__minimum-order-group">
+                    <Input
+                      label="Volume minimum"
+                      name="minimumOrderQuantity"
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={formData.minimumOrderQuantity}
+                      onChange={handleChange}
+                      placeholder="10"
+                      error={fieldErrors.minimumOrderQuantity}
+                    />
+
+                    <Select
+                      label="Unité"
+                      name="minimumOrderUnit"
+                      value={formData.minimumOrderUnit}
+                      onChange={handleChange}
+                      options={PRODUCT_PRICE_UNIT_OPTIONS}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -540,7 +585,14 @@ function SupplierProductFormPage() {
                   </div>
                   <div>
                     <dt>Volume minimum</dt>
-                    <dd>{formData.minimumOrder || "À convenir"}</dd>
+                    <dd>
+                      {formatMinimumOrder({
+                        minimumOrderQuantity: getMinimumOrderQuantityFromInput(
+                          formData.minimumOrderQuantity,
+                        ),
+                        minimumOrderUnit: formData.minimumOrderUnit,
+                      })}
+                    </dd>
                   </div>
                 </dl>
               </div>

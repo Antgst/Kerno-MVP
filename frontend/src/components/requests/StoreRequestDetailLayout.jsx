@@ -1,7 +1,7 @@
 import RequestDetailField from "./RequestDetailField";
 import RequestIcon from "./RequestIcon";
 import RequestStatusBadge from "./RequestStatusBadge";
-import { formatProductPrice } from "../../utils/productPrice";
+import { formatMinimumOrder, formatProductPrice } from "../../utils/productPrice";
 
 function StoreRequestDetailLayout({ formatDate, request }) {
   const supplier = request?.supplier;
@@ -68,7 +68,7 @@ function StoreRequestDetailLayout({ formatDate, request }) {
             <RequestDetailField
               icon="box"
               label="Volume minimum"
-              value={product?.minimumOrder}
+              value={product ? formatMinimumOrder(product) : null}
             />
             <RequestDetailField
               icon="box"

@@ -407,7 +407,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"categoryId\": \"{{categoryId}}\",\n  \"name\": \"Postman Test Product\",\n  \"description\": \"Product created during Postman tests\",\n  \"priceCents\": null,\n  \"priceUnit\": null,\n  \"minimumOrder\": \"10 units\",\n  \"origin\": \"France\",\n  \"imageUrl\": \"https://example.com/product.jpg\"\n}",
+          "raw": "{\n  \"categoryId\": \"{{categoryId}}\",\n  \"name\": \"Postman Test Product\",\n  \"description\": \"Product created during Postman tests\",\n  \"priceCents\": null,\n  \"priceUnit\": null,\n  \"minimumOrderQuantity\": 10,\n  \"minimumOrderUnit\": \"UNIT\",\n  \"origin\": \"France\",\n  \"imageUrl\": \"https://example.com/product.jpg\"\n}",
           "options": {
             "raw": {
               "language": "json"

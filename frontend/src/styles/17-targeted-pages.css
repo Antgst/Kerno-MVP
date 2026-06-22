@@ -584,7 +584,14 @@
   gap: 15px;
 }
 
-.supplier-product-form__price-group {
+.supplier-product-form__full-row,
+.supplier-product-form__price-group,
+.supplier-product-form__minimum-order-group {
+  grid-column: 1 / -1;
+}
+
+.supplier-product-form__price-group,
+.supplier-product-form__minimum-order-group {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(120px, 0.55fr);
   gap: 12px;
@@ -1089,7 +1096,8 @@
     grid-template-columns: 1fr;
   }
 
-  .supplier-product-form__price-group {
+  .supplier-product-form__price-group,
+  .supplier-product-form__minimum-order-group {
     grid-template-columns: minmax(0, 1fr) minmax(96px, 0.55fr);
     gap: 10px;
   }

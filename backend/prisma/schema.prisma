@@ -89,19 +89,20 @@ model Category {
 }
 
 model Product {
-  id           String   @id @default(uuid()) @db.Uuid
-  supplierId   String   @map("supplier_id") @db.Uuid
-  categoryId   String?  @map("category_id") @db.Uuid
-  name         String
-  description  String?
-  priceCents   Int?              @map("price_cents")
-  priceUnit    ProductPriceUnit? @map("price_unit")
-  minimumOrder String?  @map("minimum_order")
-  origin       String?
-  imageUrl     String?  @map("image_url")
-  isActive     Boolean  @default(true) @map("is_active")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  id                   String            @id @default(uuid()) @db.Uuid
+  supplierId           String            @map("supplier_id") @db.Uuid
+  categoryId           String?           @map("category_id") @db.Uuid
+  name                 String
+  description          String?
+  priceCents           Int?              @map("price_cents")
+  priceUnit            ProductPriceUnit? @map("price_unit")
+  minimumOrderQuantity Int?              @map("minimum_order_quantity")
+  minimumOrderUnit     ProductPriceUnit? @map("minimum_order_unit")
+  origin               String?
+  imageUrl             String?           @map("image_url")
+  isActive             Boolean           @default(true) @map("is_active")
+  createdAt            DateTime          @default(now()) @map("created_at")
+  updatedAt            DateTime          @updatedAt @map("updated_at")
 
   supplier        SupplierProfile  @relation(fields: [supplierId], references: [id], onDelete: Cascade)
   category        Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)

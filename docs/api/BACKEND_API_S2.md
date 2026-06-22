@@ -488,7 +488,8 @@ Authorization: Bearer <supplier-token>
   "description": "Washed arabica beans",
   "priceCents": 1200,
   "priceUnit": "KG",
-  "minimumOrder": "10 kg",
+  "minimumOrderQuantity": 10,
+  "minimumOrderUnit": "KG",
   "origin": "Colombia",
   "imageUrl": "https://example.com/product.jpg"
 }
@@ -519,7 +520,8 @@ The supplier must own the product.
   "description": "Updated description",
   "priceCents": 1400,
   "priceUnit": "KG",
-  "minimumOrder": "20 kg",
+  "minimumOrderQuantity": 20,
+  "minimumOrderUnit": "KG",
   "origin": "Colombia",
   "imageUrl": "https://example.com/product.jpg"
 }

@@ -1,6 +1,9 @@
 import CatalogIcon from "./CatalogIcon";
+import { formatMinimumOrder } from "../../utils/productPrice";
 
 function CatalogProductInformation({ product, supplier }) {
+  const minimumOrderLabel = formatMinimumOrder(product);
+
   return (
     <>
       <div className="catalog-product-heading">
@@ -22,13 +25,13 @@ function CatalogProductInformation({ product, supplier }) {
           </div>
         )}
 
-        {product.minimumOrder && (
+        {product.minimumOrderQuantity && (
           <div>
             <dt>
               <CatalogIcon name="box" />
               Colisage
             </dt>
-            <dd>{product.minimumOrder}</dd>
+            <dd>{minimumOrderLabel}</dd>
           </div>
         )}
       </dl>

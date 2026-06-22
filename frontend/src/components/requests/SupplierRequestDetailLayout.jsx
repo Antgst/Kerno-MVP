@@ -3,7 +3,7 @@ import LoadingState from "../ui/LoadingState";
 import RequestDetailField from "./RequestDetailField";
 import RequestIcon from "./RequestIcon";
 import RequestStatusBadge from "./RequestStatusBadge";
-import { formatProductPrice } from "../../utils/productPrice";
+import { formatMinimumOrder, formatProductPrice } from "../../utils/productPrice";
 
 function SupplierRequestDetailLayout({
   actionErrorMessage,
@@ -91,7 +91,7 @@ function SupplierRequestDetailLayout({
                 hideWhenEmpty
                 icon="box"
                 label="Volume minimum"
-                value={product?.minimumOrder}
+                value={product ? formatMinimumOrder(product) : null}
               />
               <RequestDetailField
                 hideWhenEmpty

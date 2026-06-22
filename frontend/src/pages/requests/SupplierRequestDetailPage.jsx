@@ -127,7 +127,8 @@ function SupplierRequestDetailPage() {
   const hasProductDetails = Boolean(
     product?.name ||
       (product?.priceCents !== null && product?.priceCents !== undefined) ||
-      product?.minimumOrder ||
+      (product?.minimumOrderQuantity !== null &&
+        product?.minimumOrderQuantity !== undefined) ||
       product?.origin,
   );
 

@@ -56,7 +56,8 @@ function getSafeContactRequest(request) {
           name: request.product.name,
           priceCents: request.product.priceCents,
           priceUnit: request.product.priceUnit,
-          minimumOrder: request.product.minimumOrder,
+          minimumOrderQuantity: request.product.minimumOrderQuantity,
+          minimumOrderUnit: request.product.minimumOrderUnit,
         }
       : null,
   };

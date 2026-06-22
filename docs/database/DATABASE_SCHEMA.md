@@ -231,7 +231,8 @@ The `Product` model stores products published by suppliers.
 | `description`  |      String |       No | Product description             |
 | `priceCents`   |     Integer |       No | Indicative price in cents       |
 | `priceUnit`    |        Enum |       No | Indicative price unit           |
-| `minimumOrder` |      String |       No | Indicative minimum quantity     |
+| `minimumOrderQuantity` | Integer | No | Minimum order quantity |
+| `minimumOrderUnit` | Enum | No | Minimum order unit |
 | `origin`       |      String |       No | Origin or production area       |
 | `imageUrl`     |      String |       No | Optional product image URL      |
 | `isActive`     |     Boolean |      Yes | Product visibility status       |
@@ -352,7 +353,8 @@ Examples:
 | `sourcingNeeds`     | `sourcing_needs`     |
 | `priceCents`        | `price_cents`        |
 | `priceUnit`         | `price_unit`         |
-| `minimumOrder`      | `minimum_order`      |
+| `minimumOrderQuantity` | `minimum_order_quantity` |
+| `minimumOrderUnit`  | `minimum_order_unit` |
 | `imageUrl`          | `image_url`          |
 | `isActive`          | `is_active`          |
 | `requestedQuantity` | `requested_quantity` |

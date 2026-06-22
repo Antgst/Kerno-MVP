@@ -45,7 +45,11 @@ function Select({
         ].join(" ")}
         {...props}
       >
-        <option value="">{placeholder}</option>
+        {placeholder && (
+          <option value="" disabled hidden>
+            {placeholder}
+          </option>
+        )}
 
         {options.map((option) => (
           <option key={option.value} value={option.value}>

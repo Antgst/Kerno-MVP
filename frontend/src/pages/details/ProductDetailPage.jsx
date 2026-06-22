@@ -8,7 +8,7 @@ import { getCurrentAuthRole } from "../../services/authService";
 import { getProductById } from "../../services/productService";
 import { getSupplierById } from "../../services/supplierService";
 import { getResource } from "../../utils/responseUtils";
-import { formatProductPrice } from "../../utils/productPrice";
+import { formatMinimumOrder, formatProductPrice } from "../../utils/productPrice";
 
 function getProductFromResponse(response) {
   return getResource(response, ["product"]);
@@ -307,7 +307,7 @@ function ProductDetailPage() {
                       <ProductIcon name="box" />
                       Volume minimum
                     </dt>
-                    <dd>{product.minimumOrder || "À convenir"}</dd>
+                    <dd>{formatMinimumOrder(product)}</dd>
                   </div>
                   <div>
                     <dt>

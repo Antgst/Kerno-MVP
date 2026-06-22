@@ -9,7 +9,6 @@ const VALID_PRICE_UNITS = [
   "OTHER",
 ];
 
-
 function getStatus() {
   return "Products module is ready";
 }
@@ -35,7 +34,8 @@ function getSafeProduct(product) {
     description: product.description,
     priceCents: product.priceCents,
     priceUnit: product.priceUnit,
-    minimumOrder: product.minimumOrder,
+    minimumOrderQuantity: product.minimumOrderQuantity,
+    minimumOrderUnit: product.minimumOrderUnit,
     origin: product.origin,
     imageUrl: product.imageUrl,
     isActive: product.isActive,
@@ -85,6 +85,20 @@ function normalizeOptionalPriceUnit(value) {
   }
 
   return normalized;
+}
+
+function normalizeOptionalMinimumOrderQuantity(value) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const numberValue = Number(value);
+
+  if (!Number.isInteger(numberValue) || numberValue <= 0) {
+    throw createError("Product minimum order quantity must be a positive integer", 400);
+  }
+
+  return numberValue;
 }
 
 async function getSupplierProfileForUser(userId) {
@@ -146,7 +160,8 @@ async function createProduct(userId, payload) {
     description,
     priceCents,
     priceUnit,
-    minimumOrder,
+    minimumOrderQuantity,
+    minimumOrderUnit,
     origin,
     imageUrl,
   } = payload;
@@ -173,7 +188,8 @@ async function createProduct(userId, payload) {
       description: description?.trim() || null,
       priceCents: normalizeOptionalPriceCents(priceCents),
       priceUnit: normalizeOptionalPriceUnit(priceUnit),
-      minimumOrder: minimumOrder?.trim() || null,
+      minimumOrderQuantity: normalizeOptionalMinimumOrderQuantity(minimumOrderQuantity),
+      minimumOrderUnit: normalizeOptionalPriceUnit(minimumOrderUnit),
       origin: origin?.trim() || null,
       imageUrl: imageUrl?.trim() || null,
     },
@@ -207,7 +223,8 @@ async function updateProduct(userId, productId, payload) {
     description,
     priceCents,
     priceUnit,
-    minimumOrder,
+    minimumOrderQuantity,
+    minimumOrderUnit,
     origin,
     imageUrl,
   } = payload;
@@ -242,8 +259,12 @@ async function updateProduct(userId, productId, payload) {
         priceCents !== undefined ? normalizeOptionalPriceCents(priceCents) : undefined,
       priceUnit:
         priceUnit !== undefined ? normalizeOptionalPriceUnit(priceUnit) : undefined,
-      minimumOrder:
-        minimumOrder !== undefined ? minimumOrder?.trim() || null : undefined,
+      minimumOrderQuantity:
+        minimumOrderQuantity !== undefined
+          ? normalizeOptionalMinimumOrderQuantity(minimumOrderQuantity)
+          : undefined,
+      minimumOrderUnit:
+        minimumOrderUnit !== undefined ? normalizeOptionalPriceUnit(minimumOrderUnit) : undefined,
       origin:
         origin !== undefined ? origin?.trim() || null : undefined,
       imageUrl:

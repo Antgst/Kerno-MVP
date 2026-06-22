@@ -8,7 +8,7 @@ import StatusBadge from "../../components/ui/StatusBadge";
 import { getCurrentAuthRole } from "../../services/authService";
 import { getProducts } from "../../services/productService";
 import { getSupplierById } from "../../services/supplierService";
-import { formatProductPrice } from "../../utils/productPrice";
+import { formatMinimumOrder, formatProductPrice } from "../../utils/productPrice";
 import { getListResource, getResource } from "../../utils/responseUtils";
 
 function getSupplierFromResponse(response) {
@@ -370,7 +370,7 @@ function SupplierDetailPage() {
                           </div>
                           <div>
                             <dt>Volume minimum</dt>
-                            <dd>{product.minimumOrder || "À convenir"}</dd>
+                            <dd>{formatMinimumOrder(product)}</dd>
                           </div>
                         </dl>
                         <Link to={`/products/${product.id}`}>

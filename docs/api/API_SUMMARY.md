@@ -539,7 +539,8 @@ Authorization: Bearer <token>
   "description": "Fresh local tomatoes.",
   "priceCents": 1200,
   "priceUnit": "COLIS",
-  "minimumOrder": "5 boxes",
+  "minimumOrderQuantity": 5,
+  "minimumOrderUnit": "COLIS",
   "origin": "Rennes",
   "categoryId": "cat_123",
   "imageUrl": "https://example.com/product.jpg"
@@ -563,7 +564,8 @@ Supplier only.
   "name": "Updated Organic Tomatoes",
   "priceCents": 1000,
   "priceUnit": "COLIS",
-  "minimumOrder": "10 boxes"
+  "minimumOrderQuantity": 10,
+  "minimumOrderUnit": "COLIS"
 }
 ```
 

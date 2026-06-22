@@ -7,7 +7,7 @@ import { getCurrentSupplierProfile } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
 import ProductImage from "../../components/ui/ProductImage";
 import { formatStatus, getStatusTone } from "../../utils/status";
-import { formatProductPrice } from "../../utils/productPrice";
+import { formatMinimumOrder, formatProductPrice } from "../../utils/productPrice";
 
 function DashboardIcon({ name }) {
   const commonProps = {
@@ -164,7 +164,7 @@ function getProductCard(product) {
     priceLabel: formatProductPrice(product),
     availability:
       product.availability ||
-      product.minimumOrder ||
+      (product.minimumOrderQuantity ? formatMinimumOrder(product) : "") ||
       (isProductPublished(product) ? "Disponible" : "Masqué"),
   };
 }

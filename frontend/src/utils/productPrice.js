@@ -4,7 +4,7 @@ const PRICE_UNIT_LABELS = {
   LOT: "lot",
   COLIS: "colis",
   PALETTE: "palette",
-  OTHER: "unité",
+  OTHER: "autre",
 };
 
 export const PRODUCT_PRICE_UNIT_OPTIONS = [
@@ -28,4 +28,15 @@ export function formatProductPrice(product) {
     style: "currency",
     currency: "EUR",
   })} / ${unit}`;
+}
+
+export function formatMinimumOrder(product) {
+  if (!Number.isFinite(Number(product?.minimumOrderQuantity))) {
+    return "À convenir";
+  }
+
+  const quantity = Number(product.minimumOrderQuantity);
+  const unit = PRICE_UNIT_LABELS[product.minimumOrderUnit] || "unité";
+
+  return `${quantity.toLocaleString("fr-FR")} ${unit}`;
 }
