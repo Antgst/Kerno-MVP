@@ -103,6 +103,8 @@
   width: max-content;
   min-height: 28px;
   align-items: center;
+  margin-top: -8px;
+  margin-bottom: -8px;
   padding: 0 11px;
   border-radius: 999px;
   background: #f97316;
@@ -111,6 +113,10 @@
   font-weight: 750;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.pricing-card__badge--placeholder {
+  visibility: hidden;
 }
 
 .pricing-card__header {
@@ -383,10 +389,6 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
 
 .pricing-card > .pricing-card__price {
   justify-content: center;
-}
-
-.landing-final-cta .landing-eyebrow {
-  color: var(--color-orange);
 }
 
 .supplier-dashboard__primary-cta {

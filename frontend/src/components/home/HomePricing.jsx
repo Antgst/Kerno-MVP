@@ -5,7 +5,6 @@ function HomePricing() {
   return (
     <section className="landing-section">
       <SectionHeading
-        eyebrow="Offres"
         title="Des offres adaptées à la visibilité fournisseur"
         subtitle="Choisissez le rythme qui correspond à votre besoin de visibilité."
       />
@@ -22,9 +21,17 @@ function HomePricing() {
               .join(" ")}
             key={plan.name}
           >
-            {plan.featured && (
-              <span className="pricing-card__badge">Meilleure valeur</span>
-            )}
+            <span
+              className={[
+                "pricing-card__badge",
+                plan.featured ? "" : "pricing-card__badge--placeholder",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              aria-hidden={!plan.featured}
+            >
+              Meilleure valeur
+            </span>
             <div className="pricing-card__header">
               <h3>{plan.name}</h3>
             </div>

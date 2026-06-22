@@ -150,7 +150,6 @@ function RegisterPage() {
     <main className="auth-page register-page">
       <section className="register-shell">
         <aside className="register-editorial" aria-labelledby="register-title">
-          <p className="register-eyebrow">INSCRIPTION</p>
           <h1 id="register-title">Créez votre espace KERNO</h1>
           <p>
             Rejoignez une plateforme pensée pour connecter fournisseurs directs,
@@ -176,7 +175,6 @@ function RegisterPage() {
 
         <section className="register-card" aria-labelledby="register-form-title">
           <div className="register-card__header">
-            <p className="register-card__eyebrow">Compte professionnel</p>
             <h2 id="register-form-title">Créer un compte</h2>
             <p>Choisissez votre rôle puis renseignez vos informations.</p>
           </div>

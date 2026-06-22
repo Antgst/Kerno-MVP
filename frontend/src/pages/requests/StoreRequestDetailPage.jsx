@@ -61,7 +61,6 @@ function StoreRequestDetailPage() {
     <div className="supplier-request-detail-page store-request-detail-page">
       <header className="supplier-request-detail-header">
         <div>
-          <p className="supplier-request-detail-header__eyebrow">Demande envoyée</p>
           <h1>Détail de la demande</h1>
           <p>Consultez la demande transmise au fournisseur.</p>
         </div>

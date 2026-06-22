@@ -220,7 +220,6 @@ function CatalogPage() {
   return (
     <div className="catalog-page">
       <header className="catalog-header">
-        <p className="catalog-header__eyebrow">Catalogue</p>
         <h1>Catalogue</h1>
         <p>Découvrez les produits proposés par les fournisseurs.</p>
       </header>

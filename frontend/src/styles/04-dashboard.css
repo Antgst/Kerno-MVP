@@ -43,15 +43,6 @@
   max-width: 610px;
 }
 
-.dashboard-hero__eyebrow {
-  margin: 0 0 8px;
-  color: rgb(255 255 255 / 78%);
-  font-size: 0.64rem;
-  font-weight: 950;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
 .dashboard-hero h1 {
   margin: 0;
   color: #fff;
@@ -147,15 +138,6 @@
   font-size: 0.9rem;
   font-weight: 950;
   letter-spacing: -0.015em;
-}
-
-.dashboard-card__eyebrow {
-  margin: 0 0 5px;
-  color: #71839a;
-  font-size: 0.62rem;
-  font-weight: 950;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
 }
 
 .dashboard-card__link {

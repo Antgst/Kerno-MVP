@@ -35,7 +35,6 @@ function PlaceholderPage({ route }) {
     <main className="min-h-screen bg-stone-50 px-6 py-10 text-slate-950">
       <div className="mx-auto max-w-6xl">
         <PageHeader
-          eyebrow="Route KERNO MVP"
           title={route.label}
           description="Cette page temporaire utilise les composants partagés du MVP KERNO."
         >

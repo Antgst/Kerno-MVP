@@ -5,9 +5,6 @@ function SupplierProductsHeader() {
   return (
     <header className="supplier-products-header">
       <div>
-        <p className="supplier-products-header__eyebrow">
-          Espace fournisseur
-        </p>
         <h1>Mes produits</h1>
         <p>Gérez les produits visibles par les magasins.</p>
       </div>

@@ -7,9 +7,6 @@ function SupplierRequestsHeader({
   return (
     <header className="supplier-requests-header">
       <div>
-        <p className="supplier-requests-header__eyebrow">
-          Espace fournisseur
-        </p>
         <h1>Demandes reçues</h1>
         <p>
           Suivez les demandes de contact et de devis reçues des magasins.

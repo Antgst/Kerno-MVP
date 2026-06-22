@@ -1,4 +1,4 @@
-function PageHeader({ eyebrow, title, description, children, className = "" }) {
+function PageHeader({ title, description, children, className = "" }) {
   return (
     <header
       className={[
@@ -9,12 +9,6 @@ function PageHeader({ eyebrow, title, description, children, className = "" }) {
         .join(" ")}
     >
       <div>
-        {eyebrow && (
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-orange-500">
-            {eyebrow}
-          </p>
-        )}
-
         <h1 className="m-0 max-w-3xl text-4xl font-black tracking-tight text-slate-950 md:text-5xl">
           {title}
         </h1>

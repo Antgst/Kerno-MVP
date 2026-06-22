@@ -6,8 +6,7 @@ function HomeBenefits() {
   return (
     <section className="landing-section">
       <SectionHeading
-        eyebrow="Valeur"
-        title="Pourquoi KERNO crée de la valeur"
+        title="Pourquoi KERNO crée de la valeur ?"
       />
 
       <div className="landing-card-grid landing-card-grid--three">

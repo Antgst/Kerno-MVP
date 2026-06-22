@@ -210,7 +210,6 @@ function StoreProfilePage() {
     <div className="store-profile-page">
       <header className="store-profile-page__intro">
         <div>
-          <p className="store-profile-page__eyebrow">Espace magasin</p>
           <h1>Profil magasin</h1>
           <p className="store-profile-page__subtitle">
             {completionPercent === 100
@@ -242,9 +241,6 @@ function StoreProfilePage() {
           >
             <div className="store-profile-page__card-header">
               <div>
-                <p className="store-profile-page__card-eyebrow">
-                  Votre établissement
-                </p>
                 <h2 id="store-profile-form-title">
                   Informations du magasin
                 </h2>
@@ -397,9 +393,6 @@ function StoreProfilePage() {
             >
               <div className="store-profile-page__card-header">
                 <div>
-                  <p className="store-profile-page__card-eyebrow">
-                    Vue fournisseur
-                  </p>
                   <h2 id="store-profile-preview-title">
                     Aperçu côté fournisseur
                   </h2>

@@ -178,7 +178,6 @@ function RequestFormPage() {
     <div className="request-form-page">
       <PageHeader
         className="request-form-page__header"
-        eyebrow="Demande de contact"
         title="Envoyer une demande"
         description="Présentez votre besoin au fournisseur en quelques informations essentielles."
       >

@@ -181,7 +181,6 @@ function ProductDetailPage() {
             <ProductIcon name="arrow" />
             Retour au catalogue
           </Link>
-          <p className="product-detail-page__eyebrow">Fiche produit</p>
           <h1>{product?.name || "Détails du produit"}</h1>
           <p className="product-detail-page__subtitle">
             Découvrez les informations essentielles avant de contacter le
@@ -329,9 +328,6 @@ function ProductDetailPage() {
             <section className="product-detail-card product-detail-supplier">
               <div className="product-detail-section-heading">
                 <div>
-                  <p className="product-detail-page__card-eyebrow">
-                    Le fournisseur
-                  </p>
                   <h2>Qui propose ce produit ?</h2>
                 </div>
               </div>

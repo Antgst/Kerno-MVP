@@ -7,7 +7,6 @@ function HomeProductPreview() {
   return (
     <section className="landing-section">
       <SectionHeading
-        eyebrow="Catalogue"
         title="Un catalogue pensé pour l'action"
       />
 

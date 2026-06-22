@@ -20,16 +20,6 @@
   gap: 24px;
 }
 
-.store-profile-page__eyebrow,
-.store-profile-page__card-eyebrow {
-  margin: 0 0 8px;
-  color: var(--color-orange);
-  font-size: 0.7rem;
-  font-weight: 750;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
 .store-profile-page__intro h1 {
   margin: 0;
   color: #1b302e;
@@ -632,16 +622,6 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
-}
-
-.supplier-profile-page__eyebrow,
-.supplier-profile-page__card-eyebrow {
-  margin: 0 0 8px;
-  color: var(--color-orange);
-  font-size: 0.7rem;
-  font-weight: 750;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
 }
 
 .supplier-profile-page__intro h1 {

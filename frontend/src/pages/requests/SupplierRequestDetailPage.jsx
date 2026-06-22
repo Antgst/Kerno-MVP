@@ -177,9 +177,6 @@ function SupplierRequestDetailPage() {
     <div className="supplier-request-detail-page">
       <header className="supplier-request-detail-header">
         <div>
-          <p className="supplier-request-detail-header__eyebrow">
-            Demande reçue
-          </p>
           <h1>{request?.subject || "Détail de la demande"}</h1>
           <p>Consultez le détail de la demande reçue d’un magasin.</p>
         </div>

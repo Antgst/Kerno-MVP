@@ -4,7 +4,6 @@ function HomeFinalCta() {
   return (
     <section className="landing-final-cta">
       <div>
-        <p className="landing-eyebrow">Démarrer</p>
         <h2>Prêt à structurer votre sourcing local ?</h2>
         <p>
           KERNO rapproche fournisseurs et magasins dans un parcours simple,
