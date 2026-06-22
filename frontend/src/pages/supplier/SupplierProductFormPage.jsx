@@ -48,6 +48,26 @@ function getFormDataFromProduct(product) {
     isActive: product?.isActive ?? true,
   };
 }
+
+function getPriceCentsFromEurosInput(value) {
+  const normalizedValue = String(value || "").trim().replace(",", ".");
+
+  if (normalizedValue === "") {
+    return null;
+  }
+
+  return Math.round(Number(normalizedValue) * 100);
+}
+
+function isValidPriceEurosInput(value) {
+  const normalizedValue = String(value || "").trim();
+
+  return (
+    normalizedValue === "" ||
+    /^\d+(?:[,.]\d{1,2})?$/.test(normalizedValue)
+  );
+}
+
 function ProductFormIcon({ name }) {
   const commonProps = {
     width: "22",
@@ -183,6 +203,10 @@ function SupplierProductFormPage() {
       errors.name = "Le nom du produit est obligatoire.";
     }
 
+    if (!isValidPriceEurosInput(formData.priceEuros)) {
+      errors.priceEuros = "Indiquez un montant avec deux décimales maximum.";
+    }
+
     setFieldErrors(errors);
 
     return Object.keys(errors).length === 0;
@@ -192,38 +216,38 @@ function SupplierProductFormPage() {
     event.preventDefault();
 
     if (!validateForm()) {
-        return;
+      return;
     }
 
-    const priceEuros = formData.priceEuros.trim();
+    const priceCents = getPriceCentsFromEurosInput(formData.priceEuros);
 
     const payload = {
-        name: formData.name,
-        categoryId: formData.categoryId || null,
-        description: formData.description,
-        origin: formData.origin,
-        priceCents: priceEuros === "" ? null : Number(priceEuros) * 100,
-        priceUnit: formData.priceUnit || null,
-        minimumOrder: formData.minimumOrder,
-        imageUrl: formData.imageUrl,
-        isActive: formData.isActive,
+      name: formData.name,
+      categoryId: formData.categoryId || null,
+      description: formData.description,
+      origin: formData.origin,
+      priceCents,
+      priceUnit: formData.priceUnit || null,
+      minimumOrder: formData.minimumOrder,
+      imageUrl: formData.imageUrl,
+      isActive: formData.isActive,
     };
 
     setIsSubmitting(true);
     setSubmitErrorMessage("");
 
     try {
-        if (isEditMode) {
+      if (isEditMode) {
         await updateProduct(id, payload);
-        } else {
+      } else {
         await createProduct(payload);
-        }
+      }
 
-        navigate("/supplier/products");
+      navigate("/supplier/products");
     } catch (error) {
-        setSubmitErrorMessage(error.message || "Impossible d’enregistrer le produit.");
+      setSubmitErrorMessage(error.message || "Impossible d’enregistrer le produit.");
     } finally {
-        setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   }
 
@@ -383,24 +407,26 @@ function SupplierProductFormPage() {
                     placeholder="Bretagne, France..."
                   />
 
-                  <Input
-                    label="Prix indicatif (€)"
-                    name="priceEuros"
-                    type="number"
-                    min="0"
-                    step="1"
-                    value={formData.priceEuros}
-                    onChange={handleChange}
-                    placeholder="12"
-                  />
+                  <div className="supplier-product-form__price-group">
+                    <Input
+                      label="Prix indicatif (€)"
+                      name="priceEuros"
+                      type="text"
+                      inputMode="decimal"
+                      value={formData.priceEuros}
+                      onChange={handleChange}
+                      placeholder="12,34"
+                      error={fieldErrors.priceEuros}
+                    />
 
-                  <Select
-                    label="Unité"
-                    name="priceUnit"
-                    value={formData.priceUnit}
-                    onChange={handleChange}
-                    options={PRODUCT_PRICE_UNIT_OPTIONS}
-                  />
+                    <Select
+                      label="Unité"
+                      name="priceUnit"
+                      value={formData.priceUnit}
+                      onChange={handleChange}
+                      options={PRODUCT_PRICE_UNIT_OPTIONS}
+                    />
+                  </div>
 
                   <Input
                     label="Volume minimum"
@@ -507,10 +533,7 @@ function SupplierProductFormPage() {
                     <dt>Prix indicatif</dt>
                     <dd>
                       {formatProductPrice({
-                        priceCents:
-                          formData.priceEuros.trim() === ""
-                            ? null
-                            : Number(formData.priceEuros) * 100,
+                        priceCents: getPriceCentsFromEurosInput(formData.priceEuros),
                         priceUnit: formData.priceUnit,
                       })}
                     </dd>
