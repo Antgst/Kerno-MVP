@@ -33,7 +33,6 @@ function FeaturedSuppliersCarousel() {
     <section className="landing-section landing-section--featured">
       <div className="landing-section__split-heading">
         <SectionHeading
-          eyebrow="Sélection"
           title="Fournisseurs à la une"
           subtitle="Une sélection de fournisseurs mis en avant pour renforcer leur visibilité auprès des magasins."
         />

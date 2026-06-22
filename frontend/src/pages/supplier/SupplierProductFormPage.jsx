@@ -224,9 +224,6 @@ function SupplierProductFormPage() {
     <div className="supplier-product-form-page">
       <header className="supplier-product-form-page__intro">
         <div>
-          <p className="supplier-product-form-page__eyebrow">
-            Produits fournisseur
-          </p>
           <h1>{isEditMode ? "Modifier le produit" : "Ajouter un produit"}</h1>
           <p>
             {isEditMode

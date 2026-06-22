@@ -214,7 +214,6 @@ function SupplierProfilePage() {
     <div className="supplier-profile-page">
       <header className="supplier-profile-page__intro">
         <div>
-          <p className="supplier-profile-page__eyebrow">Espace fournisseur</p>
           <h1>Profil fournisseur</h1>
           <p className="supplier-profile-page__subtitle">
             {completionPercent === 100
@@ -243,9 +242,6 @@ function SupplierProfilePage() {
           >
             <div className="supplier-profile-page__card-header">
               <div>
-                <p className="supplier-profile-page__card-eyebrow">
-                  Votre entreprise
-                </p>
                 <h2 id="supplier-profile-form-title">
                   Informations du fournisseur
                 </h2>
@@ -398,9 +394,6 @@ function SupplierProfilePage() {
             >
               <div className="supplier-profile-page__card-header">
                 <div>
-                  <p className="supplier-profile-page__card-eyebrow">
-                    Vue magasin
-                  </p>
                   <h2 id="supplier-profile-preview-title">
                     Aperçu côté magasin
                   </h2>
@@ -459,7 +452,6 @@ function SupplierProfilePage() {
             <section className="supplier-profile-completion">
               <div className="supplier-profile-completion__content">
                 <div>
-                  <p>Profil fournisseur</p>
                   <h2>
                     {completionPercent === 100
                       ? "Profil complet"

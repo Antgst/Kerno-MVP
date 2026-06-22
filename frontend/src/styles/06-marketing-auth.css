@@ -27,16 +27,6 @@
   grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
 }
 
-.marketing-eyebrow,
-.auth-panel__eyebrow {
-  margin: 0 0 12px;
-  color: #ff7119;
-  font-size: 0.72rem;
-  font-weight: 950;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
 .marketing-hero h1,
 .auth-intro h1 {
   margin: 0;
@@ -336,16 +326,6 @@
   z-index: 1;
 }
 
-.register-eyebrow,
-.register-card__eyebrow {
-  margin: 0 0 12px;
-  color: var(--color-orange);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
 .register-editorial h1,
 .register-card h2 {
   margin: 0;
@@ -442,7 +422,7 @@
   line-height: 1.12;
 }
 
-.register-card__header p:not(.register-card__eyebrow) {
+.register-card__header p {
   margin: 10px 0 0;
   color: #64748b;
   font-size: 0.94rem;

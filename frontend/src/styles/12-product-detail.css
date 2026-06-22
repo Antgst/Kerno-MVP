@@ -42,16 +42,6 @@
   height: 17px;
 }
 
-.product-detail-page__eyebrow,
-.product-detail-page__card-eyebrow {
-  margin: 0 0 6px;
-  color: var(--color-orange);
-  font-size: 0.7rem;
-  font-weight: 750;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
 .product-detail-page__intro h1 {
   margin: 0;
   color: #1b302e;

@@ -155,15 +155,6 @@
   justify-content: flex-end;
 }
 
-.app-header__eyebrow {
-  margin: 0 0 4px;
-  color: var(--color-text-secondary);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
 .app-header__actions span {
   color: var(--color-text-secondary);
   font-size: 0.85rem;

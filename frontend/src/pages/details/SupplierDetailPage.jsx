@@ -169,7 +169,6 @@ function SupplierDetailPage() {
             <SupplierIcon name="arrow" />
             Retour au catalogue
           </Link>
-          <p className="supplier-detail-page__eyebrow">Fiche fournisseur</p>
           <h1>{supplier?.companyName || "Détail du fournisseur"}</h1>
           <p className="supplier-detail-page__subtitle">
             Découvrez son activité, ses coordonnées professionnelles et les
@@ -223,9 +222,6 @@ function SupplierDetailPage() {
                     {getInitials(supplier.companyName)}
                   </span>
                   <div>
-                    <p className="supplier-detail-page__card-eyebrow">
-                      Fournisseur KERNO
-                    </p>
                     <h2>{supplier.companyName}</h2>
                     <p>
                       {supplier.businessType ||
@@ -261,9 +257,6 @@ function SupplierDetailPage() {
               <section className="supplier-detail-card supplier-detail-contact">
                 <div className="supplier-detail-section-heading">
                   <div>
-                    <p className="supplier-detail-page__card-eyebrow">
-                      Coordonnées
-                    </p>
                     <h2>Informations professionnelles</h2>
                     <p>
                       Les coordonnées communiquées par le fournisseur pour les
@@ -323,9 +316,6 @@ function SupplierDetailPage() {
             <aside className="supplier-detail-card supplier-detail-products">
               <div className="supplier-detail-section-heading supplier-detail-products__heading">
                 <div>
-                  <p className="supplier-detail-page__card-eyebrow">
-                    Catalogue fournisseur
-                  </p>
                   <h2>Produits proposés</h2>
                   <p>Les produits actuellement publiés par ce fournisseur.</p>
                 </div>

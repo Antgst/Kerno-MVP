@@ -12,7 +12,6 @@ function StoreRequestDetailLayout({ formatDate, request }) {
         <article className="supplier-request-detail-card supplier-request-detail-card--message">
           <div className="supplier-request-detail-card__heading">
             <div>
-              <p className="supplier-request-detail-card__eyebrow">Objet</p>
               <h2>{request.subject || "Demande sans objet"}</h2>
             </div>
             <RequestStatusBadge status={request.status} />
@@ -117,7 +116,6 @@ function StoreRequestDetailLayout({ formatDate, request }) {
         <article className="supplier-request-detail-card supplier-request-status-card">
           <div className="supplier-request-status-card__top">
             <div>
-              <p className="supplier-request-detail-card__eyebrow">Suivi</p>
               <h2>Statut de la demande</h2>
             </div>
             <RequestStatusBadge status={request.status} />

@@ -84,7 +84,7 @@
     line-height: 1.08;
   }
 
-  .landing-hero__content > p:not(.landing-eyebrow) {
+  .landing-hero__content > p:not(.landing-hero__label) {
     font-size: 1rem;
   }
 

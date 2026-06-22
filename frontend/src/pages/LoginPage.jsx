@@ -101,7 +101,6 @@ function LoginPage() {
     <main className="auth-page register-page">
       <section className="register-shell">
         <aside className="register-editorial" aria-labelledby="login-title">
-          <p className="register-eyebrow">CONNEXION</p>
           <h1 id="login-title">Retrouvez votre espace KERNO</h1>
           <p>
             Accédez à vos demandes, vos profils et vos premiers échanges
@@ -127,7 +126,6 @@ function LoginPage() {
 
         <section className="register-card" aria-labelledby="login-form-title">
           <div className="register-card__header">
-            <p className="register-card__eyebrow">Espace professionnel</p>
             <h2 id="login-form-title">Se connecter</h2>
             <p>Renseignez vos identifiants pour accéder à votre espace.</p>
           </div>

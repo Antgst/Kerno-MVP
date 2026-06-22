@@ -10,7 +10,7 @@ function HomeHero() {
       </div>
 
       <div className="landing-hero__content">
-        <p className="landing-eyebrow">
+        <p className="landing-hero__label">
           Marketplace B2B pour fournisseurs et magasins
         </p>
         <h1>Le sourcing local, enfin structuré.</h1>

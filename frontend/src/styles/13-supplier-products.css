@@ -20,15 +20,6 @@
   gap: 28px;
 }
 
-.supplier-products-header__eyebrow {
-  margin: 0 0 7px;
-  color: #f97316;
-  font-size: 0.68rem;
-  font-weight: 750;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
 .supplier-products-header h1 {
   margin: 0;
   color: #1b302e;
