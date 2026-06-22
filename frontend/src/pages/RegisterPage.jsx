@@ -280,6 +280,10 @@ function RegisterPage() {
               required
             />
 
+            <p className="register-required-note">
+              Les champs marqués d’un astérisque (*) sont obligatoires.
+            </p>
+
             <button
               className="auth-submit"
               type="submit"
