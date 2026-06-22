@@ -12,6 +12,15 @@ enum UserRole {
   STORE
 }
 
+enum ProductPriceUnit {
+  UNIT
+  KG
+  LOT
+  COLIS
+  PALETTE
+  OTHER
+}
+
 model User {
   id           String   @id @default(uuid()) @db.Uuid
   email        String   @unique
@@ -85,7 +94,8 @@ model Product {
   categoryId   String?  @map("category_id") @db.Uuid
   name         String
   description  String?
-  priceInfo    String?  @map("price_info")
+  priceCents   Int?              @map("price_cents")
+  priceUnit    ProductPriceUnit? @map("price_unit")
   minimumOrder String?  @map("minimum_order")
   origin       String?
   imageUrl     String?  @map("image_url")

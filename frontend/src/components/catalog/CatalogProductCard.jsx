@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import CatalogProductInformation from "./CatalogProductInformation";
 import CatalogProductVisual from "./CatalogProductVisual";
+import { formatProductPrice } from "../../utils/productPrice";
 
 function CatalogProductCard({ product, supplier, viewMode }) {
   const productName = product.name || "Produit sans nom";
@@ -22,7 +23,7 @@ function CatalogProductCard({ product, supplier, viewMode }) {
 
         <div className="catalog-product-footer">
           <p className="catalog-product-price">
-            {product.priceInfo || "Tarif sur demande"}
+            {formatProductPrice(product)}
           </p>
           <span className="catalog-product-action">Voir le produit</span>
         </div>

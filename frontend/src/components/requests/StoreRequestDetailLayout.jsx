@@ -1,6 +1,7 @@
 import RequestDetailField from "./RequestDetailField";
 import RequestIcon from "./RequestIcon";
 import RequestStatusBadge from "./RequestStatusBadge";
+import { formatProductPrice } from "../../utils/productPrice";
 
 function StoreRequestDetailLayout({ formatDate, request }) {
   const supplier = request?.supplier;
@@ -72,7 +73,7 @@ function StoreRequestDetailLayout({ formatDate, request }) {
             <RequestDetailField
               icon="box"
               label="Prix indicatif"
-              value={product?.priceInfo}
+              value={product ? formatProductPrice(product) : null}
             />
           </dl>
         </article>

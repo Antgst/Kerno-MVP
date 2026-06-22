@@ -8,6 +8,7 @@ import { getCurrentAuthRole } from "../../services/authService";
 import { getProductById } from "../../services/productService";
 import { getSupplierById } from "../../services/supplierService";
 import { getResource } from "../../utils/responseUtils";
+import { formatProductPrice } from "../../utils/productPrice";
 
 function getProductFromResponse(response) {
   return getResource(response, ["product"]);
@@ -289,7 +290,7 @@ function ProductDetailPage() {
 
                 <div className="product-detail-hero__price">
                   <small>Information tarifaire</small>
-                  <strong>{product.priceInfo || "Tarif sur demande"}</strong>
+                  <strong>{formatProductPrice(product)}</strong>
                   <span>Conditions professionnelles communiquées par le fournisseur</span>
                 </div>
 

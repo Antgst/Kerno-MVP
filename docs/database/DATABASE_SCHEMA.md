@@ -229,7 +229,8 @@ The `Product` model stores products published by suppliers.
 | `categoryId`   | UUID string |       No | Optional product category       |
 | `name`         |      String |      Yes | Product name                    |
 | `description`  |      String |       No | Product description             |
-| `priceInfo`    |      String |       No | Indicative pricing information  |
+| `priceCents`   |     Integer |       No | Indicative price in cents       |
+| `priceUnit`    |        Enum |       No | Indicative price unit           |
 | `minimumOrder` |      String |       No | Indicative minimum quantity     |
 | `origin`       |      String |       No | Origin or production area       |
 | `imageUrl`     |      String |       No | Optional product image URL      |
@@ -349,7 +350,8 @@ Examples:
 | `storeName`         | `store_name`         |
 | `brandName`         | `brand_name`         |
 | `sourcingNeeds`     | `sourcing_needs`     |
-| `priceInfo`         | `price_info`         |
+| `priceCents`        | `price_cents`        |
+| `priceUnit`         | `price_unit`         |
 | `minimumOrder`      | `minimum_order`      |
 | `imageUrl`          | `image_url`          |
 | `isActive`          | `is_active`          |

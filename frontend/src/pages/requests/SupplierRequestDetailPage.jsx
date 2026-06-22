@@ -126,7 +126,7 @@ function SupplierRequestDetailPage() {
   );
   const hasProductDetails = Boolean(
     product?.name ||
-      product?.priceInfo ||
+      (product?.priceCents !== null && product?.priceCents !== undefined) ||
       product?.minimumOrder ||
       product?.origin,
   );

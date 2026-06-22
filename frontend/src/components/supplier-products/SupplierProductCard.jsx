@@ -1,6 +1,7 @@
 import SupplierProductActions from "./SupplierProductActions";
 import SupplierProductMeta from "./SupplierProductMeta";
 import SupplierProductVisual from "./SupplierProductVisual";
+import { formatProductPrice } from "../../utils/productPrice";
 
 function SupplierProductCard({
   deletingProductId,
@@ -43,7 +44,7 @@ function SupplierProductCard({
         <div className="supplier-product-card__footer">
           <div className="supplier-product-card__price">
             <small>Information tarifaire</small>
-            <strong>{product.priceInfo || "Tarif sur demande"}</strong>
+            <strong>{formatProductPrice(product)}</strong>
           </div>
 
           <SupplierProductActions

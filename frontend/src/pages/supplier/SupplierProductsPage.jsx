@@ -9,6 +9,7 @@ import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
 import { deleteProduct, getProducts } from "../../services/productService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
+import { formatProductPrice } from "../../utils/productPrice";
 import { getListResource, getResource } from "../../utils/responseUtils";
 
 const initialFilters = {
@@ -130,7 +131,7 @@ function SupplierProductsPage() {
         [
           product.name,
           product.description,
-          product.priceInfo,
+          formatProductPrice(product),
           product.minimumOrder,
           product.origin,
           product.category?.name,

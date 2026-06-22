@@ -245,7 +245,8 @@ def seeded() -> dict[str, Any]:
                 "categoryId": category["id"],
                 "name": f"Test Product {RUN_ID}",
                 "description": "Automated test product",
-                "priceInfo": "10 EUR / unit",
+                "priceCents": 1000,
+                "priceUnit": "UNIT",
                 "minimumOrder": "5 boxes",
                 "origin": "France",
                 "imageUrl": "https://example.test/product.png",
@@ -858,7 +859,8 @@ def test_create_product_accepts_optional_fields_as_empty_strings(seeded: dict[st
             json={
                 "name": f"Optional Empty Fields {RUN_ID}",
                 "description": "   ",
-                "priceInfo": "   ",
+                "priceCents": "",
+                "priceUnit": "",
                 "minimumOrder": "   ",
                 "origin": "   ",
                 "imageUrl": "   ",
@@ -868,7 +870,8 @@ def test_create_product_accepts_optional_fields_as_empty_strings(seeded: dict[st
     )
     product = body["product"]
     assert product["description"] is None
-    assert product["priceInfo"] is None
+    assert product["priceCents"] is None
+    assert product["priceUnit"] is None
     assert product["minimumOrder"] is None
     assert product["origin"] is None
     assert product["imageUrl"] is None

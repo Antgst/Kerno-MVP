@@ -15,13 +15,18 @@ import {
 } from "../../services/productService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
+import {
+  PRODUCT_PRICE_UNIT_OPTIONS,
+  formatProductPrice,
+} from "../../utils/productPrice";
 
 const initialFormData = {
   name: "",
   categoryId: "",
   description: "",
   origin: "",
-  priceInfo: "",
+  priceEuros: "",
+  priceUnit: "",
   minimumOrder: "",
   imageUrl: "",
   isActive: true,
@@ -33,13 +38,16 @@ function getFormDataFromProduct(product) {
     categoryId: product?.categoryId || product?.category?.id || "",
     description: product?.description || "",
     origin: product?.origin || "",
-    priceInfo: product?.priceInfo || "",
+    priceEuros:
+      product?.priceCents !== null && product?.priceCents !== undefined
+        ? String(product.priceCents / 100)
+        : "",
+    priceUnit: product?.priceUnit || "",
     minimumOrder: product?.minimumOrder || "",
     imageUrl: product?.imageUrl || "",
     isActive: product?.isActive ?? true,
   };
 }
-
 function ProductFormIcon({ name }) {
   const commonProps = {
     width: "22",
@@ -184,35 +192,38 @@ function SupplierProductFormPage() {
     event.preventDefault();
 
     if (!validateForm()) {
-      return;
+        return;
     }
+
+    const priceEuros = formData.priceEuros.trim();
+
+    const payload = {
+        name: formData.name,
+        categoryId: formData.categoryId || null,
+        description: formData.description,
+        origin: formData.origin,
+        priceCents: priceEuros === "" ? null : Number(priceEuros) * 100,
+        priceUnit: formData.priceUnit || null,
+        minimumOrder: formData.minimumOrder,
+        imageUrl: formData.imageUrl,
+        isActive: formData.isActive,
+    };
 
     setIsSubmitting(true);
     setSubmitErrorMessage("");
 
-    const payload = {
-      name: formData.name,
-      categoryId: formData.categoryId || null,
-      description: formData.description,
-      origin: formData.origin,
-      priceInfo: formData.priceInfo,
-      minimumOrder: formData.minimumOrder,
-      imageUrl: formData.imageUrl,
-      isActive: formData.isActive,
-    };
-
     try {
-      if (isEditMode) {
+        if (isEditMode) {
         await updateProduct(id, payload);
-      } else {
+        } else {
         await createProduct(payload);
-      }
+        }
 
-      navigate("/supplier/products");
+        navigate("/supplier/products");
     } catch (error) {
-      setSubmitErrorMessage(error.message || "Impossible d’enregistrer le produit.");
+        setSubmitErrorMessage(error.message || "Impossible d’enregistrer le produit.");
     } finally {
-      setIsSubmitting(false);
+        setIsSubmitting(false);
     }
   }
 
@@ -373,11 +384,22 @@ function SupplierProductFormPage() {
                   />
 
                   <Input
-                    label="Prix indicatif"
-                    name="priceInfo"
-                    value={formData.priceInfo}
+                    label="Prix indicatif (€)"
+                    name="priceEuros"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={formData.priceEuros}
                     onChange={handleChange}
-                    placeholder="12 € / kg, tarif sur demande..."
+                    placeholder="12"
+                  />
+
+                  <Select
+                    label="Unité"
+                    name="priceUnit"
+                    value={formData.priceUnit}
+                    onChange={handleChange}
+                    options={PRODUCT_PRICE_UNIT_OPTIONS}
                   />
 
                   <Input
@@ -483,7 +505,15 @@ function SupplierProductFormPage() {
                   </div>
                   <div>
                     <dt>Prix indicatif</dt>
-                    <dd>{formData.priceInfo || "Tarif sur demande"}</dd>
+                    <dd>
+                      {formatProductPrice({
+                        priceCents:
+                          formData.priceEuros.trim() === ""
+                            ? null
+                            : Number(formData.priceEuros) * 100,
+                        priceUnit: formData.priceUnit,
+                      })}
+                    </dd>
                   </div>
                   <div>
                     <dt>Volume minimum</dt>

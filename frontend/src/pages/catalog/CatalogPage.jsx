@@ -7,6 +7,7 @@ import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
 import { getProducts } from "../../services/productService";
 import { getSuppliers } from "../../services/supplierService";
+import { formatProductPrice } from "../../utils/productPrice";
 import { getListResource } from "../../utils/responseUtils";
 
 const initialFilters = {
@@ -149,7 +150,7 @@ function CatalogPage() {
           product.name,
           product.description,
           product.origin,
-          product.priceInfo,
+          formatProductPrice(product),
           product.minimumOrder,
           product.category?.name,
           supplier?.companyName,

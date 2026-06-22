@@ -286,7 +286,7 @@ async function createProducts(categories, suppliers) {
       const catalogEntry = pick(PRODUCT_CATALOG, supplierIndex + productIndex);
       const productBaseName = pick(catalogEntry.names, supplierIndex * 3 + productIndex);
       const category = categories[catalogEntry.category];
-      const unitPrice = (2.2 + ((supplierIndex + productIndex) % 18) * 0.85).toFixed(2).replace(".", ",");
+      const priceCents = Math.round((2.2 + ((supplierIndex + productIndex) % 18) * 0.85) * 100);
       const minimum = ["12 unités", "24 unités", "36 unités", "48 unités", "5 kg", "10 kg", "1 carton", "2 cartons"][(supplierIndex + productIndex) % 8];
 
       const product = await prisma.product.create({
@@ -295,7 +295,8 @@ async function createProducts(categories, suppliers) {
           categoryId: category.id,
           name: `${productBaseName} ${supplierIndex + 1}-${productIndex + 1}`,
           description: `${productBaseName} fabriqué par ${supplier.companyName}. Produit pensé pour la revente en boutique, avec une présentation claire et un approvisionnement régulier.`,
-          priceInfo: `${unitPrice} € HT / unité`,
+          priceCents,
+          priceUnit: "UNIT",
           minimumOrder: minimum,
           origin: supplier.location,
           imageUrl: `/assets/products/${slugify(productBaseName)}.webp`,

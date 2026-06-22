@@ -8,6 +8,7 @@ import StatusBadge from "../../components/ui/StatusBadge";
 import { getCurrentAuthRole } from "../../services/authService";
 import { getProducts } from "../../services/productService";
 import { getSupplierById } from "../../services/supplierService";
+import { formatProductPrice } from "../../utils/productPrice";
 import { getListResource, getResource } from "../../utils/responseUtils";
 
 function getSupplierFromResponse(response) {
@@ -365,7 +366,7 @@ function SupplierDetailPage() {
                         <dl>
                           <div>
                             <dt>Prix indicatif</dt>
-                            <dd>{product.priceInfo || "Tarif sur demande"}</dd>
+                            <dd>{formatProductPrice(product)}</dd>
                           </div>
                           <div>
                             <dt>Volume minimum</dt>

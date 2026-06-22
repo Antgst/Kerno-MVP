@@ -1,5 +1,15 @@
 const prisma = require("../../lib/prisma");
 
+const VALID_PRICE_UNITS = [
+  "UNIT",
+  "KG",
+  "LOT",
+  "COLIS",
+  "PALETTE",
+  "OTHER",
+];
+
+
 function getStatus() {
   return "Products module is ready";
 }
@@ -23,7 +33,8 @@ function getSafeProduct(product) {
     categoryId: product.categoryId,
     name: product.name,
     description: product.description,
-    priceInfo: product.priceInfo,
+    priceCents: product.priceCents,
+    priceUnit: product.priceUnit,
     minimumOrder: product.minimumOrder,
     origin: product.origin,
     imageUrl: product.imageUrl,
@@ -46,6 +57,34 @@ function getSafeProduct(product) {
         }
       : null,
   };
+}
+
+function normalizeOptionalPriceCents(value) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const numberValue = Number(value);
+
+  if (!Number.isInteger(numberValue) || numberValue < 0) {
+    throw createError("Product price must be a positive integer in cents", 400);
+  }
+
+  return numberValue;
+}
+
+function normalizeOptionalPriceUnit(value) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const normalized = String(value).trim().toUpperCase();
+
+  if (!VALID_PRICE_UNITS.includes(normalized)) {
+    throw createError("Product price unit is invalid", 400);
+  }
+
+  return normalized;
 }
 
 async function getSupplierProfileForUser(userId) {
@@ -105,7 +144,8 @@ async function createProduct(userId, payload) {
     categoryId,
     name,
     description,
-    priceInfo,
+    priceCents,
+    priceUnit,
     minimumOrder,
     origin,
     imageUrl,
@@ -131,7 +171,8 @@ async function createProduct(userId, payload) {
       categoryId: categoryId || null,
       name: name.trim(),
       description: description?.trim() || null,
-      priceInfo: priceInfo?.trim() || null,
+      priceCents: normalizeOptionalPriceCents(priceCents),
+      priceUnit: normalizeOptionalPriceUnit(priceUnit),
       minimumOrder: minimumOrder?.trim() || null,
       origin: origin?.trim() || null,
       imageUrl: imageUrl?.trim() || null,
@@ -164,7 +205,8 @@ async function updateProduct(userId, productId, payload) {
     categoryId,
     name,
     description,
-    priceInfo,
+    priceCents,
+    priceUnit,
     minimumOrder,
     origin,
     imageUrl,
@@ -196,8 +238,10 @@ async function updateProduct(userId, productId, payload) {
       name: name !== undefined ? name.trim() : undefined,
       description:
         description !== undefined ? description?.trim() || null : undefined,
-      priceInfo:
-        priceInfo !== undefined ? priceInfo?.trim() || null : undefined,
+      priceCents:
+        priceCents !== undefined ? normalizeOptionalPriceCents(priceCents) : undefined,
+      priceUnit:
+        priceUnit !== undefined ? normalizeOptionalPriceUnit(priceUnit) : undefined,
       minimumOrder:
         minimumOrder !== undefined ? minimumOrder?.trim() || null : undefined,
       origin:
