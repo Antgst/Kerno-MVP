@@ -275,7 +275,6 @@ function SupplierProductFormPage() {
           <section className="supplier-product-form-card supplier-product-form-card--main">
             <div className="supplier-product-form-card__heading">
               <div>
-                <p>Informations produit</p>
                 <h2>Compléter la fiche produit</h2>
                 <span>
                   Les champs peuvent être complétés progressivement, seul le
@@ -441,7 +440,6 @@ function SupplierProductFormPage() {
           <aside className="supplier-product-form-card supplier-product-preview">
             <div className="supplier-product-preview__heading">
               <div>
-                <p>Prévisualisation</p>
                 <h2>Aperçu catalogue</h2>
                 <span>Vérifiez les informations principales avant l’enregistrement.</span>
               </div>

@@ -85,7 +85,6 @@ function StoreRequestDetailLayout({ formatDate, request }) {
               <RequestIcon name="building" />
             </span>
             <div>
-              <p>Fournisseur associé</p>
               <h2>{supplier?.companyName || "Fournisseur indisponible"}</h2>
             </div>
           </div>

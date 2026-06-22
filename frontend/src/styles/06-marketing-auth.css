@@ -429,6 +429,12 @@
   line-height: 1.6;
 }
 
+.register-required-note {
+  margin: 0;
+  color: #475569;
+  font-size: 0.86rem;
+}
+
 .register-card .auth-form {
   gap: 16px;
 }
