@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
+    "country-state-city": "^3.2.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-phone-number-input": "^3.4.17",
+    "react-router-dom": "^7.17.0",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {

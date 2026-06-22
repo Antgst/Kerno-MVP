@@ -1,0 +1,173 @@
+/* Responsive */
+@media (max-width: 1180px) {
+  .dashboard-page {
+    width: min(832px, calc(100vw - 264px));
+  }
+}
+
+@media (max-width: 900px) {
+  .kerno-shell {
+    display: block;
+  }
+
+  .kerno-shell__sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 2400;
+    width: min(82vw, 280px);
+    min-width: 0;
+    transform: translateX(-105%);
+    transition: transform 180ms ease;
+  }
+
+  .kerno-shell__sidebar--open {
+    transform: translateX(0);
+  }
+
+  .kerno-shell__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2300;
+    display: block;
+    pointer-events: none;
+    background: rgb(15 23 42 / 0%);
+    transition: background 180ms ease;
+  }
+
+  .kerno-shell__overlay--open {
+    pointer-events: auto;
+    background: rgb(15 23 42 / 42%);
+  }
+
+  .kerno-app-header {
+    padding: 14px 16px;
+  }
+
+  .kerno-app-header__menu {
+    display: block;
+  }
+
+  .kerno-app-header__account-copy {
+    display: none;
+  }
+
+  .dashboard-page {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-card,
+  .dashboard-card--exchanges,
+  .dashboard-card--profile-score,
+  .dashboard-card--reminders,
+  .dashboard-card--discover,
+  .dashboard-card--featured {
+    grid-column: span 1;
+    min-height: auto;
+  }
+
+  .featured-supplier,
+  .marketing-hero,
+  .auth-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .marketing-steps,
+  .marketing-roles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .public-nav {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .public-nav .navigation-link--header-cta {
+    grid-column: 1 / -1;
+  }
+
+  .kerno-shell__content {
+    padding: 14px 14px 70px;
+  }
+
+  .kerno-app-header__search {
+    width: 100%;
+  }
+
+  .dashboard-hero {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .dashboard-hero h1 {
+    font-size: 3rem;
+  }
+
+  .dashboard-hero__actions,
+  .dashboard-hero__actions a,
+  .dashboard-hero__actions button {
+    width: 100%;
+  }
+
+  .featured-supplier {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-supplier__visual {
+    min-height: 130px;
+  }
+
+  .marketing-steps,
+  .marketing-roles,
+  .marketing-preview__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-page,
+  .marketing-page,
+  .page-shell {
+    padding-inline: 16px;
+  }
+}
+
+/* Fix account dropdown click layer */
+.kerno-shell__main.kerno-page-bg > .kerno-app-header {
+  z-index: 5000;
+  overflow: visible;
+}
+
+.kerno-shell__main.kerno-page-bg > .kerno-shell__content {
+  z-index: 2;
+}
+
+.kerno-app-header__account,
+.kerno-app-header__menu-wrapper,
+.kerno-app-header__dropdown {
+  pointer-events: auto;
+}
+
+.kerno-app-header__dropdown a,
+.kerno-app-header__dropdown button {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+}
+
+/* Keep mobile sidebar above the header when opened */
+@media (max-width: 900px) {
+  .kerno-shell__main.kerno-page-bg > .kerno-app-header {
+    z-index: 2200;
+  }
+}

@@ -1,0 +1,209 @@
+/* Global UX polish — store requests, catalog actions and compact account menu */
+.product-image-neutral {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  place-content: center;
+  justify-items: center;
+  gap: 15px;
+  padding: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 24% 20%, rgb(255 255 255 / 94%), transparent 30%),
+    radial-gradient(circle at 78% 82%, rgb(214 235 226 / 90%), transparent 35%),
+    linear-gradient(145deg, #faf8f3 0%, #e4f0eb 100%);
+  color: #164e3f;
+  text-align: center;
+}
+
+.product-image-neutral__mark {
+  display: grid;
+  width: 70px;
+  height: 70px;
+  place-items: center;
+  border: 1px solid rgb(22 78 63 / 12%);
+  border-radius: 22px;
+  background: rgb(255 255 255 / 78%);
+  box-shadow: 0 16px 34px rgb(22 78 63 / 10%);
+}
+
+.product-image-neutral__mark svg {
+  width: 44px;
+  height: 44px;
+  opacity: 0.8;
+}
+
+.product-image-neutral__copy {
+  display: none;
+  max-width: 300px;
+}
+
+.product-image-neutral__copy strong,
+.product-image-neutral__copy small {
+  display: block;
+}
+
+.product-image-neutral__copy strong {
+  color: #1b302e;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.product-image-neutral__copy small {
+  margin-top: 5px;
+  color: #71807c;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.product-detail-hero__media > .product-image-neutral {
+  min-height: 100%;
+}
+
+.product-detail-hero__media .product-image-neutral__copy,
+.supplier-product-preview__media .product-image-neutral__copy {
+  display: block;
+}
+
+.store-requests-header__action {
+  display: inline-flex;
+  min-height: 43px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border-radius: 11px;
+  background: #164e3f;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgb(22 78 63 / 14%);
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.store-requests-header__action:hover {
+  background: #0f3d33;
+  transform: translateY(-1px);
+}
+
+.supplier-request-status--processed {
+  border-color: #b8ddcf;
+  background: #e7f6f0;
+  color: #12604d;
+}
+
+.supplier-request-status--neutral {
+  border-color: #d6d4ce;
+  background: #f7f6f3;
+  color: #59635f;
+}
+
+.store-dashboard__status--accepted,
+.supplier-dashboard__status--accepted {
+  background: #2fbf6a;
+}
+
+.store-dashboard__status--processed,
+.supplier-dashboard__status--processed {
+  background: #0b2d4d;
+}
+
+.catalog-product-action {
+  display: inline-flex;
+  width: fit-content;
+  min-width: 100px;
+  min-height: 36px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border: 1px solid #164e3f;
+  border-radius: 10px;
+  background: #164e3f;
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 8px 16px rgb(22 78 63 / 12%);
+}
+
+.catalog-product-card:hover .catalog-product-action,
+.catalog-product-card:focus-visible .catalog-product-action {
+  background: #0f3d33;
+}
+
+.supplier-dashboard__product-footer {
+  justify-content: flex-end;
+}
+
+.kerno-app-header__dropdown {
+  width: min(238px, calc(100vw - 28px));
+  padding: 9px;
+  border: 1px solid rgb(214 219 215 / 92%);
+  border-radius: 17px;
+  background: rgb(255 255 255 / 98%);
+  box-shadow:
+    0 22px 48px rgb(22 78 63 / 13%),
+    0 6px 16px rgb(15 23 42 / 6%);
+}
+
+.kerno-app-header__dropdown a,
+.kerno-app-header__dropdown button {
+  min-height: 42px;
+  padding: 9px 12px;
+  border-radius: 11px;
+  color: #263936;
+  font-size: 0.8rem;
+  font-weight: 650;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.kerno-app-header__dropdown a:hover,
+.kerno-app-header__dropdown a:focus-visible,
+.kerno-app-header__dropdown button:hover,
+.kerno-app-header__dropdown button:focus-visible {
+  background: #edf6f3;
+  color: #164e3f;
+  transform: translateX(2px);
+}
+
+.kerno-app-header__dropdown .kerno-app-header__logout {
+  min-height: 43px;
+  margin-top: 7px;
+  padding-top: 10px;
+  border-top: 1px solid #e8e6e0;
+  border-radius: 0 0 11px 11px;
+  color: #b5473c;
+}
+
+.kerno-app-header__dropdown .kerno-app-header__logout:hover,
+.kerno-app-header__dropdown .kerno-app-header__logout:focus-visible {
+  background: #fff3f0;
+  color: #9f352d;
+}
+
+.kerno-app-header__more svg {
+  transform: rotate(90deg);
+  transition: transform 180ms ease;
+}
+
+.kerno-app-header__more--open svg {
+  transform: rotate(0deg);
+}
+
+@media (max-width: 700px) {
+  .store-requests-header__action {
+    width: 100%;
+  }
+
+  .store-request-detail-page .supplier-request-product-grid {
+    grid-template-columns: 1fr;
+  }
+}

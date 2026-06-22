@@ -1,0 +1,177 @@
+/* UI component polish */
+.rounded-3xl,
+.rounded-2xl,
+.card {
+  overflow-wrap: anywhere;
+}
+
+.kerno-page-bg .card,
+.kerno-page-bg .auth-card,
+.kerno-page-bg .marketing-section,
+.kerno-page-bg .marketing-role-card,
+.kerno-page-bg .dashboard-card {
+  background: rgb(255 255 255 / 94%);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+/* Shared location autocomplete */
+.location-autocomplete {
+  position: relative;
+  min-width: 0;
+}
+
+.location-autocomplete__wrapper {
+  position: relative;
+  z-index: 20;
+}
+
+.location-autocomplete .form-label {
+  display: block;
+  margin: 0 0 8px;
+  color: #33413f;
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.location-autocomplete .required-mark {
+  color: #f97316;
+}
+
+.location-autocomplete .form-input {
+  width: 100%;
+}
+
+.location-autocomplete .form-input--error {
+  border-color: #ef9a9a;
+}
+
+.location-autocomplete__dropdown {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  left: 0;
+  z-index: 100;
+  overflow: hidden;
+  border: 1px solid #d8ded9;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow:
+    0 18px 38px rgb(22 78 63 / 13%),
+    0 4px 12px rgb(15 23 42 / 6%);
+}
+
+.location-autocomplete__list {
+  max-height: 304px;
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  scrollbar-color: #bfd3ca transparent;
+  scrollbar-width: thin;
+}
+
+.location-autocomplete__list li {
+  margin: 0;
+  padding: 0;
+}
+
+.location-autocomplete__option {
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #263936;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.location-autocomplete__option:hover,
+.location-autocomplete__option--active {
+  background: #edf6f3;
+  color: #164e3f;
+}
+
+.location-autocomplete__pin {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 10px;
+  background: #d6ebe2;
+  color: #164e3f;
+}
+
+.location-autocomplete__pin svg {
+  width: 16px;
+  height: 16px;
+}
+
+.location-autocomplete__copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.location-autocomplete__copy strong,
+.location-autocomplete__copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.location-autocomplete__copy strong {
+  color: inherit;
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.location-autocomplete__copy small {
+  color: #71807c;
+  font-size: 0.74rem;
+  line-height: 1.35;
+}
+
+.location-autocomplete__empty {
+  margin: 0;
+  padding: 17px 16px;
+  color: #68716e;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.location-autocomplete .form-helper,
+.location-autocomplete .form-error {
+  margin: 7px 0 0;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.location-autocomplete .form-helper {
+  color: #68716e;
+}
+
+.location-autocomplete .form-error {
+  color: #c62828;
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .location-autocomplete__dropdown {
+    border-radius: 12px;
+  }
+
+  .location-autocomplete__list {
+    max-height: 260px;
+  }
+}

@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/Antgst/Kerno-MVP#readme",
   "devDependencies": {
-    "concurrently": "^10.0.1"
+    "concurrently": "^9.2.1"
   }
 }

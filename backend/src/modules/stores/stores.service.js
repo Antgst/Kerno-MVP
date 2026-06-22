@@ -1,4 +1,5 @@
 const prisma = require("../../lib/prisma");
+const { isValidPhone, normalizePhone } = require("../../utils/phone");
 
 function getStatus() {
   return "Stores module is ready";
@@ -45,6 +46,12 @@ async function createStoreProfile(userId, payload) {
 
   validateRequiredString(storeName, "Store name");
 
+  if (phone) {
+    if (!isValidPhone(phone)) {
+      throw createError("Invalid phone number", 400);
+    }
+  }
+
   const existingProfile = await prisma.storeProfile.findUnique({
     where: {
       userId,
@@ -64,7 +71,7 @@ async function createStoreProfile(userId, payload) {
       storeType: storeType?.trim() || null,
       sourcingNeeds: sourcingNeeds?.trim() || null,
       contactEmail: contactEmail?.trim() || null,
-      phone: phone?.trim() || null,
+      phone: phone ? normalizePhone(phone) : null,
     },
   });
 
@@ -110,6 +117,12 @@ async function updateCurrentStoreProfile(userId, payload) {
     validateRequiredString(storeName, "Store name");
   }
 
+  if (phone !== undefined && phone) {
+    if (!isValidPhone(phone)) {
+      throw createError("Invalid phone number", 400);
+    }
+  }
+
   const updatedProfile = await prisma.storeProfile.update({
     where: {
       userId,
@@ -127,7 +140,7 @@ async function updateCurrentStoreProfile(userId, payload) {
       contactEmail:
         contactEmail !== undefined ? contactEmail?.trim() || null : undefined,
       phone:
-        phone !== undefined ? phone?.trim() || null : undefined,
+        phone !== undefined ? phone ? normalizePhone(phone) : null : undefined,
     },
   });
 

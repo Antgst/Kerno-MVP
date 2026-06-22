@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node --check src/server.js && node --check src/app.js && node --check src/routes/index.js",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "db:seed": "node prisma/seed.js"
   },
   "keywords": [],
   "author": "",
@@ -20,11 +21,16 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "libphonenumber-js": "^1.13.6",
     "pg": "^8.21.0",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14",
     "prisma": "^7.8.0"
+  },
+  "allowScripts": {
+    "prisma@7.8.0": true,
+    "@prisma/engines@7.8.0": true
   }
 }
