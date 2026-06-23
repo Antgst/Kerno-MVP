@@ -12,10 +12,3 @@ export const supplierNavigation = [
   { to: "/supplier/profile", label: "Mon profil", icon: "user" },
   { to: "/catalog", label: "Catalogue", icon: "search" },
 ];
-
-export const publicNavLinks = [
-  { label: "Accueil", to: "/", isPrimaryRoute: true },
-  { label: "Catalogue", to: "/catalog", isPrimaryRoute: true },
-  { label: "Fournisseurs", to: "/catalog" },
-  { label: "Magasins", to: "/register" },
-];
