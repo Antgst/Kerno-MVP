@@ -1,4 +1,5 @@
 import apiClient from "./apiClient";
+import { clearSessionCache, setCachedCurrentUser } from "./frontendCache";
 import {
   clearAuthToken,
   getAuthRole,
@@ -35,6 +36,7 @@ function getRoleFromResponse(response, token) {
 function persistAuthResponse(response) {
   const token = getTokenFromResponse(response);
   const role = getRoleFromResponse(response, token);
+  const user = response?.user || response?.data?.user || getUserFromToken(token);
 
   if (token) {
     setAuthToken(token);
@@ -44,9 +46,11 @@ function persistAuthResponse(response) {
     setAuthRole(role);
   }
 
+  setCachedCurrentUser(user);
+
   return {
     ...response,
-    user: response?.user || response?.data?.user || getUserFromToken(token),
+    user,
     role,
   };
 }
@@ -65,6 +69,7 @@ export async function loginUser(payload) {
 
 export function logoutUser() {
   clearAuthToken();
+  clearSessionCache();
 }
 
 export function getCurrentAuthRole() {
@@ -74,13 +79,3 @@ export function getCurrentAuthRole() {
 export function isAuthenticated() {
   return Boolean(getAuthToken());
 }
-
-const authService = {
-  registerUser,
-  loginUser,
-  logoutUser,
-  getCurrentAuthRole,
-  isAuthenticated,
-};
-
-export default authService;

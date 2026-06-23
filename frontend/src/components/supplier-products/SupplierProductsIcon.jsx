@@ -1,5 +1,4 @@
-function SupplierProductsIcon({ name }) {
-  const commonProps = {
+const commonProps = {
     width: "20",
     height: "20",
     viewBox: "0 0 24 24",
@@ -11,7 +10,7 @@ function SupplierProductsIcon({ name }) {
     "aria-hidden": "true",
   };
 
-  const icons = {
+const icons = {
     box: (
       <svg {...commonProps}>
         <path d="m21 8-9 5-9-5 9-5 9 5Z" />
@@ -76,6 +75,7 @@ function SupplierProductsIcon({ name }) {
     ),
   };
 
+function SupplierProductsIcon({ name }) {
   return icons[name] || null;
 }
 

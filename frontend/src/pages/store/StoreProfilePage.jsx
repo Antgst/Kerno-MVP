@@ -36,22 +36,22 @@ function getFormDataFromStore(store) {
   };
 }
 
-function StoreProfileIcon({ name }) {
-  const commonProps = {
-    width: "24",
-    height: "24",
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: "2",
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    "aria-hidden": "true",
-  };
+const storeProfileIconProps = {
+  width: "24",
+  height: "24",
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  "aria-hidden": "true",
+};
 
+function StoreProfileIcon({ name }) {
   if (name === "store") {
     return (
-      <svg {...commonProps}>
+      <svg {...storeProfileIconProps}>
         <path d="M4 10h16" />
         <path d="M5 10l1.2-5h11.6L19 10" />
         <path d="M6 10v9h12v-9" />
@@ -61,7 +61,7 @@ function StoreProfileIcon({ name }) {
   }
 
   return (
-    <svg {...commonProps}>
+    <svg {...storeProfileIconProps}>
       <path d="M20 6 9 17l-5-5" />
     </svg>
   );

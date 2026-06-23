@@ -3,19 +3,19 @@ import CatalogProductInformation from "./CatalogProductInformation";
 import CatalogProductVisual from "./CatalogProductVisual";
 import { formatProductPrice } from "../../utils/productPrice";
 
-function CatalogProductCard({ product, supplier, viewMode }) {
-  const productName = product.name || "Produit sans nom";
-
-  function handleKeyDown(event) {
-    if (event.key === " ") {
-      event.preventDefault();
-      event.currentTarget.click();
-    }
+function handleKeyDown(event) {
+  if (event.key === " ") {
+    event.preventDefault();
+    event.currentTarget.click();
   }
+}
+
+function CatalogProductCard({ product, supplier, viewMode, priority = false }) {
+  const productName = product.name || "Produit sans nom";
 
   const cardContent = (
     <>
-      <CatalogProductVisual product={product} />
+      <CatalogProductVisual product={product} priority={priority} />
       <div className="catalog-product-body">
         <div className="catalog-product-content">
           <CatalogProductInformation product={product} supplier={supplier} />

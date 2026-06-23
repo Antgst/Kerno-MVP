@@ -5,7 +5,7 @@ function decodeBase64Url(value) {
   return atob(`${normalizedValue}${padding}`);
 }
 
-export function decodeJwtPayload(token) {
+function decodeJwtPayload(token) {
   try {
     const [, payload] = String(token || "").split(".");
 

@@ -19,13 +19,3 @@ export function updateProduct(id, payload) {
 export function deleteProduct(id) {
   return apiClient.delete(`/products/${id}`);
 }
-
-const productService = {
-  getProducts,
-  getProductById,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-};
-
-export default productService;

@@ -19,13 +19,3 @@ export function getRequestById(id) {
 export function updateRequestStatus(id, payload) {
   return apiClient.patch(`/requests/${id}/status`, payload);
 }
-
-const requestService = {
-  createContactRequest,
-  getSentRequests,
-  getReceivedRequests,
-  getRequestById,
-  updateRequestStatus,
-};
-
-export default requestService;

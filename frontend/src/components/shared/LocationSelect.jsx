@@ -76,16 +76,21 @@ function LocationSelect({
       return [];
     }
 
-    return cityOptions
-      .map((cityTuple) => {
-        const cityOption = getCityOption(cityTuple);
+    const matchingCities = [];
 
-        return {
+    for (const cityTuple of cityOptions) {
+      const cityOption = getCityOption(cityTuple);
+      const matchScore = getMatchScore(cityOption, search);
+
+      if (Number.isFinite(matchScore)) {
+        matchingCities.push({
           ...cityOption,
-          matchScore: getMatchScore(cityOption, search),
-        };
-      })
-      .filter((city) => Number.isFinite(city.matchScore))
+          matchScore,
+        });
+      }
+    }
+
+    return matchingCities
       .sort(
         (firstCity, secondCity) =>
           firstCity.matchScore - secondCity.matchScore ||

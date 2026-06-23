@@ -1,4 +1,4 @@
-export function unwrapData(response) {
+function unwrapData(response) {
   return response?.data ?? response;
 }
 

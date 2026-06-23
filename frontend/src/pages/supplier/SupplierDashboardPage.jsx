@@ -12,6 +12,12 @@ import { getCurrentSupplierProfile } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
 import { formatMinimumOrder, formatProductPrice } from "../../utils/productPrice";
 
+const shortFrenchDateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
 function getCompletionPercent(profile) {
   if (!profile) {
     return 0;
@@ -73,11 +79,7 @@ function formatFrenchDate(value) {
     return "";
   }
 
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(value));
+  return shortFrenchDateFormatter.format(new Date(value));
 }
 
 function getProductCard(product) {

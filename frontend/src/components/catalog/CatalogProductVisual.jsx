@@ -1,11 +1,15 @@
 import ProductImage from "../ui/ProductImage";
 
-function CatalogProductVisual({ product }) {
+function CatalogProductVisual({ product, priority = false }) {
   return (
     <div className="catalog-product-visual">
       <ProductImage
         product={product}
         alt={`Aperçu du produit ${product.name || "KERNO"}`}
+        fetchPriority={priority ? "high" : "auto"}
+        loading={priority ? "eager" : "lazy"}
+        priority={priority}
+        variant="card"
       />
 
       <span

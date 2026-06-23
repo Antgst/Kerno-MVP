@@ -30,7 +30,7 @@ function normalizeValue(value) {
 }
 
 function getUniqueOptions(values) {
-  return [...new Set(values.filter(Boolean))].sort((first, second) =>
+  return Array.from(new Set(values.filter(Boolean))).toSorted((first, second) =>
     first.localeCompare(second, "fr-FR"),
   );
 }

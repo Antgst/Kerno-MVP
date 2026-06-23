@@ -1,5 +1,7 @@
 import CatalogProductCard from "./CatalogProductCard";
 
+const PRIORITY_IMAGE_COUNT = 4;
+
 function CatalogProducts({ products, suppliersById, getSupplierFromProduct, viewMode }) {
   return (
     <section
@@ -15,6 +17,7 @@ function CatalogProducts({ products, suppliersById, getSupplierFromProduct, view
           <CatalogProductCard
             key={productKey}
             product={product}
+            priority={index < PRIORITY_IMAGE_COUNT}
             supplier={supplier}
             viewMode={viewMode}
           />

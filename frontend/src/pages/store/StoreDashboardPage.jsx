@@ -13,6 +13,11 @@ import { getSuppliers } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
 
 const supplierVisuals = ["farm", "brewery", "cheese", "provence"];
+const shortFrenchDateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
 
 function getRequestsFromResponse(response) {
   return getListResource(response, ["requests", "contactRequests"]);
@@ -55,11 +60,7 @@ function formatFrenchDate(value) {
     return "";
   }
 
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(value));
+  return shortFrenchDateFormatter.format(new Date(value));
 }
 
 function getProductSupplierId(product) {

@@ -1,5 +1,4 @@
-function DashboardIcon({ name }) {
-  const commonProps = {
+const commonProps = {
     width: "24",
     height: "24",
     viewBox: "0 0 24 24",
@@ -11,7 +10,7 @@ function DashboardIcon({ name }) {
     "aria-hidden": "true",
   };
 
-  const icons = {
+const icons = {
     box: (
       <svg {...commonProps}>
         <path d="m21 16-9 5-9-5" />
@@ -122,6 +121,7 @@ function DashboardIcon({ name }) {
     ),
   };
 
+function DashboardIcon({ name }) {
   return icons[name] ?? null;
 }
 
