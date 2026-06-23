@@ -1145,3 +1145,18 @@
     width: 100%;
   }
 }
+
+  .site-header--public-no-nav {
+    grid-template-columns: minmax(170px, 1fr) auto minmax(190px, 1fr);
+  }
+
+  .site-header--public-no-nav .brand-link {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .site-header--public-no-nav .public-header-actions {
+    grid-column: 3;
+    justify-self: end;
+  }
+  
