@@ -201,7 +201,6 @@ function RequestFormPage() {
       <div className="request-form-page__layout">
         <Card className="request-form-page__card request-form-page__card--main">
           <div className="request-form-page__card-heading">
-            <p>Message professionnel</p>
             <h2>Préparer votre demande</h2>
             <span>
               Le fournisseur recevra ces informations pour vous répondre de
