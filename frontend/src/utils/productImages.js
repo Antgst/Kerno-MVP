@@ -3,11 +3,15 @@ import biscuitsImage from "../assets/supplier-dashboard/supplier-product-buckwhe
 import honeyImage from "../assets/supplier-dashboard/supplier-product-honey.webp";
 import jamImage from "../assets/supplier-dashboard/supplier-product-jam.webp";
 import dairyImage from "../assets/store-dashboard/store-supplier-cheese.webp";
-import appleJuiceCardImage from "../assets/catalog-cards/supplier-product-apple-juice-card.webp";
-import biscuitsCardImage from "../assets/catalog-cards/supplier-product-buckwheat-biscuits-card.webp";
-import honeyCardImage from "../assets/catalog-cards/supplier-product-honey-card.webp";
-import jamCardImage from "../assets/catalog-cards/supplier-product-jam-card.webp";
-import dairyCardImage from "../assets/catalog-cards/store-supplier-cheese-card.webp";
+
+const KNOWN_PRODUCT_IMAGE_SOURCES = new Set([
+  "/assets/products/confiture-fraise-rhubarbe.webp",
+  "/assets/products/galettes-bretonnes.webp",
+  "/assets/products/jus-de-pomme-artisanal.webp",
+  "/assets/products/miel-de-fleurs.webp",
+  "/assets/products/rillettes-de-legumes.webp",
+  "/assets/products/tomme-fermiere.webp",
+]);
 
 const IMAGE_RULES = [
   {
@@ -18,25 +22,21 @@ const IMAGE_RULES = [
     keywords: ["jus", "pomme", "cidre", "boisson"],
     kind: "image",
     source: appleJuiceImage,
-    cardSource: appleJuiceCardImage,
   },
   {
     keywords: ["miel"],
     kind: "image",
     source: honeyImage,
-    cardSource: honeyCardImage,
   },
   {
     keywords: ["confiture", "fruit", "fraise", "rhubarbe"],
     kind: "image",
     source: jamImage,
-    cardSource: jamCardImage,
   },
   {
     keywords: ["biscuit", "sarrasin", "palet", "galette"],
     kind: "image",
     source: biscuitsImage,
-    cardSource: biscuitsCardImage,
   },
   {
     keywords: [
@@ -50,7 +50,6 @@ const IMAGE_RULES = [
     ],
     kind: "image",
     source: dairyImage,
-    cardSource: dairyCardImage,
   },
 ];
 
@@ -71,7 +70,7 @@ function normalizeProductText(product) {
     .toLocaleLowerCase("fr-FR");
 }
 
-export function getProductFallback(product, variant = "default") {
+export function getProductFallback(product) {
   const productText = normalizeProductText(product);
   const matchingRule = IMAGE_RULES.find((rule) =>
     rule.keywords.some((keyword) =>
@@ -88,16 +87,13 @@ export function getProductFallback(product, variant = "default") {
     return { kind: "neutral" };
   }
 
-  if (variant === "card" && matchingRule.cardSource) {
-    return {
-      ...matchingRule,
-      source: matchingRule.cardSource,
-    };
-  }
-
   return matchingRule;
 }
 
 export function getProductImageSource(product) {
   return String(product?.imageUrl || "").trim();
+}
+
+export function hasKnownProductImageSource(product) {
+  return KNOWN_PRODUCT_IMAGE_SOURCES.has(getProductImageSource(product));
 }

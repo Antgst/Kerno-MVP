@@ -12,9 +12,9 @@ function ProductImage({
   fetchPriority,
   loading,
   priority = false,
-  variant = "default",
+  useFallback = true,
 }) {
-  const fallback = getProductFallback(product, variant);
+  const fallback = useFallback ? getProductFallback(product) : { kind: "neutral" };
   const configuredSource = getProductImageSource(product);
   const [failedSource, setFailedSource] = useState("");
   const configuredSourceFailed =
