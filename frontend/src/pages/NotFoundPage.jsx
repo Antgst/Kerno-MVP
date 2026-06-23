@@ -2,14 +2,20 @@ import { Link } from "react-router-dom";
 
 function NotFoundPage() {
   return (
-    <main className="page-shell">
-      <section className="page-card">
-        <h1>Page introuvable</h1>
-        <p>La page demandée n’existe pas dans l’application KERNO.</p>
+    <main className="not-found-page page-shell">
+      <section className="not-found-card page-card">
+        <div className="not-found-page__badge">404</div>
+        <h1>Oups… cette page n’existe pas</h1>
+        <p>
+          Nous n’avons pas trouvé la page que vous recherchez. Vérifiez
+          l’adresse ou revenez à l’accueil pour continuer.
+        </p>
 
-        <Link className="text-link" to="/">
-          Retour à l’accueil
-        </Link>
+        <div className="not-found-page__actions">
+          <Link className="not-found-page__link" to="/">
+            Retour à l’accueil
+          </Link>
+        </div>
       </section>
     </main>
   );
