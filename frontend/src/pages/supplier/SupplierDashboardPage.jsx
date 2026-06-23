@@ -7,6 +7,7 @@ import { getCurrentSupplierProfile } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
 import ProductImage from "../../components/ui/ProductImage";
 import { formatStatus, getStatusTone } from "../../utils/status";
+import { formatMinimumOrder, formatProductPrice } from "../../utils/productPrice";
 
 function DashboardIcon({ name }) {
   const commonProps = {
@@ -127,18 +128,6 @@ function getProductCategory(product) {
   );
 }
 
-function getProductPrice(product) {
-  if (product?.priceInfo) {
-    return product.priceInfo;
-  }
-
-  if (Number.isFinite(Number(product?.price))) {
-    return `${Number(product.price).toLocaleString("fr-FR")} €`;
-  }
-
-  return "Prix sur demande";
-}
-
 function getStoreName(request) {
   return request?.store?.storeName || request?.storeName || "Magasin";
 }
@@ -172,10 +161,10 @@ function getProductCard(product) {
   return {
     ...product,
     categoryName: getProductCategory(product),
-    priceInfo: getProductPrice(product),
+    priceLabel: formatProductPrice(product),
     availability:
       product.availability ||
-      product.minimumOrder ||
+      (product.minimumOrderQuantity ? formatMinimumOrder(product) : "") ||
       (isProductPublished(product) ? "Disponible" : "Masqué"),
   };
 }
@@ -516,7 +505,7 @@ function SupplierDashboardPage() {
                   <h3>{product.name}</h3>
 
                   <div className="supplier-dashboard__product-meta">
-                    <span>{product.priceInfo}</span>
+                    <span>{product.priceLabel}</span>
                     <span>{product.availability}</span>
                   </div>
 

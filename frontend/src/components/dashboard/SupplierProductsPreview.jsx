@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import ProductImage from "../ui/ProductImage";
 import DashboardIcon from "./DashboardIcon";
+import { formatProductPrice } from "../../utils/productPrice";
 
 function SupplierProductsPreview({ products }) {
   return (
@@ -30,7 +31,7 @@ function SupplierProductsPreview({ products }) {
                 <h3>{product.name}</h3>
 
                 <div className="supplier-dashboard__product-meta">
-                  <span>{product.priceInfo}</span>
+                  <span>{formatProductPrice(product)}</span>
                   <span>{product.availability}</span>
                 </div>
 

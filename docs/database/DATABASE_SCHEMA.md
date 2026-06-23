@@ -229,8 +229,10 @@ The `Product` model stores products published by suppliers.
 | `categoryId`   | UUID string |       No | Optional product category       |
 | `name`         |      String |      Yes | Product name                    |
 | `description`  |      String |       No | Product description             |
-| `priceInfo`    |      String |       No | Indicative pricing information  |
-| `minimumOrder` |      String |       No | Indicative minimum quantity     |
+| `priceCents`   |     Integer |       No | Indicative price in cents       |
+| `priceUnit`    |        Enum |       No | Indicative price unit           |
+| `minimumOrderQuantity` | Integer | No | Minimum order quantity |
+| `minimumOrderUnit` | Enum | No | Minimum order unit |
 | `origin`       |      String |       No | Origin or production area       |
 | `imageUrl`     |      String |       No | Optional product image URL      |
 | `isActive`     |     Boolean |      Yes | Product visibility status       |
@@ -349,8 +351,10 @@ Examples:
 | `storeName`         | `store_name`         |
 | `brandName`         | `brand_name`         |
 | `sourcingNeeds`     | `sourcing_needs`     |
-| `priceInfo`         | `price_info`         |
-| `minimumOrder`      | `minimum_order`      |
+| `priceCents`        | `price_cents`        |
+| `priceUnit`         | `price_unit`         |
+| `minimumOrderQuantity` | `minimum_order_quantity` |
+| `minimumOrderUnit`  | `minimum_order_unit` |
 | `imageUrl`          | `image_url`          |
 | `isActive`          | `is_active`          |
 | `requestedQuantity` | `requested_quantity` |

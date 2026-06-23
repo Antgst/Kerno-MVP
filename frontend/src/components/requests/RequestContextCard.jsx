@@ -1,4 +1,5 @@
 import StatusBadge from "../ui/StatusBadge";
+import { formatProductPrice } from "../../utils/productPrice";
 
 function RequestContextCard({ product, supplier }) {
   return (
@@ -28,8 +29,9 @@ function RequestContextCard({ product, supplier }) {
           <p>Produit</p>
           <strong>{product?.name || "Demande générale"}</strong>
           <span>
-            {product?.priceInfo ||
-              "La demande ne concerne pas un produit en particulier."}
+            {product
+              ? formatProductPrice(product)
+              : "La demande ne concerne pas un produit en particulier."}
           </span>
         </div>
 

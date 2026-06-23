@@ -1,6 +1,9 @@
 import SupplierProductsIcon from "./SupplierProductsIcon";
+import { formatMinimumOrder } from "../../utils/productPrice";
 
 function SupplierProductMeta({ product }) {
+  const minimumOrderLabel = formatMinimumOrder(product);
+
   return (
     <dl className="supplier-product-card__meta">
       {product.origin && (
@@ -13,13 +16,13 @@ function SupplierProductMeta({ product }) {
         </div>
       )}
 
-      {product.minimumOrder && (
+      {product.minimumOrderQuantity && (
         <div>
           <dt>
             <SupplierProductsIcon name="box" />
             Minimum
           </dt>
-          <dd>{product.minimumOrder}</dd>
+          <dd>{minimumOrderLabel}</dd>
         </div>
       )}
     </dl>

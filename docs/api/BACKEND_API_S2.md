@@ -486,8 +486,10 @@ Authorization: Bearer <supplier-token>
   "categoryId": "category-id",
   "name": "Single-origin coffee beans",
   "description": "Washed arabica beans",
-  "priceInfo": "12 EUR/kg",
-  "minimumOrder": "10 kg",
+  "priceCents": 1200,
+  "priceUnit": "KG",
+  "minimumOrderQuantity": 10,
+  "minimumOrderUnit": "KG",
   "origin": "Colombia",
   "imageUrl": "https://example.com/product.jpg"
 }
@@ -516,8 +518,10 @@ The supplier must own the product.
   "categoryId": "category-id",
   "name": "Updated product name",
   "description": "Updated description",
-  "priceInfo": "14 EUR/kg",
-  "minimumOrder": "20 kg",
+  "priceCents": 1400,
+  "priceUnit": "KG",
+  "minimumOrderQuantity": 20,
+  "minimumOrderUnit": "KG",
   "origin": "Colombia",
   "imageUrl": "https://example.com/product.jpg"
 }

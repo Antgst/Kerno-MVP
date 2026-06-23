@@ -1,5 +1,14 @@
 const prisma = require("../../lib/prisma");
 
+const VALID_PRICE_UNITS = [
+  "UNIT",
+  "KG",
+  "LOT",
+  "COLIS",
+  "PALETTE",
+  "OTHER",
+];
+
 function getStatus() {
   return "Products module is ready";
 }
@@ -23,8 +32,10 @@ function getSafeProduct(product) {
     categoryId: product.categoryId,
     name: product.name,
     description: product.description,
-    priceInfo: product.priceInfo,
-    minimumOrder: product.minimumOrder,
+    priceCents: product.priceCents,
+    priceUnit: product.priceUnit,
+    minimumOrderQuantity: product.minimumOrderQuantity,
+    minimumOrderUnit: product.minimumOrderUnit,
     origin: product.origin,
     imageUrl: product.imageUrl,
     isActive: product.isActive,
@@ -46,6 +57,48 @@ function getSafeProduct(product) {
         }
       : null,
   };
+}
+
+function normalizeOptionalPriceCents(value) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const numberValue = Number(value);
+
+  if (!Number.isInteger(numberValue) || numberValue < 0) {
+    throw createError("Product price must be a positive integer in cents", 400);
+  }
+
+  return numberValue;
+}
+
+function normalizeOptionalPriceUnit(value) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const normalized = String(value).trim().toUpperCase();
+
+  if (!VALID_PRICE_UNITS.includes(normalized)) {
+    throw createError("Product price unit is invalid", 400);
+  }
+
+  return normalized;
+}
+
+function normalizeOptionalMinimumOrderQuantity(value) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const numberValue = Number(value);
+
+  if (!Number.isInteger(numberValue) || numberValue <= 0) {
+    throw createError("Product minimum order quantity must be a positive integer", 400);
+  }
+
+  return numberValue;
 }
 
 async function getSupplierProfileForUser(userId) {
@@ -105,8 +158,10 @@ async function createProduct(userId, payload) {
     categoryId,
     name,
     description,
-    priceInfo,
-    minimumOrder,
+    priceCents,
+    priceUnit,
+    minimumOrderQuantity,
+    minimumOrderUnit,
     origin,
     imageUrl,
   } = payload;
@@ -131,8 +186,10 @@ async function createProduct(userId, payload) {
       categoryId: categoryId || null,
       name: name.trim(),
       description: description?.trim() || null,
-      priceInfo: priceInfo?.trim() || null,
-      minimumOrder: minimumOrder?.trim() || null,
+      priceCents: normalizeOptionalPriceCents(priceCents),
+      priceUnit: normalizeOptionalPriceUnit(priceUnit),
+      minimumOrderQuantity: normalizeOptionalMinimumOrderQuantity(minimumOrderQuantity),
+      minimumOrderUnit: normalizeOptionalPriceUnit(minimumOrderUnit),
       origin: origin?.trim() || null,
       imageUrl: imageUrl?.trim() || null,
     },
@@ -164,8 +221,10 @@ async function updateProduct(userId, productId, payload) {
     categoryId,
     name,
     description,
-    priceInfo,
-    minimumOrder,
+    priceCents,
+    priceUnit,
+    minimumOrderQuantity,
+    minimumOrderUnit,
     origin,
     imageUrl,
   } = payload;
@@ -196,10 +255,16 @@ async function updateProduct(userId, productId, payload) {
       name: name !== undefined ? name.trim() : undefined,
       description:
         description !== undefined ? description?.trim() || null : undefined,
-      priceInfo:
-        priceInfo !== undefined ? priceInfo?.trim() || null : undefined,
-      minimumOrder:
-        minimumOrder !== undefined ? minimumOrder?.trim() || null : undefined,
+      priceCents:
+        priceCents !== undefined ? normalizeOptionalPriceCents(priceCents) : undefined,
+      priceUnit:
+        priceUnit !== undefined ? normalizeOptionalPriceUnit(priceUnit) : undefined,
+      minimumOrderQuantity:
+        minimumOrderQuantity !== undefined
+          ? normalizeOptionalMinimumOrderQuantity(minimumOrderQuantity)
+          : undefined,
+      minimumOrderUnit:
+        minimumOrderUnit !== undefined ? normalizeOptionalPriceUnit(minimumOrderUnit) : undefined,
       origin:
         origin !== undefined ? origin?.trim() || null : undefined,
       imageUrl:

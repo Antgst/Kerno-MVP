@@ -126,8 +126,9 @@ function SupplierRequestDetailPage() {
   );
   const hasProductDetails = Boolean(
     product?.name ||
-      product?.priceInfo ||
-      product?.minimumOrder ||
+      (product?.priceCents !== null && product?.priceCents !== undefined) ||
+      (product?.minimumOrderQuantity !== null &&
+        product?.minimumOrderQuantity !== undefined) ||
       product?.origin,
   );
 

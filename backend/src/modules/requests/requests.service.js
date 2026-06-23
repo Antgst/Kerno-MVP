@@ -54,8 +54,10 @@ function getSafeContactRequest(request) {
       ? {
           id: request.product.id,
           name: request.product.name,
-          priceInfo: request.product.priceInfo,
-          minimumOrder: request.product.minimumOrder,
+          priceCents: request.product.priceCents,
+          priceUnit: request.product.priceUnit,
+          minimumOrderQuantity: request.product.minimumOrderQuantity,
+          minimumOrderUnit: request.product.minimumOrderUnit,
         }
       : null,
   };

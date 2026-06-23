@@ -110,6 +110,16 @@ const PRODUCT_CATALOG = [
   { category: "Viandes et charcuteries", names: ["Terrine de campagne", "Saucisson sec", "Pâté au piment", "Jambon fumé", "Rillettes de porc", "Bœuf séché", "Chorizo artisanal", "Coppa fermière"] },
 ];
 
+const FUMO_PRODUCTS = [
+  { name: "Fumo Reimu", imageUrl: "https://fumo.systems/nui897_01.jpg" },
+  { name: "Fumo Marisa", imageUrl: "https://fumo.systems/nui898_01.jpg" },
+  { name: "Fumo Sakuya", imageUrl: "https://fumo.systems/nui968_01.jpg" },
+  { name: "Fumo Remilia", imageUrl: "https://fumo.systems/nui686_01.jpg" },
+  { name: "Fumo Flandre", imageUrl: "https://fumo.systems/nui346_01.jpg" },
+  { name: "Fumo Sanae", imageUrl: "https://fumo.systems/nui290_01.jpg" },
+  { name: "Fumo Yumuu", imageUrl: "https://fumo.systems/nui489_01.jpg" },
+];
+
 const REQUEST_TEMPLATES = [
   { subject: "Demande de tarifs professionnels", quantity: "Commande test", status: "PENDING" },
   { subject: "Référencement en magasin", quantity: "À définir selon catalogue", status: "PENDING" },
@@ -271,11 +281,12 @@ async function createStores(passwordHash) {
   return stores;
 }
 
-async function createProducts(categories, suppliers) {
+async function createProducts(categories, suppliers, fumoSupplier) {
   console.log("🛒 Création massive des produits...");
 
   const products = [];
   const supplierProductMap = new Map();
+  const fumoInsertAfterSupplierIndex = Math.floor(suppliers.length / 2);
 
   for (let supplierIndex = 0; supplierIndex < suppliers.length; supplierIndex++) {
     const supplier = suppliers[supplierIndex].profile;
@@ -286,8 +297,18 @@ async function createProducts(categories, suppliers) {
       const catalogEntry = pick(PRODUCT_CATALOG, supplierIndex + productIndex);
       const productBaseName = pick(catalogEntry.names, supplierIndex * 3 + productIndex);
       const category = categories[catalogEntry.category];
-      const unitPrice = (2.2 + ((supplierIndex + productIndex) % 18) * 0.85).toFixed(2).replace(".", ",");
-      const minimum = ["12 unités", "24 unités", "36 unités", "48 unités", "5 kg", "10 kg", "1 carton", "2 cartons"][(supplierIndex + productIndex) % 8];
+      const priceCents = Math.round((2.2 + ((supplierIndex + productIndex) % 18) * 0.85) * 100);
+      const minimumOrderOptions = [
+        { quantity: 12, unit: "UNIT" },
+        { quantity: 24, unit: "UNIT" },
+        { quantity: 36, unit: "UNIT" },
+        { quantity: 48, unit: "UNIT" },
+        { quantity: 5, unit: "KG" },
+        { quantity: 10, unit: "KG" },
+        { quantity: 1, unit: "COLIS" },
+        { quantity: 2, unit: "COLIS" },
+      ];
+      const minimumOrderConfig = minimumOrderOptions[(supplierIndex + productIndex) % minimumOrderOptions.length];
 
       const product = await prisma.product.create({
         data: {
@@ -295,8 +316,10 @@ async function createProducts(categories, suppliers) {
           categoryId: category.id,
           name: `${productBaseName} ${supplierIndex + 1}-${productIndex + 1}`,
           description: `${productBaseName} fabriqué par ${supplier.companyName}. Produit pensé pour la revente en boutique, avec une présentation claire et un approvisionnement régulier.`,
-          priceInfo: `${unitPrice} € HT / unité`,
-          minimumOrder: minimum,
+          priceCents,
+          priceUnit: "UNIT",
+          minimumOrderQuantity: minimumOrderConfig.quantity,
+          minimumOrderUnit: minimumOrderConfig.unit,
           origin: supplier.location,
           imageUrl: `/assets/products/${slugify(productBaseName)}.webp`,
           isActive: productIndex % 17 !== 0,
@@ -308,10 +331,75 @@ async function createProducts(categories, suppliers) {
     }
 
     supplierProductMap.set(supplier.id, productsForSupplier);
+
+    if (supplierIndex === fumoInsertAfterSupplierIndex) {
+      const createdFumoProducts = await createFumoEasterEggProducts(
+        categories,
+        fumoSupplier.profile,
+      );
+      products.push(...createdFumoProducts);
+    }
   }
 
   console.log(`✅ ${products.length} produits créés`);
   return { products, supplierProductMap };
+}
+
+async function createFumoEasterEggSupplier(passwordHash) {
+  const email = "fumo.hidden@kerno-demo.local";
+
+  const user = await prisma.user.create({
+    data: {
+      email,
+      passwordHash,
+      role: "SUPPLIER",
+      firstName: "Fumo",
+      lastName: "Dealer",
+    },
+  });
+
+  const profile = await prisma.supplierProfile.create({
+    data: {
+      userId: user.id,
+      companyName: "Fumo Systems - Gensokyo",
+      description: "Boutique fournisseur cachee de peluches Touhou pour les explorateurs du catalogue.",
+      location: "Gensokyo",
+      businessType: "Boutique collector",
+      contactEmail: email,
+      phone: "09 09 09 09 09",
+      website: "https://fumo.systems",
+    },
+  });
+
+  return { user, profile };
+}
+
+async function createFumoEasterEggProducts(categories, supplier) {
+  const category = categories["Produits régionaux"];
+  const products = [];
+
+  for (let index = 0; index < FUMO_PRODUCTS.length; index++) {
+    const fumo = FUMO_PRODUCTS[index];
+    const product = await prisma.product.create({
+      data: {
+        supplierId: supplier.id,
+        categoryId: category?.id || null,
+        name: fumo.name,
+        description: `${fumo.name}, peluche Touhou importee de Gensokyo. Article easter egg pour les boutiques qui savent chercher.`,
+        priceCents: 3990 + index * 100,
+        priceUnit: "UNIT",
+        minimumOrderQuantity: 1,
+        minimumOrderUnit: "UNIT",
+        origin: "Gensokyo",
+        imageUrl: fumo.imageUrl,
+        isActive: true,
+      },
+    });
+
+    products.push(product);
+  }
+
+  return products;
 }
 
 async function createContactRequests(stores, suppliers, products, supplierProductMap) {
@@ -357,7 +445,12 @@ async function main() {
   const categories = await createCategories();
   const suppliers = await createSuppliers(passwordHash);
   const stores = await createStores(passwordHash);
-  const { products, supplierProductMap } = await createProducts(categories, suppliers);
+  const fumoEasterEggSupplier = await createFumoEasterEggSupplier(passwordHash);
+  const { products, supplierProductMap } = await createProducts(
+    categories,
+    suppliers,
+    fumoEasterEggSupplier,
+  );
 
   await createContactRequests(stores, suppliers, products, supplierProductMap);
 
