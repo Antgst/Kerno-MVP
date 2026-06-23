@@ -708,33 +708,45 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
 .store-dashboard__supplier-meta,
 .store-dashboard__supplier-footer {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px 14px;
   color: #77766e;
   font-size: 0.9rem;
 }
 
 .store-dashboard__supplier-meta {
-  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.store-dashboard__supplier-footer {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px 14px;
 }
 
 .store-dashboard__supplier-product-count {
   margin-left: auto;
 }
 
-.store-dashboard__supplier-meta span,
+.store-dashboard__supplier-meta > span,
 .store-dashboard__supplier-footer span {
   display: inline-flex;
+  min-width: 0;
   align-items: center;
   gap: 6px;
+}
+
+.store-dashboard__supplier-meta > span {
+  width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .store-dashboard__supplier-meta svg,
 .store-dashboard__supplier-footer svg {
   width: 18px;
   height: 18px;
+  flex: 0 0 auto;
 }
 
 .store-dashboard__supplier-footer {
@@ -1482,11 +1494,11 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
 
   .store-dashboard__supplier-meta,
   .store-dashboard__supplier-footer {
-    gap: 8px 12px;
     font-size: 0.82rem;
   }
 
   .store-dashboard__supplier-footer {
+    gap: 8px 12px;
     padding-top: 8px;
   }
 
@@ -2152,8 +2164,11 @@ body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
 
   .store-dashboard__supplier-meta,
   .store-dashboard__supplier-footer {
-    gap: 4px;
     font-size: 0.72rem;
+  }
+
+  .store-dashboard__supplier-footer {
+    gap: 4px;
   }
 
   .store-dashboard__supplier-body a {
