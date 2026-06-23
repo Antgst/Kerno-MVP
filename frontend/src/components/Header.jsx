@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AppHeader from "./header/AppHeader";
 import PublicHeader from "./header/PublicHeader";
 import {
-  publicNavLinks,
   storeNavigation,
   supplierNavigation,
 } from "./header/headerNavigation";
@@ -124,7 +123,6 @@ function Header({ variant = "public", onMenuClick }) {
     <PublicHeader
       isScrolled={isPublicHeaderScrolled}
       pathname={location.pathname}
-      publicNavLinks={publicNavLinks}
     />
   );
 }
