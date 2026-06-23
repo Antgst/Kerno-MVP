@@ -31,7 +31,7 @@ function CatalogToolbar({
         onChange={onFilterChange}
         aria-label="Filtrer par catégorie"
       >
-        <option value="">Toutes les catégories</option>
+        <option value="">Catégorie</option>
         {categoryOptions.map((category) => (
           <option key={category} value={category}>
             {category}
@@ -45,7 +45,7 @@ function CatalogToolbar({
         onChange={onFilterChange}
         aria-label="Filtrer par origine ou localisation"
       >
-        <option value="">Toutes les localisations</option>
+        <option value="">Localisation</option>
         {locationOptions.map((location) => (
           <option key={location} value={location}>
             {location}
@@ -59,7 +59,7 @@ function CatalogToolbar({
         onChange={onFilterChange}
         aria-label="Filtrer par disponibilité"
       >
-        <option value="">Toutes les disponibilités</option>
+        <option value="">Disponibilité</option>
         <option value="active">Disponible</option>
         <option value="inactive">Indisponible</option>
       </select>
@@ -70,12 +70,24 @@ function CatalogToolbar({
         onChange={onFilterChange}
         aria-label="Filtrer par type de fournisseur"
       >
-        <option value="">Tous les types de fournisseurs</option>
+        <option value="">Type de fournisseur</option>
         {businessTypeOptions.map((businessType) => (
           <option key={businessType} value={businessType}>
             {businessType}
           </option>
         ))}
+      </select>
+
+      <select
+        name="sort"
+        value={filters.sort}
+        onChange={onFilterChange}
+        aria-label="Trier les produits"
+      >
+        <option value="recent">Plus récents</option>
+        <option value="name">Nom A-Z</option>
+        <option value="price-asc">Prix croissant</option>
+        <option value="price-desc">Prix décroissant</option>
       </select>
 
       <div

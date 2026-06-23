@@ -16,6 +16,7 @@ const initialFilters = {
   location: "",
   availability: "",
   businessType: "",
+  sort: "recent",
 };
 
 const ITEMS_PER_PAGE = 24;
@@ -52,6 +53,19 @@ function getUniqueOptions(values) {
   return [...new Set(values.filter(Boolean))].sort((first, second) =>
     first.localeCompare(second, "fr-FR"),
   );
+}
+
+function getProductTimestamp(product) {
+  const dateValue = product.createdAt || product.updatedAt;
+  const timestamp = dateValue ? new Date(dateValue).getTime() : Number.NaN;
+
+  return Number.isNaN(timestamp) ? 0 : timestamp;
+}
+
+function getSortablePrice(product) {
+  const price = Number(product?.priceCents);
+
+  return Number.isFinite(price) ? price : null;
 }
 
 function getPaginationPages(currentPage, totalPages) {
@@ -231,46 +245,97 @@ function CatalogPage() {
   const filteredProducts = useMemo(() => {
     const search = normalizeValue(filters.search);
 
-    return products.filter((product) => {
-      const supplier = getSupplierFromProduct(product, suppliersById);
-      const searchableContent = normalizeValue(
-        [
-          product.name,
-          product.description,
-          product.origin,
-          formatProductPrice(product),
-          formatMinimumOrder(product),
-          product.category?.name,
-          supplier?.companyName,
-          supplier?.location,
-          supplier?.businessType,
-        ].join(" "),
-      );
+    return products
+      .filter((product) => {
+        const supplier = getSupplierFromProduct(product, suppliersById);
+        const searchableContent = normalizeValue(
+          [
+            product.name,
+            product.description,
+            product.origin,
+            formatProductPrice(product),
+            formatMinimumOrder(product),
+            product.category?.name,
+            supplier?.companyName,
+            supplier?.location,
+            supplier?.businessType,
+          ].join(" "),
+        );
 
-      const matchesSearch = !search || searchableContent.includes(search);
-      const matchesCategory =
-        !filters.category || product.category?.name === filters.category;
-      const matchesLocation =
-        !filters.location ||
-        product.origin === filters.location ||
-        supplier?.location === filters.location;
-      const matchesAvailability =
-        !filters.availability ||
-        (filters.availability === "active"
-          ? product.isActive !== false
-          : product.isActive === false);
-      const matchesBusinessType =
-        !filters.businessType ||
-        supplier?.businessType === filters.businessType;
+        const matchesSearch = !search || searchableContent.includes(search);
+        const matchesCategory =
+          !filters.category || product.category?.name === filters.category;
+        const matchesLocation =
+          !filters.location ||
+          product.origin === filters.location ||
+          supplier?.location === filters.location;
+        const matchesAvailability =
+          !filters.availability ||
+          (filters.availability === "active"
+            ? product.isActive !== false
+            : product.isActive === false);
+        const matchesBusinessType =
+          !filters.businessType ||
+          supplier?.businessType === filters.businessType;
 
-      return (
-        matchesSearch &&
-        matchesCategory &&
-        matchesLocation &&
-        matchesAvailability &&
-        matchesBusinessType
-      );
-    });
+        return (
+          matchesSearch &&
+          matchesCategory &&
+          matchesLocation &&
+          matchesAvailability &&
+          matchesBusinessType
+        );
+      })
+      .sort((firstProduct, secondProduct) => {
+        if (filters.sort === "name") {
+          return String(firstProduct.name || "").localeCompare(
+            String(secondProduct.name || ""),
+            "fr-FR",
+          );
+        }
+
+        if (filters.sort === "price-asc") {
+          const firstPrice = getSortablePrice(firstProduct);
+          const secondPrice = getSortablePrice(secondProduct);
+
+          if (firstPrice === null && secondPrice === null) {
+            return 0;
+          }
+
+          if (firstPrice === null) {
+            return 1;
+          }
+
+          if (secondPrice === null) {
+            return -1;
+          }
+
+          return firstPrice - secondPrice;
+        }
+
+        if (filters.sort === "price-desc") {
+          const firstPrice = getSortablePrice(firstProduct);
+          const secondPrice = getSortablePrice(secondProduct);
+
+          if (firstPrice === null && secondPrice === null) {
+            return 0;
+          }
+
+          if (firstPrice === null) {
+            return 1;
+          }
+
+          if (secondPrice === null) {
+            return -1;
+          }
+
+          return secondPrice - firstPrice;
+        }
+
+        return (
+          getProductTimestamp(secondProduct) - getProductTimestamp(firstProduct)
+        );
+      });
   }, [filters, products, suppliersById]);
 
   const visibleSupplierCount = useMemo(
@@ -301,8 +366,21 @@ function CatalogPage() {
     firstItemIndex + paginatedProducts.length,
     filteredProducts.length,
   );
-  const hasActiveFilters = Object.values(filters).some(Boolean);
-  const activeFilterCount = Object.values(filters).filter(Boolean).length;
+  const hasActiveFilters =
+    Boolean(filters.search) ||
+    Boolean(filters.category) ||
+    Boolean(filters.location) ||
+    Boolean(filters.availability) ||
+    Boolean(filters.businessType) ||
+    filters.sort !== initialFilters.sort;
+  const activeFilterCount = [
+    filters.search,
+    filters.category,
+    filters.location,
+    filters.availability,
+    filters.businessType,
+    filters.sort !== initialFilters.sort ? filters.sort : "",
+  ].filter(Boolean).length;
 
   function handleFilterChange(event) {
     const { name, value } = event.target;
