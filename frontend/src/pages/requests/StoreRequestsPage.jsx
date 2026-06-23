@@ -5,6 +5,7 @@ import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
 import RequestSummary from "../../components/requests/RequestSummary";
 import RequestToolbar from "../../components/requests/RequestToolbar";
+import RequestsPagination from "../../components/requests/RequestsPagination";
 import StoreRequestCard from "../../components/requests/StoreRequestCard";
 import StoreRequestsHeader from "../../components/requests/StoreRequestsHeader";
 import { getSentRequests } from "../../services/requestService";
@@ -16,7 +17,7 @@ const initialFilters = {
   status: "",
   sort: "recent",
 };
-const REQUESTS_BATCH_SIZE = 8;
+const REQUESTS_PER_PAGE = 8;
 
 function formatRequestDate(request) {
   const dateValue = request.createdAt || request.updatedAt;
@@ -45,7 +46,7 @@ function StoreRequestsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [reloadKey, setReloadKey] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(REQUESTS_BATCH_SIZE);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     let shouldUpdateState = true;
@@ -129,18 +130,34 @@ function StoreRequestsPage() {
     Boolean(filters.search) ||
     Boolean(filters.status) ||
     filters.sort !== initialFilters.sort;
-  const visibleRequests = filteredRequests.slice(0, visibleCount);
-  const hasMoreRequests = visibleCount < filteredRequests.length;
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredRequests.length / REQUESTS_PER_PAGE),
+  );
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const firstItemIndex = (safeCurrentPage - 1) * REQUESTS_PER_PAGE;
+  const paginatedRequests = filteredRequests.slice(
+    firstItemIndex,
+    firstItemIndex + REQUESTS_PER_PAGE,
+  );
+  const lastItemIndex = Math.min(
+    firstItemIndex + paginatedRequests.length,
+    filteredRequests.length,
+  );
 
   function handleFilterChange(event) {
     const { name, value } = event.target;
     setFilters((current) => ({ ...current, [name]: value }));
-    setVisibleCount(REQUESTS_BATCH_SIZE);
+    setCurrentPage(1);
   }
 
   function resetFilters() {
     setFilters(initialFilters);
-    setVisibleCount(REQUESTS_BATCH_SIZE);
+    setCurrentPage(1);
+  }
+
+  function changePage(nextPage) {
+    setCurrentPage(Math.min(Math.max(nextPage, 1), totalPages));
   }
 
   return (
@@ -199,7 +216,7 @@ function StoreRequestsPage() {
             />
           ) : (
             <section className="supplier-requests-list" aria-live="polite">
-              {visibleRequests.map((request) => (
+              {paginatedRequests.map((request) => (
                 <StoreRequestCard
                   key={request.id}
                   request={request}
@@ -207,42 +224,14 @@ function StoreRequestsPage() {
                 />
               ))}
 
-              {filteredRequests.length > REQUESTS_BATCH_SIZE && (
-                <div className="supplier-requests-list__footer">
-                  <p>
-                    {visibleRequests.length} demande
-                    {visibleRequests.length > 1 ? "s" : ""} affichée
-                    {visibleRequests.length > 1 ? "s" : ""} sur{" "}
-                    {filteredRequests.length}
-                  </p>
-                  <div>
-                    {visibleCount > REQUESTS_BATCH_SIZE && (
-                      <button
-                        type="button"
-                        onClick={() => setVisibleCount(REQUESTS_BATCH_SIZE)}
-                      >
-                        Afficher moins
-                      </button>
-                    )}
-                    {hasMoreRequests && (
-                      <button
-                        className="supplier-requests-list__more"
-                        type="button"
-                        onClick={() =>
-                          setVisibleCount((count) =>
-                            Math.min(
-                              count + REQUESTS_BATCH_SIZE,
-                              filteredRequests.length,
-                            ),
-                          )
-                        }
-                      >
-                        Afficher plus
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
+              <RequestsPagination
+                currentPage={safeCurrentPage}
+                firstItemIndex={firstItemIndex}
+                lastItemIndex={lastItemIndex}
+                onPageChange={changePage}
+                totalItems={filteredRequests.length}
+                totalPages={totalPages}
+              />
             </section>
           )}
         </>
