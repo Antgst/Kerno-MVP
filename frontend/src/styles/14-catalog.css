@@ -208,6 +208,10 @@
   gap: 14px;
 }
 
+.catalog-pagination {
+  margin-top: 24px;
+}
+
 .catalog-product-card {
   overflow: hidden;
   min-width: 0;

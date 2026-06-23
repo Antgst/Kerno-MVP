@@ -18,6 +18,8 @@ const initialFilters = {
   businessType: "",
 };
 
+const ITEMS_PER_PAGE = 24;
+
 function getProductsFromResponse(response) {
   return getListResource(response, ["products"]);
 }
@@ -52,11 +54,97 @@ function getUniqueOptions(values) {
   );
 }
 
+function getPaginationPages(currentPage, totalPages) {
+  const pages = new Set([1, totalPages]);
+  const firstNearbyPage = Math.max(1, currentPage - 1);
+  const lastNearbyPage = Math.min(totalPages, currentPage + 1);
+
+  for (let page = firstNearbyPage; page <= lastNearbyPage; page += 1) {
+    pages.add(page);
+  }
+
+  return [...pages].sort((firstPage, secondPage) => firstPage - secondPage);
+}
+
+function CatalogPagination({
+  currentPage,
+  firstItemIndex,
+  lastItemIndex,
+  onPageChange,
+  totalItems,
+  totalPages,
+}) {
+  if (totalPages <= 1) {
+    return null;
+  }
+
+  const pages = getPaginationPages(currentPage, totalPages);
+
+  return (
+    <nav
+      className="catalog-pagination supplier-requests-list__footer"
+      aria-label="Pagination du catalogue"
+    >
+      <p>
+        Produits {firstItemIndex + 1}-{lastItemIndex} sur {totalItems}
+      </p>
+
+      <div>
+        <button
+          type="button"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Précédent
+        </button>
+
+        {pages.map((page, index) => {
+          const previousPage = pages[index - 1];
+          const shouldShowGap = previousPage && page - previousPage > 1;
+
+          return (
+            <span
+              className="catalog-pagination__page-group supplier-requests-list__page-group"
+              key={page}
+            >
+              {shouldShowGap && (
+                <span
+                  className="catalog-pagination__gap supplier-requests-list__gap"
+                  aria-hidden="true"
+                >
+                  ...
+                </span>
+              )}
+              <button
+                type="button"
+                className={page === currentPage ? "is-active" : ""}
+                onClick={() => onPageChange(page)}
+                aria-current={page === currentPage ? "page" : undefined}
+              >
+                {page}
+              </button>
+            </span>
+          );
+        })}
+
+        <button
+          type="button"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Suivant
+        </button>
+      </div>
+    </nav>
+  );
+}
+
 function CatalogPage() {
   const [products, setProducts] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [filters, setFilters] = useState(initialFilters);
   const [viewMode, setViewMode] = useState("grid");
+  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [reloadKey, setReloadKey] = useState(0);
@@ -198,12 +286,28 @@ function CatalogPage() {
     [filteredProducts, suppliersById],
   );
 
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / ITEMS_PER_PAGE),
+  );
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const firstItemIndex = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedProducts = useMemo(
+    () =>
+      filteredProducts.slice(firstItemIndex, firstItemIndex + ITEMS_PER_PAGE),
+    [filteredProducts, firstItemIndex],
+  );
+  const lastItemIndex = Math.min(
+    firstItemIndex + paginatedProducts.length,
+    filteredProducts.length,
+  );
   const hasActiveFilters = Object.values(filters).some(Boolean);
   const activeFilterCount = Object.values(filters).filter(Boolean).length;
 
   function handleFilterChange(event) {
     const { name, value } = event.target;
 
+    setCurrentPage(1);
     setFilters((currentFilters) => ({
       ...currentFilters,
       [name]: value,
@@ -211,11 +315,16 @@ function CatalogPage() {
   }
 
   function resetFilters() {
+    setCurrentPage(1);
     setFilters(initialFilters);
   }
 
   function changeViewMode(nextViewMode) {
     setViewMode(nextViewMode);
+  }
+
+  function changePage(nextPage) {
+    setCurrentPage(Math.min(Math.max(nextPage, 1), totalPages));
   }
 
   return (
@@ -291,12 +400,23 @@ function CatalogPage() {
               }
             />
           ) : (
-            <CatalogProducts
-              products={filteredProducts}
-              suppliersById={suppliersById}
-              getSupplierFromProduct={getSupplierFromProduct}
-              viewMode={viewMode}
-            />
+            <>
+              <CatalogProducts
+                products={paginatedProducts}
+                suppliersById={suppliersById}
+                getSupplierFromProduct={getSupplierFromProduct}
+                viewMode={viewMode}
+              />
+
+              <CatalogPagination
+                currentPage={safeCurrentPage}
+                firstItemIndex={firstItemIndex}
+                lastItemIndex={lastItemIndex}
+                onPageChange={changePage}
+                totalItems={filteredProducts.length}
+                totalPages={totalPages}
+              />
+            </>
           )}
         </>
       )}

@@ -810,10 +810,13 @@
 
 .supplier-requests-list__footer > div {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 9px;
 }
 
 .supplier-requests-list__footer button {
+  min-width: 38px;
   min-height: 38px;
   padding: 0 14px;
   border: 1px solid #d9d8d2;
@@ -825,10 +828,32 @@
   cursor: pointer;
 }
 
-.supplier-requests-list__footer .supplier-requests-list__more {
+.supplier-requests-list__footer button:hover:not(:disabled),
+.supplier-requests-list__footer button:focus-visible {
+  border-color: #9fc6b8;
+  background: #edf7f2;
+}
+
+.supplier-requests-list__footer button.is-active {
   border-color: #164e3f;
   background: #164e3f;
   color: #fff;
+}
+
+.supplier-requests-list__footer button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.supplier-requests-list__page-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.supplier-requests-list__gap {
+  color: #77766e;
+  font-weight: 750;
 }
 
 .request-form-page__header {
@@ -1130,9 +1155,12 @@
     flex-direction: column;
   }
 
-  .supplier-requests-list__footer > div,
-  .supplier-requests-list__footer button {
+  .supplier-requests-list__footer > div {
     width: 100%;
+  }
+
+  .supplier-requests-list__footer button {
+    flex: 1 1 auto;
   }
 
   .request-form-fields__actions {
