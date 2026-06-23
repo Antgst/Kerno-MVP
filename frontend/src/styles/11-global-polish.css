@@ -153,19 +153,6 @@
   color: #c75b0b;
 }
 
-.kerno-shell__main.kerno-page-bg::after {
-  background:
-    radial-gradient(circle at 82% 4%, rgb(214 235 226 / 58%), transparent 28%),
-    linear-gradient(180deg, #fbf9f4 0%, #f8f5ef 54%, #f5f1e9 100%);
-}
-
-body:has(.store-dashboard) .kerno-shell__main.kerno-page-bg::after,
-body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
-  background:
-    radial-gradient(circle at 82% 4%, rgb(214 235 226 / 58%), transparent 28%),
-    linear-gradient(180deg, #fbf9f4 0%, #f8f5ef 54%, #f5f1e9 100%);
-}
-
 .kerno-app-header {
   border-bottom-color: rgb(222 219 211 / 72%);
   background: rgb(255 255 255 / 78%);

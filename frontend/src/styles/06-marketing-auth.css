@@ -268,20 +268,6 @@
   font-weight: 900;
 }
 
-.public-layout.kerno-page-bg:has(.register-page)::before {
-  filter: blur(14px);
-  opacity: 0.28;
-}
-
-.public-layout.kerno-page-bg:has(.register-page)::after {
-  background: linear-gradient(
-    180deg,
-    rgb(248 245 239 / 72%) 0%,
-    rgb(248 245 239 / 80%) 48%,
-    rgb(248 245 239 / 88%) 100%
-  );
-}
-
 .register-page {
   display: grid;
   min-height: calc(100vh - 74px);

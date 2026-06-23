@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import globalBackground from "../assets/store-dashboard-bg.png";
 
 function AppLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -34,10 +33,7 @@ function AppLayout({ children }) {
         <Sidebar onNavigate={handleCloseSidebar} />
       </aside>
 
-      <div
-        className="kerno-shell__main kerno-page-bg"
-        style={{ "--kerno-global-bg": `url(${globalBackground})` }}
-      >
+      <div className="kerno-shell__main kerno-page-bg">
         <Header
           variant="app"
           onMenuClick={() => setIsSidebarOpen((currentValue) => !currentValue)}

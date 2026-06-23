@@ -13,7 +13,7 @@ import {
   getIsStoreSpace,
   getProfilePath,
 } from "./header/headerAccount";
-import { getCurrentAuthRole, logoutUser } from "../services/authService";
+import { getCurrentAuthRole, isAuthenticated, logoutUser } from "../services/authService";
 import { getCurrentUser } from "../services/userService";
 import { getAuthToken } from "../services/tokenStorage";
 import { getUserFromToken } from "../utils/jwt";
@@ -26,6 +26,7 @@ function Header({ variant = "public", onMenuClick }) {
   const [isPublicHeaderScrolled, setIsPublicHeaderScrolled] = useState(
     () => typeof window !== "undefined" && window.scrollY > 12,
   );
+  const isUserAuthenticated = isAuthenticated();
   const [accountIdentity, setAccountIdentity] = useState({
     user: getUserFromToken(getAuthToken()),
   });
@@ -72,7 +73,7 @@ function Header({ variant = "public", onMenuClick }) {
   }, [variant]);
 
   useEffect(() => {
-    if (variant !== "app") {
+    if (variant !== "app" && !isUserAuthenticated) {
       return undefined;
     }
 
@@ -96,9 +97,12 @@ function Header({ variant = "public", onMenuClick }) {
     return () => {
       shouldUpdateState = false;
     };
-  }, [isStoreSpace, variant]);
+  }, [isStoreSpace, variant, isUserAuthenticated]);
 
-  if (variant === "app") {
+  const shouldRenderAppHeader =
+    variant === "app" || (variant === "public" && isUserAuthenticated);
+
+  if (shouldRenderAppHeader) {
     return (
       <AppHeader
         accountInitials={accountInitials}
