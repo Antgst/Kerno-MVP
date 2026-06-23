@@ -386,13 +386,14 @@
 }
 
 .catalog-product-meta {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 12px;
   margin: 20px 0 0;
 }
 
 .catalog-product-meta > div {
+  width: 100%;
   min-width: 0;
 }
 
@@ -619,10 +620,6 @@
   .catalog-product-body,
   .catalog-product-card--list .catalog-product-body {
     padding: 16px;
-  }
-
-  .catalog-product-meta {
-    grid-template-columns: 1fr;
   }
 
   .catalog-product-footer,
