@@ -1,14 +1,9 @@
 import { Link } from "react-router-dom";
-import { heroBackgroundImage } from "../../data/homeData";
 import HeroImageShowcase from "./HeroImageShowcase";
 
 function HomeHero() {
   return (
     <section className="landing-hero">
-      <div className="landing-hero__background" aria-hidden="true">
-        <img src={heroBackgroundImage} alt="" />
-      </div>
-
       <div className="landing-hero__content">
         <p className="landing-hero__label">
           Marketplace B2B pour fournisseurs et magasins

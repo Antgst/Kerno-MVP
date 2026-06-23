@@ -11,8 +11,6 @@
 .kerno-page-bg .marketing-role-card,
 .kerno-page-bg .dashboard-card {
   background: rgb(255 255 255 / 94%);
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
 }
 
 /* Shared location autocomplete */

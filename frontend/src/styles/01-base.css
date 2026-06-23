@@ -33,56 +33,9 @@
   text-decoration: underline;
 }
 
-/* Global background */
 .kerno-page-bg,
 .kerno-shell__main.kerno-page-bg,
 .public-layout.kerno-page-bg {
   position: relative;
-  isolation: isolate;
-  background: transparent;
-}
-
-.kerno-shell__main.kerno-page-bg::before,
-.public-layout.kerno-page-bg::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-image: var(--kerno-global-bg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: blur(10px);
-  opacity: 0.46;
-  pointer-events: none;
-  transform: scale(1.06);
-}
-
-.kerno-shell__main.kerno-page-bg::after,
-.public-layout.kerno-page-bg::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    180deg,
-    rgb(248 245 239 / 64%) 0%,
-    rgb(248 245 239 / 74%) 45%,
-    rgb(248 245 239 / 84%) 100%
-  );
-  pointer-events: none;
-}
-
-.kerno-shell__main.kerno-page-bg::before {
-  display: none;
-}
-
-.kerno-shell__main.kerno-page-bg::after {
-  position: absolute;
-}
-
-.kerno-shell__main.kerno-page-bg > *,
-.public-layout.kerno-page-bg > * {
-  position: relative;
-  z-index: 2;
+  background: var(--color-warm-ivory);
 }

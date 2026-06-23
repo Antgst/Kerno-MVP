@@ -1,14 +1,3 @@
-/* Store dashboard target refresh */
-body:has(.store-dashboard) .kerno-shell__main.kerno-page-bg::before,
-body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::before {
-  display: none;
-}
-
-body:has(.store-dashboard) .kerno-shell__main.kerno-page-bg::after,
-body:has(.supplier-dashboard) .kerno-shell__main.kerno-page-bg::after {
-  background: #f8f5ef;
-}
-
 @media (min-width: 901px) {
   .kerno-shell__sidebar {
     display: none;

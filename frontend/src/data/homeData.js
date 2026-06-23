@@ -7,8 +7,6 @@ import cheeseImage from "../assets/landing/store-supplier-cheese.webp";
 import farmImage from "../assets/landing/store-supplier-farm.webp";
 import provenceImage from "../assets/landing/store-supplier-provence.webp";
 
-export const heroBackgroundImage = farmImage;
-
 export const heroImages = [
   {
     id: "farm",
