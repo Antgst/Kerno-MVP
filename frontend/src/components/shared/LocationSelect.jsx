@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { City, State } from "country-state-city";
+import franceCitiesSource from "../../data/franceCities.txt?raw";
 
 const MAX_SUGGESTIONS = 8;
 
@@ -11,9 +11,21 @@ function normalizeSearchValue(value) {
     .trim();
 }
 
-function getMatchScore(city, search) {
-  const cityName = normalizeSearchValue(city.cityName);
-  const fullLabel = normalizeSearchValue(city.label);
+function getCityOption(cityTuple) {
+  const [cityName, regionName] = cityTuple;
+  const label = `${cityName}, ${regionName}, France`;
+
+  return {
+    value: label,
+    label,
+    cityName,
+    regionName,
+  };
+}
+
+function getMatchScore(cityOption, search) {
+  const cityName = normalizeSearchValue(cityOption.cityName);
+  const fullLabel = normalizeSearchValue(cityOption.label);
 
   if (cityName.startsWith(search)) {
     return 0;
@@ -48,25 +60,14 @@ function LocationSelect({
   const wrapperRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
-
-  const cityOptions = useMemo(() => {
-    const formattedCities = City.getCitiesOfCountry("FR").map((city) => {
-      const state = State.getStateByCodeAndCountry(city.stateCode, "FR");
-      const regionName = state?.name || city.stateCode;
-      const label = `${city.name}, ${regionName}, France`;
-
-      return {
-        value: label,
-        label,
-        cityName: city.name,
-        regionName,
-      };
-    });
-
-    return Array.from(
-      new Map(formattedCities.map((city) => [city.value, city])).values(),
-    );
-  }, []);
+  const cityOptions = useMemo(
+    () =>
+      franceCitiesSource
+        .split("\n")
+        .filter(Boolean)
+        .map((line) => line.split("|")),
+    [],
+  );
 
   const filteredCities = useMemo(() => {
     const search = normalizeSearchValue(value);
@@ -76,10 +77,14 @@ function LocationSelect({
     }
 
     return cityOptions
-      .map((city) => ({
-        ...city,
-        matchScore: getMatchScore(city, search),
-      }))
+      .map((cityTuple) => {
+        const cityOption = getCityOption(cityTuple);
+
+        return {
+          ...cityOption,
+          matchScore: getMatchScore(cityOption, search),
+        };
+      })
       .filter((city) => Number.isFinite(city.matchScore))
       .sort(
         (firstCity, secondCity) =>
