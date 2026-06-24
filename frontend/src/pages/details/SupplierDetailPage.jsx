@@ -63,7 +63,7 @@ function getProductTimestamp(product) {
 }
 
 function getUniqueOptions(values) {
-  return [...new Set(values.filter(Boolean))].sort((first, second) =>
+  return Array.from(new Set(values.filter(Boolean))).toSorted((first, second) =>
     first.localeCompare(second, "fr-FR"),
   );
 }
@@ -191,8 +191,7 @@ function SupplierProductsActions({
   );
 }
 
-function SupplierIcon({ name }) {
-  const commonProps = {
+const supplierIconProps = {
     width: "20",
     height: "20",
     viewBox: "0 0 24 24",
@@ -204,7 +203,7 @@ function SupplierIcon({ name }) {
     "aria-hidden": "true",
   };
 
-  const icons = {
+const supplierIcons = {
     arrow: <path d="m15 18-6-6 6-6" />,
     building: (
       <>
@@ -242,7 +241,8 @@ function SupplierIcon({ name }) {
     ),
   };
 
-  return <svg {...commonProps}>{icons[name]}</svg>;
+function SupplierIcon({ name }) {
+  return <svg {...supplierIconProps}>{supplierIcons[name]}</svg>;
 }
 
 function getSortablePrice(product) {

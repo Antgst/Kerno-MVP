@@ -8,9 +8,13 @@ function ProductImage({
   product,
   alt,
   className = "",
-  loading = "lazy",
+  decoding = "async",
+  fetchPriority,
+  loading,
+  priority = false,
+  useFallback = true,
 }) {
-  const fallback = getProductFallback(product);
+  const fallback = useFallback ? getProductFallback(product) : { kind: "neutral" };
   const configuredSource = getProductImageSource(product);
   const [failedSource, setFailedSource] = useState("");
   const configuredSourceFailed =
@@ -19,6 +23,8 @@ function ProductImage({
     configuredSource && !configuredSourceFailed
       ? configuredSource
       : fallback.source;
+  const imageLoading = loading || (priority ? "eager" : "lazy");
+  const imageFetchPriority = fetchPriority || (priority ? "high" : "auto");
 
   if (!source && fallback.kind === "neutral") {
     return (
@@ -57,7 +63,9 @@ function ProductImage({
       className={className}
       src={source}
       alt={alt || `Aperçu du produit ${product?.name || "KERNO"}`}
-      loading={loading}
+      decoding={decoding}
+      fetchPriority={imageFetchPriority}
+      loading={imageLoading}
       onError={() => {
         if (configuredSource && source === configuredSource) {
           setFailedSource(configuredSource);

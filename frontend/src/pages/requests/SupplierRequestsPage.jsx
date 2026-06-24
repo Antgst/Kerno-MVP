@@ -17,6 +17,11 @@ const initialFilters = {
   sort: "recent",
 };
 const REQUESTS_PER_PAGE = 8;
+const requestDateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
 
 function normalizeValue(value) {
   return String(value || "")
@@ -42,11 +47,7 @@ function formatRequestDate(request) {
     return "";
   }
 
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(timestamp);
+  return requestDateFormatter.format(timestamp);
 }
 
 function SupplierRequestsPage() {

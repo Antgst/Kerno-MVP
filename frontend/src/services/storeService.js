@@ -11,11 +11,3 @@ export function getCurrentStoreProfile() {
 export function updateCurrentStoreProfile(payload) {
   return apiClient.put("/stores/profile/me", payload);
 }
-
-const storeService = {
-  createStoreProfile,
-  getCurrentStoreProfile,
-  updateCurrentStoreProfile,
-};
-
-export default storeService;

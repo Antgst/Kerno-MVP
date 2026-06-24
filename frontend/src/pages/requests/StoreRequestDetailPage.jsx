@@ -8,17 +8,19 @@ import StoreRequestDetailLayout from "../../components/requests/StoreRequestDeta
 import { getRequestById } from "../../services/requestService";
 import { getResource } from "../../utils/responseUtils";
 
+const requestDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
 function formatDate(value) {
   if (!value) return "Date indisponible";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "Date indisponible";
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
+  return requestDateTimeFormatter.format(date);
 }
 
 function StoreRequestDetailPage() {

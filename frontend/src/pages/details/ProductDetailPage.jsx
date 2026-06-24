@@ -26,8 +26,7 @@ function getWebsiteHref(website) {
   return /^https?:\/\//i.test(website) ? website : `https://${website}`;
 }
 
-function ProductIcon({ name }) {
-  const commonProps = {
+const productIconProps = {
     width: "20",
     height: "20",
     viewBox: "0 0 24 24",
@@ -39,14 +38,14 @@ function ProductIcon({ name }) {
     "aria-hidden": "true",
   };
 
-  const icons = {
+const productIcons = {
     arrow: (
-      <svg {...commonProps}>
+      <svg {...productIconProps}>
         <path d="m15 18-6-6 6-6" />
       </svg>
     ),
     box: (
-      <svg {...commonProps}>
+      <svg {...productIconProps}>
         <path d="m21 8-9 5-9-5 9-5 9 5Z" />
         <path d="m3 8 9 5 9-5" />
         <path d="M3 8v8l9 5 9-5V8" />
@@ -54,7 +53,7 @@ function ProductIcon({ name }) {
       </svg>
     ),
     building: (
-      <svg {...commonProps}>
+      <svg {...productIconProps}>
         <path d="M3 21h18" />
         <path d="M6 21V7l6-4v18" />
         <path d="M18 21V11l-6-4" />
@@ -62,49 +61,50 @@ function ProductIcon({ name }) {
       </svg>
     ),
     check: (
-      <svg {...commonProps}>
+      <svg {...productIconProps}>
         <path d="m5 12 4 4L19 6" />
       </svg>
     ),
     globe: (
-      <svg {...commonProps}>
+      <svg {...productIconProps}>
         <circle cx="12" cy="12" r="9" />
         <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
       </svg>
     ),
     image: (
-      <svg {...commonProps}>
+      <svg {...productIconProps}>
         <rect x="3" y="4" width="18" height="16" rx="2" />
         <circle cx="9" cy="10" r="2" />
         <path d="m21 15-5-5L5 20" />
       </svg>
     ),
     mail: (
-      <svg {...commonProps}>
+      <svg {...productIconProps}>
         <rect x="3" y="5" width="18" height="14" rx="2" />
         <path d="m3 7 9 6 9-6" />
       </svg>
     ),
     map: (
-      <svg {...commonProps}>
+      <svg {...productIconProps}>
         <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
         <circle cx="12" cy="10" r="2.5" />
       </svg>
     ),
     phone: (
-      <svg {...commonProps}>
+      <svg {...productIconProps}>
         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.63a2 2 0 0 1-.45 2.11L8 9.73a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.85.29 1.73.5 2.63.62A2 2 0 0 1 22 16.92Z" />
       </svg>
     ),
     request: (
-      <svg {...commonProps}>
+      <svg {...productIconProps}>
         <path d="M4 4h16v12H7l-3 3V4Z" />
         <path d="M8 8h8M8 12h5" />
       </svg>
     ),
   };
 
-  return icons[name] || null;
+function ProductIcon({ name }) {
+  return productIcons[name] || null;
 }
 
 function ProductDetailPage() {
@@ -246,7 +246,9 @@ function ProductDetailPage() {
                 <ProductImage
                   product={product}
                   alt={`Aperçu du produit ${product.name}`}
+                  fetchPriority="high"
                   loading="eager"
+                  priority
                 />
 
                 <span

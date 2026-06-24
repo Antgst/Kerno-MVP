@@ -31,7 +31,7 @@ function SupplierProductsPreview({ products }) {
                 <h3>{product.name}</h3>
 
                 <div className="supplier-dashboard__product-meta">
-                  <span>{formatProductPrice(product)}</span>
+                  <span>{product.priceLabel || formatProductPrice(product)}</span>
                   <span>{product.availability}</span>
                 </div>
 

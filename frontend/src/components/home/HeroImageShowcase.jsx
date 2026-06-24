@@ -15,14 +15,21 @@ function HeroImageShowcase() {
   return (
     <aside className="hero-showcase" aria-label="Sélection visuelle KERNO">
       <div className="hero-showcase__frame">
-        {heroImages.map((item, index) => (
-          <img
-            className={index === activeIndex ? "is-active" : undefined}
-            key={item.id}
-            src={item.image}
-            alt={item.alt}
-          />
-        ))}
+        {heroImages.map((item, index) => {
+          const isFirstImage = index === 0;
+
+          return (
+            <img
+              className={index === activeIndex ? "is-active" : undefined}
+              key={item.id}
+              src={item.image}
+              alt={item.alt}
+              loading={isFirstImage ? "eager" : "lazy"}
+              fetchPriority={isFirstImage ? "high" : "low"}
+              decoding="async"
+            />
+          );
+        })}
       </div>
 
       <div className="hero-showcase__dots" aria-label="Images de présentation">

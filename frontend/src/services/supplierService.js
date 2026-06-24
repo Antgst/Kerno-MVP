@@ -19,13 +19,3 @@ export function getCurrentSupplierProfile() {
 export function updateCurrentSupplierProfile(payload) {
   return apiClient.put("/suppliers/profile/me", payload);
 }
-
-const supplierService = {
-  getSuppliers,
-  getSupplierById,
-  createSupplierProfile,
-  getCurrentSupplierProfile,
-  updateCurrentSupplierProfile,
-};
-
-export default supplierService;

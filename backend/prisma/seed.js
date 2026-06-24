@@ -172,12 +172,9 @@ function storeName(index, location) {
 async function resetDatabase() {
   console.log("🧹 Nettoyage de la base de données...");
 
-  await prisma.contactRequest.deleteMany();
-  await prisma.product.deleteMany();
-  await prisma.storeProfile.deleteMany();
-  await prisma.supplierProfile.deleteMany();
-  await prisma.user.deleteMany();
-  await prisma.category.deleteMany();
+  await prisma.$executeRaw`
+    TRUNCATE TABLE contact_requests, products, store_profiles, supplier_profiles, users, categories RESTART IDENTITY CASCADE
+  `;
 
   console.log("✅ Base nettoyée");
 }
@@ -185,12 +182,12 @@ async function resetDatabase() {
 async function createCategories() {
   console.log("📦 Création des catégories...");
 
-  const categories = {};
-
-  for (const category of CATEGORIES) {
-    const created = await prisma.category.create({ data: category });
-    categories[created.name] = created;
-  }
+  const createdCategories = await Promise.all(
+    CATEGORIES.map((category) => prisma.category.create({ data: category })),
+  );
+  const categories = Object.fromEntries(
+    createdCategories.map((category) => [category.name, category]),
+  );
 
   console.log(`✅ ${Object.keys(categories).length} catégories créées`);
   return categories;
@@ -199,41 +196,41 @@ async function createCategories() {
 async function createSuppliers(passwordHash) {
   console.log("🚚 Création massive des fournisseurs...");
 
-  const suppliers = [];
+  const suppliers = await Promise.all(
+    Array.from({ length: SUPPLIER_COUNT }, async (_, i) => {
+      const location = pick(LOCATIONS, i);
+      const firstName = pick(FIRST_NAMES, i);
+      const lastName = pick(LAST_NAMES, i + 7);
+      const name = companyName(i, location);
+      const slug = slugify(name);
+      const email = `supplier.${String(i + 1).padStart(3, "0")}@kerno-demo.local`;
 
-  for (let i = 0; i < SUPPLIER_COUNT; i++) {
-    const location = pick(LOCATIONS, i);
-    const firstName = pick(FIRST_NAMES, i);
-    const lastName = pick(LAST_NAMES, i + 7);
-    const name = companyName(i, location);
-    const slug = slugify(name);
-    const email = `supplier.${String(i + 1).padStart(3, "0")}@kerno-demo.local`;
+      const user = await prisma.user.create({
+        data: {
+          email,
+          passwordHash,
+          role: "SUPPLIER",
+          firstName,
+          lastName,
+        },
+      });
 
-    const user = await prisma.user.create({
-      data: {
-        email,
-        passwordHash,
-        role: "SUPPLIER",
-        firstName,
-        lastName,
-      },
-    });
+      const profile = await prisma.supplierProfile.create({
+        data: {
+          userId: user.id,
+          companyName: name,
+          description: `${pick(SUPPLIER_TYPES, i)} basé à ${location.city}, proposant une offre professionnelle pour les magasins indépendants, épiceries fines et commerces de proximité.`,
+          location: formatLocation(location),
+          businessType: pick(SUPPLIER_TYPES, i),
+          contactEmail: email,
+          phone: phone(location, i + 1),
+          website: `https://${slug}.example`,
+        },
+      });
 
-    const profile = await prisma.supplierProfile.create({
-      data: {
-        userId: user.id,
-        companyName: name,
-        description: `${pick(SUPPLIER_TYPES, i)} basé à ${location.city}, proposant une offre professionnelle pour les magasins indépendants, épiceries fines et commerces de proximité.`,
-        location: formatLocation(location),
-        businessType: pick(SUPPLIER_TYPES, i),
-        contactEmail: email,
-        phone: phone(location, i + 1),
-        website: `https://${slug}.example`,
-      },
-    });
-
-    suppliers.push({ user, profile });
-  }
+      return { user, profile };
+    }),
+  );
 
   console.log(`✅ ${suppliers.length} fournisseurs créés`);
   return suppliers;
@@ -242,40 +239,40 @@ async function createSuppliers(passwordHash) {
 async function createStores(passwordHash) {
   console.log("🏪 Création massive des magasins...");
 
-  const stores = [];
+  const stores = await Promise.all(
+    Array.from({ length: STORE_COUNT }, async (_, i) => {
+      const location = pick(LOCATIONS, i * 2 + 3);
+      const firstName = pick(FIRST_NAMES, i + 11);
+      const lastName = pick(LAST_NAMES, i + 17);
+      const name = storeName(i, location);
+      const email = `store.${String(i + 1).padStart(3, "0")}@kerno-demo.local`;
 
-  for (let i = 0; i < STORE_COUNT; i++) {
-    const location = pick(LOCATIONS, i * 2 + 3);
-    const firstName = pick(FIRST_NAMES, i + 11);
-    const lastName = pick(LAST_NAMES, i + 17);
-    const name = storeName(i, location);
-    const email = `store.${String(i + 1).padStart(3, "0")}@kerno-demo.local`;
+      const user = await prisma.user.create({
+        data: {
+          email,
+          passwordHash,
+          role: "STORE",
+          firstName,
+          lastName,
+        },
+      });
 
-    const user = await prisma.user.create({
-      data: {
-        email,
-        passwordHash,
-        role: "STORE",
-        firstName,
-        lastName,
-      },
-    });
+      const profile = await prisma.storeProfile.create({
+        data: {
+          userId: user.id,
+          storeName: name,
+          brandName: name.split(" - ")[0],
+          location: formatLocation(location),
+          storeType: pick(STORE_TYPES, i),
+          sourcingNeeds: `Recherche de produits locaux, artisanaux et différenciants pour enrichir les rayons ${pick(CATEGORIES, i).name.toLowerCase()} et produits régionaux.`,
+          contactEmail: email,
+          phone: phone(location, i + 101),
+        },
+      });
 
-    const profile = await prisma.storeProfile.create({
-      data: {
-        userId: user.id,
-        storeName: name,
-        brandName: name.split(" - ")[0],
-        location: formatLocation(location),
-        storeType: pick(STORE_TYPES, i),
-        sourcingNeeds: `Recherche de produits locaux, artisanaux et différenciants pour enrichir les rayons ${pick(CATEGORIES, i).name.toLowerCase()} et produits régionaux.`,
-        contactEmail: email,
-        phone: phone(location, i + 101),
-      },
-    });
-
-    stores.push({ user, profile });
-  }
+      return { user, profile };
+    }),
+  );
 
   console.log(`✅ ${stores.length} magasins créés`);
   return stores;
@@ -284,62 +281,61 @@ async function createStores(passwordHash) {
 async function createProducts(categories, suppliers, fumoSupplier) {
   console.log("🛒 Création massive des produits...");
 
-  const products = [];
   const supplierProductMap = new Map();
   const fumoInsertAfterSupplierIndex = Math.floor(suppliers.length / 2);
 
-  for (let supplierIndex = 0; supplierIndex < suppliers.length; supplierIndex++) {
-    const supplier = suppliers[supplierIndex].profile;
-    const productsForSupplier = [];
-    const productCount = 5 + (supplierIndex % (MAX_PRODUCTS_PER_SUPPLIER - 4)); // 5 à 20 produits
+  const [supplierProductGroups, createdFumoProducts] = await Promise.all([
+    Promise.all(suppliers.map(async (supplierEntry, supplierIndex) => {
+      const supplier = supplierEntry.profile;
+      const productCount = 5 + (supplierIndex % (MAX_PRODUCTS_PER_SUPPLIER - 4)); // 5 à 20 produits
 
-    for (let productIndex = 0; productIndex < productCount; productIndex++) {
-      const catalogEntry = pick(PRODUCT_CATALOG, supplierIndex + productIndex);
-      const productBaseName = pick(catalogEntry.names, supplierIndex * 3 + productIndex);
-      const category = categories[catalogEntry.category];
-      const priceCents = Math.round((2.2 + ((supplierIndex + productIndex) % 18) * 0.85) * 100);
-      const minimumOrderOptions = [
-        { quantity: 12, unit: "UNIT" },
-        { quantity: 24, unit: "UNIT" },
-        { quantity: 36, unit: "UNIT" },
-        { quantity: 48, unit: "UNIT" },
-        { quantity: 5, unit: "KG" },
-        { quantity: 10, unit: "KG" },
-        { quantity: 1, unit: "COLIS" },
-        { quantity: 2, unit: "COLIS" },
-      ];
-      const minimumOrderConfig = minimumOrderOptions[(supplierIndex + productIndex) % minimumOrderOptions.length];
+      const productsForSupplier = await Promise.all(
+        Array.from({ length: productCount }, async (_, productIndex) => {
+          const catalogEntry = pick(PRODUCT_CATALOG, supplierIndex + productIndex);
+          const productBaseName = pick(catalogEntry.names, supplierIndex * 3 + productIndex);
+          const category = categories[catalogEntry.category];
+          const priceCents = Math.round((2.2 + ((supplierIndex + productIndex) % 18) * 0.85) * 100);
+          const minimumOrderOptions = [
+            { quantity: 12, unit: "UNIT" },
+            { quantity: 24, unit: "UNIT" },
+            { quantity: 36, unit: "UNIT" },
+            { quantity: 48, unit: "UNIT" },
+            { quantity: 5, unit: "KG" },
+            { quantity: 10, unit: "KG" },
+            { quantity: 1, unit: "COLIS" },
+            { quantity: 2, unit: "COLIS" },
+          ];
+          const minimumOrderConfig = minimumOrderOptions[(supplierIndex + productIndex) % minimumOrderOptions.length];
 
-      const product = await prisma.product.create({
-        data: {
-          supplierId: supplier.id,
-          categoryId: category.id,
-          name: `${productBaseName} ${supplierIndex + 1}-${productIndex + 1}`,
-          description: `${productBaseName} fabriqué par ${supplier.companyName}. Produit pensé pour la revente en boutique, avec une présentation claire et un approvisionnement régulier.`,
-          priceCents,
-          priceUnit: "UNIT",
-          minimumOrderQuantity: minimumOrderConfig.quantity,
-          minimumOrderUnit: minimumOrderConfig.unit,
-          origin: supplier.location,
-          imageUrl: `/assets/products/${slugify(productBaseName)}.webp`,
-          isActive: productIndex % 17 !== 0,
-        },
-      });
-
-      products.push(product);
-      productsForSupplier.push(product);
-    }
-
-    supplierProductMap.set(supplier.id, productsForSupplier);
-
-    if (supplierIndex === fumoInsertAfterSupplierIndex) {
-      const createdFumoProducts = await createFumoEasterEggProducts(
-        categories,
-        fumoSupplier.profile,
+          return prisma.product.create({
+            data: {
+              supplierId: supplier.id,
+              categoryId: category.id,
+              name: `${productBaseName} ${supplierIndex + 1}-${productIndex + 1}`,
+              description: `${productBaseName} fabriqué par ${supplier.companyName}. Produit pensé pour la revente en boutique, avec une présentation claire et un approvisionnement régulier.`,
+              priceCents,
+              priceUnit: "UNIT",
+              minimumOrderQuantity: minimumOrderConfig.quantity,
+              minimumOrderUnit: minimumOrderConfig.unit,
+              origin: supplier.location,
+              imageUrl: `/assets/products/${slugify(productBaseName)}.webp`,
+              isActive: productIndex % 17 !== 0,
+            },
+          });
+        }),
       );
-      products.push(...createdFumoProducts);
-    }
-  }
+
+      supplierProductMap.set(supplier.id, productsForSupplier);
+      return productsForSupplier;
+    })),
+    createFumoEasterEggProducts(categories, fumoSupplier.profile),
+  ]);
+
+  const products = supplierProductGroups.flatMap((productsForSupplier, supplierIndex) => (
+    supplierIndex === fumoInsertAfterSupplierIndex
+      ? [...productsForSupplier, ...createdFumoProducts]
+      : productsForSupplier
+  ));
 
   console.log(`✅ ${products.length} produits créés`);
   return { products, supplierProductMap };
@@ -376,11 +372,9 @@ async function createFumoEasterEggSupplier(passwordHash) {
 
 async function createFumoEasterEggProducts(categories, supplier) {
   const category = categories["Produits régionaux"];
-  const products = [];
 
-  for (let index = 0; index < FUMO_PRODUCTS.length; index++) {
-    const fumo = FUMO_PRODUCTS[index];
-    const product = await prisma.product.create({
+  return Promise.all(FUMO_PRODUCTS.map((fumo, index) => {
+    return prisma.product.create({
       data: {
         supplierId: supplier.id,
         categoryId: category?.id || null,
@@ -395,11 +389,7 @@ async function createFumoEasterEggProducts(categories, supplier) {
         isActive: true,
       },
     });
-
-    products.push(product);
-  }
-
-  return products;
+  }));
 }
 
 async function createContactRequests(stores, suppliers, products, supplierProductMap) {
@@ -426,13 +416,38 @@ async function createContactRequests(stores, suppliers, products, supplierProduc
   }
 
   const batchSize = 100;
-  for (let i = 0; i < requests.length; i += batchSize) {
-    await prisma.contactRequest.createMany({
-      data: requests.slice(i, i + batchSize),
-    });
-  }
+  const batches = Array.from(
+    { length: Math.ceil(requests.length / batchSize) },
+    (_, batchIndex) => requests.slice(batchIndex * batchSize, (batchIndex + 1) * batchSize),
+  );
+  await Promise.all(
+    batches.map((batch) => prisma.contactRequest.createMany({ data: batch })),
+  );
 
   console.log(`✅ ${requests.length} demandes de contact créées`);
+}
+
+function createSeedData() {
+  return Promise.all([
+    bcrypt.hash(DEMO_PASSWORD, HASH_ROUNDS),
+    createCategories(),
+  ]).then(([passwordHash, categories]) => (
+    Promise.all([
+      createSuppliers(passwordHash),
+      createStores(passwordHash),
+      createFumoEasterEggSupplier(passwordHash),
+    ]).then(async ([suppliers, stores, fumoEasterEggSupplier]) => {
+      const { products, supplierProductMap } = await createProducts(
+        categories,
+        suppliers,
+        fumoEasterEggSupplier,
+      );
+
+      await createContactRequests(stores, suppliers, products, supplierProductMap);
+
+      return { categories, suppliers, stores, products };
+    })
+  ));
 }
 
 async function main() {
@@ -440,19 +455,7 @@ async function main() {
   console.log(`🔐 Mot de passe commun : ${DEMO_PASSWORD}`);
 
   await resetDatabase();
-
-  const passwordHash = await bcrypt.hash(DEMO_PASSWORD, HASH_ROUNDS);
-  const categories = await createCategories();
-  const suppliers = await createSuppliers(passwordHash);
-  const stores = await createStores(passwordHash);
-  const fumoEasterEggSupplier = await createFumoEasterEggSupplier(passwordHash);
-  const { products, supplierProductMap } = await createProducts(
-    categories,
-    suppliers,
-    fumoEasterEggSupplier,
-  );
-
-  await createContactRequests(stores, suppliers, products, supplierProductMap);
+  const { categories, suppliers, stores, products } = await createSeedData();
 
   console.log("");
   console.log("🎉 Seed massif terminé avec succès !");

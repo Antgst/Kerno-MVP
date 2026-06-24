@@ -50,7 +50,7 @@ function normalizeValue(value) {
 }
 
 function getUniqueOptions(values) {
-  return [...new Set(values.filter(Boolean))].sort((first, second) =>
+  return Array.from(new Set(values.filter(Boolean))).toSorted((first, second) =>
     first.localeCompare(second, "fr-FR"),
   );
 }
@@ -77,7 +77,9 @@ function getPaginationPages(currentPage, totalPages) {
     pages.add(page);
   }
 
-  return [...pages].sort((firstPage, secondPage) => firstPage - secondPage);
+  return Array.from(pages).toSorted(
+    (firstPage, secondPage) => firstPage - secondPage,
+  );
 }
 
 function CatalogPagination({
@@ -341,12 +343,12 @@ function CatalogPage() {
   const visibleSupplierCount = useMemo(
     () =>
       new Set(
-        filteredProducts
-          .map((product) => {
-            const supplier = getSupplierFromProduct(product, suppliersById);
-            return supplier?.id || supplier?.companyName;
-          })
-          .filter(Boolean),
+        filteredProducts.flatMap((product) => {
+          const supplier = getSupplierFromProduct(product, suppliersById);
+          const supplierKey = supplier?.id || supplier?.companyName;
+
+          return supplierKey ? [supplierKey] : [];
+        }),
       ).size,
     [filteredProducts, suppliersById],
   );

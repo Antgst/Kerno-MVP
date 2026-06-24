@@ -18,6 +18,11 @@ const initialFilters = {
   sort: "recent",
 };
 const REQUESTS_PER_PAGE = 8;
+const requestDateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
 
 function formatRequestDate(request) {
   const dateValue = request.createdAt || request.updatedAt;
@@ -27,11 +32,7 @@ function formatRequestDate(request) {
     return "Date indisponible";
   }
 
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(date);
+  return requestDateFormatter.format(date);
 }
 
 function normalizeValue(value) {

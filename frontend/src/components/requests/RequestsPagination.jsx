@@ -7,7 +7,9 @@ function getPaginationPages(currentPage, totalPages) {
     pages.add(page);
   }
 
-  return [...pages].sort((firstPage, secondPage) => firstPage - secondPage);
+  return Array.from(pages).toSorted(
+    (firstPage, secondPage) => firstPage - secondPage,
+  );
 }
 
 function RequestsPagination({

@@ -22,6 +22,14 @@ const editableStatusOptions = [
   label: formatStatus(status),
 }));
 
+const requestDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
 function formatDate(dateValue) {
   if (!dateValue) {
     return "";
@@ -33,13 +41,7 @@ function formatDate(dateValue) {
     return "";
   }
 
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
+  return requestDateTimeFormatter.format(date);
 }
 
 function getStoreName(store) {

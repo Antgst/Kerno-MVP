@@ -1,11 +1,20 @@
 import ProductImage from "../ui/ProductImage";
+import { hasKnownProductImageSource } from "../../utils/productImages";
 
-function CatalogProductVisual({ product }) {
+function CatalogProductVisual({ product, priority = false }) {
+  const imageProduct = hasKnownProductImageSource(product)
+    ? product
+    : { ...product, imageUrl: "" };
+
   return (
     <div className="catalog-product-visual">
       <ProductImage
-        product={product}
+        product={imageProduct}
         alt={`Aperçu du produit ${product.name || "KERNO"}`}
+        fetchPriority={priority ? "high" : "auto"}
+        loading={priority ? "eager" : "lazy"}
+        priority={priority}
+        useFallback={false}
       />
 
       <span

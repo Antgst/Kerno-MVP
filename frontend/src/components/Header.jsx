@@ -13,10 +13,18 @@ import {
   getProfilePath,
 } from "./header/headerAccount";
 import { getCurrentAuthRole, isAuthenticated, logoutUser } from "../services/authService";
+import {
+  getCachedCurrentUser,
+  setCachedCurrentUser,
+} from "../services/frontendCache";
 import { getCurrentUser } from "../services/userService";
 import { getAuthToken } from "../services/tokenStorage";
 import { getUserFromToken } from "../utils/jwt";
 import { getResource } from "../utils/responseUtils";
+
+function getInitialUserIdentity() {
+  return getCachedCurrentUser() || getUserFromToken(getAuthToken());
+}
 
 function Header({ variant = "public", onMenuClick }) {
   const location = useLocation();
@@ -27,7 +35,7 @@ function Header({ variant = "public", onMenuClick }) {
   );
   const isUserAuthenticated = isAuthenticated();
   const [accountIdentity, setAccountIdentity] = useState({
-    user: getUserFromToken(getAuthToken()),
+    user: getInitialUserIdentity(),
   });
   const role = getCurrentAuthRole();
 
@@ -72,7 +80,13 @@ function Header({ variant = "public", onMenuClick }) {
   }, [variant]);
 
   useEffect(() => {
-    if (variant !== "app" && !isUserAuthenticated) {
+    if (variant !== "app" || !isUserAuthenticated) {
+      return undefined;
+    }
+
+    const cachedUser = getCachedCurrentUser();
+
+    if (cachedUser) {
       return undefined;
     }
 
@@ -88,6 +102,7 @@ function Header({ variant = "public", onMenuClick }) {
       const user =
         getResource(userResult, ["user"]) || getUserFromToken(getAuthToken());
 
+      setCachedCurrentUser(user);
       setAccountIdentity({ user });
     }
 
@@ -96,7 +111,7 @@ function Header({ variant = "public", onMenuClick }) {
     return () => {
       shouldUpdateState = false;
     };
-  }, [isStoreSpace, variant, isUserAuthenticated]);
+  }, [variant, isUserAuthenticated]);
 
   const shouldRenderAppHeader =
     variant === "app" || (variant === "public" && isUserAuthenticated);

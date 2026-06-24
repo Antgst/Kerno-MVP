@@ -1,5 +1,6 @@
 import { API_BASE_URL } from "../config/api";
 import ApiError from "./apiError";
+import { clearSessionCache } from "./frontendCache";
 import { getAuthToken } from "./tokenStorage";
 
 function removeTrailingSlash(value) {
@@ -37,6 +38,10 @@ async function parseResponse(response) {
   const data = isJson ? await response.json() : await response.text();
 
   if (!response.ok) {
+    if (response.status === 401) {
+      clearSessionCache();
+    }
+
     const message =
       typeof data === "object" && data?.message
         ? data.message
