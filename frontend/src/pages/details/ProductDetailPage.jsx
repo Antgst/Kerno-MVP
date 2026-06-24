@@ -6,7 +6,10 @@ import LoadingState from "../../components/ui/LoadingState";
 import ProductImage from "../../components/ui/ProductImage";
 import { getCurrentAuthRole } from "../../services/authService";
 import { getProductById } from "../../services/productService";
-import { getSupplierById } from "../../services/supplierService";
+import {
+  getCurrentSupplierProfile,
+  getSupplierById,
+} from "../../services/supplierService";
 import { getResource } from "../../utils/responseUtils";
 import { formatMinimumOrder, formatProductPrice } from "../../utils/productPrice";
 
@@ -16,6 +19,18 @@ function getProductFromResponse(response) {
 
 function getSupplierFromResponse(response) {
   return getResource(response, ["supplier"]);
+}
+
+function getProductSupplierId(product) {
+  return product?.supplierId || product?.supplier?.id || "";
+}
+
+function idsMatch(firstId, secondId) {
+  return Boolean(firstId && secondId && String(firstId) === String(secondId));
+}
+
+function isOwnProduct(product, supplierId) {
+  return idsMatch(getProductSupplierId(product), supplierId);
 }
 
 function getWebsiteHref(website) {
@@ -110,6 +125,7 @@ function ProductIcon({ name }) {
 function ProductDetailPage() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [currentSupplierId, setCurrentSupplierId] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -119,8 +135,10 @@ function ProductDetailPage() {
     async function loadProduct() {
       setIsLoading(true);
       setErrorMessage("");
+      setCurrentSupplierId("");
 
       try {
+        const authRole = String(getCurrentAuthRole() || "").toUpperCase();
         const productResponse = await getProductById(id);
         const loadedProduct = getProductFromResponse(productResponse);
 
@@ -133,15 +151,20 @@ function ProductDetailPage() {
 
         let supplier = loadedProduct.supplier || null;
 
-        if (supplier?.id) {
-          const supplierResponse = await getSupplierById(supplier.id).catch(
-            () => null,
-          );
-          supplier = getSupplierFromResponse(supplierResponse) || supplier;
-        }
+        const [supplierResponse, currentSupplierResponse] = await Promise.all([
+          supplier?.id ? getSupplierById(supplier.id).catch(() => null) : null,
+          authRole === "SUPPLIER"
+            ? getCurrentSupplierProfile().catch(() => null)
+            : null,
+        ]);
+
+        supplier = getSupplierFromResponse(supplierResponse) || supplier;
+
+        const currentSupplier = getSupplierFromResponse(currentSupplierResponse);
 
         if (shouldUpdateState) {
           setProduct({ ...loadedProduct, supplier });
+          setCurrentSupplierId(currentSupplier?.id || "");
         }
       } catch (error) {
         if (shouldUpdateState) {
@@ -167,7 +190,8 @@ function ProductDetailPage() {
   const category = product?.category;
   const authRole = String(getCurrentAuthRole() || "").toUpperCase();
   const canContactSupplier = authRole === "STORE";
-  const canManageProduct = authRole === "SUPPLIER";
+  const canManageProduct =
+    authRole === "SUPPLIER" && isOwnProduct(product, currentSupplierId);
   const requestPath = supplier?.id
     ? `/requests/new?supplierId=${supplier.id}&productId=${product.id}`
     : "/requests/new";
