@@ -1,20 +1,49 @@
+const REQUEST_STATUS_LABELS = {
+  PENDING: "En attente",
+  ACCEPTED: "Acceptée",
+  REJECTED: "Refusée",
+  COMPLETED: "Traitée",
+  CANCELLED: "Annulée",
+};
+
+const REQUEST_STATUS_ALIASES = {
+  "EN ATTENTE": "PENDING",
+  PENDING: "PENDING",
+  LUE: "PENDING",
+  READ: "PENDING",
+  ACCEPTED: "ACCEPTED",
+  ACCEPTEE: "ACCEPTED",
+  ACCEPTÉE: "ACCEPTED",
+  VALIDATED: "ACCEPTED",
+  VALIDEE: "ACCEPTED",
+  VALIDÉE: "ACCEPTED",
+  REFUSED: "REJECTED",
+  REFUSEE: "REJECTED",
+  REFUSÉE: "REJECTED",
+  REJECTED: "REJECTED",
+  REPONDUE: "COMPLETED",
+  RÉPONDUE: "COMPLETED",
+  ANSWERED: "COMPLETED",
+  REPLIED: "COMPLETED",
+  CLOTUREE: "COMPLETED",
+  CLÔTURÉE: "COMPLETED",
+  CLOSED: "COMPLETED",
+  COMPLETED: "COMPLETED",
+  DONE: "COMPLETED",
+  RESOLVED: "COMPLETED",
+  TRAITEE: "COMPLETED",
+  TRAITÉE: "COMPLETED",
+  ANNULEE: "CANCELLED",
+  ANNULÉE: "CANCELLED",
+  CANCELED: "CANCELLED",
+  CANCELLED: "CANCELLED",
+};
+
 const STATUS_LABELS = {
   ACTIVE: "Actif",
   INACTIVE: "Inactif",
   DRAFT: "Brouillon",
-  PENDING: "En attente",
-  READ: "Lue",
-  ANSWERED: "Répondue",
-  REPLIED: "Répondue",
-  ACCEPTED: "Acceptée",
   VALIDATED: "Validée",
-  REJECTED: "Refusée",
-  REFUSED: "Refusée",
-  COMPLETED: "Traitée",
-  DONE: "Traitée",
-  RESOLVED: "Traitée",
-  CLOSED: "Clôturée",
-  CANCELLED: "Annulée",
   ERROR: "Erreur",
 };
 
@@ -22,8 +51,19 @@ export function normalizeStatus(status) {
   return String(status || "UNKNOWN").trim().toUpperCase();
 }
 
+export function getCanonicalRequestStatus(status) {
+  const normalizedStatus = normalizeStatus(status);
+
+  return REQUEST_STATUS_ALIASES[normalizedStatus] || normalizedStatus;
+}
+
 export function formatStatus(status, fallback = "Statut inconnu") {
   const normalizedStatus = normalizeStatus(status);
+  const canonicalRequestStatus = getCanonicalRequestStatus(normalizedStatus);
+
+  if (REQUEST_STATUS_LABELS[canonicalRequestStatus]) {
+    return REQUEST_STATUS_LABELS[canonicalRequestStatus];
+  }
 
   if (STATUS_LABELS[normalizedStatus]) {
     return STATUS_LABELS[normalizedStatus];
@@ -37,39 +77,35 @@ export function formatStatus(status, fallback = "Statut inconnu") {
 }
 
 export function getStatusTone(status) {
-  const normalizedStatus = normalizeStatus(status);
+  const normalizedStatus = getCanonicalRequestStatus(status);
 
   if (normalizedStatus === "PENDING") {
     return "pending";
   }
 
-  if (
-    ["ACCEPTED", "ANSWERED", "REPLIED", "VALIDATED", "READ"].includes(
-      normalizedStatus,
-    )
-  ) {
+  if (normalizedStatus === "ACCEPTED") {
     return "accepted";
   }
 
-  if (["REJECTED", "REFUSED", "CANCELLED"].includes(normalizedStatus)) {
+  if (normalizedStatus === "REJECTED") {
+    return "rejected";
+  }
+
+  if (normalizedStatus === "CANCELLED") {
     return normalizedStatus.toLocaleLowerCase("fr-FR");
   }
 
-  if (["COMPLETED", "DONE", "RESOLVED"].includes(normalizedStatus)) {
+  if (normalizedStatus === "COMPLETED") {
     return "processed";
-  }
-
-  if (normalizedStatus === "CLOSED") {
-    return "closed";
   }
 
   return "neutral";
 }
 
 export const requestStatusOptions = [
-  { value: "PENDING", label: formatStatus("PENDING") },
-  { value: "ACCEPTED", label: formatStatus("ACCEPTED") },
-  { value: "REJECTED", label: formatStatus("REJECTED") },
-  { value: "COMPLETED", label: formatStatus("COMPLETED") },
-  { value: "CANCELLED", label: formatStatus("CANCELLED") },
+  { value: "PENDING", label: REQUEST_STATUS_LABELS.PENDING },
+  { value: "ACCEPTED", label: REQUEST_STATUS_LABELS.ACCEPTED },
+  { value: "REJECTED", label: REQUEST_STATUS_LABELS.REJECTED },
+  { value: "COMPLETED", label: REQUEST_STATUS_LABELS.COMPLETED },
+  { value: "CANCELLED", label: REQUEST_STATUS_LABELS.CANCELLED },
 ];

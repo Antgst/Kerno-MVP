@@ -429,10 +429,6 @@
   white-space: nowrap;
 }
 
-.store-dashboard__status--answered {
-  background: #2fbf6a;
-}
-
 .store-dashboard__status--pending {
   background: #f97316;
 }
@@ -1032,10 +1028,6 @@
   font-size: 0.84rem;
   font-weight: 600;
   white-space: nowrap;
-}
-
-.supplier-dashboard__status--answered {
-  background: #2fbf6a;
 }
 
 .supplier-dashboard__status--pending {

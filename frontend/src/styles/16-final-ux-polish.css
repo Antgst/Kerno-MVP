@@ -91,9 +91,9 @@
 }
 
 .supplier-request-status--processed {
-  border-color: #b8ddcf;
-  background: #e7f6f0;
-  color: #12604d;
+  border-color: #8fb4ca;
+  background: #e6f1f6;
+  color: #0b2d4d;
 }
 
 .supplier-request-status--neutral {
@@ -104,12 +104,17 @@
 
 .store-dashboard__status--accepted,
 .supplier-dashboard__status--accepted {
-  background: #2fbf6a;
+  background: #164e3f;
 }
 
 .store-dashboard__status--processed,
 .supplier-dashboard__status--processed {
   background: #0b2d4d;
+}
+
+.store-dashboard__status--cancelled,
+.supplier-dashboard__status--cancelled {
+  background: #7f1d1d;
 }
 
 .catalog-product-action {

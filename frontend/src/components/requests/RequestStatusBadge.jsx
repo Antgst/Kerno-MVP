@@ -1,18 +1,22 @@
-import { formatStatus, getStatusTone, normalizeStatus } from "../../utils/status";
+import {
+  formatStatus,
+  getCanonicalRequestStatus,
+  getStatusTone,
+} from "../../utils/status";
 
 function RequestStatusBadge({ status }) {
-  const normalizedStatus = normalizeStatus(status);
-  const statusClass = normalizedStatus.toLocaleLowerCase("fr-FR");
+  const canonicalStatus = getCanonicalRequestStatus(status);
+  const statusClass = canonicalStatus.toLocaleLowerCase("fr-FR");
 
   return (
     <span
       className={[
         "supplier-request-status",
-        `supplier-request-status--${getStatusTone(normalizedStatus)}`,
+        `supplier-request-status--${getStatusTone(canonicalStatus)}`,
         `supplier-request-status--value-${statusClass}`,
       ].join(" ")}
     >
-      {formatStatus(normalizedStatus)}
+      {formatStatus(canonicalStatus)}
     </span>
   );
 }
