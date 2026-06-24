@@ -217,15 +217,27 @@
 }
 
 .supplier-request-card {
+  --request-accent-end: #1f6b57;
+  --request-accent-rgb: 22 78 63;
+  --request-accent-start: #164e3f;
+
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid rgb(214 213 206 / 94%);
+  border: 1px solid rgb(var(--request-accent-rgb) / 18%);
   border-radius: 18px;
-  background: rgb(255 255 255 / 96%);
-  box-shadow: 0 12px 28px rgb(22 78 63 / 6%);
+  background:
+    linear-gradient(
+      90deg,
+      rgb(var(--request-accent-rgb) / 5%) 0,
+      rgb(var(--request-accent-rgb) / 0%) 92px
+    ),
+    rgb(255 255 255 / 96%);
+  box-shadow:
+    0 12px 28px rgb(22 78 63 / 6%),
+    inset 1px 0 0 rgb(255 255 255 / 72%);
   transition:
     border-color 160ms ease,
     box-shadow 160ms ease,
@@ -235,18 +247,52 @@
 .supplier-request-card::before {
   position: absolute;
   inset: 0 auto 0 0;
-  width: 3px;
-  background: #d6ebe2;
+  width: 6px;
+  background: linear-gradient(
+    180deg,
+    var(--request-accent-start) 0%,
+    var(--request-accent-end) 100%
+  );
+  box-shadow: 4px 0 16px rgb(var(--request-accent-rgb) / 16%);
   content: "";
 }
 
-.supplier-request-card:has(.supplier-request-status--pending)::before {
-  background: #f97316;
+.supplier-request-card:has(.supplier-request-status--value-pending),
+.supplier-request-detail-card--message:has(.supplier-request-status--value-pending) {
+  --request-accent-end: #fb923c;
+  --request-accent-rgb: 249 115 22;
+  --request-accent-start: #f97316;
+}
+
+.supplier-request-card:has(.supplier-request-status--value-rejected),
+.supplier-request-card:has(.supplier-request-status--value-refused),
+.supplier-request-card:has(.supplier-request-status--value-cancelled),
+.supplier-request-detail-card--message:has(.supplier-request-status--value-rejected),
+.supplier-request-detail-card--message:has(.supplier-request-status--value-refused),
+.supplier-request-detail-card--message:has(.supplier-request-status--value-cancelled) {
+  --request-accent-end: #b85a44;
+  --request-accent-rgb: 156 67 43;
+  --request-accent-start: #9c432b;
+}
+
+.supplier-request-card:has(.supplier-request-status--value-completed),
+.supplier-request-card:has(.supplier-request-status--value-done),
+.supplier-request-card:has(.supplier-request-status--value-resolved),
+.supplier-request-card:has(.supplier-request-status--value-closed),
+.supplier-request-detail-card--message:has(.supplier-request-status--value-completed),
+.supplier-request-detail-card--message:has(.supplier-request-status--value-done),
+.supplier-request-detail-card--message:has(.supplier-request-status--value-resolved),
+.supplier-request-detail-card--message:has(.supplier-request-status--value-closed) {
+  --request-accent-end: #64748b;
+  --request-accent-rgb: 71 85 105;
+  --request-accent-start: #475569;
 }
 
 .supplier-request-card:hover {
-  border-color: #c7d8d1;
-  box-shadow: 0 16px 34px rgb(22 78 63 / 9%);
+  border-color: rgb(var(--request-accent-rgb) / 28%);
+  box-shadow:
+    0 16px 34px rgb(var(--request-accent-rgb) / 10%),
+    inset 1px 0 0 rgb(255 255 255 / 72%);
   transform: translateY(-1px);
 }
 
@@ -348,13 +394,15 @@
 }
 
 .supplier-request-status--accepted,
-.supplier-request-status--answered {
+.supplier-request-status--answered,
+.supplier-request-status--read {
   border-color: #b8ddcf;
   background: #e7f6f0;
   color: #12604d;
 }
 
 .supplier-request-status--rejected,
+.supplier-request-status--refused,
 .supplier-request-status--cancelled {
   border-color: #e8c3b8;
   background: #fff0eb;
@@ -362,22 +410,11 @@
 }
 
 .supplier-request-status--completed,
-.supplier-request-status--processed {
-  border-color: #b8ddcf;
-  background: #e7f6f0;
-  color: #12604d;
-}
-
+.supplier-request-status--processed,
 .supplier-request-status--closed {
-  border-color: #d6d4ce;
-  background: #f7f6f3;
-  color: #59635f;
-}
-
-.supplier-request-status--read {
-  border-color: #d6d4ce;
-  background: #f7f6f3;
-  color: #59635f;
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+  color: #475569;
 }
 
 .supplier-request-actions {
@@ -674,21 +711,37 @@
 }
 
 .supplier-request-detail-card--message {
+  --request-accent-end: #1f6b57;
+  --request-accent-rgb: 22 78 63;
+  --request-accent-start: #164e3f;
+
   position: relative;
   overflow: hidden;
   padding-left: 25px;
+  border-color: rgb(var(--request-accent-rgb) / 18%);
+  background:
+    linear-gradient(
+      90deg,
+      rgb(var(--request-accent-rgb) / 5%) 0,
+      rgb(var(--request-accent-rgb) / 0%) 100px
+    ),
+    rgb(255 255 255 / 96%);
+  box-shadow:
+    0 12px 28px rgb(22 78 63 / 6%),
+    inset 1px 0 0 rgb(255 255 255 / 72%);
 }
 
 .supplier-request-detail-card--message::before {
   position: absolute;
   inset: 0 auto 0 0;
-  width: 3px;
-  background: #d6ebe2;
+  width: 6px;
+  background: linear-gradient(
+    180deg,
+    var(--request-accent-start) 0%,
+    var(--request-accent-end) 100%
+  );
+  box-shadow: 4px 0 16px rgb(var(--request-accent-rgb) / 16%);
   content: "";
-}
-
-.supplier-request-detail-card--message:has(.supplier-request-status--pending)::before {
-  background: #f97316;
 }
 
 .supplier-request-detail-card__heading,

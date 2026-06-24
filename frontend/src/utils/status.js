@@ -7,7 +7,9 @@ const STATUS_LABELS = {
   ANSWERED: "Répondue",
   REPLIED: "Répondue",
   ACCEPTED: "Acceptée",
+  VALIDATED: "Validée",
   REJECTED: "Refusée",
+  REFUSED: "Refusée",
   COMPLETED: "Traitée",
   DONE: "Traitée",
   RESOLVED: "Traitée",
@@ -41,11 +43,15 @@ export function getStatusTone(status) {
     return "pending";
   }
 
-  if (["ACCEPTED", "ANSWERED", "REPLIED"].includes(normalizedStatus)) {
+  if (
+    ["ACCEPTED", "ANSWERED", "REPLIED", "VALIDATED", "READ"].includes(
+      normalizedStatus,
+    )
+  ) {
     return "accepted";
   }
 
-  if (["REJECTED", "CANCELLED"].includes(normalizedStatus)) {
+  if (["REJECTED", "REFUSED", "CANCELLED"].includes(normalizedStatus)) {
     return normalizedStatus.toLocaleLowerCase("fr-FR");
   }
 
@@ -62,11 +68,8 @@ export function getStatusTone(status) {
 
 export const requestStatusOptions = [
   { value: "PENDING", label: formatStatus("PENDING") },
-  { value: "READ", label: formatStatus("READ") },
-  { value: "ANSWERED", label: formatStatus("ANSWERED") },
   { value: "ACCEPTED", label: formatStatus("ACCEPTED") },
   { value: "REJECTED", label: formatStatus("REJECTED") },
   { value: "COMPLETED", label: formatStatus("COMPLETED") },
-  { value: "CLOSED", label: formatStatus("CLOSED") },
   { value: "CANCELLED", label: formatStatus("CANCELLED") },
 ];
