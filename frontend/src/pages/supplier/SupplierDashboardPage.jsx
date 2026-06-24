@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import DashboardIntro from "../../components/dashboard/DashboardIntro";
 import DashboardProfileCard from "../../components/dashboard/DashboardProfileCard";
-import DashboardQuickActions from "../../components/dashboard/DashboardQuickActions";
 import DashboardRequestsPanel from "../../components/dashboard/DashboardRequestsPanel";
 import DashboardStats from "../../components/dashboard/DashboardStats";
 import SupplierProductsPreview from "../../components/dashboard/SupplierProductsPreview";
@@ -233,27 +232,6 @@ function SupplierDashboardPage() {
     },
   ];
 
-  const quickActions = [
-    {
-      icon: "stack",
-      label: "Gérer mes produits",
-      to: "/supplier/products",
-      variant: "primary",
-    },
-    {
-      icon: "mail",
-      label: "Voir les demandes reçues",
-      to: "/supplier/requests",
-      count: pendingRequestCount,
-    },
-    {
-      icon: "user",
-      label: "Modifier mon profil",
-      to: "/supplier/profile",
-      variant: "soft",
-    },
-  ];
-
   return (
     <div className="supplier-dashboard">
       <DashboardIntro
@@ -276,6 +254,7 @@ function SupplierDashboardPage() {
           prefix="supplier-dashboard"
           title="Demandes reçues"
           linkTo="/supplier/requests"
+          linkPlacement="footer"
           requests={recentRequests}
           emptyTitle="Aucune demande reçue"
           emptyMessage="Les nouvelles demandes des magasins apparaîtront ici."
@@ -286,18 +265,14 @@ function SupplierDashboardPage() {
           formatDate={formatFrenchDate}
         />
 
-        <aside className="supplier-dashboard__side-stack" aria-label="Actions fournisseur">
-          <DashboardQuickActions prefix="supplier-dashboard" actions={quickActions} />
-
-          <DashboardProfileCard
-            prefix="supplier-dashboard"
-            completionPercent={completionPercent}
-            profileIsComplete={profileIsComplete}
-            profileTo="/supplier/profile"
-            completeMessage="Gérez les informations visibles par les magasins lorsqu'ils découvrent votre activité ou vos produits."
-            ariaLabel={`Profil fournisseur complété à ${completionPercent}%`}
-          />
-        </aside>
+        <DashboardProfileCard
+          prefix="supplier-dashboard"
+          completionPercent={completionPercent}
+          profileIsComplete={profileIsComplete}
+          profileTo="/supplier/profile"
+          completeMessage="Gérez les informations visibles par les magasins lorsqu'ils découvrent votre activité ou vos produits."
+          ariaLabel={`Profil fournisseur complété à ${completionPercent}%`}
+        />
       </section>
 
       <SupplierProductsPreview products={featuredProducts} />

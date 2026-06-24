@@ -6,6 +6,7 @@ function DashboardRequestsPanel({
   prefix,
   title,
   linkTo,
+  linkPlacement = "header",
   requests,
   emptyTitle,
   emptyMessage,
@@ -15,11 +16,14 @@ function DashboardRequestsPanel({
   getRequestPath,
   formatDate,
 }) {
+  const showHeaderLink = linkTo && linkPlacement !== "footer";
+  const showFooterLink = linkTo && linkPlacement === "footer";
+
   return (
     <article className={`${prefix}__panel ${prefix}__requests ${prefix}__recent`}>
       <div className={`${prefix}__panel-header ${prefix}__panel-header--inline`}>
         <h2>{title}</h2>
-        <Link to={linkTo}>Voir tout</Link>
+        {showHeaderLink && <Link to={linkTo}>Voir tout</Link>}
       </div>
 
       <div className={`${prefix}__request-list`}>
@@ -63,6 +67,14 @@ function DashboardRequestsPanel({
           </div>
         )}
       </div>
+
+      {showFooterLink && (
+        <footer className={`${prefix}__request-footer`}>
+          <Link className={`${prefix}__request-all`} to={linkTo}>
+            Voir tout
+          </Link>
+        </footer>
+      )}
     </article>
   );
 }
