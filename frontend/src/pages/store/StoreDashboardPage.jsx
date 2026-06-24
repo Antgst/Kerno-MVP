@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import DashboardIntro from "../../components/dashboard/DashboardIntro";
 import DashboardProfileCard from "../../components/dashboard/DashboardProfileCard";
-import DashboardQuickActions from "../../components/dashboard/DashboardQuickActions";
 import DashboardRequestsPanel from "../../components/dashboard/DashboardRequestsPanel";
 import DashboardStats from "../../components/dashboard/DashboardStats";
 import StoreRecommendedSuppliers from "../../components/dashboard/StoreRecommendedSuppliers";
@@ -265,20 +264,6 @@ function StoreDashboardPage() {
       featured: true,
     },
   ];
-  const quickActions = [
-    {
-      icon: "user",
-      label: "Modifier mon profil",
-      to: "/store/profile",
-    },
-    {
-      icon: "mail",
-      label: "Voir mes demandes",
-      to: "/store/requests",
-      count: pendingRequestCount,
-    },
-  ];
-
   return (
     <div className="store-dashboard">
       <DashboardIntro
@@ -301,6 +286,7 @@ function StoreDashboardPage() {
           prefix="store-dashboard"
           title="Demandes récentes"
           linkTo="/store/requests"
+          linkPlacement="footer"
           requests={recentRequests}
           emptyTitle="Aucune demande récente"
           emptyMessage="Créez une demande pour commencer un échange fournisseur."
@@ -310,18 +296,14 @@ function StoreDashboardPage() {
           formatDate={formatFrenchDate}
         />
 
-        <aside className="store-dashboard__side-stack" aria-label="Actions du magasin">
-          <DashboardQuickActions prefix="store-dashboard" actions={quickActions} />
-
-          <DashboardProfileCard
-            prefix="store-dashboard"
-            completionPercent={completionPercent}
-            profileIsComplete={profileIsComplete}
-            profileTo="/store/profile"
-            completeMessage="Gérez les informations visibles par les fournisseurs lorsqu'ils consultent vos demandes."
-            ariaLabel={`Profil complété à ${completionPercent}%`}
-          />
-        </aside>
+        <DashboardProfileCard
+          prefix="store-dashboard"
+          completionPercent={completionPercent}
+          profileIsComplete={profileIsComplete}
+          profileTo="/store/profile"
+          completeMessage="Gérez les informations visibles par les fournisseurs lorsqu'ils consultent vos demandes."
+          ariaLabel={`Profil complété à ${completionPercent}%`}
+        />
       </section>
 
       <StoreRecommendedSuppliers suppliers={recommendedSuppliers} />
