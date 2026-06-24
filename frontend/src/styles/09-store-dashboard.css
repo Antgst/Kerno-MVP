@@ -98,8 +98,13 @@
 }
 
 .kerno-app-header__account {
+  position: relative;
+}
+
+.kerno-app-header__account-trigger {
   gap: 14px;
   padding: 0;
+  border: 0;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
@@ -154,7 +159,8 @@
   color: #77766e;
 }
 
-.kerno-app-header__more:hover {
+.kerno-app-header__more:hover,
+.kerno-app-header__account-trigger:hover .kerno-app-header__more {
   color: #164e3f;
 }
 

@@ -676,6 +676,10 @@
     gap: 8px;
   }
 
+  .kerno-app-header__account-trigger {
+    gap: 8px;
+  }
+
   .kerno-app-header__account-copy {
     display: none;
   }

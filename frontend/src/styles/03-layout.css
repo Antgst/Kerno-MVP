@@ -454,14 +454,27 @@
 .kerno-app-header__account {
   position: relative;
   z-index: 2010;
+}
+
+.kerno-app-header__account-trigger {
   display: flex;
   min-height: 41px;
   align-items: center;
   gap: 9px;
   padding: 6px 7px 6px 8px;
+  border: 0;
   border-radius: 999px;
   background: rgb(255 255 255 / 96%);
   box-shadow: 0 8px 22px rgb(15 23 42 / 10%);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.kerno-app-header__account-trigger:focus-visible {
+  outline: 3px solid rgb(0 104 79 / 24%);
+  outline-offset: 3px;
 }
 
 .kerno-app-header__avatar {
@@ -492,10 +505,6 @@
   color: #52657d;
   font-size: 0.58rem;
   font-weight: 600;
-}
-
-.kerno-app-header__menu-wrapper {
-  position: relative;
 }
 
 .kerno-app-header__more {
