@@ -259,30 +259,29 @@
 
 .supplier-request-card:has(.supplier-request-status--value-pending),
 .supplier-request-detail-card--message:has(.supplier-request-status--value-pending) {
-  --request-accent-end: #ff9f45;
+  --request-accent-end: #fb923c;
   --request-accent-rgb: 249 115 22;
   --request-accent-start: #f97316;
 }
 
+.supplier-request-card:has(.supplier-request-status--value-accepted),
+.supplier-request-detail-card--message:has(.supplier-request-status--value-accepted) {
+  --request-accent-end: #287262;
+  --request-accent-rgb: 22 78 63;
+  --request-accent-start: #164e3f;
+}
+
 .supplier-request-card:has(.supplier-request-status--value-rejected),
-.supplier-request-card:has(.supplier-request-status--value-refused),
-.supplier-request-card:has(.supplier-request-status--value-cancelled),
 .supplier-request-detail-card--message:has(.supplier-request-status--value-rejected),
-.supplier-request-detail-card--message:has(.supplier-request-status--value-refused),
-.supplier-request-detail-card--message:has(.supplier-request-status--value-cancelled) {
+.supplier-request-card:has(.supplier-request-status--value-refused),
+.supplier-request-detail-card--message:has(.supplier-request-status--value-refused) {
   --request-accent-end: #dc5b45;
   --request-accent-rgb: 180 35 24;
   --request-accent-start: #b42318;
 }
 
 .supplier-request-card:has(.supplier-request-status--value-completed),
-.supplier-request-card:has(.supplier-request-status--value-done),
-.supplier-request-card:has(.supplier-request-status--value-resolved),
-.supplier-request-card:has(.supplier-request-status--value-closed),
-.supplier-request-detail-card--message:has(.supplier-request-status--value-completed),
-.supplier-request-detail-card--message:has(.supplier-request-status--value-done),
-.supplier-request-detail-card--message:has(.supplier-request-status--value-resolved),
-.supplier-request-detail-card--message:has(.supplier-request-status--value-closed) {
+.supplier-request-detail-card--message:has(.supplier-request-status--value-completed) {
   --request-accent-end: #25637a;
   --request-accent-rgb: 11 45 77;
   --request-accent-start: #0b2d4d;
@@ -395,22 +394,18 @@
 }
 
 .supplier-request-status--pending {
-  border-color: #f6b36d;
+  border-color: #f97316;
   background: #fff1df;
-  color: #9a3f05;
+  color: #c2410c;
 }
 
-.supplier-request-status--accepted,
-.supplier-request-status--answered,
-.supplier-request-status--read {
-  border-color: #8ac8b3;
+.supplier-request-status--accepted {
+  border-color: #164e3f;
   background: #e1f3ed;
   color: #164e3f;
 }
 
-.supplier-request-status--rejected,
-.supplier-request-status--refused,
-.supplier-request-status--cancelled {
+.supplier-request-status--rejected {
   border-color: #eba99d;
   background: #fff0ed;
   color: #9f2f1f;
@@ -418,14 +413,12 @@
 
 
 .supplier-request-status--cancelled {
-  border-color: #d8a59a;
+  border-color: #c79484;
   background: #f8ebe7;
   color: #7f1d1d;
 }
 
-.supplier-request-status--completed,
-.supplier-request-status--processed,
-.supplier-request-status--closed {
+.supplier-request-status--processed {
   border-color: #8fb4ca;
   background: #e6f1f6;
   color: #0b2d4d;
@@ -937,12 +930,6 @@
 .supplier-request-status-card {
   background:
     linear-gradient(145deg, rgb(255 255 255 / 98%), rgb(248 245 239 / 92%));
-}
-
-.supplier-request-detail-page .supplier-request-status--cancelled {
-  border-color: #d6d4ce;
-  background: #f5f4f1;
-  color: #626a67;
 }
 
 .supplier-request-status-card__copy {

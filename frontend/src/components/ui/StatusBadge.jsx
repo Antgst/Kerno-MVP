@@ -1,24 +1,19 @@
-import { formatStatus } from "../../utils/status";
+import { formatStatus, getCanonicalRequestStatus } from "../../utils/status";
 
 const statusClasses = {
   ACTIVE: "bg-emerald-100 text-emerald-800 ring-emerald-200",
   ACCEPTED: "bg-emerald-100 text-emerald-800 ring-emerald-200",
-  ANSWERED: "bg-emerald-50 text-emerald-800 ring-emerald-200",
-  REPLIED: "bg-emerald-50 text-emerald-800 ring-emerald-200",
   PENDING: "bg-amber-100 text-amber-800 ring-amber-200",
   DRAFT: "bg-slate-100 text-slate-700 ring-slate-200",
   INACTIVE: "bg-slate-100 text-slate-700 ring-slate-200",
   REJECTED: "bg-red-100 text-red-700 ring-red-200",
-  CANCELLED: "bg-red-100 text-red-700 ring-red-200",
-  COMPLETED: "bg-emerald-50 text-emerald-800 ring-emerald-200",
-  DONE: "bg-emerald-50 text-emerald-800 ring-emerald-200",
-  RESOLVED: "bg-emerald-50 text-emerald-800 ring-emerald-200",
-  CLOSED: "bg-slate-100 text-slate-700 ring-slate-200",
+  CANCELLED: "bg-red-50 text-red-800 ring-red-200",
+  COMPLETED: "bg-slate-100 text-slate-700 ring-slate-200",
   ERROR: "bg-red-100 text-red-700 ring-red-200",
 };
 
 function StatusBadge({ status = "DRAFT", label, className = "" }) {
-  const normalizedStatus = String(status).toUpperCase();
+  const normalizedStatus = getCanonicalRequestStatus(status);
 
   return (
     <span

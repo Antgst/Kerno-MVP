@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
@@ -10,17 +10,10 @@ import {
   updateRequestStatus,
 } from "../../services/requestService";
 import { getResource } from "../../utils/responseUtils";
-import { formatStatus, normalizeStatus } from "../../utils/status";
-
-const editableStatusOptions = [
-  "PENDING",
-  "READ",
-  "ANSWERED",
-  "CLOSED",
-].map((status) => ({
-  value: status,
-  label: formatStatus(status),
-}));
+import {
+  getCanonicalRequestStatus,
+  requestStatusOptions,
+} from "../../utils/status";
 
 const requestDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -73,7 +66,7 @@ function SupplierRequestDetailPage() {
           const loadedRequest = getResource(response, ["request"]);
 
           setRequest(loadedRequest);
-          setSelectedStatus(normalizeStatus(loadedRequest?.status || ""));
+          setSelectedStatus(getCanonicalRequestStatus(loadedRequest?.status));
         }
       } catch {
         if (shouldUpdateState) {
@@ -93,23 +86,7 @@ function SupplierRequestDetailPage() {
     };
   }, [id]);
 
-  const currentStatus = normalizeStatus(request?.status);
-  const statusOptions = useMemo(() => {
-    if (
-      !selectedStatus ||
-      editableStatusOptions.some((option) => option.value === selectedStatus)
-    ) {
-      return editableStatusOptions;
-    }
-
-    return [
-      {
-        value: selectedStatus,
-        label: formatStatus(selectedStatus, "Statut actuel"),
-      },
-      ...editableStatusOptions,
-    ];
-  }, [selectedStatus]);
+  const currentStatus = getCanonicalRequestStatus(request?.status);
 
   const store = request?.store;
   const product = request?.product;
@@ -154,7 +131,7 @@ function SupplierRequestDetailPage() {
       };
 
       setRequest(updatedRequest);
-      setSelectedStatus(normalizeStatus(updatedRequest.status));
+      setSelectedStatus(getCanonicalRequestStatus(updatedRequest.status));
       setStatusMessage("Le statut de la demande a bien été mis à jour.");
     } catch {
       setActionErrorMessage(
@@ -225,7 +202,7 @@ function SupplierRequestDetailPage() {
           request={request}
           selectedStatus={selectedStatus}
           statusMessage={statusMessage}
-          statusOptions={statusOptions}
+          statusOptions={requestStatusOptions}
           store={store}
           storeName={storeName}
           updatedAt={updatedAt}
