@@ -102,3 +102,40 @@ No commit was created. No push was performed.
 ## Final Status
 
 READY
+
+---
+
+## Newman/Postman API Regression
+
+Status: PASS
+
+A fresh Postman/Newman collection was added to provide an external API smoke/regression check for the current KERNO MVP API.
+
+Files:
+
+```text
+docs/testing/postman/kerno_mvp_regression.postman_collection.json
+docs/testing/postman/kerno_local.postman_environment.json
+docs/testing/postman/RUN_KERNO_NEWMAN.md
+```
+
+Command:
+
+```bash
+npx newman run docs/testing/postman/kerno_mvp_regression.postman_collection.json \
+  -e docs/testing/postman/kerno_local.postman_environment.json
+```
+
+Result:
+
+```text
+15 requests executed
+61 assertions executed
+0 failures
+```
+
+Scope:
+
+The collection covers the main API smoke flow: health, public catalog data, authentication, current user checks, contact request creation, sent requests, received requests, and request detail.
+
+The Newman collection is intentionally smaller than the pytest suite and acts as complementary evidence, not as a duplicate of the full backend regression coverage.

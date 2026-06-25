@@ -197,3 +197,48 @@ Known historical limitations before this branch included no full unit coverage f
 ## Final Automated Regression Status
 
 READY. Backend syntax, backend/API pytest regression, frontend lint, frontend build, React Doctor, Playwright E2E, and root/frontend production audits passed. Backend production audit remains a warning because Prisma dev-tooling advisories require review before any forced dependency change.
+
+---
+
+## Newman/Postman API Regression Evidence — 2026-06-25
+
+A fresh Postman/Newman regression collection was added for the current KERNO MVP API.
+
+Command:
+
+```bash
+npx newman run docs/testing/postman/kerno_mvp_regression.postman_collection.json \
+  -e docs/testing/postman/kerno_local.postman_environment.json
+```
+
+Result:
+
+```text
+iterations: 1 executed, 0 failed
+requests: 15 executed, 0 failed
+test-scripts: 15 executed, 0 failed
+prerequest-scripts: 8 executed, 0 failed
+assertions: 61 executed, 0 failed
+```
+
+Coverage:
+
+- API health check
+- public categories listing
+- public products listing
+- public suppliers listing
+- product detail
+- supplier detail
+- unauthorized access rejection
+- supplier demo login
+- store demo login
+- current authenticated supplier user
+- current authenticated store user
+- store contact request creation
+- store sent requests
+- supplier received requests
+- created request detail
+
+This Newman collection is complementary to the main pytest API regression suite and the Playwright frontend regression suite. It does not replace them.
+
+The previous Sprint 2 Postman collection remains historical evidence only.
