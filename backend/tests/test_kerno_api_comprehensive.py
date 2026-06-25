@@ -5,14 +5,15 @@ These tests target the running Express API from Python. They are closer to
 end-to-end/API tests than pure unit tests because the Kerno backend is written
 in JavaScript/Express and uses PostgreSQL through Prisma.
 
-Default base URL: http://localhost:5000
-Override with: KERNO_API_BASE_URL=http://localhost:5000 pytest ...
+Default base URL: http://localhost:5001
+Override with: KERNO_API_BASE_URL=http://localhost:5001 pytest ...
 """
 
 from __future__ import annotations
 
 import os
 import time
+import unicodedata
 import uuid
 from typing import Any
 
@@ -20,7 +21,7 @@ import pytest
 import requests
 
 
-BASE_URL = os.getenv("KERNO_API_BASE_URL", "http://localhost:5000").rstrip("/")
+BASE_URL = os.getenv("KERNO_API_BASE_URL", "http://localhost:5001").rstrip("/")
 TIMEOUT = float(os.getenv("KERNO_API_TIMEOUT", "6"))
 RUN_ID = f"pytest-{int(time.time())}-{uuid.uuid4().hex[:8]}"
 
@@ -105,6 +106,14 @@ def assert_error(
 
 def unique_email(label: str) -> str:
     return f"{label}.{RUN_ID}@example.test".lower()
+
+
+def alphabetical_key(value: str) -> str:
+    return "".join(
+        char
+        for char in unicodedata.normalize("NFKD", value.casefold())
+        if not unicodedata.combining(char)
+    )
 
 
 def register_user(role: str, label: str, password: str = "Password123!") -> dict[str, Any]:
@@ -771,7 +780,7 @@ def test_create_category_rejects_duplicate_name(seeded: dict[str, Any]) -> None:
 def test_categories_are_returned_sorted_by_name(seeded: dict[str, Any]) -> None:
     body = assert_success(api_request("GET", "/api/categories"), 200)
     names = [item["name"] for item in body["categories"]]
-    assert names == sorted(names)
+    assert names == sorted(names, key=alphabetical_key)
 
 
 # ---------------------------------------------------------------------------

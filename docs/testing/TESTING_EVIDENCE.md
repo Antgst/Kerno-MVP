@@ -1,191 +1,147 @@
 # KERNO Testing Evidence
 
-## 1. Purpose
+## Purpose
 
-This document gathers testing evidence for the KERNO MVP.
+This document gathers testing evidence for the KERNO MVP technical review. It separates current automated regression evidence from historical Sprint 2 Postman evidence and records blockers honestly.
 
-It is intended to support the final technical review by showing:
+## Current Automated Session
 
-* what was tested;
-* how the tests were executed;
-* where test evidence is stored;
-* which parts of the MVP were manually verified;
-* which checks still need to be completed before final submission.
+| Item | Result | Evidence |
+| --- | --- | --- |
+| Branch | `test/full-regression-suite` | Created from updated `develop`. |
+| Base commit | `162118f171cd55a1b1d2fd3aeee2aed900871c00` | `162118f Merge pull request #185 from Antgst/redim-dashboard`. |
+| Date | 2026-06-25 | Local session date. |
+| Backend API health | PASS | `http://localhost:5001/api/health` returned `{"success":true,"message":"KERNO API is running"}`. |
+| Final report | READY | `docs/testing/FULL_REGRESSION_TEST_REPORT.md`. |
 
----
+The macOS regression session used backend port `5001`. Frontend source code remains environment-friendly: `frontend/src/config/api.js` reads `VITE_API_BASE_URL` first and only keeps the original local fallback of `http://localhost:5000/api`. Playwright injects `VITE_API_BASE_URL=http://localhost:5001/api` for this regression environment.
 
-## 2. Testing Scope
+## Automated Backend/API Regression
 
-The KERNO MVP testing scope covers:
+Primary test file:
 
-* backend API health;
-* authentication flow;
-* role-based access control;
-* supplier profile flow;
-* store profile flow;
-* product creation and listing;
-* catalog access after authentication;
-* supplier and product detail access;
-* contact request creation;
-* sent and received request tracking;
-* request status update;
-* frontend navigation;
-* frontend route rendering;
-* frontend API service integration;
-* final end-to-end MVP demo flow.
+```text
+backend/tests/test_kerno_api_comprehensive.py
+```
 
----
+Result artifact path:
 
-## 3. Testing Strategy
+```text
+backend/tests/results/kerno_api_test_results.json
+```
 
-KERNO uses a pragmatic MVP testing strategy based on:
+Command:
 
-1. backend syntax checks;
-2. backend API tests;
-3. Postman/manual API validation;
-4. frontend build checks;
-5. frontend manual route validation;
-6. full MVP scenario testing.
+```bash
+cd backend
+source .venv/bin/activate
+python -m pytest tests/test_kerno_api_comprehensive.py -v
+```
 
-The goal is not to provide enterprise-level automated coverage, but to prove that the MVP is functional, reviewable and aligned with the project scope.
+Session result: PASS. The final cleanup run completed with `127 passed, 1 warning in 3.07s`.
 
----
+Coverage intended by the suite:
 
-## 4. Existing Test Evidence Locations
+* health check;
+* auth register/login;
+* validation errors;
+* duplicate email;
+* missing and invalid JWT;
+* supplier and store roles;
+* protected routes;
+* supplier profile;
+* store profile;
+* categories;
+* products;
+* catalog-readable supplier/product data;
+* request creation;
+* sent and received requests;
+* invalid access, 404, and invalid UUID cases.
 
-| Evidence                    | Location                                                              | Purpose                                             |
-| --------------------------- | --------------------------------------------------------------------- | --------------------------------------------------- |
-| Backend pytest runner guide | `backend/tests/RUN_KERNO_PYTESTS.md`                                  | Explains how to run backend API tests               |
-| Backend API test file       | `backend/tests/test_kerno_api_comprehensive.py`                       | Comprehensive backend API test scenarios            |
-| Backend test results JSON   | `backend/tests/results/kerno_api_test_results.json`                   | Stored backend test result output                   |
-| Postman S2 collection       | `docs/testing/test_postman_S2/kerno_issue_36_postman_collection.json` | Postman collection used for Sprint 2 API validation |
-| Postman screenshots         | `docs/testing/test_postman_S2/`                                       | Screenshot evidence for API checks                  |
-
----
-
-## 5. Backend Test Commands
-
-### Syntax Check
-
-From the repository root:
+Backend syntax command:
 
 ```bash
 cd backend
 npm test
 ```
 
-The backend `npm test` script currently checks syntax for key backend files:
+Result: PASS. The command ran `node --check src/server.js && node --check src/app.js && node --check src/routes/index.js`.
 
-```bash
-node --check src/server.js
-node --check src/app.js
-node --check src/routes/index.js
-```
+## Automated Frontend Lint And Build
 
-### Backend API Tests
-
-From the repository root:
-
-```bash
-cd backend
-python3 -m pytest tests/test_kerno_api_comprehensive.py -v
-```
-
-If the project uses a virtual environment, activate it first.
-
----
-
-## 6. Frontend Test Commands
-
-### Install Dependencies
-
-From the repository root:
+Lint command:
 
 ```bash
 cd frontend
-npm install
+npm run lint
 ```
 
-### Build Check
+Result: PASS.
+
+Build command:
 
 ```bash
+cd frontend
 npm run build
 ```
 
-The build check verifies that the React/Vite frontend can be compiled successfully.
+Result: PASS. Vite built the frontend successfully.
 
-### Development Server
+React Doctor command:
 
 ```bash
-npm run dev
+npx react-doctor@latest --verbose --scope changed
 ```
 
-The development server is used for manual frontend validation.
+Result: PASS. No issues found, score 100/100.
 
----
+## Automated E2E Tests
 
-## 7. Backend API Areas to Validate
+Primary test files:
 
-| Area                      | Expected Result                                         | Status                  |
-| ------------------------- | ------------------------------------------------------- | ----------------------- |
-| Health endpoint           | API returns a success response                          | To confirm in final run |
-| Register supplier         | Supplier user can register                              | To confirm in final run |
-| Register store            | Store user can register                                 | To confirm in final run |
-| Login supplier            | Supplier can log in and receive JWT                     | To confirm in final run |
-| Login store               | Store can log in and receive JWT                        | To confirm in final run |
-| Current user              | Authenticated user can retrieve own account             | To confirm in final run |
-| Supplier profile creation | Supplier can create profile                             | To confirm in final run |
-| Supplier profile update   | Supplier can update own profile                         | To confirm in final run |
-| Store profile creation    | Store can create profile                                | To confirm in final run |
-| Store profile update      | Store can update own profile                            | To confirm in final run |
-| Category listing          | Public users can list categories                        | To confirm in final run |
-| Product creation          | Supplier can create product                             | To confirm in final run |
-| Product listing           | Public users can list products                          | To confirm in final run |
-| Product detail            | Public users can access product details                 | To confirm in final run |
-| Supplier listing          | Public users can list suppliers                         | To confirm in final run |
-| Supplier detail           | Public users can access supplier details                | To confirm in final run |
-| Request creation          | Store can send request to supplier                      | To confirm in final run |
-| Sent requests             | Store can list sent requests                            | To confirm in final run |
-| Received requests         | Supplier can list received requests                     | To confirm in final run |
-| Request detail            | Store or supplier can access authorized request details | To confirm in final run |
-| Request status update     | Supplier can update request status                      | To confirm in final run |
-| Unauthorized access       | Protected routes reject missing token                   | To confirm in final run |
-| Forbidden access          | Role-protected routes reject wrong role                 | To confirm in final run |
+```text
+frontend/playwright.config.js
+frontend/tests/e2e/mvp-regression.spec.js
+```
 
----
+Command:
 
-## 8. Frontend Areas to Validate
+```bash
+cd frontend
+npx playwright test
+```
 
-| Area                    | Expected Result                                              | Status                  |
-| ----------------------- | ------------------------------------------------------------ | ----------------------- |
-| Landing page            | Public landing page renders correctly                        | To confirm in final run |
-| Login page              | Login form renders correctly                                 | To confirm in final run |
-| Register page           | Register form renders correctly                              | To confirm in final run |
-| Catalog page            | Catalog page renders correctly after authentication          | To confirm in final run |
-| Product detail page     | Product detail route renders correctly after authentication  | To confirm in final run |
-| Supplier detail page    | Supplier detail route renders correctly after authentication | To confirm in final run |
-| Supplier dashboard      | Supplier dashboard renders in app layout                     | To confirm in final run |
-| Supplier profile page   | Supplier profile page renders correctly                      | To confirm in final run |
-| Supplier products page  | Supplier product management page renders correctly           | To confirm in final run |
-| Supplier product form   | Supplier product form renders correctly                      | To confirm in final run |
-| Supplier requests page  | Supplier received requests page renders correctly            | To confirm in final run |
-| Supplier request detail | Supplier request detail page renders correctly               | To confirm in final run |
-| Store dashboard         | Store dashboard renders in app layout                        | To confirm in final run |
-| Store profile page      | Store profile page renders correctly                         | To confirm in final run |
-| Store requests page     | Store sent requests page renders correctly                   | To confirm in final run |
-| Store request detail    | Store request detail page renders correctly                  | To confirm in final run |
-| Request creation page   | Store can access request form route                          | To confirm in final run |
-| Navigation shell        | Header/sidebar navigation works as expected                  | To confirm in final run |
-| Not found page          | Unknown routes render fallback page                          | To confirm in final run |
-| Responsive behavior     | Layout remains usable on smaller screens                     | To confirm in final run |
+Session result: PASS. After installing Playwright browsers with `npx playwright install`, the final cleanup run completed with `6 passed (12.0s)`.
 
----
+The E2E suite is prepared to cover:
 
-## 9. Manual MVP Scenario
+* landing page loads;
+* login page loads;
+* supplier login reaches supplier dashboard;
+* store login reaches store dashboard;
+* protected route redirects unauthenticated users;
+* wrong-role route redirects;
+* catalog access after login;
+* seeded product detail access;
+* seeded MVP store-to-supplier request flow.
 
-The final manual test should validate the complete business flow.
+## npm Audit Checks
 
-### Scenario
+| Area | Command | Result |
+| --- | --- | --- |
+| Root | `npm audit --omit=dev` | PASS: `found 0 vulnerabilities`. |
+| Backend | `cd backend && npm audit --omit=dev` | WARNING: 3 moderate advisories through `prisma` -> `@prisma/dev` -> `@hono/node-server`. `npm audit fix --force` proposes a breaking change, so no automatic fix was applied. |
+| Frontend | `cd frontend && npm audit --omit=dev` | PASS: `found 0 vulnerabilities`. |
+
+## Historical Evidence
+
+Earlier testing evidence remains relevant for review context. The previous evidence document covered a pragmatic MVP validation strategy: backend syntax checks, backend API tests, Postman/manual API validation, frontend build checks, frontend manual route validation, and the full MVP scenario.
+
+Historical backend/API areas documented before this automated session included health, authentication, role-based access, supplier/store profiles, categories, products, catalog access, supplier/product details, contact requests, sent/received requests, request status updates, unauthorized access, and forbidden access.
+
+Historical frontend/manual areas documented before this automated session included landing, login, register, catalog, product detail, supplier detail, supplier dashboard/profile/products/requests, store dashboard/profile/requests, request creation, navigation shell, not-found route, and responsive behavior.
+
+The historical manual MVP scenario was:
 
 1. Start PostgreSQL.
 2. Start the backend API.
@@ -206,104 +162,38 @@ The final manual test should validate the complete business flow.
 17. Log back as store.
 18. Check sent requests and request detail.
 
-### Expected Result
+Historical evidence locations:
 
-The full flow should work without blocking errors.
+| Evidence | Location | Purpose |
+| --- | --- | --- |
+| Backend pytest runner guide | `backend/tests/RUN_KERNO_PYTESTS.md` | Explains how to run backend API tests. |
+| Backend API test file | `backend/tests/test_kerno_api_comprehensive.py` | Comprehensive backend API scenarios. |
+| Backend test results JSON | `backend/tests/results/kerno_api_test_results.json` | Latest stored backend pytest result output. |
+| Sprint 2 Postman collection | `docs/testing/test_postman_S2/kerno_issue_36_postman_collection.json` | Historical Sprint 2 API validation. |
+| Sprint 2 Postman screenshots | `docs/testing/test_postman_S2/` | Historical screenshot evidence for API checks. |
 
----
-
-## 10. Final Test Run Checklist
-
-This section must be completed before final submission.
-
-| Check                           | Command / Action                                                           | Result | Date | Tester |
-| ------------------------------- | -------------------------------------------------------------------------- | ------ | ---- | ------ |
-| Backend dependencies installed  | `cd backend && npm install`                                                | TODO   | TODO | TODO   |
-| Backend syntax check            | `cd backend && npm test`                                                   | TODO   | TODO | TODO   |
-| Backend API tests               | `cd backend && python3 -m pytest tests/test_kerno_api_comprehensive.py -v` | TODO   | TODO | TODO   |
-| Backend server start            | `cd backend && npm run dev`                                                | TODO   | TODO | TODO   |
-| Swagger available               | Open `/api/docs`                                                           | TODO   | TODO | TODO   |
-| OpenAPI JSON available          | Open `/api/openapi.json`                                                   | TODO   | TODO | TODO   |
-| Frontend dependencies installed | `cd frontend && npm install`                                               | TODO   | TODO | TODO   |
-| Frontend build                  | `cd frontend && npm run build`                                             | TODO   | TODO | TODO   |
-| Frontend dev server start       | `cd frontend && npm run dev`                                               | TODO   | TODO | TODO   |
-| Full MVP manual scenario        | Run scenario from section 9                                                | TODO   | TODO | TODO   |
-
----
-
-## 11. Evidence to Add Before Final Submission
-
-Before the final review, add or update:
-
-* terminal output for backend syntax check;
-* terminal output for backend API tests;
-* terminal output for frontend build;
-* screenshots of Swagger UI;
-* screenshots of key frontend pages;
-* screenshots or logs of the full MVP scenario;
-* final result summary.
-
-Recommended folder:
+Sprint 2 Postman assets remain available here:
 
 ```text
-docs/testing/final_validation/
+docs/testing/test_postman_S2/
 ```
 
-Suggested files:
+Collection:
 
 ```text
-backend_npm_test.txt
-backend_pytest_output.txt
-frontend_build_output.txt
-swagger_screenshot.png
-landing_page_screenshot.png
-catalog_page_screenshot.png
-supplier_dashboard_screenshot.png
-store_dashboard_screenshot.png
-request_flow_screenshot.png
+docs/testing/test_postman_S2/kerno_issue_36_postman_collection.json
 ```
 
----
+The Postman collection and screenshots are historical S2 evidence. They were not rewritten during this full regression setup. Current API regression should rely on the pytest suite unless the Postman collection is reviewed and updated against the current API contract.
 
-## 12. Known Limitations
+Optional Newman command:
 
-Current testing is focused on MVP validation.
-
-The project does not currently include:
-
-* full unit test coverage for every service;
-* browser automation tests;
-* continuous integration pipeline evidence;
-* load testing;
-* security penetration testing;
-* accessibility audit.
-
-These are acceptable limitations for the current portfolio MVP but should be considered for future production readiness.
-
----
-
-## 13. Final Testing Summary
-
-To be completed after the final test run.
-
-```text
-Final backend status: TODO
-Final frontend status: TODO
-Final database status: TODO
-Final MVP scenario status: TODO
-Blocking issues found: TODO
-Remaining known limitations: TODO
-Final tester: TODO
-Final test date: TODO
+```bash
+newman run docs/testing/test_postman_S2/kerno_issue_36_postman_collection.json
 ```
 
----
+Known historical limitations before this branch included no full unit coverage for every service, no browser automation tests, no CI pipeline evidence, no load testing, no penetration testing, and no accessibility audit. This branch adds browser automation coverage, but the other limitations remain future production-readiness topics.
 
-## 14. Related Documentation
+## Final Automated Regression Status
 
-* `backend/tests/RUN_KERNO_PYTESTS.md`
-* `backend/tests/results/kerno_api_test_results.json`
-* `docs/testing/test_postman_S2/`
-* `docs/api/API_SUMMARY.md`
-* `docs/architecture/APPLICATION_ARCHITECTURE.md`
-* `docs/review/TECHNICAL_REVIEW_NOTES.md`
+READY. Backend syntax, backend/API pytest regression, frontend lint, frontend build, React Doctor, Playwright E2E, and root/frontend production audits passed. Backend production audit remains a warning because Prisma dev-tooling advisories require review before any forced dependency change.

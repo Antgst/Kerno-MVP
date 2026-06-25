@@ -98,7 +98,7 @@ function LoginPage() {
   }
 
   return (
-    <main className="auth-page register-page">
+    <main className="auth-page register-page" data-testid="login-page">
       <section className="register-shell">
         <aside className="register-editorial" aria-labelledby="login-title">
           <h1 id="login-title">Retrouvez votre espace KERNO</h1>

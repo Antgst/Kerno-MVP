@@ -35,6 +35,7 @@ function CatalogProductCard({ product, supplier, viewMode, priority = false }) {
     return (
       <article
         className={`catalog-product-card catalog-product-card--${viewMode}`}
+        data-testid="catalog-product-card"
       >
         {cardContent}
       </article>
@@ -46,6 +47,7 @@ function CatalogProductCard({ product, supplier, viewMode, priority = false }) {
       className={`catalog-product-card catalog-product-card--${viewMode}`}
       to={`/products/${product.id}`}
       aria-label={`Voir le produit ${productName}`}
+      data-testid="catalog-product-card"
       onKeyDown={handleKeyDown}
     >
       {cardContent}

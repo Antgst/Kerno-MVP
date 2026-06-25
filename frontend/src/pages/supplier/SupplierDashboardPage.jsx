@@ -245,7 +245,7 @@ function SupplierDashboardPage() {
   ];
 
   return (
-    <div className="supplier-dashboard">
+    <div className="supplier-dashboard" data-testid="supplier-dashboard">
       <DashboardIntro
         prefix="supplier-dashboard"
         titleId="supplier-dashboard-title"

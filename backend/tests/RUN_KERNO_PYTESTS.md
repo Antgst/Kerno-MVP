@@ -32,7 +32,7 @@ npm run dev
 Make sure PostgreSQL is started and the backend answers on:
 
 ```text
-http://localhost:5000/api/health
+http://localhost:5001/api/health
 ```
 
 ## Run all tests
@@ -40,7 +40,7 @@ http://localhost:5000/api/health
 From the `backend` folder:
 
 ```bash
-pytest tests/test_kerno_api_comprehensive.py -v
+python -m pytest tests/test_kerno_api_comprehensive.py -v
 ```
 
 The result file will be created here:
@@ -52,13 +52,13 @@ backend/tests/results/kerno_api_test_results.json
 ## Use a different API URL
 
 ```bash
-KERNO_API_BASE_URL=http://localhost:5000 pytest tests/test_kerno_api_comprehensive.py -v
+KERNO_API_BASE_URL=http://localhost:5001 python -m pytest tests/test_kerno_api_comprehensive.py -v
 ```
 
 ## Use a different result file
 
 ```bash
-KERNO_PYTEST_RESULTS_FILE=tests/results/latest.json pytest tests/test_kerno_api_comprehensive.py -v
+KERNO_PYTEST_RESULTS_FILE=tests/results/latest.json python -m pytest tests/test_kerno_api_comprehensive.py -v
 ```
 
 ## Important notes

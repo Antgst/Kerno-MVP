@@ -4,7 +4,7 @@ import RequestStatusBadge from "./RequestStatusBadge";
 
 function StoreRequestCard({ formatRequestDate, request }) {
   return (
-    <article className="supplier-request-card">
+    <article className="supplier-request-card" data-testid="store-request-card">
       <div className="supplier-request-card__content">
         <div className="supplier-request-card__header">
           <div>

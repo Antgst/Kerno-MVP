@@ -26,7 +26,11 @@ function RequestFormFields({
         <LoadingState className="mb-5" message="Création de la demande..." />
       )}
 
-      <form className="request-form-fields" onSubmit={onSubmit}>
+      <form
+        className="request-form-fields"
+        data-testid="request-form"
+        onSubmit={onSubmit}
+      >
         <input
           type="hidden"
           name="supplierId"

@@ -199,7 +199,7 @@ function SupplierRequestsPage() {
   }
 
   return (
-    <div className="supplier-requests-page">
+    <div className="supplier-requests-page" data-testid="supplier-requests-page">
       <SupplierRequestsHeader
         errorMessage={errorMessage}
         isLoading={isLoading}
@@ -275,6 +275,7 @@ function SupplierRequestsPage() {
           ) : (
             <section
               className="supplier-requests-list"
+              data-testid="supplier-requests-list"
               aria-live="polite"
               aria-label="Liste des demandes reçues"
             >

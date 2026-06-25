@@ -159,7 +159,10 @@ function StoreRequestsPage() {
   }
 
   return (
-    <div className="supplier-requests-page store-requests-page">
+    <div
+      className="supplier-requests-page store-requests-page"
+      data-testid="store-requests-page"
+    >
       <StoreRequestsHeader />
 
       {isLoading && (
@@ -213,7 +216,11 @@ function StoreRequestsPage() {
               message="Modifiez votre recherche ou réinitialisez les filtres."
             />
           ) : (
-            <section className="supplier-requests-list" aria-live="polite">
+            <section
+              className="supplier-requests-list"
+              data-testid="store-requests-list"
+              aria-live="polite"
+            >
               {paginatedRequests.map((request) => (
                 <StoreRequestCard
                   key={request.id}
