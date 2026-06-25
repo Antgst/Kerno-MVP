@@ -35,8 +35,15 @@ function HomeHero() {
           {heroTrustBar.label && <span>{heroTrustBar.label}</span>}
           <p>
             {heroTrustBar.primary.map((signal, index) => (
-              <span key={signal}>
-                {index > 0 && <span aria-hidden="true"> · </span>}
+              <span className="landing-trust-bar__signal" key={signal}>
+                {index > 0 && (
+                  <span
+                    aria-hidden="true"
+                    className="landing-trust-bar__separator"
+                  >
+                    ·
+                  </span>
+                )}
                 {signal}
               </span>
             ))}
@@ -44,8 +51,15 @@ function HomeHero() {
           {heroTrustBar.secondary.length > 0 && (
             <small>
               {heroTrustBar.secondary.map((signal, index) => (
-                <span key={signal}>
-                  {index > 0 && <span aria-hidden="true"> · </span>}
+                <span className="landing-trust-bar__signal" key={signal}>
+                  {index > 0 && (
+                    <span
+                      aria-hidden="true"
+                      className="landing-trust-bar__separator"
+                    >
+                      ·
+                    </span>
+                  )}
                   {signal}
                 </span>
               ))}

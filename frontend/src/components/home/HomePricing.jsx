@@ -5,8 +5,8 @@ function HomePricing() {
   return (
     <section className="landing-section">
       <SectionHeading
-        title="Des offres adaptées à la visibilité fournisseur"
-        subtitle="Choisissez le rythme qui correspond à votre besoin de visibilité."
+        title="Des offres adaptées à votre usage de KERNO"
+        subtitle="Trouvez les bons partenaires, gagnez en visibilité et testez KERNO à votre rythme."
       />
 
       <div className="pricing-grid">
@@ -30,7 +30,7 @@ function HomePricing() {
                 .join(" ")}
               aria-hidden={!plan.featured}
             >
-              Meilleure valeur
+              OFFRE PREMIUM
             </span>
             <div className="pricing-card__header">
               <h3>{plan.name}</h3>

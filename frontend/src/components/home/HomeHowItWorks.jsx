@@ -5,7 +5,7 @@ function HomeHowItWorks() {
   return (
     <section className="landing-section landing-section--how">
       <SectionHeading
-        title="Comment ça marche"
+        title="Comment ça marche ?"
         subtitle="Un parcours simple pour passer d’un profil fournisseur à une demande magasin exploitable."
       />
 

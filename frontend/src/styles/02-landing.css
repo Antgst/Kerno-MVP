@@ -202,6 +202,17 @@
   line-height: 1.45;
 }
 
+.landing-trust-bar__signal {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+.landing-trust-bar__separator {
+  margin: 0 0.42em;
+  color: rgb(49 82 76 / 58%);
+}
+
 .supplier-card dt,
 .product-preview-card span {
   color: var(--color-text-secondary);
@@ -212,6 +223,7 @@
 .landing-card h3 {
   margin: 0;
   color: var(--color-ink);
+  overflow-wrap: anywhere;
 }
 
 .product-preview-card__image,
@@ -575,6 +587,7 @@
   font-size: 1.03rem;
   font-weight: 650;
   line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .supplier-card__footer,
@@ -635,6 +648,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .product-preview-card__status {
@@ -789,6 +803,7 @@
   font-size: 0.92rem;
   line-height: 1.52;
   text-align: left;
+  overflow-wrap: anywhere;
 }
 
 .pricing-card li::before {
@@ -877,6 +892,7 @@
   color: #31524c;
   font-size: 0.89rem;
   font-weight: 650;
+  overflow-wrap: anywhere;
   text-decoration: none;
 }
 
