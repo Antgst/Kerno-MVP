@@ -186,8 +186,8 @@ function SupplierDashboardPage() {
   );
 
   const recentRequests = useMemo(() => {
-    return [...requests]
-      .sort((currentRequest, nextRequest) => {
+    return requests
+      .toSorted((currentRequest, nextRequest) => {
         return getRequestTimestamp(nextRequest) - getRequestTimestamp(currentRequest);
       })
       .slice(0, 3);

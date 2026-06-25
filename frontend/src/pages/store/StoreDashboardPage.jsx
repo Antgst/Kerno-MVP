@@ -200,8 +200,8 @@ function StoreDashboardPage() {
 
   const recentRequests = useMemo(
     () =>
-      [...sentRequests]
-        .sort(
+      sentRequests
+        .toSorted(
           (currentRequest, nextRequest) =>
             getRequestTimestamp(nextRequest) - getRequestTimestamp(currentRequest),
         )
