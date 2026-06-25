@@ -9,7 +9,7 @@ import RequestsPagination from "../../components/requests/RequestsPagination";
 import StoreRequestCard from "../../components/requests/StoreRequestCard";
 import StoreRequestsHeader from "../../components/requests/StoreRequestsHeader";
 import { getSentRequests } from "../../services/requestService";
-import { normalizeStatus } from "../../utils/status";
+import { getCanonicalRequestStatus } from "../../utils/status";
 import { getListResource } from "../../utils/responseUtils";
 
 const initialFilters = {
@@ -84,14 +84,10 @@ function StoreRequestsPage() {
     const counts = { total: requests.length, pending: 0, accepted: 0, processed: 0 };
 
     requests.forEach((request) => {
-      const status = normalizeStatus(request.status);
+      const status = getCanonicalRequestStatus(request.status);
       if (status === "PENDING") counts.pending += 1;
       if (status === "ACCEPTED") counts.accepted += 1;
-      if (
-        ["ANSWERED", "REPLIED", "COMPLETED", "DONE", "RESOLVED", "CLOSED"].includes(
-          status,
-        )
-      ) {
+      if (status === "COMPLETED") {
         counts.processed += 1;
       }
     });
@@ -105,7 +101,8 @@ function StoreRequestsPage() {
     return requests
       .filter((request) => {
         const matchesStatus =
-          !filters.status || normalizeStatus(request.status) === filters.status;
+          !filters.status ||
+          getCanonicalRequestStatus(request.status) === filters.status;
         const searchableContent = normalizeValue(
           [
             request.subject,

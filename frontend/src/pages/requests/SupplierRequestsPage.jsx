@@ -9,7 +9,7 @@ import SupplierRequestCard from "../../components/requests/SupplierRequestCard";
 import SupplierRequestsHeader from "../../components/requests/SupplierRequestsHeader";
 import { getReceivedRequests } from "../../services/requestService";
 import { getListResource } from "../../utils/responseUtils";
-import { normalizeStatus } from "../../utils/status";
+import { getCanonicalRequestStatus } from "../../utils/status";
 
 const initialFilters = {
   search: "",
@@ -98,7 +98,7 @@ function SupplierRequestsPage() {
     };
 
     requests.forEach((request) => {
-      const status = normalizeStatus(request.status);
+      const status = getCanonicalRequestStatus(request.status);
 
       if (status === "PENDING") {
         counts.pending += 1;
@@ -108,11 +108,7 @@ function SupplierRequestsPage() {
         counts.accepted += 1;
       }
 
-      if (
-        ["ANSWERED", "REJECTED", "COMPLETED", "CLOSED", "CANCELLED"].includes(
-          status,
-        )
-      ) {
+      if (status === "COMPLETED") {
         counts.processed += 1;
       }
     });
@@ -127,7 +123,7 @@ function SupplierRequestsPage() {
       .filter((request) => {
         const matchesStatus =
           !filters.status ||
-          normalizeStatus(request.status) === filters.status;
+          getCanonicalRequestStatus(request.status) === filters.status;
         const searchableContent = normalizeValue(
           [
             request.subject,

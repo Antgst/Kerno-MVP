@@ -10,6 +10,7 @@ import { getReceivedRequests } from "../../services/requestService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
 import { formatMinimumOrder, formatProductPrice } from "../../utils/productPrice";
+import { getCanonicalRequestStatus } from "../../utils/status";
 
 const shortFrenchDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -180,7 +181,7 @@ function SupplierDashboardPage() {
   const pendingRequests = useMemo(
     () =>
       requests.filter(
-        (request) => String(request.status || "").toUpperCase() === "PENDING",
+        (request) => getCanonicalRequestStatus(request.status) === "PENDING",
       ),
     [requests],
   );
@@ -210,10 +211,8 @@ function SupplierDashboardPage() {
   const publishedProductCount = publishedProducts.length;
   const receivedRequestCount = requests.length;
   const pendingRequestCount = pendingRequests.length;
-  const processedRequestCount = requests.filter((request) =>
-    ["ANSWERED", "ACCEPTED", "REJECTED", "COMPLETED", "DONE", "RESOLVED", "CLOSED"].includes(
-      String(request.status || "").toUpperCase(),
-    ),
+  const processedRequestCount = requests.filter(
+    (request) => getCanonicalRequestStatus(request.status) === "COMPLETED",
   ).length;
   const profileIsComplete = completionPercent === 100;
 

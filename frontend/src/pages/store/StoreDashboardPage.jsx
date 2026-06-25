@@ -10,6 +10,7 @@ import { getSentRequests } from "../../services/requestService";
 import { getCurrentStoreProfile } from "../../services/storeService";
 import { getSuppliers } from "../../services/supplierService";
 import { getListResource, getResource } from "../../utils/responseUtils";
+import { getCanonicalRequestStatus } from "../../utils/status";
 
 const supplierVisuals = ["farm", "brewery", "cheese", "provence"];
 const shortFrenchDateFormatter = new Intl.DateTimeFormat("fr-FR", {
@@ -193,7 +194,7 @@ function StoreDashboardPage() {
   const pendingRequests = useMemo(
     () =>
       sentRequests.filter(
-        (request) => String(request.status || "").toUpperCase() === "PENDING",
+        (request) => getCanonicalRequestStatus(request.status) === "PENDING",
       ),
     [sentRequests],
   );
