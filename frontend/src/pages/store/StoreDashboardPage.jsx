@@ -54,6 +54,22 @@ function getRequestTitle(request) {
   return request?.subject || request?.product?.name || "Demande fournisseur";
 }
 
+function getRequestProduct(request) {
+  return (
+    request?.product?.name ||
+    request?.productName ||
+    request?.requestedQuantity ||
+    "Demande générale"
+  );
+}
+
+function getRequestTimestamp(request) {
+  const dateValue = request?.updatedAt || request?.createdAt;
+  const timestamp = dateValue ? new Date(dateValue).getTime() : Number.NaN;
+
+  return Number.isNaN(timestamp) ? 0 : timestamp;
+}
+
 function formatFrenchDate(value) {
   if (!value) {
     return "";
@@ -182,7 +198,16 @@ function StoreDashboardPage() {
     [sentRequests],
   );
 
-  const recentRequests = sentRequests.slice(0, 3);
+  const recentRequests = useMemo(
+    () =>
+      [...sentRequests]
+        .sort(
+          (currentRequest, nextRequest) =>
+            getRequestTimestamp(nextRequest) - getRequestTimestamp(currentRequest),
+        )
+        .slice(0, 3),
+    [sentRequests],
+  );
 
   const productCountsBySupplier = useMemo(() => {
     const counts = new Map();
@@ -290,8 +315,9 @@ function StoreDashboardPage() {
           requests={recentRequests}
           emptyTitle="Aucune demande récente"
           emptyMessage="Créez une demande pour commencer un échange fournisseur."
-          getPrimary={getRequestTitle}
-          getSecondary={getSupplierName}
+          getPrimary={getSupplierName}
+          getSecondary={getRequestTitle}
+          getTertiary={getRequestProduct}
           getRequestPath={(request) => `/store/requests/${request.id}`}
           formatDate={formatFrenchDate}
         />

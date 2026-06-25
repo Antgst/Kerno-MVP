@@ -28,33 +28,37 @@ function DashboardRequestsPanel({
 
       <div className={`${prefix}__request-list`}>
         {requests.length ? (
-          requests.map((request) => (
-            <Link
-              className={`${prefix}__request-row`}
-              key={request.id}
-              to={getRequestPath(request)}
-            >
-              <span className={`${prefix}__request-icon`}>
-                <DashboardIcon name="mail" />
-              </span>
+          requests.map((request) => {
+            const tertiaryContent = getTertiary?.(request);
 
-              <span className={`${prefix}__request-copy`}>
-                <strong>{getPrimary(request)}</strong>
-                <small>{getSecondary(request)}</small>
-                {getTertiary && <em>{getTertiary(request)}</em>}
-              </span>
-
-              <span className={`${prefix}__request-date`}>
-                {formatDate(request.createdAt || request.updatedAt)}
-              </span>
-
-              <span
-                className={`${prefix}__status ${prefix}__status--${getStatusTone(request.status)}`}
+            return (
+              <Link
+                className={`${prefix}__request-row`}
+                key={request.id}
+                to={getRequestPath(request)}
               >
-                {formatStatus(request.status)}
-              </span>
-            </Link>
-          ))
+                <span className={`${prefix}__request-icon`}>
+                  <DashboardIcon name="mail" />
+                </span>
+
+                <span className={`${prefix}__request-copy`}>
+                  <strong>{getPrimary(request)}</strong>
+                  <small>{getSecondary(request)}</small>
+                  {tertiaryContent && <em>{tertiaryContent}</em>}
+                </span>
+
+                <span className={`${prefix}__request-date`}>
+                  {formatDate(request.updatedAt || request.createdAt)}
+                </span>
+
+                <span
+                  className={`${prefix}__status ${prefix}__status--${getStatusTone(request.status)}`}
+                >
+                  {formatStatus(request.status)}
+                </span>
+              </Link>
+            );
+          })
         ) : (
           <div className={`${prefix}__request-empty`}>
             <span className={`${prefix}__request-icon`}>
