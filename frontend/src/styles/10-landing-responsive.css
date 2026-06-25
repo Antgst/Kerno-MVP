@@ -2,7 +2,8 @@
 @media (max-width: 900px) {
   .landing-hero,
   .landing-section,
-  .landing-final-cta {
+  .landing-final-cta,
+  .public-footer {
     width: min(720px, calc(100% - 32px));
   }
 
@@ -31,9 +32,14 @@
   }
 
   .landing-section__split-heading,
-  .landing-final-cta {
+  .landing-final-cta,
+  .public-footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .public-footer__links {
+    justify-content: flex-start;
   }
 
   .carousel-controls {
@@ -70,7 +76,8 @@
 @media (max-width: 560px) {
   .landing-hero,
   .landing-section,
-  .landing-final-cta {
+  .landing-final-cta,
+  .public-footer {
     width: calc(100% - 28px);
   }
 
@@ -92,6 +99,16 @@
   .landing-button,
   .public-header-actions .navigation-link {
     width: 100%;
+  }
+
+  .landing-trust-bar {
+    gap: 5px;
+  }
+
+  .landing-trust-bar > span,
+  .landing-trust-bar p,
+  .landing-trust-bar small {
+    max-width: 100%;
   }
 
   .landing-button {
@@ -133,10 +150,23 @@
     padding: 22px;
   }
 
+  .benefit-card,
+  .how-step-card {
+    padding: 24px 22px;
+  }
+
   .landing-final-cta {
     margin-bottom: 48px;
     padding: 26px;
     border-radius: 22px;
+  }
+
+  .public-footer {
+    padding-bottom: 30px;
+  }
+
+  .public-footer__links {
+    flex-direction: column;
   }
 
   .page-shell {

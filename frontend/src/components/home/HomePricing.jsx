@@ -40,6 +40,13 @@ function HomePricing() {
               {plan.period && <span>{plan.period}</span>}
             </p>
             <p>{plan.description}</p>
+            {plan.details?.length > 0 && (
+              <ul>
+                {plan.details.map((detail) => (
+                  <li key={detail}>{detail}</li>
+                ))}
+              </ul>
+            )}
           </article>
         ))}
       </div>

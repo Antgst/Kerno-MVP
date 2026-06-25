@@ -32,21 +32,49 @@ export const heroImages = [
 
 export const benefits = [
   {
-    title: "Sourcing plus rapide",
-    text: "Les magasins trouvent des offres locales lisibles, comparables dans un même espace professionnel.",
+    title: "Trouver plus vite des fournisseurs",
+    text: "Les magasins repèrent des profils professionnels et des offres lisibles sans multiplier les échanges dispersés.",
     icon: "search",
   },
   {
-    title: "Visibilité fournisseur",
-    text: "Les producteurs présentent leur activité, leurs produits et leurs informations utiles avec clarté.",
+    title: "Présenter ses produits clairement",
+    text: "Les fournisseurs structurent leur profil, leurs produits et leurs informations utiles pour le premier contact.",
     icon: "storefront",
   },
   {
-    title: "Demandes structurées",
-    text: "Chaque premier contact contient le contexte nécessaire pour engager une discussion commerciale utile.",
+    title: "Envoyer des demandes exploitables",
+    text: "Chaque demande contient le contexte nécessaire pour engager une discussion commerciale utile.",
     icon: "form",
   },
 ];
+
+export const howItWorksSteps = [
+  {
+    step: "1",
+    title: "Le fournisseur crée son profil",
+    text: "Il présente son activité, sa zone et les informations clés attendues par les magasins.",
+  },
+  {
+    step: "2",
+    title: "Il publie ses produits",
+    text: "Les produits sont organisés avec leurs informations utiles pour faciliter la lecture.",
+  },
+  {
+    step: "3",
+    title: "Le magasin envoie une demande",
+    text: "Le premier contact commercial part d’une demande qualifiée et structurée.",
+  },
+];
+
+export const heroTrustBar = {
+  label: "Pensé pour les premiers échanges B2B",
+  primary: [
+    "Profils professionnels",
+    "Demandes structurées",
+    "Sans paiement intégré",
+  ],
+  secondary: [],
+};
 
 export const featuredSuppliers = [
   {
@@ -100,7 +128,8 @@ export const products = [
     category: "Épicerie sucrée",
     price: "8,90 €",
     availability: "Disponible",
-    views: 42,
+    supplier: "Ferme des Trois Vallées",
+    origin: "Normandie",
     visualKey: "honey",
     image: honeyImage,
   },
@@ -110,7 +139,8 @@ export const products = [
     category: "Confitures",
     price: "5,40 €",
     availability: "Disponible",
-    views: 36,
+    supplier: "Jardins de Provence",
+    origin: "Provence",
     visualKey: "jam",
     image: jamImage,
   },
@@ -120,7 +150,8 @@ export const products = [
     category: "Boissons",
     price: "3,80 €",
     availability: "Stock limité",
-    views: 31,
+    supplier: "Vergers du Littoral",
+    origin: "Bretagne",
     visualKey: "appleJuice",
     image: appleJuiceImage,
   },
@@ -130,7 +161,8 @@ export const products = [
     category: "Biscuits",
     price: "4,20 €",
     availability: "Disponible",
-    views: 26,
+    supplier: "Atelier Saint-Malo",
+    origin: "Bretagne",
     visualKey: "buckwheatBiscuits",
     image: biscuitsImage,
   },
@@ -140,28 +172,46 @@ export const pricingPlans = [
   {
     name: "Freemium",
     price: "0 €",
-    description: "Découvrir la plateforme avec une présence simple.",
+    description: "Accès de découverte avec données limitées.",
+    details: [
+      "Aperçu des profils et produits",
+      "Coordonnées et détails fournisseur limités",
+      "Incite à passer à une visibilité complète",
+    ],
   },
   {
     name: "Hebdomadaire",
     price: "15 €",
     period: "/ semaine",
-    description:
-      "Tester une visibilité renforcée sans engagement long.",
+    description: "Tester une présence ponctuelle sur une courte durée.",
+    details: [
+      "Mise en avant courte auprès des magasins",
+      "Durée : 7 jours",
+      "Sans engagement long",
+    ],
   },
   {
     name: "Mensuel",
     price: "49 €",
     period: "/ mois",
-    description:
-      "Structurer sa présence fournisseur avec plus de visibilité.",
+    description: "Visibilité renforcée pour les fournisseurs actifs.",
+    details: [
+      "Mise en avant possible sur la landing",
+      "Fournisseurs recommandés côté magasin",
+      "Meilleure exposition sans engagement annuel",
+    ],
   },
   {
     name: "Annuel",
     price: "490 €",
     period: "/ an",
-    description:
-      "L’offre la plus avantageuse pour une présence durable.",
+    description: "Présence premium et accompagnement visibilité.",
+    details: [
+      "Aide à la page vitrine fournisseur",
+      "Accompagnement contenu et présence digitale",
+      "Options de communication fournisseur",
+      "Meilleur coût sur 12 mois",
+    ],
     featured: true,
   },
 ];

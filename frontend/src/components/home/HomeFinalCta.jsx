@@ -12,11 +12,14 @@ function HomeFinalCta() {
       </div>
 
       <div className="landing-actions">
-        <Link className="landing-button landing-button--light" to="/register">
-          Créer un compte
-        </Link>
         <Link
           className="landing-button landing-button--outline-light"
+          to="/register"
+        >
+          Commencer gratuitement
+        </Link>
+        <Link
+          className="landing-button landing-button--light"
           to="/login"
         >
           Se connecter
