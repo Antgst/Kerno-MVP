@@ -1,0 +1,929 @@
+{
+  "info": {
+    "name": "KERNO MVP API Regression",
+    "_postman_id": "kerno-mvp-api-regression",
+    "description": "Complementary Postman/Newman smoke regression collection for the KERNO MVP API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - Public API checks",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "const categories = Array.isArray(payload) ? payload : (payload.categories || payload.items || []);",
+                  "pm.test(\"Categories payload is a list\", function () {",
+                  "  pm.expect(categories).to.be.an(\"array\");",
+                  "});",
+                  "if (categories.length > 0 && categories[0].id) {",
+                  "  pm.environment.set(\"categoryId\", categories[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "const products = Array.isArray(payload) ? payload : (payload.products || payload.items || []);",
+                  "pm.test(\"Products payload is a non-empty list\", function () {",
+                  "  pm.expect(products).to.be.an(\"array\");",
+                  "  pm.expect(products.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "const product =",
+                  "  products.find((item) => item && item.id && (item.supplierId || item.supplier?.id || item.supplier?.profile?.id || item.supplier?.supplierId)) ||",
+                  "  products.find((item) => item && item.id) ||",
+                  "  {};",
+                  "",
+                  "pm.environment.set(\"productId\", product.id || \"\");",
+                  "",
+                  "const supplierId =",
+                  "  product.supplierId ||",
+                  "  product.supplier?.id ||",
+                  "  product.supplier?.profile?.id ||",
+                  "  product.supplier?.supplierId ||",
+                  "  \"\";",
+                  "",
+                  "if (supplierId) {",
+                  "  pm.environment.set(\"supplierId\", supplierId);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List suppliers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "const suppliers = Array.isArray(payload) ? payload : (payload.suppliers || payload.items || []);",
+                  "pm.test(\"Suppliers payload is a list\", function () {",
+                  "  pm.expect(suppliers).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "if (!pm.environment.get(\"supplierId\") && suppliers.length > 0 && suppliers[0].id) {",
+                  "  pm.environment.set(\"supplierId\", suppliers[0].id);",
+                  "}",
+                  "",
+                  "pm.test(\"A supplierId is available for dependent requests\", function () {",
+                  "  pm.expect(pm.environment.get(\"supplierId\")).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get product detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get(\"productId\")) {",
+                  "  throw new Error(\"Missing productId. The products list request must run successfully first.\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "const product = payload.product || payload;",
+                  "pm.test(\"Product detail has an id\", function () {",
+                  "  pm.expect(product.id).to.eql(pm.environment.get(\"productId\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get supplier detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers/{{supplierId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers",
+                "{{supplierId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get(\"supplierId\")) {",
+                  "  throw new Error(\"Missing supplierId. The suppliers/products requests must run successfully first.\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "const supplier = payload.supplier || payload;",
+                  "pm.test(\"Supplier detail has an id\", function () {",
+                  "  pm.expect(supplier.id).to.eql(pm.environment.get(\"supplierId\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - Authentication and current user",
+      "item": [
+        {
+          "name": "Unauthorized current user is rejected",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status is 401\", function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test(\"success is false when present\", function () {",
+                  "    pm.expect(json.success).to.eql(false);",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login supplier demo account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{supplierEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "pm.test(\"Supplier token is returned\", function () {",
+                  "  pm.expect(payload.token).to.be.a(\"string\").and.not.empty;",
+                  "});",
+                  "pm.environment.set(\"supplierToken\", payload.token);",
+                  "if (payload.user && payload.user.role) {",
+                  "  pm.test(\"Supplier role is returned\", function () {",
+                  "    pm.expect(payload.user.role).to.eql(\"SUPPLIER\");",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login store demo account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{storeEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "pm.test(\"Store token is returned\", function () {",
+                  "  pm.expect(payload.token).to.be.a(\"string\").and.not.empty;",
+                  "});",
+                  "pm.environment.set(\"storeToken\", payload.token);",
+                  "if (payload.user && payload.user.role) {",
+                  "  pm.test(\"Store role is returned\", function () {",
+                  "    pm.expect(payload.user.role).to.eql(\"STORE\");",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Current supplier user",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{supplierToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get(\"supplierToken\")) {",
+                  "  throw new Error(\"Missing supplierToken. Supplier login must run first.\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "const user = payload.user || payload;",
+                  "pm.test(\"Current user is supplier\", function () {",
+                  "  pm.expect(user.role).to.eql(\"SUPPLIER\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Current store user",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{storeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get(\"storeToken\")) {",
+                  "  throw new Error(\"Missing storeToken. Store login must run first.\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "const user = payload.user || payload;",
+                  "pm.test(\"Current user is store\", function () {",
+                  "  pm.expect(user.role).to.eql(\"STORE\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - Contact request flow",
+      "item": [
+        {
+          "name": "Create contact request as store",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{storeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "requests"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{{contactRequestPayload}}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get(\"storeToken\")) {",
+                  "  throw new Error(\"Missing storeToken. Store login must run first.\");",
+                  "}",
+                  "if (!pm.environment.get(\"supplierId\")) {",
+                  "  throw new Error(\"Missing supplierId. Supplier discovery must run first.\");",
+                  "}",
+                  "",
+                  "const payload = {",
+                  "  supplierId: pm.environment.get(\"supplierId\"),",
+                  "  subject: \"Newman MVP regression request\",",
+                  "  message: \"Automated Newman regression check for the KERNO MVP API.\",",
+                  "  requestedQuantity: \"10 colis\"",
+                  "};",
+                  "",
+                  "const productId = pm.environment.get(\"productId\");",
+                  "if (productId) {",
+                  "  payload.productId = productId;",
+                  "}",
+                  "",
+                  "pm.environment.set(\"contactRequestPayload\", JSON.stringify(payload, null, 2));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is [200, 201]\", function () {",
+                  "  pm.expect([200, 201]).to.include(pm.response.code);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "var request = payload.request || payload.contactRequest || payload;",
+                  "pm.test(\"Created request has an id\", function () {",
+                  "  pm.expect(request.id).to.be.a(\"string\").and.not.empty;",
+                  "});",
+                  "pm.environment.set(\"requestId\", request.id || \"\");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List store sent requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{storeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/requests/sent",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "requests",
+                "sent"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get(\"storeToken\")) {",
+                  "  throw new Error(\"Missing storeToken. Store login must run first.\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "const requests = Array.isArray(payload) ? payload : (payload.requests || payload.items || []);",
+                  "pm.test(\"Sent requests payload is a list\", function () {",
+                  "  pm.expect(requests).to.be.an(\"array\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List supplier received requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{supplierToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/requests/received",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "requests",
+                "received"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get(\"supplierToken\")) {",
+                  "  throw new Error(\"Missing supplierToken. Supplier login must run first.\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "const requests = Array.isArray(payload) ? payload : (payload.requests || payload.items || []);",
+                  "pm.test(\"Received requests payload is a list\", function () {",
+                  "  pm.expect(requests).to.be.an(\"array\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get created request detail as store",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{storeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/requests/{{requestId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "requests",
+                "{{requestId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get(\"requestId\")) {",
+                  "  throw new Error(\"Missing requestId. Create contact request must run successfully first.\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "var json = pm.response.json();",
+                  "if (Object.prototype.hasOwnProperty.call(json, \"success\")) {",
+                  "  pm.test('success is true when present', function () {",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "  });",
+                  "}",
+                  "var json = pm.response.json();",
+                  "var payload = json.data || json;",
+                  "var request = payload.request || payload.contactRequest || payload;",
+                  "pm.test(\"Request detail has the created id\", function () {",
+                  "  pm.expect(request.id).to.eql(pm.environment.get(\"requestId\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
