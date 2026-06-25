@@ -4,10 +4,11 @@ function HomeFinalCta() {
   return (
     <section className="landing-final-cta">
       <div>
-        <h2>Prêt à structurer votre sourcing local ?</h2>
+        <h2>Prêt à rejoindre l’écosystème KERNO ?</h2>
         <p>
-          KERNO rapproche fournisseurs et magasins dans un parcours simple,
-          lisible et professionnel.
+          Que vous cherchiez des fournisseurs ou que vous vouliez rendre vos
+          produits visibles, KERNO structure vos premiers contacts B2B dans un
+          espace simple et professionnel.
         </p>
       </div>
 
@@ -16,7 +17,7 @@ function HomeFinalCta() {
           className="landing-button landing-button--outline-light"
           to="/register"
         >
-          Commencer gratuitement
+          Créer un compte
         </Link>
         <Link
           className="landing-button landing-button--light"

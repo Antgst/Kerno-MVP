@@ -5,8 +5,8 @@ function HomeHowItWorks() {
   return (
     <section className="landing-section landing-section--how">
       <SectionHeading
-        title="Comment ça marche ?"
-        subtitle="Un parcours simple pour passer d’un profil fournisseur à une demande magasin exploitable."
+        title="Deux parcours, un objectif : créer le bon contact"
+        subtitle="Les magasins trouvent des offres qualifiées ; les fournisseurs gagnent en visibilité et reçoivent des demandes structurées."
       />
 
       <div className="landing-card-grid landing-card-grid--three how-steps">

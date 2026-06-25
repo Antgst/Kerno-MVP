@@ -7,13 +7,13 @@ function HomeHero() {
     <section className="landing-hero">
       <div className="landing-hero__content">
         <p className="landing-hero__label">
-          Marketplace B2B pour fournisseurs et magasins
+          Marketplace B2B pour magasins et fournisseurs
         </p>
-        <h1>Le sourcing local, enfin structuré.</h1>
+        <h1>Trouvez les bons partenaires. Rendez vos offres visibles.</h1>
         <p>
-          KERNO aide les magasins à identifier des fournisseurs référencés et
+          KERNO aide les magasins à identifier des fournisseurs fiables et
           permet aux fournisseurs de présenter leurs produits dans un cadre
-          professionnel, clair et exploitable.
+          clair, professionnel et exploitable.
         </p>
 
         <div className="landing-actions" aria-label="Actions principales">
@@ -21,13 +21,13 @@ function HomeHero() {
             className="landing-button landing-button--primary"
             to="/register"
           >
-            Trouver des fournisseurs
+            Je cherche des fournisseurs
           </Link>
           <Link
             className="landing-button landing-button--secondary"
             to="/register"
           >
-            Publier mes produits
+            Je veux être référencé
           </Link>
         </div>
 

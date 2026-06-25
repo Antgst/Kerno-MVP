@@ -32,18 +32,18 @@ export const heroImages = [
 
 export const benefits = [
   {
-    title: "Trouver plus vite des fournisseurs",
-    text: "Les magasins repèrent des profils professionnels et des offres lisibles sans multiplier les échanges dispersés.",
+    title: "Pour les magasins",
+    text: "Identifiez plus rapidement des fournisseurs, produits et opportunités adaptés à vos besoins.",
     icon: "search",
   },
   {
-    title: "Présenter ses produits clairement",
-    text: "Les fournisseurs structurent leur profil, leurs produits et leurs informations utiles pour le premier contact.",
+    title: "Pour les fournisseurs",
+    text: "Présentez vos produits, gagnez en visibilité et facilitez les premiers contacts commerciaux.",
     icon: "storefront",
   },
   {
-    title: "Envoyer des demandes exploitables",
-    text: "Chaque demande contient le contexte nécessaire pour engager une discussion commerciale utile.",
+    title: "Un contact B2B structuré",
+    text: "Centralisez les informations clés avant d’envoyer ou de recevoir une demande claire.",
     icon: "form",
   },
 ];
@@ -51,28 +51,24 @@ export const benefits = [
 export const howItWorksSteps = [
   {
     step: "1",
-    title: "Le fournisseur crée son profil",
-    text: "Il présente son activité, sa zone et les informations clés attendues par les magasins.",
+    title: "Choisissez votre rôle",
+    text: "Créez un compte magasin ou fournisseur pour accéder à un parcours adapté.",
   },
   {
     step: "2",
-    title: "Il publie ses produits",
-    text: "Les produits sont organisés avec leurs informations utiles pour faciliter la lecture.",
+    title: "Complétez votre espace",
+    text: "Les fournisseurs présentent leurs produits ; les magasins renseignent leur profil et leurs besoins.",
   },
   {
     step: "3",
-    title: "Le magasin envoie une demande",
-    text: "Le premier contact commercial part d’une demande qualifiée et structurée.",
+    title: "Trouvez, publiez et contactez",
+    text: "KERNO facilite la découverte, la mise en visibilité et le premier échange commercial.",
   },
 ];
 
 export const heroTrustBar = {
   label: "Pensé pour les premiers échanges B2B",
-  primary: [
-    "Profils professionnels",
-    "Demandes structurées",
-    "Sans paiement intégré",
-  ],
+  primary: ["Parcours magasin", "Parcours fournisseur", "Demandes structurées"],
   secondary: [],
 };
 
@@ -172,7 +168,7 @@ export const pricingPlans = [
   {
     name: "Découverte",
     price: "0 €",
-    description: "Explorer KERNO avec un accès limité",
+    description: "Explorez KERNO avec un accès limité",
     details: [
       "Aperçu des produits et opportunités disponibles",
       "Noms, coordonnées et détails sensibles masqués",
@@ -183,7 +179,7 @@ export const pricingPlans = [
     name: "Pass 7 jours",
     price: "15 €",
     period: "/ 7 jours",
-    description: "Tester KERNO sur une courte durée",
+    description: "Testez KERNO sans engagement long",
     details: [
       "Accès complet temporaire aux informations clés",
       "Test du sourcing ou de la visibilité produit",
@@ -211,7 +207,7 @@ export const pricingPlans = [
       "Tous les avantages de l’offre Pro",
       "Mise en avant dans les espaces clés KERNO",
       "Accompagnement visibilité ou sourcing selon le rôle",
-      "Options premium : page vitrine, contenu pro, sourcing accompagné",
+      "Options premium selon le rôle : vitrine, contenu pro, sourcing accompagné",
     ],
     featured: true,
   },

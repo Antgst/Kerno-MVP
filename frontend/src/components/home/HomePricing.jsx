@@ -9,6 +9,12 @@ function HomePricing() {
         subtitle="Trouvez les bons partenaires, gagnez en visibilité et testez KERNO à votre rythme."
       />
 
+      <div className="pricing-founder-banner">
+        <strong>Phase de lancement :</strong> les premiers comptes validés
+        bénéficient d’un accès gratuit à KERNO, avec un badge Founder visible
+        sur leur profil.
+      </div>
+
       <div className="pricing-grid">
         {pricingPlans.map((plan) => (
           <article

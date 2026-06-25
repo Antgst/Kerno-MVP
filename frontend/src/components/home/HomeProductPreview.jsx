@@ -10,8 +10,8 @@ function HomeProductPreview() {
   return (
     <section className="landing-section">
       <SectionHeading
-        title="Produits à découvrir"
-        subtitle="Découvrez quelques produits proposés par les fournisseurs référencés sur KERNO."
+        title="Offres à découvrir"
+        subtitle="Un aperçu des produits que les magasins peuvent identifier et que les fournisseurs peuvent valoriser."
       />
 
       <div className="product-preview-grid">

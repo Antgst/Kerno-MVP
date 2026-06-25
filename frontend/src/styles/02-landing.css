@@ -900,3 +900,19 @@
   color: var(--color-deep-green);
   text-decoration: underline;
 }
+
+
+.pricing-founder-banner {
+  max-width: 1180px;
+  margin: 0 auto 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(22, 78, 63, 0.18);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.72);
+  color: #164e3f;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
+}
+
+.pricing-founder-banner strong {
+  color: #0f172a;
+}

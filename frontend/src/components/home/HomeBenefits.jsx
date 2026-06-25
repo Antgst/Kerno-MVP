@@ -7,7 +7,7 @@ function HomeBenefits() {
     <section className="landing-section">
       <SectionHeading
         title="Pourquoi KERNO crée de la valeur ?"
-        subtitle="Une plateforme pensée pour rendre le sourcing local plus lisible, plus rapide et plus structuré."
+        subtitle="Moins de recherche à froid côté magasin, plus de visibilité qualifiée côté fournisseur."
       />
 
       <div className="landing-card-grid landing-card-grid--three">

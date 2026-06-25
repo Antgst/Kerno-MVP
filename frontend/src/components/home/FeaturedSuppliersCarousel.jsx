@@ -33,9 +33,9 @@ function FeaturedSuppliersCarousel() {
     <section className="landing-section landing-section--featured">
       <div className="landing-section__split-heading">
         <SectionHeading
-          title="Fournisseurs à la une"
-          subtitle="Une sélection de fournisseurs mis en avant pour renforcer leur visibilité auprès des magasins."
-        />
+        title="Fournisseurs à découvrir"
+        subtitle="Une vitrine pour identifier des partenaires fiables — et gagner en visibilité auprès des magasins."
+      />
 
         <div className="carousel-controls" aria-label="Navigation fournisseurs">
           <button
