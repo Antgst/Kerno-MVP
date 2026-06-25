@@ -74,6 +74,13 @@ function getRequestProduct(request) {
   return request?.product?.name || request?.productName || "Demande générale";
 }
 
+function getRequestTimestamp(request) {
+  const dateValue = request?.updatedAt || request?.createdAt;
+  const timestamp = dateValue ? new Date(dateValue).getTime() : Number.NaN;
+
+  return Number.isNaN(timestamp) ? 0 : timestamp;
+}
+
 function formatFrenchDate(value) {
   if (!value) {
     return "";
@@ -179,7 +186,13 @@ function SupplierDashboardPage() {
     [requests],
   );
 
-  const recentRequests = requests.slice(0, 3);
+  const recentRequests = useMemo(() => {
+    return requests
+      .toSorted((currentRequest, nextRequest) => {
+        return getRequestTimestamp(nextRequest) - getRequestTimestamp(currentRequest);
+      })
+      .slice(0, 3);
+  }, [requests]);
 
   const featuredProducts = useMemo(
     () => publishedProducts.slice(0, 4).map(getProductCard),

@@ -112,6 +112,14 @@
   background: #0b2d4d;
 }
 
+.store-dashboard__status--closed,
+.supplier-dashboard__status--closed {
+  background: #0b2d4d;
+}
+
+.store-dashboard__status--neutral,
+.supplier-dashboard__status--neutral {
+  background: #6b7280;
 .store-dashboard__status--cancelled,
 .supplier-dashboard__status--cancelled {
   background: #7f1d1d;
