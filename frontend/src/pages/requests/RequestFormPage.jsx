@@ -175,7 +175,7 @@ function RequestFormPage() {
   }
 
   return (
-    <div className="request-form-page">
+    <div className="request-form-page" data-testid="request-form-page">
       <PageHeader
         className="request-form-page__header"
         title="Envoyer une demande"

@@ -199,7 +199,7 @@ function ProductDetailPage() {
   const productIsAvailable = product?.isActive !== false;
 
   return (
-    <div className="product-detail-page">
+    <div className="product-detail-page" data-testid="product-detail-page">
       <header className="product-detail-page__intro">
         <div>
           <Link className="product-detail-page__back" to="/catalog">

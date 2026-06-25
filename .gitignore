@@ -142,5 +142,9 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
+# Playwright generated artifacts
+frontend/playwright-report/
+frontend/test-results/
+
 .venv
 .env

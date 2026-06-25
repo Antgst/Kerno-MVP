@@ -291,7 +291,7 @@ function StoreDashboardPage() {
     },
   ];
   return (
-    <div className="store-dashboard">
+    <div className="store-dashboard" data-testid="store-dashboard">
       <DashboardIntro
         prefix="store-dashboard"
         titleId="store-dashboard-title"

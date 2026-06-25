@@ -8,7 +8,7 @@ function SupplierRequestCard({ formatRequestDate, getStoreName, request }) {
   const requestDate = formatRequestDate(request);
 
   return (
-    <article className="supplier-request-card">
+    <article className="supplier-request-card" data-testid="supplier-request-card">
       <div className="supplier-request-card__content">
         <div className="supplier-request-card__header">
           <div>

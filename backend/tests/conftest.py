@@ -27,7 +27,7 @@ _RESULTS: dict[str, Any] = {
     "environment": {
         "python": platform.python_version(),
         "platform": platform.platform(),
-        "baseUrl": os.getenv("KERNO_API_BASE_URL", "http://localhost:5000"),
+        "baseUrl": os.getenv("KERNO_API_BASE_URL", "http://localhost:5001"),
     },
     "summary": {
         "passed": 0,
