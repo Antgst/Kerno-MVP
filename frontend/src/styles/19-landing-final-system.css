@@ -957,3 +957,204 @@
   }
 }
 /* End landing header viewport glass final */
+
+/* Landing final readability polish */
+.landing-page {
+  --landing-body-size: clamp(1rem, 0.98vw, 1.08rem);
+  --landing-small-size: clamp(0.88rem, 0.82vw, 0.96rem);
+
+  background-image:
+    radial-gradient(ellipse 780px 420px at 12% 6%, rgb(22 78 63 / 9%), transparent 62%),
+    radial-gradient(ellipse 720px 420px at 88% 16%, rgb(249 115 22 / 7%), transparent 60%),
+    linear-gradient(90deg, rgb(248 245 239 / 46%) 0%, rgb(248 245 239 / 72%) 34%, rgb(248 245 239 / 78%) 50%, rgb(248 245 239 / 72%) 66%, rgb(248 245 239 / 46%) 100%),
+    linear-gradient(180deg, rgb(248 245 239 / 48%) 0%, rgb(248 245 239 / 62%) 42%, rgb(248 245 239 / 82%) 100%),
+    url("../assets/landing/landing-background-premium.webp");
+  background-size:
+    auto,
+    auto,
+    100% 100%,
+    100% 100%,
+    cover;
+  background-position:
+    center top,
+    center top,
+    center top,
+    center top,
+    center top;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+}
+
+.landing-section__heading p,
+.landing-hero__content > p:not(.landing-hero__label) {
+  color: #344f49;
+  font-size: var(--landing-body-size);
+  line-height: 1.7;
+}
+
+.landing-card p,
+.benefit-card p,
+.how-step-card p,
+.supplier-card p,
+.product-preview-card p,
+.pricing-card p,
+.pricing-card li {
+  color: #38534d;
+  font-size: var(--landing-small-size);
+  line-height: 1.62;
+}
+
+.product-preview-card__meta span,
+.supplier-card__location,
+.supplier-card__category,
+.product-preview-card__category,
+.product-preview-card__supplier,
+.product-preview-card__availability {
+  color: #536963;
+  font-size: 0.86rem;
+}
+
+.landing-card h3,
+.benefit-card h3,
+.how-step-card h3,
+.supplier-card h3,
+.product-preview-card h3,
+.pricing-card h3 {
+  color: #0f342c;
+}
+
+.site-header.site-header--public .brand-link,
+.public-header .brand-link {
+  top: 14px;
+  left: clamp(20px, 2.6vw, 46px);
+  min-height: 38px;
+  padding: 6px 12px 6px 7px;
+  background: rgb(255 255 255 / 14%);
+  border-color: rgb(255 255 255 / 34%);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 28%) inset,
+    0 18px 38px rgb(15 45 38 / 10%);
+}
+
+.site-header.site-header--public .brand-logo,
+.public-header .brand-logo {
+  width: 27px;
+  height: 27px;
+}
+
+.site-header.site-header--public .brand-copy,
+.site-header.site-header--public .brand-copy strong,
+.public-header .brand-copy,
+.public-header .brand-copy strong {
+  font-size: 0.88rem;
+}
+
+.site-header.site-header--public .public-header-actions,
+.site-header.site-header--public .public-header__actions,
+.public-header .public-header-actions,
+.public-header .public-header__actions,
+.site-header.site-header--public.public-header--scrolled .public-header-actions,
+.site-header.site-header--public.public-header--scrolled .public-header__actions,
+.public-header.public-header--scrolled .public-header-actions,
+.public-header.public-header--scrolled .public-header__actions {
+  top: 14px;
+  right: clamp(20px, 2.6vw, 46px);
+  gap: 8px;
+  padding: 6px;
+  background: rgb(255 255 255 / 14%);
+  border-color: rgb(255 255 255 / 32%);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 26%) inset,
+    0 18px 38px rgb(15 45 38 / 11%);
+}
+
+.site-header.site-header--public .navigation-link--header-ghost,
+.site-header.site-header--public .navigation-link--header-cta,
+.public-header .navigation-link--header-ghost,
+.public-header .navigation-link--header-cta {
+  min-height: 32px;
+  padding-inline: 17px;
+  font-size: 0.8rem;
+}
+
+.site-header.site-header--public .navigation-link--header-ghost,
+.public-header .navigation-link--header-ghost,
+.site-header.site-header--public.public-header--scrolled .navigation-link--header-ghost,
+.public-header.public-header--scrolled .navigation-link--header-ghost {
+  background: rgb(255 255 255 / 24%);
+}
+
+.site-header.site-header--public .navigation-link--header-cta,
+.public-header .navigation-link--header-cta,
+.site-header.site-header--public.public-header--scrolled .navigation-link--header-cta,
+.public-header.public-header--scrolled .navigation-link--header-cta {
+  background:
+    linear-gradient(180deg, rgb(22 78 63 / 92%), rgb(12 59 48 / 96%));
+}
+
+@media (max-width: 1020px) {
+  .landing-page {
+    background-image:
+      radial-gradient(ellipse 580px 340px at 14% 5%, rgb(22 78 63 / 8%), transparent 64%),
+      radial-gradient(ellipse 520px 320px at 86% 16%, rgb(249 115 22 / 6%), transparent 62%),
+      linear-gradient(90deg, rgb(248 245 239 / 58%) 0%, rgb(248 245 239 / 78%) 42%, rgb(248 245 239 / 82%) 58%, rgb(248 245 239 / 58%) 100%),
+      linear-gradient(180deg, rgb(248 245 239 / 58%) 0%, rgb(248 245 239 / 76%) 52%, rgb(248 245 239 / 90%) 100%),
+      url("../assets/landing/landing-background-premium.webp");
+  }
+}
+
+@media (max-width: 760px) {
+  .site-header.site-header--public .brand-link,
+  .public-header .brand-link {
+    top: 9px;
+    left: 12px;
+    min-height: 34px;
+    padding: 5px 9px 5px 6px;
+  }
+
+  .site-header.site-header--public .brand-logo,
+  .public-header .brand-logo {
+    width: 24px;
+    height: 24px;
+  }
+
+  .site-header.site-header--public .brand-copy,
+  .site-header.site-header--public .brand-copy strong,
+  .public-header .brand-copy,
+  .public-header .brand-copy strong {
+    font-size: 0.8rem;
+  }
+
+  .site-header.site-header--public .public-header-actions,
+  .site-header.site-header--public .public-header__actions,
+  .public-header .public-header-actions,
+  .public-header .public-header__actions,
+  .site-header.site-header--public.public-header--scrolled .public-header-actions,
+  .site-header.site-header--public.public-header--scrolled .public-header__actions,
+  .public-header.public-header--scrolled .public-header-actions,
+  .public-header.public-header--scrolled .public-header__actions {
+    top: 9px;
+    right: 12px;
+    gap: 6px;
+    padding: 4px;
+  }
+
+  .site-header.site-header--public .navigation-link--header-ghost,
+  .site-header.site-header--public .navigation-link--header-cta,
+  .public-header .navigation-link--header-ghost,
+  .public-header .navigation-link--header-cta {
+    min-height: 29px;
+    padding-inline: 11px;
+    font-size: 0.73rem;
+  }
+
+  .landing-page {
+    background-image:
+      radial-gradient(ellipse 440px 280px at 10% 4%, rgb(22 78 63 / 7%), transparent 66%),
+      radial-gradient(ellipse 380px 250px at 90% 12%, rgb(249 115 22 / 5%), transparent 64%),
+      linear-gradient(90deg, rgb(248 245 239 / 72%) 0%, rgb(248 245 239 / 86%) 50%, rgb(248 245 239 / 72%) 100%),
+      linear-gradient(180deg, rgb(248 245 239 / 76%) 0%, rgb(248 245 239 / 88%) 54%, rgb(248 245 239 / 96%) 100%),
+      url("../assets/landing/landing-background-premium.webp");
+  }
+}
+/* End landing final readability polish */
