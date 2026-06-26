@@ -27,11 +27,14 @@ function HomePricing() {
               .join(" ")}
             key={plan.name}
           >
-          <div className="pricing-card__badge-row" aria-hidden={!plan.featured}>
-            {plan.featured && (
-              <span className="pricing-card__badge">Offre premium</span>
-            )}
-          </div>
+            <div
+              className="pricing-card__badge-row"
+              aria-hidden={!plan.featured}
+            >
+              {plan.featured && (
+                <span className="pricing-card__badge">Offre premium</span>
+              )}
+            </div>
             <div className="pricing-card__header">
               <h3>{plan.name}</h3>
             </div>

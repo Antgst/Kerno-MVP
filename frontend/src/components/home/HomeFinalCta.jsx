@@ -19,10 +19,7 @@ function HomeFinalCta() {
         >
           Créer un compte
         </Link>
-        <Link
-          className="landing-button landing-button--light"
-          to="/login"
-        >
+        <Link className="landing-button landing-button--light" to="/login">
           Se connecter
         </Link>
       </div>

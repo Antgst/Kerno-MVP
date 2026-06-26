@@ -1,7 +1,7 @@
 
 
 /* Header — Se connecter */
-.navigation-link--header-ghost {
+.public-header .navigation-link--header-ghost {
   min-height: 40px;
   padding-inline: 17px;
   border: 1px solid rgb(22 78 63 / 10%);
@@ -13,8 +13,8 @@
     0 8px 20px rgb(15 23 42 / 5%);
 }
 
-.navigation-link--header-ghost:hover,
-.navigation-link--header-ghost.navigation-link--active {
+.public-header .navigation-link--header-ghost:hover,
+.public-header .navigation-link--header-ghost.navigation-link--active {
   border-color: rgb(22 78 63 / 18%);
   background: #f8f5ef;
   color: #0f3d33;
@@ -24,7 +24,7 @@
 }
 
 /* Header — Créer un compte */
-.navigation-link--header-cta {
+.public-header .navigation-link--header-cta {
   min-height: 40px;
   padding-inline: 18px;
   border: 1px solid rgb(255 255 255 / 16%);
@@ -38,8 +38,8 @@
     0 13px 28px rgb(22 78 63 / 22%);
 }
 
-.navigation-link--header-cta:hover,
-.navigation-link--header-cta.navigation-link--active {
+.public-header .navigation-link--header-cta:hover,
+.public-header .navigation-link--header-cta.navigation-link--active {
   background:
     radial-gradient(circle at 24% 18%, rgb(255 255 255 / 17%), transparent 28%),
     linear-gradient(135deg, #1a5d4b 0%, #0f3d33 100%);
@@ -225,7 +225,7 @@
 /* Active state — keep primary CTA pressed but readable */
 .landing-hero .landing-button--primary:active,
 .landing-final-cta .landing-button--outline-light:active,
-.navigation-link--header-cta:active {
+.public-header .navigation-link--header-cta:active {
   transform: translateY(0) scale(0.98);
   box-shadow:
     inset 0 2px 6px rgb(0 0 0 / 18%),
@@ -235,7 +235,7 @@
 /* Active state — secondary buttons */
 .landing-hero .landing-button--secondary:active,
 .landing-final-cta .landing-button--light:active,
-.navigation-link--header-ghost:active {
+.public-header .navigation-link--header-ghost:active {
   transform: translateY(0) scale(0.98);
   box-shadow:
     inset 0 2px 5px rgb(15 23 42 / 10%),

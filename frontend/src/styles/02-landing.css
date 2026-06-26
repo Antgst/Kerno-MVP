@@ -215,7 +215,6 @@
   color: rgb(49 82 76 / 58%);
 }
 
-.supplier-card dt,
 .product-preview-card__meta span {
   color: var(--color-text-secondary);
   font-size: 0.76rem;
@@ -531,8 +530,6 @@
     transform 160ms ease;
 }
 
-.supplier-card--interactive:hover,
-.supplier-card--interactive:focus-visible,
 .product-preview-card--interactive:hover,
 .product-preview-card--interactive:focus-visible {
   transform: translateY(-2px);
@@ -540,8 +537,6 @@
   box-shadow: 0 18px 34px rgb(15 23 42 / 8%);
 }
 
-.supplier-card--interactive:hover .landing-card-button,
-.supplier-card--interactive:focus-visible .landing-card-button,
 .product-preview-card--interactive:hover .product-preview-card__footer span,
 .product-preview-card--interactive:focus-visible
   .product-preview-card__footer
@@ -1011,19 +1006,12 @@
   line-height: 1.65;
 }
 
-.landing-hero__label,
-.landing-hero__meta-label {
+.landing-hero__label {
   color: var(--landing-orange);
   font-size: 0.74rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-}
-
-.landing-hero__meta-list {
-  color: #405f58;
-  font-size: var(--landing-text-xs);
-  font-weight: 700;
 }
 
 .landing-actions {
@@ -1102,24 +1090,16 @@
   line-height: 1.6;
 }
 
-.supplier-grid,
-.benefits-grid,
-.how-steps-grid {
-  gap: clamp(18px, 2vw, 24px);
-}
-
 .supplier-card,
 .product-preview-card {
   overflow: hidden;
 }
 
-.supplier-card__image,
 .product-preview-card__image {
   height: clamp(150px, 13vw, 176px);
   background: #d6ebe2;
 }
 
-.supplier-card__image img,
 .product-preview-card__image img {
   display: block;
   width: 100%;
@@ -1140,8 +1120,7 @@
 }
 
 .product-preview-card__meta span,
-.supplier-card dt,
-.supplier-card dd {
+.supplier-card__category {
   color: #405f58;
   font-size: 0.84rem;
   font-weight: 600;

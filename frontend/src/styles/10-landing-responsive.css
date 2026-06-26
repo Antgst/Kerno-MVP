@@ -258,17 +258,6 @@
     flex-wrap: wrap;
   }
 
-  .landing-hero__media {
-    max-width: 520px;
-    margin-inline: auto;
-  }
-
-  .supplier-grid,
-  .benefits-grid,
-  .how-steps-grid {
-    grid-template-columns: 1fr;
-  }
-
   .pricing-card {
     min-height: auto;
   }
@@ -321,7 +310,6 @@
     grid-template-columns: 1fr;
   }
 
-  .supplier-card__image,
   .product-preview-card__image {
     height: 168px;
   }
