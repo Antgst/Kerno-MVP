@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import PublicFooter from "../components/home/PublicFooter";
 
 function AppLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -40,6 +41,10 @@ function AppLayout({ children }) {
         />
 
         <main className="kerno-shell__content">{children}</main>
+
+        <div className="app-layout__footer">
+          <PublicFooter />
+        </div>
       </div>
     </div>
   );

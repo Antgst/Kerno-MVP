@@ -560,3 +560,174 @@
   background: #edf6f3;
   color: #064f40;
 }
+
+/* Shared KERNO type scale */
+:root {
+  --kerno-type-xs: 0.78rem;
+  --kerno-type-sm: 0.88rem;
+  --kerno-type-body: clamp(0.96rem, 0.9vw, 1.02rem);
+  --kerno-type-card: 0.92rem;
+  --kerno-type-card-title: clamp(1.02rem, 0.9vw, 1.12rem);
+  --kerno-type-section-title: clamp(2rem, 2.2vw, 2.35rem);
+  --kerno-type-hero-title: clamp(2.45rem, 4vw, 3.18rem);
+
+  --kerno-type-footer-kicker: 0.95rem;
+  --kerno-type-footer-body: 0.91rem;
+  --kerno-type-footer-link: 0.89rem;
+}
+/* End Shared KERNO type scale */
+
+/* Shared site footer layout */
+.public-layout,
+.kerno-shell__main {
+  min-height: 100vh;
+}
+
+.public-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.public-layout__content {
+  flex: 1 0 auto;
+}
+
+.public-layout__footer,
+.app-layout__footer {
+  flex: 0 0 auto;
+  border-top: 1px solid rgb(222 219 211 / 80%);
+  background:
+    linear-gradient(
+      180deg,
+      rgb(248 245 239 / 76%) 0%,
+      rgb(248 245 239 / 96%) 100%
+    );
+}
+
+.public-layout__footer .public-footer,
+.app-layout__footer .public-footer {
+  display: flex;
+  width: min(1180px, calc(100% - 56px));
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 28px;
+  margin-inline: auto;
+  padding: 28px 0 34px;
+  border-top: 0;
+  color: #31524c;
+  font-family: var(--font-main);
+}
+
+.public-layout__footer .public-footer__brand,
+.app-layout__footer .public-footer__brand {
+  display: grid;
+  max-width: 460px;
+  gap: 8px;
+}
+
+.public-layout__footer .public-footer__brand strong,
+.app-layout__footer .public-footer__brand strong {
+  color: var(--color-deep-green);
+  font-size: var(--kerno-type-footer-kicker);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+}
+
+.public-layout__footer .public-footer__brand p,
+.app-layout__footer .public-footer__brand p {
+  max-width: 460px;
+  margin: 0;
+  color: #5f6864;
+  font-size: var(--kerno-type-footer-body);
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.public-layout__footer .public-footer__links,
+.app-layout__footer .public-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px 16px;
+}
+
+.public-layout__footer .public-footer__links a,
+.app-layout__footer .public-footer__links a {
+  color: #31524c;
+  font-size: var(--kerno-type-footer-link);
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.public-layout__footer .public-footer__links a:hover,
+.app-layout__footer .public-footer__links a:hover {
+  color: var(--color-deep-green);
+  text-decoration: underline;
+}
+
+/* Login garde le même footer, seules la hauteur et la mise en page changent */
+.public-layout--login {
+  --kerno-auth-footer-height: clamp(96px, 10vh, 118px);
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.public-layout--login .public-layout__content {
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.public-layout--login .public-layout__footer {
+  flex: 0 0 var(--kerno-auth-footer-height);
+  overflow: hidden;
+}
+
+.public-layout--login .public-layout__footer .public-footer {
+  height: 100%;
+  align-items: center;
+  padding-block: 0;
+}
+
+@media (max-height: 760px) and (min-width: 861px) {
+  .public-layout--login {
+    --kerno-auth-footer-height: 96px;
+  }
+
+  .public-layout--login .public-layout__footer .public-footer {
+    gap: 22px;
+  }
+}
+
+@media (max-width: 860px) {
+  .public-layout--login {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .public-layout--login .public-layout__footer {
+    flex-basis: auto;
+    overflow: visible;
+  }
+
+  .public-layout__footer .public-footer,
+  .app-layout__footer .public-footer,
+  .public-layout--login .public-layout__footer .public-footer {
+    width: min(520px, calc(100vw - 36px));
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding-block: 24px 30px;
+  }
+
+  .public-layout__footer .public-footer__links,
+  .app-layout__footer .public-footer__links {
+    justify-content: flex-start;
+  }
+}
+/* End shared site footer layout */
