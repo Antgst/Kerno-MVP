@@ -12,8 +12,7 @@ function PublicFooter() {
       <div className="public-footer__brand">
         <strong>KERNO</strong>
         <p>
-          La plateforme B2B qui structure le premier contact entre fournisseurs
-          directs et magasins.
+          Le premier contact B2B entre magasins et fournisseurs directs.
         </p>
       </div>
 
