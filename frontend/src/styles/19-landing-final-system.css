@@ -1379,3 +1379,188 @@
   }
 }
 /* End landing card tinted glass surface */
+
+/* Shared footer visual lock */
+:root {
+  --kerno-footer-kicker-size: 0.95rem;
+  --kerno-footer-body-size: 0.91rem;
+  --kerno-footer-link-size: 0.89rem;
+  --kerno-footer-width: min(1180px, calc(100% - 56px));
+  --kerno-footer-padding-y: 28px 34px;
+}
+
+.public-layout__footer,
+.app-layout__footer,
+.login-footer {
+  flex: 0 0 auto;
+  border-top: 1px solid rgb(222 219 211 / 80%);
+  background:
+    linear-gradient(
+      180deg,
+      rgb(248 245 239 / 76%) 0%,
+      rgb(248 245 239 / 96%) 100%
+    );
+}
+
+.public-layout__footer .public-footer,
+.app-layout__footer .public-footer,
+.landing-page > .public-footer,
+.login-footer .public-footer {
+  display: flex;
+  width: var(--kerno-footer-width);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 28px;
+  margin-inline: auto;
+  padding: var(--kerno-footer-padding-y);
+  border-top: 0;
+  color: #31524c;
+  font-family: var(--font-main);
+}
+
+.public-layout__footer .public-footer__brand,
+.app-layout__footer .public-footer__brand,
+.landing-page > .public-footer .public-footer__brand,
+.login-footer .public-footer__brand {
+  display: grid;
+  max-width: 460px;
+  gap: 8px;
+}
+
+.public-layout__footer .public-footer__brand strong,
+.app-layout__footer .public-footer__brand strong,
+.landing-page > .public-footer .public-footer__brand strong,
+.login-footer .public-footer__brand strong {
+  color: var(--color-deep-green);
+  font-family: var(--font-main);
+  font-size: var(--kerno-footer-kicker-size);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+}
+
+.public-layout__footer .public-footer__brand p,
+.app-layout__footer .public-footer__brand p,
+.landing-page > .public-footer .public-footer__brand p,
+.login-footer .public-footer__brand p {
+  max-width: 460px;
+  margin: 0;
+  color: #5f6864;
+  font-family: var(--font-main);
+  font-size: var(--kerno-footer-body-size);
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.public-layout__footer .public-footer__links,
+.app-layout__footer .public-footer__links,
+.landing-page > .public-footer .public-footer__links,
+.login-footer .public-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px 16px;
+}
+
+.public-layout__footer .public-footer__links a,
+.app-layout__footer .public-footer__links a,
+.landing-page > .public-footer .public-footer__links a,
+.login-footer .public-footer__links a {
+  color: #31524c;
+  font-family: var(--font-main);
+  font-size: var(--kerno-footer-link-size);
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.public-layout__footer .public-footer__links a:hover,
+.app-layout__footer .public-footer__links a:hover,
+.landing-page > .public-footer .public-footer__links a:hover,
+.login-footer .public-footer__links a:hover {
+  color: var(--color-deep-green);
+  text-decoration: underline;
+}
+
+/* Login : même typo et mêmes tailles, seule la place disponible est contrainte */
+.public-layout--login {
+  --kerno-auth-footer-height: clamp(108px, 12vh, 132px);
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.public-layout--login .public-layout__content {
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.public-layout--login .public-layout__footer {
+  flex: 0 0 var(--kerno-auth-footer-height);
+  overflow: hidden;
+}
+
+.public-layout--login .public-layout__footer .public-footer {
+  height: 100%;
+  align-items: center;
+  padding: 0;
+}
+
+/* Aucune mini-typo spécifique login */
+.public-layout--login .public-footer__brand strong,
+.public-layout--login .public-footer__brand p,
+.public-layout--login .public-footer__links a {
+  font-size: inherit;
+}
+
+.public-layout--login .public-footer__brand strong {
+  font-size: var(--kerno-footer-kicker-size);
+}
+
+.public-layout--login .public-footer__brand p {
+  font-size: var(--kerno-footer-body-size);
+}
+
+.public-layout--login .public-footer__links a {
+  font-size: var(--kerno-footer-link-size);
+}
+
+@media (max-width: 860px) {
+  :root {
+    --kerno-footer-width: min(520px, calc(100vw - 36px));
+    --kerno-footer-padding-y: 24px 30px;
+  }
+
+  .public-layout--login {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .public-layout--login .public-layout__footer {
+    flex-basis: auto;
+    overflow: visible;
+  }
+
+  .public-layout__footer .public-footer,
+  .app-layout__footer .public-footer,
+  .landing-page > .public-footer,
+  .login-footer .public-footer,
+  .public-layout--login .public-layout__footer .public-footer {
+    width: var(--kerno-footer-width);
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: var(--kerno-footer-padding-y);
+  }
+
+  .public-layout__footer .public-footer__links,
+  .app-layout__footer .public-footer__links,
+  .landing-page > .public-footer .public-footer__links,
+  .login-footer .public-footer__links {
+    justify-content: flex-start;
+  }
+}
+/* End shared footer visual lock */

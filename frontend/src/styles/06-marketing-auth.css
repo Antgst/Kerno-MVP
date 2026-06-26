@@ -114,7 +114,7 @@
 }
 
 .marketing-preview {
-  padding: 22px;
+  padding: 24px;
 }
 
 .marketing-preview__top {
@@ -200,7 +200,7 @@
 
 .marketing-steps span {
   color: #ff7119;
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 800;
 }
 
@@ -416,7 +416,7 @@
 .register-required-note {
   margin: 0;
   color: #475569;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
 }
 
 .register-card .auth-form {
@@ -581,7 +581,7 @@
 
 .register-role-card__content small {
   color: #64748b;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   font-weight: 400;
   line-height: 1.45;
 }
@@ -660,7 +660,7 @@
 
   .register-editorial,
   .register-card {
-    padding: 22px;
+    padding: 24px;
     border-radius: 20px;
   }
 
@@ -678,16 +678,26 @@
   }
 }
 
-/* Login landing final alignment */
-.auth-page.login-page {
+/* Login clean final layout */
+.login-public-page {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: #f8f5ef;
+  color: #1b302e;
+  font-family: var(--font-main);
+  text-rendering: geometricprecision;
+}
+
+.login-public-page .auth-page.login-page {
   position: relative;
   isolation: isolate;
   display: grid;
-  min-height: calc(100svh - 72px);
+  height: 100%;
+  min-height: 0;
   place-items: center;
   overflow: hidden;
-  padding: clamp(24px, 3.4vh, 40px) 24px;
-  color: #123c32;
+  padding: clamp(36px, 5vh, 64px) 24px clamp(10px, 1.4vh, 18px);
   background:
     linear-gradient(
       90deg,
@@ -695,10 +705,10 @@
       rgb(248 245 239 / 56%) 50%,
       rgb(248 245 239 / 44%) 100%
     ),
-    url("../assets/landing/landing-background-premium.webp") center 32% / cover no-repeat;
+    url("../assets/landing/landing-background-premium.webp") center 28% / cover no-repeat;
 }
 
-.auth-page.login-page::before {
+.login-public-page .auth-page.login-page::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -706,30 +716,28 @@
   background:
     linear-gradient(
       180deg,
-      rgb(248 245 239 / 12%) 0%,
-      rgb(248 245 239 / 18%) 24%,
-      rgb(248 245 239 / 26%) 100%
-    ),
-    radial-gradient(circle at 18% 18%, rgb(255 255 255 / 18%), transparent 34%),
-    radial-gradient(circle at 82% 18%, rgb(255 255 255 / 12%), transparent 30%);
+      rgb(248 245 239 / 8%) 0%,
+      rgb(248 245 239 / 18%) 56%,
+      rgb(248 245 239 / 42%) 100%
+    );
   pointer-events: none;
 }
 
-.login-page .register-shell {
+.login-page .login-shell {
   display: grid;
-  width: min(1080px, calc(100vw - 48px));
-  max-height: calc(100svh - 124px);
+  width: min(1120px, calc(100vw - 48px));
+  max-height: min(660px, calc(100svh - var(--kerno-auth-footer-height, 110px) - 72px));
   align-items: center;
-  gap: clamp(28px, 3.2vw, 44px);
-  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.78fr);
+  gap: clamp(30px, 3.4vw, 48px);
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 0.72fr);
   margin-inline: auto;
-  padding: clamp(30px, 3.4vw, 46px);
-  border: 1px solid rgb(255 255 255 / 56%);
+  padding: clamp(30px, 3vw, 42px);
+  border: 1px solid rgb(255 255 255 / 58%);
   border-radius: 24px;
   background:
     linear-gradient(
       135deg,
-      rgb(255 255 255 / 70%),
+      rgb(255 255 255 / 72%),
       rgb(236 244 240 / 46%)
     );
   box-shadow:
@@ -739,55 +747,53 @@
   -webkit-backdrop-filter: blur(18px) saturate(1.12);
 }
 
-.login-page .register-editorial {
+.login-page .login-editorial {
   display: grid;
   min-width: 0;
   align-content: center;
-  gap: 18px;
+  gap: 13px;
   padding: 0;
   border: 0;
-  border-radius: 0;
   background: transparent;
   box-shadow: none;
-  overflow: visible;
 }
 
-.login-page .register-editorial h1 {
+.login-page .login-editorial h1 {
   position: relative;
-  max-width: 580px;
+  max-width: 560px;
   margin: 0;
   color: #123c32;
-  font-size: clamp(3rem, 5vw, 4.9rem);
+  font-size: var(--kerno-type-hero-title);
   font-weight: 800;
   letter-spacing: -0.07em;
   line-height: 0.94;
 }
 
-.login-page .register-editorial h1::after,
-.login-page .register-card__header h2::after {
+.login-page .login-editorial h1::after,
+.login-page .login-card__header h2::after {
   content: "";
   display: block;
-  width: 54px;
+  width: 52px;
   height: 3px;
-  margin-top: 14px;
+  margin-top: 12px;
   border-radius: 999px;
   background: #f97316;
 }
 
-.login-page .register-editorial p {
-  max-width: 580px;
+.login-page .login-editorial p {
+  max-width: 560px;
   margin: 0;
   color: #49635b;
-  font-size: 1rem;
+  font-size: var(--kerno-type-body);
   font-weight: 600;
-  line-height: 1.65;
+  line-height: 1.52;
 }
 
-.login-page .register-visual {
+.login-page .login-visual {
   display: block;
   overflow: hidden;
-  width: min(430px, 100%);
-  margin: 2px 0 0;
+  width: min(440px, 100%);
+  margin: 0;
   border: 1px solid rgb(255 255 255 / 54%);
   border-radius: 18px;
   background: transparent;
@@ -796,33 +802,33 @@
     0 1px 0 rgb(255 255 255 / 58%) inset;
 }
 
-.login-page .register-visual img {
+.login-page .login-visual img {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 8.6;
+  aspect-ratio: 16 / 7.8;
   object-fit: cover;
 }
 
-.login-page .register-benefits {
+.login-page .login-benefits {
   display: grid;
-  max-width: 580px;
-  gap: 10px;
+  max-width: 560px;
+  gap: 7px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.login-page .register-benefits li {
+.login-page .login-benefits li {
   display: flex;
   align-items: center;
   gap: 10px;
   color: #38524a;
-  font-size: 0.92rem;
+  font-size: var(--kerno-type-sm);
   font-weight: 700;
-  line-height: 1.42;
+  line-height: 1.32;
 }
 
-.login-page .register-benefits li span {
+.login-page .login-benefits li span {
   display: block;
   width: 7px;
   height: 7px;
@@ -832,17 +838,21 @@
   box-shadow: none;
 }
 
-.login-page .register-benefits li span::before {
+.login-page .login-benefits li span::before {
   display: none;
 }
 
-.login-page .register-card {
+.login-page .login-card {
+  display: grid;
+  width: min(405px, 100%);
+  align-self: center;
+  padding: clamp(24px, 2.25vw, 30px);
   border: 1px solid rgb(255 255 255 / 58%);
   border-radius: 22px;
   background:
     linear-gradient(
       135deg,
-      rgb(255 255 255 / 82%),
+      rgb(255 255 255 / 84%),
       rgb(233 243 239 / 58%)
     );
   box-shadow:
@@ -852,58 +862,62 @@
   -webkit-backdrop-filter: blur(16px) saturate(1.1);
 }
 
-.login-page .register-card__header {
-  margin-bottom: 18px;
+.login-page .login-card__header {
+  margin-bottom: 14px;
 }
 
-.login-page .register-card__header h2 {
+.login-page .login-card__header h2 {
+  margin: 0;
   color: #123c32;
-  font-size: clamp(1.85rem, 2.2vw, 2.25rem);
+  font-size: var(--kerno-type-section-title);
   font-weight: 800;
   letter-spacing: -0.05em;
   line-height: 1;
 }
 
-.login-page .register-card__header p {
-  color: #52635e;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.58;
+.login-page .login-card__header h2::after {
+  width: 46px;
+  margin-top: 10px;
 }
 
-.login-page .login-required-note {
-  margin-top: 8px;
-  color: #63706c;
-  font-size: 0.82rem;
-  font-weight: 700;
-  line-height: 1.45;
+.login-page .login-card__header p {
+  max-width: 315px;
+  margin: 0;
+  color: #52635e;
+  font-size: var(--kerno-type-sm);
+  font-weight: 600;
+  line-height: 1.46;
 }
 
 .login-page .auth-form {
-  gap: 15px;
+  display: grid;
+  gap: 12px;
 }
 
 .login-page .auth-form label,
-.login-page .register-card label {
+.login-page .login-card label {
+  margin-bottom: 5px;
   color: #3d544d;
-  font-size: 0.92rem;
+  font-size: var(--kerno-type-sm);
   font-weight: 700;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .login-page .auth-form input,
-.login-page .register-card input {
-  min-height: 44px;
-  border-radius: 14px;
-  font-size: 1rem;
+.login-page .login-card input {
+  min-height: 46px;
+  padding-inline: 14px;
+  border-radius: 13px;
+  font-size: var(--kerno-type-sm);
 }
 
 .login-page .auth-submit {
-  min-height: 48px;
+  min-height: 46px;
+  margin-top: 2px;
   border-radius: 999px;
   background: #164e3f;
   color: #ffffff;
-  font-size: 0.92rem;
+  font-size: var(--kerno-type-sm);
   font-weight: 800;
   box-shadow: 0 14px 34px rgb(22 78 63 / 24%);
   transition:
@@ -923,20 +937,25 @@
   opacity: 0.72;
 }
 
-.login-page .register-login-link {
+.login-page .login-register-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin: 10px 0 0;
   color: #52635e;
-  font-size: 0.88rem;
+  font-size: var(--kerno-type-xs);
   font-weight: 700;
   text-align: center;
 }
 
-.login-page .register-login-link a {
+.login-page .login-register-link a {
   display: inline-flex;
-  min-height: 34px;
+  min-height: 30px;
   align-items: center;
   justify-content: center;
-  margin-left: 6px;
-  padding: 0 14px;
+  margin-left: 0;
+  padding: 0 12px;
   border: 1px solid rgb(22 78 63 / 12%);
   border-radius: 999px;
   background: rgb(255 255 255 / 72%);
@@ -946,104 +965,100 @@
   box-shadow: 0 10px 24px rgb(15 45 38 / 8%);
 }
 
-.login-page .register-login-link a:hover {
+.login-page .login-register-link a:hover {
   background: #e6f5ef;
 }
 
-@media (min-width: 1400px) {
-  .auth-page.login-page {
-    background:
-      linear-gradient(
-        90deg,
-        rgb(248 245 239 / 70%) 0%,
-        rgb(248 245 239 / 54%) 50%,
-        rgb(248 245 239 / 42%) 100%
-      ),
-      url("../assets/landing/landing-background-premium.webp") center 28% / cover no-repeat;
-  }
+.login-page .login-required-note {
+  margin: 6px 0 0;
+  color: #75827d;
+  font-size: var(--kerno-type-xs);
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  opacity: 0.78;
 }
 
-@media (max-height: 790px) and (min-width: 861px) {
-  .auth-page.login-page {
-    padding-block: 18px;
+@media (max-height: 760px) and (min-width: 861px) {
+  .login-public-page .auth-page.login-page {
+    padding-top: 30px;
+    padding-bottom: 8px;
   }
 
-  .login-page .register-shell {
-    max-height: calc(100svh - 98px);
+  .login-page .login-shell {
+    max-height: calc(100svh - var(--kerno-auth-footer-height, 96px) - 40px);
     padding: 24px;
   }
 
-  .login-page .register-editorial h1 {
-    font-size: clamp(2.45rem, 4.3vw, 3.9rem);
+  .login-page .login-visual {
+    width: min(390px, 100%);
   }
 
-  .login-page .register-visual img {
-    aspect-ratio: 16 / 7.8;
+  .login-page .login-visual img {
+    aspect-ratio: 16 / 6.8;
   }
 
-  .login-page .register-benefits {
-    gap: 8px;
+  .login-page .login-card {
+    width: min(372px, 100%);
+    padding: 20px;
   }
 
-  .login-page .register-card {
-    padding-block: 22px;
+  .login-page .auth-form input,
+  .login-page .login-card input {
+    min-height: 42px;
+  }
+
+  .login-page .auth-submit {
+    min-height: 42px;
   }
 }
 
 @media (max-width: 860px) {
-  .auth-page.login-page {
+  .login-public-page {
+    height: auto;
     min-height: auto;
     overflow: visible;
-    padding: 28px 18px 42px;
-    background:
-      linear-gradient(
-        180deg,
-        rgb(248 245 239 / 76%) 0%,
-        rgb(248 245 239 / 58%) 100%
-      ),
-      url("../assets/landing/landing-background-premium.webp") 60% 32% / cover no-repeat;
   }
 
-  .login-page .register-shell {
+  .login-public-page .auth-page.login-page {
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+    padding: 72px 18px 28px;
+  }
+
+  .login-page .login-shell {
     width: min(560px, 100%);
     max-height: none;
     grid-template-columns: 1fr;
     padding: 24px;
   }
 
-  .login-page .register-editorial {
-    gap: 14px;
-  }
-
-  .login-page .register-editorial h1 {
+  .login-page .login-editorial h1 {
     font-size: clamp(2.2rem, 10.5vw, 3.25rem);
   }
 
-  .login-page .register-editorial p,
-  .login-page .register-card__header p {
-    font-size: 0.95rem;
-  }
-
-  .login-page .register-visual {
-    width: 100%;
-  }
-
-  .login-page .register-visual img {
+  .login-page .login-visual img {
     aspect-ratio: 16 / 9;
   }
 
-  .login-page .register-benefits {
+  .login-page .login-card {
+    width: 100%;
+    padding: 24px;
+  }
+
+  .login-page .login-benefits {
     display: none;
   }
 
-  .login-page .register-card__header h2 {
-    font-size: clamp(1.7rem, 6vw, 2rem);
+  .login-page .login-register-link {
+    flex-wrap: wrap;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .login-page .auth-submit,
-  .login-page .register-login-link a {
+  .login-page .login-register-link a {
     transition: none;
   }
 
@@ -1051,5 +1066,4 @@
     transform: none;
   }
 }
-/* End login landing final alignment */
-
+/* End Login clean final layout */
