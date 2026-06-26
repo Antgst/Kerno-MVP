@@ -586,3 +586,110 @@ body,
 
 /* End global background opacity tuning - V2 Antoine */
 
+/* Dashboard readability polish - Antoine */
+
+/* Lisibilité fine : petits textes plus lisibles sur fond image.
+   Scope limité aux dashboards store + supplier.
+*/
+.store-dashboard__hello,
+.supplier-dashboard__hello {
+  color: #5f6f68 !important;
+  font-weight: 650 !important;
+}
+
+.store-dashboard__subtitle,
+.supplier-dashboard__subtitle {
+  color: #4f5f58 !important;
+  font-weight: 650 !important;
+}
+
+.store-dashboard__stat-card p,
+.supplier-dashboard__stat-card p {
+  color: #263d35 !important;
+  font-weight: 800 !important;
+}
+
+.store-dashboard__stat-card small,
+.supplier-dashboard__stat-card small {
+  color: #53655e !important;
+  font-weight: 650 !important;
+}
+
+.store-dashboard__request-copy small,
+.supplier-dashboard__request-copy small,
+.store-dashboard__request-copy em,
+.supplier-dashboard__request-copy em,
+.store-dashboard__request-date,
+.supplier-dashboard__request-date {
+  color: #53655e !important;
+  font-weight: 600 !important;
+}
+
+.store-dashboard__section-header a,
+.supplier-dashboard__section-header a,
+.store-dashboard__request-all,
+.supplier-dashboard__request-all {
+  color: #164e3f !important;
+  font-weight: 850 !important;
+}
+
+.store-dashboard__section-header a:hover,
+.supplier-dashboard__section-header a:hover,
+.store-dashboard__request-all:hover,
+.supplier-dashboard__request-all:hover {
+  color: #0f3d31 !important;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* End dashboard readability polish - Antoine */
+
+/* Dashboard primary CTA role polish - Antoine */
+
+/* CTA principal dashboards :
+   - magasin : Trouver des fournisseurs en orange ;
+   - fournisseur : Ajouter un produit conservé en orange ;
+   - responsive via dimensions fluides et wrapping propre.
+*/
+.store-dashboard__primary-cta,
+.supplier-dashboard__primary-cta {
+  min-height: clamp(46px, 3.2vw, 54px) !important;
+  padding: 0 clamp(20px, 2vw, 30px) !important;
+  border: 1px solid rgb(249 115 22 / 22%) !important;
+  border-radius: 18px !important;
+  background: #f97316 !important;
+  color: #ffffff !important;
+  font-weight: 850 !important;
+  box-shadow:
+    0 14px 28px rgb(249 115 22 / 18%),
+    0 1px 0 rgb(255 255 255 / 24%) inset !important;
+}
+
+.store-dashboard__primary-cta:hover,
+.supplier-dashboard__primary-cta:hover {
+  background: #ea580c !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.store-dashboard__primary-cta svg,
+.supplier-dashboard__primary-cta svg {
+  width: clamp(18px, 1.4vw, 23px) !important;
+  height: clamp(18px, 1.4vw, 23px) !important;
+}
+
+@media (max-width: 900px) {
+  .store-dashboard__intro,
+  .supplier-dashboard__intro {
+    align-items: stretch !important;
+  }
+
+  .store-dashboard__primary-cta,
+  .supplier-dashboard__primary-cta {
+    width: 100% !important;
+    min-height: 48px !important;
+  }
+}
+
+/* End dashboard primary CTA role polish - Antoine */
+

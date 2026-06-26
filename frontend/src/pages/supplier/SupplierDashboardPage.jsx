@@ -227,19 +227,19 @@ function SupplierDashboardPage() {
       icon: "mail",
       value: receivedRequestCount,
       label: "Demandes reçues",
-      helper: "Depuis vos magasins",
+      helper: "Demandes de magasins",
     },
     {
       icon: "clock",
       value: pendingRequestCount,
-      label: "En attente",
+      label: "Demandes en attente",
       helper: "À traiter",
     },
     {
       icon: "check",
       value: processedRequestCount,
       label: "Demandes traitées",
-      helper: "Suivi commercial",
+      helper: "Demandes finalisées",
       featured: true,
     },
   ];
@@ -250,6 +250,7 @@ function SupplierDashboardPage() {
         prefix="supplier-dashboard"
         titleId="supplier-dashboard-title"
         displayName={supplierDisplayName}
+        subtitle="Suivez vos demandes reçues et gérez vos produits visibles au catalogue."
         ctaTo="/supplier/products/new"
         ctaLabel="Ajouter un produit"
         ctaIcon="plus"
