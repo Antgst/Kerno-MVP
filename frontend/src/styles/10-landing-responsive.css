@@ -14,7 +14,7 @@
   }
 
   .landing-hero h1 {
-    font-size: 3rem;
+    font-size: clamp(2.35rem, 9vw, 3rem);
   }
 
   .landing-final-cta {
@@ -232,3 +232,125 @@
     flex: 1;
   }
 }
+
+/* Landing uniform SaaS responsive final pass */
+@media (max-width: 1100px) {
+  .landing-page {
+    padding-inline: clamp(18px, 4vw, 34px);
+  }
+
+  .product-preview-grid,
+  .pricing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .landing-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.86fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .landing-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-hero .landing-actions {
+    flex-wrap: wrap;
+  }
+
+  .landing-hero__media {
+    max-width: 520px;
+    margin-inline: auto;
+  }
+
+  .supplier-grid,
+  .benefits-grid,
+  .how-steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-card {
+    min-height: auto;
+  }
+
+  .pricing-card__price strong {
+    font-size: clamp(2.1rem, 7vw, 2.65rem);
+  }
+
+  .landing-final-cta {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    text-align: left;
+  }
+}
+
+@media (max-width: 640px) {
+  .landing-page {
+    padding-inline: 16px;
+  }
+
+  .landing-section + .landing-section,
+  .landing-section + .landing-final-cta {
+    margin-top: 58px;
+  }
+
+  .landing-hero {
+    padding: 24px;
+    border-radius: 22px;
+  }
+
+  .landing-hero h1 {
+    font-size: clamp(2.12rem, 10vw, 2.55rem);
+    line-height: 1.06;
+  }
+
+  .landing-hero .landing-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .landing-button,
+  .landing-card-button {
+    justify-content: center;
+    width: 100%;
+    white-space: normal;
+  }
+
+  .product-preview-grid,
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .supplier-card__image,
+  .product-preview-card__image {
+    height: 168px;
+  }
+
+  .pricing-card {
+    padding: 24px;
+  }
+
+  .pricing-card:not(.pricing-card--featured) .pricing-card__badge-row {
+    display: none;
+  }
+
+  .pricing-card__badge-row,
+  .pricing-card__header,
+  .pricing-card__price {
+    justify-content: flex-start;
+  }
+
+  .pricing-card__header h3 {
+    text-align: left;
+  }
+
+  .landing-final-cta {
+    padding: 24px;
+  }
+
+  .landing-final-cta .landing-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* End landing uniform SaaS responsive final pass */

@@ -10,8 +10,8 @@ function HomeProductPreview() {
   return (
     <section className="landing-section">
       <SectionHeading
-        title="Offres à découvrir"
-        subtitle="Un aperçu des produits que les magasins peuvent identifier et que les fournisseurs peuvent valoriser."
+        title="Produits à découvrir"
+        subtitle="Un aperçu concret des produits que les magasins peuvent identifier et que les fournisseurs peuvent rendre visibles."
       />
 
       <div className="product-preview-grid">

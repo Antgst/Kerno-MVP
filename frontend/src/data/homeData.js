@@ -170,7 +170,7 @@ export const pricingPlans = [
     price: "0 €",
     description: "Explorez KERNO avec un accès limité",
     details: [
-      "Aperçu des produits et opportunités disponibles",
+      "Aperçu des produits et fournisseurs disponibles",
       "Noms, coordonnées et détails sensibles masqués",
       "Idéal pour découvrir la plateforme sans engagement",
     ],
@@ -204,10 +204,10 @@ export const pricingPlans = [
     period: "/ an",
     description: "Accès complet + accompagnement renforcé",
     details: [
-      "Tous les avantages de l’offre Pro",
+      "Tous les avantages de la formule Pro",
       "Mise en avant dans les espaces clés KERNO",
       "Accompagnement visibilité ou sourcing selon le rôle",
-      "Options premium selon le rôle : vitrine, contenu pro, sourcing accompagné",
+      "Options premium selon le rôle : vitrine renforcée, contenu pro, sourcing accompagné",
     ],
     featured: true,
   },

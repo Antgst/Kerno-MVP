@@ -2,6 +2,7 @@
 
 .landing-page {
   overflow-x: hidden;
+  font-family: var(--font-main);
   background:
     linear-gradient(
       180deg,
@@ -10,6 +11,7 @@
     ),
     var(--color-warm-ivory);
   color: #1c302e;
+  font-size: var(--text-md);
 }
 
 .landing-hero,
@@ -54,13 +56,13 @@
 .landing-final-cta h2 {
   margin: 0;
   color: #1b302e;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0;
 }
 
 .landing-hero h1 {
   max-width: 620px;
-  font-size: clamp(2.55rem, 4.6vw, 3.4rem);
+  font-size: var(--text-hero);
   line-height: 1.04;
 }
 
@@ -214,7 +216,7 @@
 }
 
 .supplier-card dt,
-.product-preview-card span {
+.product-preview-card__meta span {
   color: var(--color-text-secondary);
   font-size: 0.76rem;
   font-weight: 600;
@@ -443,15 +445,15 @@
 
 .landing-card h3 {
   font-size: 1rem;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.28;
 }
 
 .benefit-card h3,
 .how-step-card h3 {
   color: #123f34;
-  font-size: 1.1rem;
-  font-weight: 650;
+  font-size: 1.08rem;
+  font-weight: 700;
   line-height: 1.28;
 }
 
@@ -585,7 +587,7 @@
 .product-preview-card__body h3 {
   color: #1b302e;
   font-size: 1.03rem;
-  font-weight: 650;
+  font-weight: 700;
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
@@ -653,7 +655,7 @@
 
 .product-preview-card__status {
   color: #164e3f;
-  font-weight: 650;
+  font-weight: 700;
 }
 
 .supplier-card__footer svg,
@@ -706,8 +708,8 @@
 .product-preview-card__body > p {
   margin: 0;
   color: #5f6864;
-  font-size: 0.86rem;
-  font-weight: 650;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .product-preview-card__price {
@@ -870,7 +872,7 @@
 .public-footer__brand strong {
   color: var(--color-deep-green);
   font-size: 0.95rem;
-  font-weight: 750;
+  font-weight: 700;
   letter-spacing: 0.08em;
 }
 
@@ -891,7 +893,7 @@
 .public-footer__links a {
   color: #31524c;
   font-size: 0.89rem;
-  font-weight: 650;
+  font-weight: 600;
   overflow-wrap: anywhere;
   text-decoration: none;
 }
@@ -900,7 +902,6 @@
   color: var(--color-deep-green);
   text-decoration: underline;
 }
-
 
 .pricing-founder-banner {
   max-width: 1180px;
@@ -916,3 +917,391 @@
 .pricing-founder-banner strong {
   color: #0f172a;
 }
+
+/* Landing uniform SaaS final pass */
+.landing-page {
+  --landing-ink: #1b302e;
+  --landing-green: #164e3f;
+  --landing-green-dark: #0f3d33;
+  --landing-muted: #5f6864;
+  --landing-soft: #f8f5ef;
+  --landing-card: #ffffff;
+  --landing-border: rgb(15 45 38 / 10%);
+  --landing-orange: #f97316;
+  --landing-shadow-sm: 0 14px 34px rgb(15 45 38 / 8%);
+  --landing-shadow-md: 0 22px 54px rgb(15 45 38 / 12%);
+  --landing-radius-card: 18px;
+  --landing-radius-large: 26px;
+  --landing-text-xs: 0.78rem;
+  --landing-text-sm: 0.88rem;
+  --landing-text-body: clamp(0.96rem, 0.9vw, 1.02rem);
+  --landing-text-card: 0.92rem;
+  --landing-title-card: clamp(1.02rem, 0.9vw, 1.12rem);
+  --landing-section-title: clamp(2rem, 2.2vw, 2.35rem);
+  --landing-hero-title: clamp(2.45rem, 4vw, 3.18rem);
+
+  font-family: var(--font-main);
+  color: var(--landing-ink);
+  text-rendering: geometricprecision;
+}
+
+.landing-section {
+  width: min(100%, 1120px);
+  margin-inline: auto;
+}
+
+.landing-section + .landing-section,
+.landing-section + .landing-final-cta {
+  margin-top: clamp(72px, 7.2vw, 104px);
+}
+
+.landing-section__heading {
+  max-width: 760px;
+  margin-bottom: clamp(22px, 2.4vw, 32px);
+}
+
+.landing-section__heading h2,
+.landing-final-cta h2 {
+  color: var(--landing-ink);
+  font-size: var(--landing-section-title);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.landing-section__heading p {
+  max-width: 680px;
+  color: var(--landing-muted);
+  font-size: var(--landing-text-body);
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+.landing-hero {
+  width: min(100%, 1120px);
+  grid-template-columns: minmax(0, 1.12fr) minmax(350px, 0.88fr);
+  gap: clamp(30px, 3.2vw, 44px);
+  align-items: center;
+  margin-inline: auto;
+  padding: clamp(36px, 4vw, 50px);
+  border: 1px solid var(--landing-border);
+  border-radius: var(--landing-radius-large);
+  background:
+    radial-gradient(circle at 88% 20%, rgb(249 115 22 / 10%), transparent 34%),
+    linear-gradient(135deg, rgb(255 255 255 / 96%), rgb(255 252 247 / 91%));
+  box-shadow: var(--landing-shadow-md);
+}
+
+.landing-hero h1 {
+  max-width: 720px;
+  color: var(--landing-ink);
+  font-size: var(--landing-hero-title);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.03;
+}
+
+.landing-hero__content > p:not(.landing-hero__label) {
+  max-width: 620px;
+  color: var(--landing-muted);
+  font-size: var(--landing-text-body);
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+.landing-hero__label,
+.landing-hero__meta-label {
+  color: var(--landing-orange);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.landing-hero__meta-list {
+  color: #405f58;
+  font-size: var(--landing-text-xs);
+  font-weight: 700;
+}
+
+.landing-actions {
+  align-items: center;
+  gap: 14px;
+}
+
+.landing-hero .landing-actions {
+  flex-wrap: nowrap;
+}
+
+.landing-button,
+.landing-card-button {
+  min-height: 42px;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-size: var(--landing-text-sm);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.landing-button--primary,
+.landing-final-cta .landing-button--primary {
+  background: linear-gradient(180deg, #1b6a55 0%, var(--landing-green) 100%);
+  color: #ffffff;
+  box-shadow: 0 16px 34px rgb(22 78 63 / 22%);
+}
+
+.landing-button--secondary {
+  border: 1px solid rgb(22 78 63 / 24%);
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbf8 100%);
+  color: var(--landing-green);
+  box-shadow: 0 12px 24px rgb(15 45 38 / 8%);
+}
+
+.landing-card,
+.benefit-card,
+.how-step-card,
+.supplier-card,
+.product-preview-card,
+.pricing-card {
+  border: 1px solid var(--landing-border);
+  border-radius: var(--landing-radius-card);
+  background: var(--landing-card);
+  box-shadow: var(--landing-shadow-sm);
+}
+
+.benefit-card,
+.how-step-card {
+  min-height: 142px;
+  padding: clamp(24px, 2.4vw, 30px);
+}
+
+.landing-card h3,
+.benefit-card h3,
+.how-step-card h3,
+.supplier-card__body h3,
+.product-preview-card__body h3 {
+  color: var(--landing-green);
+  font-size: var(--landing-title-card);
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+}
+
+.landing-card p,
+.benefit-card p,
+.how-step-card p,
+.supplier-card__body p,
+.product-preview-card__body > p,
+.pricing-card > p:not(.pricing-card__price) {
+  color: var(--landing-muted);
+  font-size: var(--landing-text-card);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.supplier-grid,
+.benefits-grid,
+.how-steps-grid {
+  gap: clamp(18px, 2vw, 24px);
+}
+
+.supplier-card,
+.product-preview-card {
+  overflow: hidden;
+}
+
+.supplier-card__image,
+.product-preview-card__image {
+  height: clamp(150px, 13vw, 176px);
+  background: #d6ebe2;
+}
+
+.supplier-card__image img,
+.product-preview-card__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.supplier-card__body,
+.product-preview-card__body {
+  gap: 10px;
+  padding: clamp(18px, 1.8vw, 22px);
+}
+
+.product-preview-card__price {
+  color: var(--landing-green);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.product-preview-card__meta span,
+.supplier-card dt,
+.supplier-card dd {
+  color: #405f58;
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.product-preview-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(16px, 1.8vw, 22px);
+}
+
+.pricing-founder-banner {
+  border: 1px solid rgb(22 78 63 / 12%);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fcfa 100%);
+  color: #31524c;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.58;
+  box-shadow: 0 12px 26px rgb(15 45 38 / 6%);
+}
+
+.pricing-founder-banner strong {
+  color: var(--landing-green);
+  font-weight: 800;
+}
+
+.pricing-grid {
+  align-items: stretch;
+  gap: clamp(16px, 1.8vw, 22px);
+}
+
+.pricing-card {
+  position: relative;
+  min-height: 292px;
+  padding: clamp(22px, 1.9vw, 28px);
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.pricing-card--featured {
+  border-color: rgb(249 115 22 / 26%);
+  background:
+    linear-gradient(180deg, #ffffff 0%, #fffaf6 100%);
+  box-shadow:
+    0 20px 46px rgb(15 45 38 / 12%),
+    0 10px 26px rgb(249 115 22 / 8%);
+}
+
+.pricing-card__badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 22px;
+  margin-bottom: 1px;
+}
+
+.pricing-card__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 20px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ff8a32 0%, var(--landing-orange) 100%);
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 0 8px 18px rgb(249 115 22 / 18%);
+}
+
+.pricing-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+}
+
+.pricing-card__header h3 {
+  max-width: none;
+  color: var(--landing-green);
+  font-size: clamp(1.06rem, 1vw, 1.18rem);
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.pricing-card__price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--landing-green);
+}
+
+.pricing-card__price strong {
+  color: var(--landing-green);
+  font-size: clamp(2.18rem, 2.55vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+.pricing-card__price span {
+  color: #31524c;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.pricing-card ul {
+  gap: 7px;
+  margin-top: 2px;
+}
+
+.pricing-card li {
+  color: #405f58;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.landing-final-cta {
+  width: min(100%, 1120px);
+  margin-inline: auto;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 78% 50%, rgb(249 115 22 / 28%), transparent 20%),
+    linear-gradient(135deg, #1b6a55 0%, #0d3a30 100%);
+  box-shadow: 0 28px 62px rgb(15 45 38 / 18%);
+}
+
+.landing-final-cta p {
+  color: rgb(255 255 255 / 82%);
+  font-size: var(--landing-text-body);
+  font-weight: 500;
+  line-height: 1.6;
+}
+/* End landing uniform SaaS final pass */
+
+/* Landing final CTA contrast fix */
+.landing-page .landing-final-cta h2 {
+  color: #ffffff;
+  text-shadow: 0 1px 0 rgb(0 0 0 / 8%);
+}
+
+.landing-page .landing-final-cta p {
+  color: rgb(255 255 255 / 86%);
+}
+
+.landing-page .landing-final-cta .landing-button--secondary {
+  border-color: rgb(255 255 255 / 78%);
+  background: #ffffff;
+  color: #164e3f;
+}
+
+.landing-page .landing-final-cta .landing-button--secondary:hover {
+  border-color: #ffffff;
+  background: #f8f5ef;
+  color: #0f3d33;
+}
+/* End landing final CTA contrast fix */
