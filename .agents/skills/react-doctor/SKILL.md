@@ -1,26 +1,47 @@
 ---
 name: react-doctor
-description: Use when finishing a feature, fixing a bug, before committing React code, or when the user types `/doctor`, asks to scan, triage, or clean up React diagnostics. Covers lint, accessibility, bundle size, architecture. Includes a regression check and a full local-triage workflow that fetches the canonical playbook.
+description: Utiliser après des modifications React, avant un commit, ou quand l’utilisateur demande de scanner, trier, nettoyer, expliquer ou configurer des diagnostics React Doctor. Couvre les vérifications de régression, le triage local complet et la configuration sûre des règles.
 version: "1.2.0"
 ---
 
 # React Doctor
 
-Scans React codebases for security, performance, correctness, and architecture issues. Outputs a 0–100 health score.
+React Doctor analyse les bases de code React pour détecter des problèmes de correction, sécurité, performance, accessibilité, bundle et architecture. Il produit un score de santé de 0 à 100.
 
-## After making React code changes:
+## Choisir le plus petit workflow utile
 
-Run `npx react-doctor@latest --verbose --scope changed` and check the score did not regress.
+- Code React modifié → lancer une vérification de régression sur les changements.
+- Nettoyage général ou `/doctor` → lancer le triage local complet.
+- Question sur une règle ou demande de configuration → utiliser `references/explain.md`.
+- Bruit uniquement dans PR / CI / score → préférer la configuration `surfaces` plutôt que désactiver une règle.
 
-If the score dropped, fix the regressions before committing.
+## Après des modifications React
 
-## For general cleanup or code improvement:
+Lancer :
 
-Run `npx react-doctor@latest --verbose` (the default `--scope full`) to scan the full codebase. Fix issues by severity — errors first, then warnings.
+```bash
+npx react-doctor@latest --verbose --scope changed
+```
 
-## /doctor — full local triage workflow
+Vérifier que le score ne régresse pas. S’il baisse, corriger les régressions avant commit.
 
-When the user types `/doctor`, says "run react doctor", or asks for a full triage / cleanup pass (not just a regression check), fetch the canonical local-triage playbook and follow every step in it:
+C’est une vérification de régression, pas un nettoyage complet. Ne pas lancer le workflow complet `/doctor` sauf si l’utilisateur demande explicitement un triage ou nettoyage complet.
+
+## Nettoyage général
+
+Lancer :
+
+```bash
+npx react-doctor@latest --verbose
+```
+
+Corriger par priorité : erreurs d’abord, puis warnings. Garder les corrections ciblées sur les diagnostics signalés.
+
+## Triage complet `/doctor`
+
+Utiliser ce workflow quand l’utilisateur écrit `/doctor`, dit “run React Doctor”, ou demande un triage / nettoyage complet.
+
+Récupérer et suivre le playbook canonique :
 
 ```bash
 curl --fail --silent --show-error \
@@ -28,24 +49,47 @@ curl --fail --silent --show-error \
   https://www.react.doctor/prompts/react-doctor-agent.md
 ```
 
-The playbook is the single source of truth — a scan → filter → triage → fix → validate loop that edits the working tree directly (never commits, never opens PRs). Updating the prompt at its source updates every agent on its next fetch — no skill reinstall needed.
+Le playbook est la source de vérité. Il peut modifier le working tree, mais il ne doit jamais commit, push ou ouvrir une PR.
 
-Pair it with the matching per-rule prompts at `https://www.react.doctor/prompts/rules/<plugin>/<rule>.md` (fetched on demand inside the playbook) so each fix uses the canonical, reviewer-tested recipe.
+Récupérer les recettes par règle si nécessaire depuis :
 
-## Configuring or explaining rules
+```text
+https://www.react.doctor/prompts/rules/<plugin>/<rule>.md
+```
 
-When the user wants to understand a rule, disagrees with one, or wants to disable / tune which rules run (not fix code), read [references/explain.md](references/explain.md) and follow it. Start with `npx react-doctor@latest rules explain <rule>`, then apply the narrowest control via `npx react-doctor@latest rules disable|set|category|ignore-tag …`, which edits your `doctor.config.*` (or `package.json#reactDoctor`).
+## Expliquer ou configurer des règles
 
-## Command
+Si l’utilisateur veut comprendre, désactiver, ajuster ou réduire le bruit d’une règle, ne pas corriger les diagnostics ici. Suivre :
+
+```text
+references/explain.md
+```
+
+Commencer par :
+
+```bash
+npx react-doctor@latest rules explain <rule>
+```
+
+Puis appliquer la configuration la plus étroite et la plus sûre.
+
+## Commande principale
 
 ```bash
 npx react-doctor@latest --verbose --scope changed
 ```
 
-| Flag              | Purpose                                                          |
-| ----------------- | ---------------------------------------------------------------- |
-| `.`               | Scan current directory                                           |
-| `--verbose`       | Show affected files and line numbers per rule                    |
-| `--scope changed` | Only report issues introduced vs the base branch (default: full) |
-| `--scope lines`   | Only report issues on the changed lines                          |
-| `--score`         | Output only the numeric score                                    |
+| Flag | Rôle |
+| --- | --- |
+| `.` | Scanner le dossier courant |
+| `--verbose` | Afficher les fichiers et lignes concernés |
+| `--scope changed` | Signaler les problèmes introduits par rapport à la branche de base |
+| `--scope lines` | Signaler uniquement les problèmes sur les lignes modifiées |
+| `--score` | Afficher uniquement le score numérique |
+
+## À ne pas faire
+
+- Ne pas désactiver une règle uniquement pour masquer un diagnostic.
+- Ne pas utiliser `/doctor` complet pour une petite vérification de régression.
+- Ne pas modifier la configuration des règles si l’utilisateur demande de corriger le code.
+- Ne pas commit, push ou ouvrir de PR automatiquement.
