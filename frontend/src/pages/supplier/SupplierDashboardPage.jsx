@@ -221,7 +221,7 @@ function SupplierDashboardPage() {
       icon: "products",
       value: publishedProductCount,
       label: "Produits publiés",
-      helper: "Visibles au catalogue",
+      helper: "Visibles dans le catalogue",
     },
     {
       icon: "mail",
@@ -250,7 +250,7 @@ function SupplierDashboardPage() {
         prefix="supplier-dashboard"
         titleId="supplier-dashboard-title"
         displayName={supplierDisplayName}
-        subtitle="Suivez vos demandes reçues et gérez vos produits visibles au catalogue."
+        subtitle="Suivez vos demandes reçues et gérez vos produits visibles dans le catalogue."
         ctaTo="/supplier/products/new"
         ctaLabel="Ajouter un produit"
         ctaIcon="plus"

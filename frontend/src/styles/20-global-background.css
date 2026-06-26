@@ -693,80 +693,6 @@ body,
 
 /* End dashboard primary CTA role polish - Antoine */
 
-/* Dashboard final micro polish - gauge and section links */
-
-/* Micro-polish final :
-   - jauge profil légèrement plus lisible dans la card ;
-   - liens de section plus actionnables ;
-   - responsive ;
-   - aucune donnée codée en dur.
-*/
-
-.store-dashboard__profile-gauge,
-.supplier-dashboard__profile-gauge {
-  width: clamp(112px, 8.4vw, 136px) !important;
-  height: clamp(112px, 8.4vw, 136px) !important;
-}
-
-.store-dashboard__profile-gauge::after,
-.supplier-dashboard__profile-gauge::after {
-  inset: 11px !important;
-}
-
-.store-dashboard__profile-gauge strong,
-.supplier-dashboard__profile-gauge strong {
-  font-size: clamp(1.15rem, 1.45vw, 1.42rem) !important;
-}
-
-.store-dashboard__section-header a,
-.supplier-dashboard__section-header a {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.35rem !important;
-  line-height: 1.2 !important;
-  white-space: nowrap !important;
-}
-
-.store-dashboard__section-header a::after,
-.supplier-dashboard__section-header a::after {
-  content: "→";
-  display: inline-block;
-  transform: translateY(-1px);
-  transition: transform 160ms ease;
-}
-
-.store-dashboard__section-header a:hover::after,
-.supplier-dashboard__section-header a:hover::after {
-  transform: translate(3px, -1px);
-}
-
-@media (max-width: 900px) {
-  .store-dashboard__profile-gauge,
-  .supplier-dashboard__profile-gauge {
-    width: clamp(98px, 30vw, 118px) !important;
-    height: clamp(98px, 30vw, 118px) !important;
-  }
-
-  .store-dashboard__profile-gauge::after,
-  .supplier-dashboard__profile-gauge::after {
-    inset: 10px !important;
-  }
-
-  .store-dashboard__section-header,
-  .supplier-dashboard__section-header {
-    gap: 0.5rem !important;
-    flex-wrap: wrap !important;
-  }
-
-  .store-dashboard__section-header a,
-  .supplier-dashboard__section-header a {
-    white-space: normal !important;
-  }
-}
-
-/* End dashboard final micro polish - gauge and section links */
-
-
 /* Dashboard orange accent bars - Antoine */
 
 /* Barres oranges façon landing.
@@ -844,186 +770,254 @@ body,
 
 /* End dashboard orange accent bars - Antoine */
 
-/* Dashboard action icons and alignment polish - Antoine */
-
-/* Stabilise les titres avec barre orange :
-   la barre reste visuelle, mais ne décale plus les liens de section.
-*/
-.store-dashboard__intro h1,
-.supplier-dashboard__intro h1 {
-  line-height: 1.05 !important;
-}
-
-.store-dashboard__section-header,
-.supplier-dashboard__section-header {
-  align-items: center !important;
-  gap: clamp(0.65rem, 1vw, 1rem) !important;
-}
-
-.store-dashboard__section-header h2,
-.supplier-dashboard__section-header h2 {
-  line-height: 1.12 !important;
-  margin: 0 !important;
-}
-
-.store-dashboard__section-header a,
-.supplier-dashboard__section-header a {
-  align-self: center !important;
-  transform: translateY(-0.04rem);
-}
-
-/* CTA principaux : alignement icône + texte */
-.store-dashboard__primary-cta,
-.supplier-dashboard__primary-cta {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.65rem !important;
-  white-space: nowrap !important;
-}
-
-.store-dashboard__primary-cta svg,
-.supplier-dashboard__primary-cta svg {
-  flex: 0 0 auto !important;
-}
-
-/* Boutons internes dashboards avec icônes */
-.store-dashboard__profile-action,
-.supplier-dashboard__profile-action,
-.store-dashboard__supplier-action,
-.supplier-dashboard__product-action {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.45rem !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
-}
-
-.store-dashboard__profile-action svg,
-.supplier-dashboard__profile-action svg,
-.store-dashboard__supplier-action svg,
-.supplier-dashboard__product-action svg {
-  width: 1rem !important;
-  height: 1rem !important;
-  flex: 0 0 auto !important;
-  stroke-width: 2.4 !important;
-}
-
-.store-dashboard__supplier-action {
-  width: 100% !important;
-}
-
-.supplier-dashboard__product-action {
-  min-width: 82px !important;
-  padding-inline: 0.85rem !important;
-}
-
-/* Footer des cards produits : évite les micro-décalages du bouton Gérer */
-.supplier-dashboard__product-footer {
-  display: flex !important;
-  justify-content: flex-end !important;
-  align-items: center !important;
-}
-
-/* Footer des cards fournisseurs : garde le bouton centré et stable */
-.store-dashboard__supplier-body > .store-dashboard__supplier-action {
-  margin-top: auto !important;
-}
-
-@media (max-width: 900px) {
-  .store-dashboard__section-header,
-  .supplier-dashboard__section-header {
-    align-items: flex-start !important;
-  }
-
-  .store-dashboard__section-header a,
-  .supplier-dashboard__section-header a {
-    transform: none !important;
-  }
-
-  .store-dashboard__primary-cta,
-  .supplier-dashboard__primary-cta {
-    width: 100% !important;
-    white-space: normal !important;
-  }
-
-  .store-dashboard__profile-action,
-  .supplier-dashboard__profile-action,
-  .store-dashboard__supplier-action,
-  .supplier-dashboard__product-action {
-    min-height: 40px !important;
-  }
-}
-
-/* End dashboard action icons and alignment polish - Antoine */
-
-
-/* Dashboard final spacing and action polish - Antoine */
+/* KERNO final dashboard gauge and alignment polish - Antoine */
 
 /* Objectif :
-   - sections basses plus aérées ;
-   - titres + liens mieux alignés ;
-   - barres orange plus fines ;
-   - icônes de boutons mieux calibrées ;
-   - cards produits/fournisseurs plus équilibrées ;
-   - responsive, sans donnée codée en dur.
+   - corriger les micro-décalages texte sur les 2 dashboards ;
+   - garder les actions alignées et lisibles ;
+   - rendre la jauge plus grande, plus premium et toujours dynamique via --progress ;
+   - éviter que les cards basses soient masquées par le footer ;
+   - ne pas toucher aux routes, API, données ou composants métier.
 */
 
-/* Respiration entre blocs */
-.store-dashboard__recommended,
-.supplier-dashboard__featured {
-  margin-top: clamp(1.75rem, 2.1vw, 2.35rem) !important;
+/* Header dashboard : titre, sous-titre et CTA mieux calés */
+.store-dashboard__intro,
+.supplier-dashboard__intro {
+  align-items: end !important;
 }
 
-/* Header de section : titre + lien moins collés */
+.store-dashboard__hello,
+.supplier-dashboard__hello {
+  margin: 0 0 0.08rem !important;
+  line-height: 1 !important;
+}
+
+.store-dashboard__intro h1,
+.supplier-dashboard__intro h1 {
+  margin: 0 !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.store-dashboard__subtitle,
+.supplier-dashboard__subtitle {
+  margin: 0.18rem 0 0 !important;
+  line-height: 1.22 !important;
+}
+
+/* Stats : alignement stable entre icône, nombre, titre et sous-texte */
+.store-dashboard__stat-card,
+.supplier-dashboard__stat-card {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  align-items: center !important;
+  column-gap: clamp(0.72rem, 0.9vw, 1rem) !important;
+}
+
+.store-dashboard__stat-card > span,
+.supplier-dashboard__stat-card > span {
+  align-self: center !important;
+}
+
+.store-dashboard__stat-card strong,
+.supplier-dashboard__stat-card strong {
+  margin: 0 !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.store-dashboard__stat-card p,
+.supplier-dashboard__stat-card p {
+  margin: 0.18rem 0 0 !important;
+  line-height: 1.12 !important;
+}
+
+.store-dashboard__stat-card small,
+.supplier-dashboard__stat-card small {
+  display: block !important;
+  margin-top: 0.16rem !important;
+  line-height: 1.12 !important;
+}
+
+/* Demandes : grille stable, textes non décalés, date/badge alignés */
+.store-dashboard__request-row,
+.supplier-dashboard__request-row {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  column-gap: clamp(0.72rem, 1vw, 1.1rem) !important;
+}
+
+.store-dashboard__request-icon,
+.supplier-dashboard__request-icon {
+  align-self: center !important;
+}
+
+.store-dashboard__request-copy,
+.supplier-dashboard__request-copy {
+  min-width: 0 !important;
+  display: grid !important;
+  gap: 0.12rem !important;
+}
+
+.store-dashboard__request-copy strong,
+.supplier-dashboard__request-copy strong,
+.store-dashboard__request-copy small,
+.supplier-dashboard__request-copy small,
+.store-dashboard__request-copy em,
+.supplier-dashboard__request-copy em {
+  display: block !important;
+  margin: 0 !important;
+  line-height: 1.16 !important;
+}
+
+.store-dashboard__request-date,
+.supplier-dashboard__request-date {
+  white-space: nowrap !important;
+  text-align: right !important;
+  line-height: 1 !important;
+}
+
+/* Titres de sections : barre orange + lien alignés sans décalage vertical */
 .store-dashboard__section-header,
 .supplier-dashboard__section-header {
-  display: flex !important;
   align-items: flex-start !important;
-  gap: clamp(0.95rem, 1.4vw, 1.45rem) !important;
-  margin-bottom: clamp(0.95rem, 1.2vw, 1.25rem) !important;
+  gap: clamp(0.9rem, 1.25vw, 1.35rem) !important;
 }
 
 .store-dashboard__section-header h2,
 .supplier-dashboard__section-header h2 {
-  padding-bottom: 0.42rem !important;
-  line-height: 1.1 !important;
-}
-
-.store-dashboard__section-header h2::after,
-.supplier-dashboard__section-header h2::after {
-  width: clamp(28px, 2.6vw, 42px) !important;
-  height: 2px !important;
-  bottom: 0 !important;
-  box-shadow: 0 4px 10px rgb(249 115 22 / 14%) !important;
+  margin: 0 !important;
+  line-height: 1.06 !important;
 }
 
 .store-dashboard__section-header a,
 .supplier-dashboard__section-header a {
-  margin-top: 0.13rem !important;
-  gap: 0.42rem !important;
-  font-size: clamp(0.9rem, 0.85vw, 0.98rem) !important;
-  line-height: 1.15 !important;
-  transform: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 1.35rem !important;
+  line-height: 1.1 !important;
+  transform: translateY(0.08rem) !important;
+  white-space: nowrap !important;
 }
 
-/* Barre orange sous le titre principal : plus premium, moins lourde */
-.store-dashboard__intro h1,
-.supplier-dashboard__intro h1 {
-  padding-bottom: clamp(0.38rem, 0.58vw, 0.5rem) !important;
+.store-dashboard__section-header a::after,
+.supplier-dashboard__section-header a::after {
+  content: "→" !important;
+  display: inline-block !important;
+  margin-left: 0.34rem !important;
+  transform: translateY(-1px) !important;
+  transition: transform 160ms ease !important;
 }
 
-.store-dashboard__intro h1::after,
-.supplier-dashboard__intro h1::after {
-  width: clamp(42px, 3.8vw, 62px) !important;
-  height: 2px !important;
-  box-shadow: 0 5px 12px rgb(249 115 22 / 18%) !important;
+.store-dashboard__section-header a:hover::after,
+.supplier-dashboard__section-header a:hover::after {
+  transform: translate(3px, -1px) !important;
 }
 
-/* Boutons avec icônes : alignement stable */
-.store-dashboard__primary-cta,
-.supplier-dashboard__primary-cta,
+/* Card profil : même logique store + supplier */
+.store-dashboard__profile-card,
+.supplier-dashboard__profile-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  overflow: hidden !important;
+}
+
+.store-dashboard__profile-content,
+.supplier-dashboard__profile-content {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.store-dashboard__profile-copy,
+.supplier-dashboard__profile-copy {
+  flex: 0 0 auto !important;
+}
+
+.store-dashboard__profile-copy h2,
+.supplier-dashboard__profile-copy h2 {
+  margin: 0 !important;
+  line-height: 1.08 !important;
+}
+
+.store-dashboard__profile-copy p,
+.supplier-dashboard__profile-copy p {
+  margin: 0.18rem 0 0 !important;
+  max-width: 34rem !important;
+  line-height: 1.22 !important;
+}
+
+/* Jauge premium dynamique.
+   --progress vient du composant React, aucune valeur codée en dur.
+*/
+.store-dashboard__profile-gauge,
+.supplier-dashboard__profile-gauge {
+  --dashboard-gauge-progress-color: #d1fae5;
+  --dashboard-gauge-track-color: rgb(255 255 255 / 16%);
+  --dashboard-gauge-core-color: #164e3f;
+
+  position: relative !important;
+  isolation: isolate !important;
+  display: grid !important;
+  place-items: center !important;
+  width: clamp(128px, 8.4vw, 158px) !important;
+  height: clamp(128px, 8.4vw, 158px) !important;
+  margin: auto !important;
+  border-radius: 999px !important;
+  background:
+    conic-gradient(
+      var(--dashboard-gauge-progress-color) calc(var(--progress) * 1%),
+      var(--dashboard-gauge-track-color) 0
+    ) !important;
+  box-shadow:
+    0 22px 42px rgb(0 0 0 / 18%),
+    0 0 0 9px rgb(209 250 229 / 13%),
+    0 0 0 1px rgb(255 255 255 / 18%) inset !important;
+}
+
+.store-dashboard__profile-gauge::before,
+.supplier-dashboard__profile-gauge::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 8px !important;
+  border-radius: inherit !important;
+  background:
+    radial-gradient(circle at 34% 24%, rgb(255 255 255 / 16%), transparent 34%),
+    linear-gradient(145deg, rgb(22 78 63 / 94%), rgb(9 58 47 / 98%)) !important;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 16%),
+    inset 0 -18px 30px rgb(0 0 0 / 12%) !important;
+  z-index: 0 !important;
+}
+
+.store-dashboard__profile-gauge::after,
+.supplier-dashboard__profile-gauge::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 22px !important;
+  border-radius: inherit !important;
+  border: 1px solid rgb(255 255 255 / 13%) !important;
+  background: radial-gradient(circle, rgb(255 255 255 / 7%), transparent 64%) !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+.store-dashboard__profile-gauge strong,
+.supplier-dashboard__profile-gauge strong {
+  position: relative !important;
+  z-index: 2 !important;
+  color: #ffffff !important;
+  font-size: clamp(1.38rem, 1.65vw, 1.72rem) !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.04em !important;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 18%) !important;
+}
+
+/* Bouton profil : icône + texte mieux centrés */
 .store-dashboard__profile-action,
 .supplier-dashboard__profile-action,
 .store-dashboard__supplier-action,
@@ -1031,301 +1025,83 @@ body,
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0.5rem !important;
+  gap: 0.48rem !important;
   line-height: 1 !important;
-}
-
-.store-dashboard__primary-cta svg,
-.supplier-dashboard__primary-cta svg {
-  width: clamp(18px, 1.15vw, 21px) !important;
-  height: clamp(18px, 1.15vw, 21px) !important;
-  stroke-width: 2.6 !important;
 }
 
 .store-dashboard__profile-action svg,
 .supplier-dashboard__profile-action svg,
 .store-dashboard__supplier-action svg,
 .supplier-dashboard__product-action svg {
-  width: 0.98rem !important;
-  height: 0.98rem !important;
-  stroke-width: 2.55 !important;
+  width: 1.08rem !important;
+  height: 1.08rem !important;
+  stroke-width: 2.7 !important;
   flex: 0 0 auto !important;
 }
 
-/* Cards fournisseurs magasin : bouton stable et contenu moins tassé */
-.store-dashboard__supplier-body {
-  gap: 0.58rem !important;
+/* Cards basses : hauteurs harmonisées et contenu qui ne part plus sous le footer */
+.store-dashboard__supplier-card,
+.supplier-dashboard__product-card {
+  min-height: 0 !important;
+  height: 100% !important;
 }
 
-.store-dashboard__supplier-meta {
-  gap: 0.32rem !important;
+.store-dashboard__supplier-body,
+.supplier-dashboard__product-body {
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: clamp(0.34rem, 0.48vw, 0.52rem) !important;
+}
+
+.store-dashboard__supplier-footer,
+.supplier-dashboard__product-footer {
+  margin-top: auto !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .store-dashboard__supplier-footer {
-  margin-top: 0.15rem !important;
-  padding-top: 0.58rem !important;
-}
-
-.store-dashboard__supplier-action {
-  min-height: 38px !important;
-  margin-top: 0.62rem !important;
-  border-radius: 11px !important;
-}
-
-/* Cards produits fournisseur : hauteur plus équilibrée */
-.supplier-dashboard__product-card {
-  min-height: auto !important;
-}
-
-.supplier-dashboard__product-visual {
-  min-height: clamp(170px, 14.5vw, 210px) !important;
-}
-
-.supplier-dashboard__product-body {
-  padding: clamp(0.95rem, 1vw, 1.12rem) clamp(0.95rem, 1vw, 1.15rem) !important;
-}
-
-.supplier-dashboard__product-body p {
-  margin-bottom: 0.35rem !important;
-}
-
-.supplier-dashboard__product-meta {
-  margin-top: 0.55rem !important;
+  justify-content: space-between !important;
 }
 
 .supplier-dashboard__product-footer {
-  margin-top: 0.75rem !important;
-  padding-top: 0.55rem !important;
-}
-
-.supplier-dashboard__product-action {
-  min-height: 36px !important;
-  border-radius: 11px !important;
-}
-
-/* La card profil reste forte, mais le bouton respire mieux */
-.store-dashboard__profile-action,
-.supplier-dashboard__profile-action {
-  min-height: 40px !important;
-  border-radius: 11px !important;
-}
-
-/* Mobile / tablette */
-@media (max-width: 900px) {
-  .store-dashboard__recommended,
-  .supplier-dashboard__featured {
-    margin-top: 1.55rem !important;
-  }
-
-  .store-dashboard__section-header,
-  .supplier-dashboard__section-header {
-    align-items: flex-start !important;
-    gap: 0.55rem !important;
-    margin-bottom: 0.95rem !important;
-  }
-
-  .store-dashboard__section-header a,
-  .supplier-dashboard__section-header a {
-    margin-top: 0 !important;
-    font-size: 0.94rem !important;
-  }
-
-  .store-dashboard__primary-cta,
-  .supplier-dashboard__primary-cta {
-    width: 100% !important;
-    min-height: 48px !important;
-    white-space: normal !important;
-  }
-
-  .store-dashboard__supplier-action,
-  .supplier-dashboard__product-action,
-  .store-dashboard__profile-action,
-  .supplier-dashboard__profile-action {
-    width: 100% !important;
-    min-height: 42px !important;
-  }
-
-  .supplier-dashboard__product-visual {
-    min-height: clamp(150px, 42vw, 190px) !important;
-  }
-}
-
-/* End dashboard final spacing and action polish - Antoine */
-
-
-/* Global unified footer and dashboard fit - Antoine */
-
-/* Footer unique partout :
-   landing, login, register, dashboards, catalogue, profils, demandes.
-   Aucun style dashboard spécifique ne masque ou ne réduit le footer.
-*/
-.public-layout__footer,
-.app-layout__footer {
-  flex: 0 0 auto !important;
-  width: 100% !important;
-  border-top: 1px solid rgb(15 23 42 / 7%) !important;
-  background: rgb(248 245 239 / 92%) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
-  position: relative !important;
-  z-index: 8 !important;
-}
-
-.public-footer {
-  width: min(100%, 1120px) !important;
-  min-height: auto !important;
-  margin: 0 auto !important;
-  padding: clamp(0.68rem, 0.82vw, 0.9rem) clamp(1rem, 3vw, 2rem) !important;
-  display: grid !important;
-  grid-template-columns: minmax(250px, 0.82fr) auto !important;
-  align-items: center !important;
-  gap: clamp(0.8rem, 1.35vw, 1.45rem) !important;
-}
-
-.public-footer__brand {
-  display: grid !important;
-  gap: 0.18rem !important;
-}
-
-.public-footer__brand strong {
-  color: #164e3f !important;
-  font-size: clamp(0.76rem, 0.76vw, 0.84rem) !important;
-  font-weight: 850 !important;
-  letter-spacing: 0.08em !important;
-  line-height: 1 !important;
-}
-
-.public-footer__brand p {
-  display: block !important;
-  max-width: 420px !important;
-  margin: 0 !important;
-  color: #53655e !important;
-  font-size: clamp(0.74rem, 0.74vw, 0.82rem) !important;
-  font-weight: 550 !important;
-  line-height: 1.32 !important;
-}
-
-.public-footer__links {
-  display: flex !important;
-  align-items: center !important;
   justify-content: flex-end !important;
-  gap: clamp(0.7rem, 1.12vw, 1.05rem) !important;
-  flex-wrap: wrap !important;
 }
 
-.public-footer__links a {
-  color: #164e3f !important;
-  font-size: clamp(0.74rem, 0.74vw, 0.82rem) !important;
-  font-weight: 800 !important;
-  line-height: 1.15 !important;
-  text-decoration: none !important;
-}
-
-.public-footer__links a:hover {
-  color: #0f3d31 !important;
-  text-decoration: underline !important;
-  text-underline-offset: 4px !important;
-}
-
-/* Dashboards desktop :
-   on garde le même footer, donc on compacte uniquement le contenu dashboard
-   pour éviter que les cards passent dessous.
-*/
+/* Desktop : on compacte le contenu, pas le footer */
 @media (min-width: 901px) {
-  body:has(.store-dashboard),
-  body:has(.supplier-dashboard) {
-    overflow: hidden !important;
-  }
-
-  body:has(.store-dashboard) .kerno-shell,
-  body:has(.supplier-dashboard) .kerno-shell {
-    height: 100dvh !important;
-    min-height: 100dvh !important;
-    overflow: hidden !important;
-  }
-
-  body:has(.store-dashboard) .kerno-shell__main,
-  body:has(.supplier-dashboard) .kerno-shell__main {
-    display: flex !important;
-    height: 100dvh !important;
-    min-height: 0 !important;
-    flex-direction: column !important;
-    overflow: hidden !important;
-  }
-
   body:has(.store-dashboard) .kerno-shell__content,
   body:has(.supplier-dashboard) .kerno-shell__content {
-    flex: 1 1 auto !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-    padding-top: clamp(0.7rem, 0.82vw, 0.95rem) !important;
-    padding-bottom: clamp(0.32rem, 0.42vw, 0.5rem) !important;
+    padding-top: clamp(0.58rem, 0.72vw, 0.82rem) !important;
+    padding-bottom: clamp(0.22rem, 0.32vw, 0.38rem) !important;
   }
 
   .store-dashboard,
   .supplier-dashboard {
-    gap: clamp(0.55rem, 0.68vw, 0.78rem) !important;
-  }
-
-  .store-dashboard__intro,
-  .supplier-dashboard__intro {
-    margin-bottom: 0 !important;
-  }
-
-  .store-dashboard__intro h1,
-  .supplier-dashboard__intro h1 {
-    font-size: clamp(1.55rem, 1.55vw, 2rem) !important;
-    line-height: 1.02 !important;
-    padding-bottom: 0.35rem !important;
-  }
-
-  .store-dashboard__subtitle,
-  .supplier-dashboard__subtitle {
-    font-size: clamp(0.82rem, 0.78vw, 0.9rem) !important;
-    line-height: 1.25 !important;
+    gap: clamp(0.44rem, 0.56vw, 0.68rem) !important;
   }
 
   .store-dashboard__stats,
-  .supplier-dashboard__stats,
-  .store-dashboard__work-grid,
-  .supplier-dashboard__work-grid,
-  .store-dashboard__supplier-grid,
-  .supplier-dashboard__product-grid {
-    gap: clamp(0.55rem, 0.68vw, 0.82rem) !important;
+  .supplier-dashboard__stats {
+    gap: clamp(0.58rem, 0.72vw, 0.85rem) !important;
   }
 
   .store-dashboard__stat-card,
   .supplier-dashboard__stat-card {
-    min-height: clamp(70px, 5.45vw, 86px) !important;
-    padding: clamp(0.58rem, 0.68vw, 0.8rem) !important;
+    min-height: clamp(72px, 5.4vw, 86px) !important;
+    padding: clamp(0.58rem, 0.68vw, 0.82rem) !important;
   }
 
-  .store-dashboard__stat-card strong,
-  .supplier-dashboard__stat-card strong {
-    font-size: clamp(1.3rem, 1.35vw, 1.7rem) !important;
-  }
-
-  .store-dashboard__stat-card p,
-  .supplier-dashboard__stat-card p,
-  .store-dashboard__stat-card small,
-  .supplier-dashboard__stat-card small {
-    line-height: 1.18 !important;
-  }
-
-  .store-dashboard__request-panel,
-  .supplier-dashboard__request-panel {
-    min-height: 0 !important;
+  .store-dashboard__work-grid,
+  .supplier-dashboard__work-grid {
+    gap: clamp(0.58rem, 0.72vw, 0.86rem) !important;
   }
 
   .store-dashboard__request-row,
   .supplier-dashboard__request-row {
-    min-height: 44px !important;
-    padding-block: clamp(0.32rem, 0.44vw, 0.48rem) !important;
-  }
-
-  .store-dashboard__request-copy,
-  .supplier-dashboard__request-copy {
-    gap: 0.12rem !important;
+    min-height: 40px !important;
+    padding-block: clamp(0.28rem, 0.36vw, 0.44rem) !important;
   }
 
   .store-dashboard__request-copy strong,
@@ -1337,100 +1113,126 @@ body,
   .supplier-dashboard__request-copy small,
   .store-dashboard__request-copy em,
   .supplier-dashboard__request-copy em {
-    font-size: clamp(0.68rem, 0.66vw, 0.76rem) !important;
-    line-height: 1.16 !important;
+    font-size: clamp(0.67rem, 0.64vw, 0.75rem) !important;
   }
 
   .store-dashboard__profile-card,
   .supplier-dashboard__profile-card {
     min-height: 0 !important;
-    padding: clamp(0.68rem, 0.74vw, 0.86rem) !important;
-  }
-
-  .store-dashboard__profile-gauge,
-  .supplier-dashboard__profile-gauge {
-    width: clamp(78px, 5.2vw, 96px) !important;
-    height: clamp(78px, 5.2vw, 96px) !important;
-  }
-
-  .store-dashboard__profile-action,
-  .supplier-dashboard__profile-action {
-    min-height: 30px !important;
+    padding: clamp(0.72rem, 0.8vw, 0.94rem) !important;
   }
 
   .store-dashboard__recommended,
   .supplier-dashboard__featured {
-    margin-top: clamp(0.3rem, 0.48vw, 0.58rem) !important;
+    margin-top: clamp(0.34rem, 0.48vw, 0.62rem) !important;
   }
 
   .store-dashboard__section-header,
   .supplier-dashboard__section-header {
-    margin-bottom: clamp(0.32rem, 0.48vw, 0.58rem) !important;
+    margin-bottom: clamp(0.38rem, 0.54vw, 0.66rem) !important;
+  }
+
+  .store-dashboard__supplier-grid,
+  .supplier-dashboard__product-grid {
+    gap: clamp(0.62rem, 0.78vw, 0.9rem) !important;
+    align-items: stretch !important;
   }
 
   .store-dashboard__supplier-visual,
   .supplier-dashboard__product-visual {
-    height: clamp(86px, 7.2vw, 112px) !important;
+    height: clamp(90px, 8.2vw, 128px) !important;
     min-height: 0 !important;
   }
 
   .store-dashboard__supplier-body,
   .supplier-dashboard__product-body {
-    padding: clamp(0.46rem, 0.58vw, 0.68rem) !important;
-    gap: 0.34rem !important;
+    padding: clamp(0.5rem, 0.62vw, 0.76rem) !important;
   }
 
   .store-dashboard__supplier-action,
-  .supplier-dashboard__product-action {
-    min-height: 28px !important;
+  .supplier-dashboard__product-action,
+  .store-dashboard__profile-action,
+  .supplier-dashboard__profile-action {
+    min-height: 30px !important;
   }
 }
 
-/* Très faible hauteur desktop : on garde le footer identique, mais on réduit encore les dashboards. */
-@media (min-width: 901px) and (max-height: 850px) {
-  .store-dashboard,
-  .supplier-dashboard {
-    gap: 0.48rem !important;
+/* Écrans desktop plus bas : priorité à l’absence de masquage par le footer */
+@media (min-width: 901px) and (max-height: 900px) {
+  .store-dashboard__intro h1,
+  .supplier-dashboard__intro h1 {
+    font-size: clamp(1.42rem, 1.45vw, 1.82rem) !important;
   }
 
-  .store-dashboard__supplier-visual,
-  .supplier-dashboard__product-visual {
-    height: 78px !important;
+  .store-dashboard__stat-card,
+  .supplier-dashboard__stat-card {
+    min-height: 68px !important;
   }
 
   .store-dashboard__request-row,
   .supplier-dashboard__request-row {
-    min-height: 40px !important;
+    min-height: 37px !important;
   }
 
   .store-dashboard__profile-gauge,
   .supplier-dashboard__profile-gauge {
-    width: 78px !important;
-    height: 78px !important;
+    width: clamp(120px, 7.4vw, 140px) !important;
+    height: clamp(120px, 7.4vw, 140px) !important;
+  }
+
+  .store-dashboard__supplier-visual,
+  .supplier-dashboard__product-visual {
+    height: clamp(76px, 7vw, 102px) !important;
+  }
+
+  .store-dashboard__supplier-body,
+  .supplier-dashboard__product-body {
+    padding: 0.46rem 0.58rem !important;
+    gap: 0.28rem !important;
   }
 }
 
-/* Mobile/tablette : footer empilé et lisible. */
+/* Mobile/tablette : retour au flux naturel et jauge lisible */
 @media (max-width: 900px) {
-  body:has(.store-dashboard),
-  body:has(.supplier-dashboard) {
-    overflow: auto !important;
+  .store-dashboard__intro,
+  .supplier-dashboard__intro {
+    align-items: stretch !important;
   }
 
-  .public-footer {
-    grid-template-columns: 1fr !important;
-    padding: 0.95rem 1rem !important;
+  .store-dashboard__request-row,
+  .supplier-dashboard__request-row {
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    row-gap: 0.42rem !important;
+  }
+
+  .store-dashboard__request-date,
+  .supplier-dashboard__request-date {
+    grid-column: 2 !important;
     text-align: left !important;
   }
 
-  .public-footer__links {
-    justify-content: flex-start !important;
-    gap: 0.65rem 0.95rem !important;
+  .store-dashboard__profile-gauge,
+  .supplier-dashboard__profile-gauge {
+    width: clamp(118px, 32vw, 146px) !important;
+    height: clamp(118px, 32vw, 146px) !important;
   }
 
-  .public-footer__brand p {
-    max-width: none !important;
+  .store-dashboard__section-header,
+  .supplier-dashboard__section-header {
+    flex-wrap: wrap !important;
+    align-items: flex-start !important;
+  }
+
+  .store-dashboard__section-header a,
+  .supplier-dashboard__section-header a {
+    transform: none !important;
+  }
+
+  .store-dashboard__supplier-visual,
+  .supplier-dashboard__product-visual {
+    height: clamp(148px, 42vw, 210px) !important;
   }
 }
 
-/* End global unified footer and dashboard fit - Antoine */
+/* End KERNO final dashboard gauge and alignment polish - Antoine */
+

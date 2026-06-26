@@ -286,7 +286,7 @@ function StoreDashboardPage() {
       icon: "star",
       value: `${completionPercent}%`,
       label: "Profil magasin complet",
-      helper: profileIsComplete ? "Visible par les fournisseurs" : "À finaliser",
+      helper: profileIsComplete ? "Visible par les fournisseurs contactés" : "À finaliser",
       featured: true,
     },
   ];
