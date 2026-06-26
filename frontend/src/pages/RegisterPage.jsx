@@ -9,20 +9,20 @@ import { getDashboardPathByRole } from "../utils/authNavigation";
 
 const registerBenefits = [
   "Un parcours adapté à votre rôle",
-  "Des profils professionnels plus crédibles",
-  "Un premier contact commercial structuré",
+  "Un profil professionnel clair et crédible",
+  "Des premiers échanges B2B mieux structurés",
 ];
 
 const roleCards = [
   {
     value: "STORE",
     title: "Magasin",
-    description: "Je recherche des fournisseurs ou des produits.",
+    description: "Je veux trouver des fournisseurs et des produits fiables.",
   },
   {
     value: "SUPPLIER",
     title: "Fournisseur",
-    description: "Je souhaite présenter mon activité et mes produits.",
+    description: "Je veux présenter mes produits et recevoir des demandes qualifiées.",
   },
 ];
 
@@ -147,13 +147,13 @@ function RegisterPage() {
   }
 
   return (
-    <main className="auth-page register-page">
+    <div className="register-public-page">
+      <main className="auth-page register-page" data-testid="register-page">
       <section className="register-shell">
         <aside className="register-editorial" aria-labelledby="register-title">
           <h1 id="register-title">Créez votre espace KERNO</h1>
           <p>
-            Rejoignez une plateforme pensée pour connecter fournisseurs directs,
-            producteurs locaux et magasins.
+            Créez votre accès professionnel pour sourcer des fournisseurs, présenter vos produits et structurer vos premiers échanges B2B.
           </p>
 
           <figure className="register-visual">
@@ -175,8 +175,8 @@ function RegisterPage() {
 
         <section className="register-card" aria-labelledby="register-form-title">
           <div className="register-card__header">
-            <h2 id="register-form-title">Créer un compte</h2>
-            <p>Choisissez votre rôle puis renseignez vos informations.</p>
+            <h2 id="register-form-title">Inscription</h2>
+            <p>Choisissez votre rôle et créez votre accès professionnel.</p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>
@@ -241,7 +241,7 @@ function RegisterPage() {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                placeholder="Ada"
+                placeholder="Votre prénom"
                 error={fieldErrors.firstName}
                 required
               />
@@ -251,7 +251,7 @@ function RegisterPage() {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                placeholder="Lovelace"
+                placeholder="Votre nom"
                 error={fieldErrors.lastName}
                 required
               />
@@ -276,13 +276,9 @@ function RegisterPage() {
               onChange={handleChange}
               placeholder="Au moins 8 caractères"
               error={fieldErrors.password}
-              helperText="Utilisez au moins 8 caractères."
+              helperText="8 caractères minimum."
               required
             />
-
-            <p className="register-required-note">
-              Les champs marqués d’un astérisque (*) sont obligatoires.
-            </p>
 
             <button
               className="auth-submit"
@@ -295,10 +291,12 @@ function RegisterPage() {
             <p className="register-login-link">
               Déjà un compte ? <Link to="/login">Se connecter</Link>
             </p>
+            <p className="register-required-note">Champs obligatoires indiqués par *.</p>
           </form>
         </section>
       </section>
-    </main>
+      </main>
+    </div>
   );
 }
 

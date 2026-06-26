@@ -1564,3 +1564,525 @@
   }
 }
 /* End shared footer visual lock */
+
+/* Register auth page final system */
+.public-layout--register {
+  --kerno-auth-footer-height: clamp(108px, 12vh, 132px);
+  min-height: 100svh;
+  background: #f8f5ef;
+}
+
+.public-layout--register .public-layout__content {
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.public-layout--register .public-layout__footer {
+  flex: 0 0 var(--kerno-auth-footer-height);
+  overflow: hidden;
+}
+
+.public-layout--register .public-layout__footer .public-footer {
+  height: 100%;
+  align-items: center;
+  padding: 0;
+}
+
+.public-layout--register .public-footer__brand strong {
+  font-size: var(--kerno-footer-kicker-size);
+}
+
+.public-layout--register .public-footer__brand p {
+  font-size: var(--kerno-footer-body-size);
+}
+
+.public-layout--register .public-footer__links a {
+  font-size: var(--kerno-footer-link-size);
+}
+
+.register-public-page {
+  min-height: 100%;
+  background: #f8f5ef;
+  color: #1b302e;
+  font-family: var(--font-main);
+  text-rendering: geometricprecision;
+}
+
+.register-public-page .auth-page.register-page {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: calc(100svh - var(--kerno-auth-footer-height));
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(34px, 5.2vh, 58px) 24px;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(248 245 239 / 72%) 0%,
+      rgb(248 245 239 / 56%) 50%,
+      rgb(248 245 239 / 44%) 100%
+    ),
+    url("../assets/landing/landing-background-premium.webp") center 28% / cover no-repeat;
+}
+
+.register-public-page .auth-page.register-page::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(248 245 239 / 8%) 0%,
+      rgb(248 245 239 / 18%) 56%,
+      rgb(248 245 239 / 42%) 100%
+    );
+  content: "";
+  pointer-events: none;
+}
+
+.register-page .register-shell {
+  display: grid;
+  width: min(1240px, calc(100vw - 64px));
+  align-items: stretch;
+  gap: clamp(36px, 4vw, 64px);
+  grid-template-columns: minmax(0, 1.02fr) minmax(470px, 0.82fr);
+  margin-inline: auto;
+  padding: clamp(34px, 3.2vw, 46px);
+  border: 1px solid rgb(255 255 255 / 58%);
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 72%), rgb(236 244 240 / 46%));
+  box-shadow:
+    0 34px 90px rgb(15 45 38 / 14%),
+    0 1px 0 rgb(255 255 255 / 68%) inset;
+  backdrop-filter: blur(18px) saturate(1.12);
+  -webkit-backdrop-filter: blur(18px) saturate(1.12);
+}
+
+.register-page .register-editorial {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 13px;
+  overflow: visible;
+  padding: clamp(34px, 4.8vw, 78px) 0 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.register-page .register-editorial h1 {
+  position: relative;
+  max-width: 560px;
+  margin: 0;
+  color: #123c32;
+  font-size: clamp(3.05rem, 4.8vw, 4.25rem);
+  font-weight: 800;
+  letter-spacing: -0.07em;
+  line-height: 0.92;
+}
+
+.register-page .register-editorial h1::after,
+.register-page .register-card__header h2::after {
+  display: block;
+  width: 52px;
+  height: 3px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background: #f97316;
+  content: "";
+}
+
+.register-page .register-editorial > p {
+  max-width: 610px;
+  margin: 2px 0 0;
+  color: #49635b;
+  font-size: clamp(1.02rem, 1.08vw, 1.16rem);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.register-page .register-visual {
+  display: block;
+  overflow: hidden;
+  width: min(540px, 100%);
+  margin: 8px 0 0;
+  border: 1px solid rgb(255 255 255 / 54%);
+  border-radius: 18px;
+  background: transparent;
+  box-shadow:
+    0 18px 42px rgb(15 45 38 / 12%),
+    0 1px 0 rgb(255 255 255 / 58%) inset;
+}
+
+.register-page .register-visual img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 7.8;
+  object-fit: cover;
+}
+
+.register-page .register-benefits {
+  display: grid;
+  max-width: 560px;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.register-page .register-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #38524a;
+  font-size: clamp(0.92rem, 0.92vw, 1rem);
+  font-weight: 700;
+  line-height: 1.32;
+}
+
+.register-page .register-benefits li span {
+  display: block;
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: #164e3f;
+  box-shadow: none;
+}
+
+.register-page .register-benefits li span::before {
+  display: none;
+}
+
+.register-page .register-card {
+  display: grid;
+  width: min(500px, 100%);
+  align-self: center;
+  padding: clamp(24px, 2.2vw, 32px);
+  border: 1px solid rgb(255 255 255 / 58%);
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 84%), rgb(233 243 239 / 58%));
+  box-shadow:
+    0 24px 62px rgb(15 45 38 / 12%),
+    0 1px 0 rgb(255 255 255 / 76%) inset;
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+}
+
+.register-page .register-card__header {
+  margin-bottom: 16px;
+}
+
+.register-page .register-card__header h2 {
+  margin: 0;
+  color: #123c32;
+  font-size: clamp(2.15rem, 2.8vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.register-page .register-card__header h2::after {
+  width: 46px;
+  margin-top: 10px;
+}
+
+.register-page .register-card__header p {
+  max-width: 370px;
+  margin: 0;
+  color: #52635e;
+  font-size: var(--kerno-type-sm);
+  font-weight: 600;
+  line-height: 1.46;
+}
+
+.register-page .auth-form {
+  display: grid;
+  gap: 13px;
+}
+
+.register-page .auth-form__row {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.register-page .auth-form label,
+.register-page .register-card label,
+.register-page .register-role-group__label {
+  margin-bottom: 5px;
+  color: #3d544d;
+  font-size: var(--kerno-type-sm);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.register-page .auth-form input,
+.register-page .register-card input {
+  min-height: 44px;
+  padding-inline: 14px;
+  border-radius: 13px;
+  font-size: var(--kerno-type-sm);
+}
+
+.register-page .register-role-group {
+  display: grid;
+  gap: 8px;
+}
+
+.register-page .register-role-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.register-page .register-role-card {
+  min-height: 104px;
+  gap: 11px;
+  padding: 15px;
+  border: 1px solid rgb(210 221 216 / 92%);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 10px 24px rgb(15 45 38 / 5%);
+}
+
+.register-page .register-role-card:hover {
+  border-color: #b9d9ce;
+  background: rgb(248 252 250 / 92%);
+  transform: translateY(-1px);
+}
+
+.register-page .register-role-card--selected {
+  border-color: rgb(22 78 63 / 48%);
+  background:
+    linear-gradient(180deg, rgb(234 247 242 / 74%) 0%, rgb(255 255 255 / 92%) 100%),
+    #f2faf7;
+  box-shadow:
+    0 14px 28px rgb(22 78 63 / 9%),
+    inset 0 0 0 1px rgb(22 78 63 / 8%);
+}
+
+.register-page .register-role-card__indicator {
+  width: 20px;
+  height: 20px;
+}
+
+.register-page .register-role-card__content {
+  gap: 4px;
+}
+
+.register-page .register-role-card__content strong {
+  color: #123f34;
+  font-size: clamp(0.78rem, 0.72vw, 0.86rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.register-page .register-role-card__content small {
+  max-width: 172px;
+  color: #52635e;
+  font-size: clamp(0.68rem, 0.64vw, 0.75rem);
+  font-weight: 600;
+  line-height: 1.34;
+}
+
+.register-page .auth-submit {
+  min-height: 46px;
+  margin-top: 4px;
+  border-radius: 999px;
+  background: #164e3f;
+  color: #ffffff;
+  font-size: var(--kerno-type-sm);
+  font-weight: 800;
+  box-shadow: 0 14px 34px rgb(22 78 63 / 24%);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+.register-page .auth-submit:hover:not(:disabled) {
+  background: #0f3f33;
+  box-shadow: 0 18px 42px rgb(22 78 63 / 30%);
+  transform: translateY(-2px);
+}
+
+.register-page .auth-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.register-page .register-login-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin: 10px 0 0;
+  color: #52635e;
+  font-size: var(--kerno-type-xs);
+  font-weight: 700;
+  text-align: center;
+}
+
+.register-page .register-login-link a {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0;
+  padding: 0 12px;
+  border: 1px solid rgb(22 78 63 / 12%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 72%);
+  color: #164e3f;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgb(15 45 38 / 8%);
+}
+
+.register-page .register-login-link a:hover {
+  background: #e6f5ef;
+  text-decoration: none;
+}
+
+.register-page .register-required-note {
+  margin: 6px 0 0;
+  color: #75827d;
+  font-size: var(--kerno-type-xs);
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  opacity: 0.78;
+}
+
+@media (max-height: 820px) and (min-width: 861px) {
+  .register-public-page .auth-page.register-page {
+    padding-top: 30px;
+    padding-bottom: 18px;
+  }
+
+  .register-page .register-shell {
+    padding: 24px;
+  }
+
+  .register-page .register-editorial {
+    padding-top: 28px;
+  }
+
+  .register-page .register-editorial h1 {
+    font-size: clamp(2.7rem, 4vw, 3.55rem);
+  }
+
+  .register-page .register-visual {
+    width: min(410px, 100%);
+  }
+
+  .register-page .register-card {
+    width: min(455px, 100%);
+    padding: 20px;
+  }
+
+  .register-page .auth-form {
+    gap: 10px;
+  }
+
+  .register-page .register-role-card {
+    min-height: 88px;
+    padding: 12px;
+  }
+
+  .register-page .auth-form input,
+  .register-page .register-card input,
+  .register-page .auth-submit {
+    min-height: 42px;
+  }
+}
+
+@media (max-width: 860px) {
+  .public-layout--register {
+    min-height: 100svh;
+  }
+
+  .public-layout--register .public-layout__footer {
+    flex-basis: auto;
+    overflow: visible;
+  }
+
+  .public-layout--register .public-layout__footer .public-footer {
+    width: var(--kerno-footer-width);
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: var(--kerno-footer-padding-y);
+  }
+
+  .register-public-page .auth-page.register-page {
+    min-height: auto;
+    overflow: visible;
+    padding: 72px 18px 28px;
+  }
+
+  .register-page .register-shell {
+    width: min(580px, 100%);
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .register-page .register-editorial {
+    padding-top: 0;
+  }
+
+  .register-page .register-editorial h1 {
+    font-size: clamp(2.35rem, 10vw, 3.3rem);
+  }
+
+  .register-page .register-visual img {
+    aspect-ratio: 16 / 9;
+  }
+
+  .register-page .register-card {
+    width: 100%;
+    padding: 24px;
+  }
+
+  .register-page .register-benefits {
+    display: none;
+  }
+
+  .register-page .register-login-link {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .register-page .auth-form__row,
+  .register-page .register-role-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .register-page .register-role-card {
+    min-height: auto;
+  }
+
+  .register-page .register-role-card__content small {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .register-page .auth-submit,
+  .register-page .register-login-link a,
+  .register-page .register-role-card {
+    transition: none;
+  }
+
+  .register-page .auth-submit:hover:not(:disabled),
+  .register-page .register-role-card:hover {
+    transform: none;
+  }
+}
+/* End register auth page final system */
