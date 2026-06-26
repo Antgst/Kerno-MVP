@@ -75,6 +75,14 @@ Puis appliquer la configuration la plus étroite et la plus sûre.
 
 ## Commande principale
 
+Commande courte recommandée :
+
+```bash
+npm run doctor:changed
+```
+
+Équivalent direct :
+
 ```bash
 npx react-doctor@latest --verbose --scope changed
 ```
