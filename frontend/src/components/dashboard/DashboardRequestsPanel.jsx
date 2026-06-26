@@ -7,6 +7,7 @@ function DashboardRequestsPanel({
   title,
   linkTo,
   linkPlacement = "header",
+  linkLabel = "Voir tout",
   requests,
   emptyTitle,
   emptyMessage,
@@ -23,7 +24,7 @@ function DashboardRequestsPanel({
     <article className={`${prefix}__panel ${prefix}__requests ${prefix}__recent`}>
       <div className={`${prefix}__panel-header ${prefix}__panel-header--inline`}>
         <h2>{title}</h2>
-        {showHeaderLink && <Link to={linkTo}>Voir tout</Link>}
+        {showHeaderLink && <Link to={linkTo}>{linkLabel}</Link>}
       </div>
 
       <div className={`${prefix}__request-list`}>
@@ -75,7 +76,7 @@ function DashboardRequestsPanel({
       {showFooterLink && (
         <footer className={`${prefix}__request-footer`}>
           <Link className={`${prefix}__request-all`} to={linkTo}>
-            Voir tout
+            {linkLabel}
           </Link>
         </footer>
       )}

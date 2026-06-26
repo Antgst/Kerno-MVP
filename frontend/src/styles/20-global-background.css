@@ -1,0 +1,588 @@
+/* Global premium background system
+   Scope : toutes les pages KERNO.
+   Objectifs :
+   - fond premium présent partout ;
+   - même opacité de fond sur toutes les pages ;
+   - landing conservée dans sa composition, seule l'opacité change ;
+   - wrappers de pages transparents pour ne pas masquer le fond ;
+   - responsive.
+*/
+
+:root {
+  --kerno-page-background-color: #f8f5ef;
+  --kerno-page-background-image: url("../assets/landing/landing-background-premium.webp");
+
+  /* Opacité commune : image présente mais discrète, adaptée aux écrans opérationnels. */
+  --kerno-page-background-overlay:
+    linear-gradient(
+      90deg,
+      rgb(248 245 239 / 94%) 0%,
+      rgb(248 245 239 / 91%) 50%,
+      rgb(248 245 239 / 88%) 100%
+    );
+
+  --kerno-page-background-veil:
+    linear-gradient(
+      180deg,
+      rgb(248 245 239 / 30%) 0%,
+      rgb(248 245 239 / 46%) 56%,
+      rgb(248 245 239 / 76%) 100%
+    );
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background: var(--kerno-page-background-color);
+}
+
+.kerno-page-bg,
+.public-layout,
+.kerno-shell,
+.kerno-shell__main,
+.public-layout__content,
+.kerno-shell__content {
+  background-color: var(--kerno-page-background-color);
+}
+
+/* Toutes les pages hors landing */
+.kerno-shell__content,
+.public-layout:not(.public-layout--landing) .public-layout__content {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    var(--kerno-page-background-overlay),
+    var(--kerno-page-background-image) center 28% / cover no-repeat !important;
+}
+
+.kerno-shell__content::before,
+.public-layout:not(.public-layout--landing) .public-layout__content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--kerno-page-background-veil);
+}
+
+.kerno-shell__content > *,
+.public-layout:not(.public-layout--landing) .public-layout__content > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Empêche les wrappers de pages de masquer le fond global */
+.kerno-shell__content > main,
+.kerno-shell__content > section,
+.public-layout:not(.public-layout--landing) .public-layout__content > main,
+.public-layout:not(.public-layout--landing) .public-layout__content > section,
+.auth-page,
+.login-page,
+.register-page,
+.store-dashboard,
+.supplier-dashboard,
+.catalog-page,
+.product-detail-page,
+.supplier-detail-page,
+.store-profile-page,
+.supplier-profile-page,
+.store-requests-page,
+.supplier-requests-page,
+.request-form-page,
+.store-request-detail-page,
+.supplier-request-detail-page,
+.supplier-products-page {
+  background: transparent !important;
+}
+
+/* Landing : composition conservée, opacité harmonisée via le même overlay global. */
+.public-layout--landing .landing-page {
+  background-color: var(--kerno-page-background-color) !important;
+  background-image:
+    radial-gradient(ellipse 780px 420px at 12% 6%, rgb(22 78 63 / 10%), transparent 62%),
+    radial-gradient(ellipse 720px 420px at 88% 16%, rgb(249 115 22 / 8%), transparent 60%),
+    var(--kerno-page-background-overlay),
+    var(--kerno-page-background-image) !important;
+  background-size:
+    auto,
+    auto,
+    100% 100%,
+    cover !important;
+  background-position:
+    center top,
+    center top,
+    center top,
+    center top !important;
+  background-repeat: no-repeat !important;
+  background-attachment: scroll !important;
+}
+
+/* Profil complet : moins dominant quand il est déjà validé.
+   Profil incomplet : conserve une mise en avant plus forte. */
+.store-dashboard__profile-card--complete,
+.supplier-dashboard__profile-card--complete {
+  border: 1px solid rgb(22 78 63 / 18%) !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgb(255 255 255 / 88%),
+      rgb(234 247 242 / 78%)
+    ) !important;
+  color: #123f34 !important;
+  box-shadow:
+    0 18px 42px rgb(15 45 38 / 9%),
+    0 1px 0 rgb(255 255 255 / 76%) inset !important;
+}
+
+.store-dashboard__profile-card--complete h2,
+.store-dashboard__profile-card--complete p,
+.supplier-dashboard__profile-card--complete h2,
+.supplier-dashboard__profile-card--complete p {
+  color: #123f34 !important;
+}
+
+.store-dashboard__profile-card--complete a,
+.supplier-dashboard__profile-card--complete a {
+  border: 1px solid rgb(22 78 63 / 30%) !important;
+  background: rgb(22 78 63 / 14%) !important;
+  color: #123f34 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 8px 18px rgb(22 78 63 / 8%) !important;
+}
+
+.store-dashboard__profile-card--complete a:hover,
+.supplier-dashboard__profile-card--complete a:hover {
+  background: rgb(22 78 63 / 22%) !important;
+}
+
+.store-dashboard__profile-card--complete .store-dashboard__profile-gauge,
+.supplier-dashboard__profile-card--complete .supplier-dashboard__profile-gauge {
+  color: #164e3f !important;
+}
+
+.app-layout__footer,
+.public-layout__footer {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --kerno-page-background-overlay:
+      linear-gradient(
+        90deg,
+        rgb(248 245 239 / 94%) 0%,
+        rgb(248 245 239 / 91%) 50%,
+        rgb(248 245 239 / 88%) 100%
+      );
+
+    --kerno-page-background-veil:
+      linear-gradient(
+        180deg,
+        rgb(248 245 239 / 42%) 0%,
+        rgb(248 245 239 / 58%) 56%,
+        rgb(248 245 239 / 76%) 100%
+      );
+  }
+
+  .kerno-shell__content,
+  .public-layout:not(.public-layout--landing) .public-layout__content {
+    background:
+      var(--kerno-page-background-overlay),
+      var(--kerno-page-background-image) center top / cover no-repeat !important;
+  }
+
+  .public-layout--landing .landing-page {
+    background-image:
+      radial-gradient(ellipse 440px 280px at 10% 4%, rgb(22 78 63 / 8%), transparent 66%),
+      radial-gradient(ellipse 380px 250px at 90% 12%, rgb(249 115 22 / 6%), transparent 64%),
+      var(--kerno-page-background-overlay),
+      var(--kerno-page-background-image) !important;
+  }
+}
+
+/* Dashboard complete profile card - KERNO green override */
+.store-dashboard__profile-card--complete,
+.supplier-dashboard__profile-card--complete {
+  border: 1px solid rgb(22 78 63 / 22%) !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgb(22 78 63 / 98%),
+      rgb(18 63 52 / 96%)
+    ) !important;
+  color: #ffffff !important;
+  box-shadow:
+    0 20px 46px rgb(15 45 38 / 16%),
+    0 1px 0 rgb(255 255 255 / 12%) inset !important;
+}
+
+.store-dashboard__profile-card--complete h2,
+.store-dashboard__profile-card--complete p,
+.supplier-dashboard__profile-card--complete h2,
+.supplier-dashboard__profile-card--complete p {
+  color: #ffffff !important;
+}
+
+.store-dashboard__profile-card--complete .store-dashboard__profile-gauge,
+.supplier-dashboard__profile-card--complete .supplier-dashboard__profile-gauge {
+  background: rgb(255 255 255 / 13%) !important;
+  color: #ffffff !important;
+  box-shadow:
+    0 0 0 12px rgb(209 250 229 / 22%),
+    0 0 0 1px rgb(255 255 255 / 20%) inset !important;
+}
+
+.store-dashboard__profile-card--complete a,
+.supplier-dashboard__profile-card--complete a {
+  border: 1px solid rgb(255 255 255 / 72%) !important;
+  background: rgb(255 255 255 / 92%) !important;
+  color: #164e3f !important;
+  font-weight: 800 !important;
+  box-shadow: 0 10px 22px rgb(0 0 0 / 10%) !important;
+}
+
+.store-dashboard__profile-card--complete a:hover,
+.supplier-dashboard__profile-card--complete a:hover {
+  background: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+  .store-dashboard__profile-card--complete,
+  .supplier-dashboard__profile-card--complete {
+    box-shadow:
+      0 14px 30px rgb(15 45 38 / 14%),
+      0 1px 0 rgb(255 255 255 / 12%) inset !important;
+  }
+}
+/* End dashboard complete profile card override */
+
+/* Final global background opacity + dashboard gauge polish */
+
+/* Fond global : moins de voile blanc, image plus visible partout.
+   Les variables sont utilisées par toutes les pages, landing incluse. */
+:root {
+  --kerno-page-background-overlay:
+    linear-gradient(
+      90deg,
+      rgb(248 245 239 / 86%) 0%,
+      rgb(248 245 239 / 78%) 50%,
+      rgb(248 245 239 / 72%) 100%
+    );
+
+  --kerno-page-background-veil:
+    linear-gradient(
+      180deg,
+      rgb(248 245 239 / 18%) 0%,
+      rgb(248 245 239 / 28%) 56%,
+      rgb(248 245 239 / 46%) 100%
+    );
+}
+
+/* Jauge dashboard : progression dynamique via --progress.
+   Pas de valeur codée en dur : le pourcentage vient du composant React. */
+.store-dashboard__profile-gauge,
+.supplier-dashboard__profile-gauge {
+  --dashboard-gauge-progress: #164e3f;
+  --dashboard-gauge-track: rgb(22 78 63 / 14%);
+  --dashboard-gauge-center: #ffffff;
+  --dashboard-gauge-text: #164e3f;
+
+  position: relative !important;
+  display: grid !important;
+  width: clamp(96px, 7.5vw, 118px) !important;
+  height: clamp(96px, 7.5vw, 118px) !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background:
+    conic-gradient(
+      var(--dashboard-gauge-progress) calc(var(--progress, 0) * 1%),
+      var(--dashboard-gauge-track) 0
+    ) !important;
+  box-shadow:
+    0 14px 30px rgb(22 78 63 / 11%),
+    0 1px 0 rgb(255 255 255 / 36%) inset !important;
+  color: var(--dashboard-gauge-text) !important;
+}
+
+.store-dashboard__profile-gauge::before,
+.supplier-dashboard__profile-gauge::before {
+  display: none !important;
+}
+
+.store-dashboard__profile-gauge::after,
+.supplier-dashboard__profile-gauge::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 10px !important;
+  z-index: 0 !important;
+  display: block !important;
+  border-radius: inherit !important;
+  background: var(--dashboard-gauge-center) !important;
+  box-shadow: inset 0 0 0 1px rgb(22 78 63 / 8%) !important;
+}
+
+.store-dashboard__profile-gauge strong,
+.supplier-dashboard__profile-gauge strong {
+  position: relative !important;
+  z-index: 1 !important;
+  color: var(--dashboard-gauge-text) !important;
+  font-size: clamp(1.05rem, 1.25vw, 1.28rem) !important;
+  font-weight: 850 !important;
+}
+
+/* Variante sur card complète verte */
+.store-dashboard__profile-card--complete .store-dashboard__profile-gauge,
+.supplier-dashboard__profile-card--complete .supplier-dashboard__profile-gauge {
+  --dashboard-gauge-progress: #d1fae5;
+  --dashboard-gauge-track: rgb(255 255 255 / 18%);
+  --dashboard-gauge-center: #164e3f;
+  --dashboard-gauge-text: #ffffff;
+
+  box-shadow:
+    0 16px 32px rgb(0 0 0 / 16%),
+    0 1px 0 rgb(255 255 255 / 16%) inset !important;
+}
+
+.store-dashboard__profile-card--complete .store-dashboard__profile-gauge::after,
+.supplier-dashboard__profile-card--complete .supplier-dashboard__profile-gauge::after {
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 14%),
+    0 0 0 1px rgb(255 255 255 / 8%) !important;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --kerno-page-background-overlay:
+      linear-gradient(
+        90deg,
+        rgb(248 245 239 / 90%) 0%,
+        rgb(248 245 239 / 84%) 50%,
+        rgb(248 245 239 / 78%) 100%
+      );
+
+    --kerno-page-background-veil:
+      linear-gradient(
+        180deg,
+        rgb(248 245 239 / 24%) 0%,
+        rgb(248 245 239 / 36%) 56%,
+        rgb(248 245 239 / 54%) 100%
+      );
+  }
+
+  .store-dashboard__profile-gauge,
+  .supplier-dashboard__profile-gauge {
+    width: clamp(88px, 28vw, 108px) !important;
+    height: clamp(88px, 28vw, 108px) !important;
+  }
+
+  .store-dashboard__profile-gauge::after,
+  .supplier-dashboard__profile-gauge::after {
+    inset: 9px !important;
+  }
+}
+
+/* End final global background opacity + dashboard gauge polish */
+
+/* Global background visibility pass - less opaque + anti masking */
+
+/* Passe finale :
+   - fond moins opaque / image plus visible ;
+   - même logique sur toutes les pages ;
+   - wrappers directs transparents pour éviter qu'une page masque le fond global.
+*/
+:root {
+  --kerno-page-background-overlay:
+    linear-gradient(
+      90deg,
+      rgb(248 245 239 / 78%) 0%,
+      rgb(248 245 239 / 66%) 50%,
+      rgb(248 245 239 / 58%) 100%
+    );
+
+  --kerno-page-background-veil:
+    linear-gradient(
+      180deg,
+      rgb(248 245 239 / 8%) 0%,
+      rgb(248 245 239 / 14%) 56%,
+      rgb(248 245 239 / 30%) 100%
+    );
+}
+
+/* Support global : le fond est porté par les conteneurs principaux. */
+.kerno-shell__content,
+.public-layout:not(.public-layout--landing) .public-layout__content {
+  background:
+    var(--kerno-page-background-overlay),
+    var(--kerno-page-background-image) center 28% / cover no-repeat !important;
+}
+
+.kerno-shell__content::before,
+.public-layout:not(.public-layout--landing) .public-layout__content::before {
+  background: var(--kerno-page-background-veil) !important;
+}
+
+/* Landing : composition conservée, seule l'opacité utilise les mêmes variables. */
+.public-layout--landing .landing-page {
+  background-image:
+    radial-gradient(ellipse 780px 420px at 12% 6%, rgb(22 78 63 / 10%), transparent 62%),
+    radial-gradient(ellipse 720px 420px at 88% 16%, rgb(249 115 22 / 8%), transparent 60%),
+    var(--kerno-page-background-overlay),
+    var(--kerno-page-background-image) !important;
+}
+
+/* Anti-masquage : seuls les wrappers directs deviennent transparents.
+   Les cards internes gardent leurs fonds blancs/verts. */
+.kerno-shell__content > main,
+.kerno-shell__content > section,
+.kerno-shell__content > [class*="page"],
+.kerno-shell__content > [class*="dashboard"],
+.public-layout:not(.public-layout--landing) .public-layout__content > main,
+.public-layout:not(.public-layout--landing) .public-layout__content > section,
+.public-layout:not(.public-layout--landing) .public-layout__content > [class*="page"],
+.public-layout:not(.public-layout--landing) .public-layout__content > [class*="auth"],
+.auth-page,
+.login-page,
+.register-page,
+.store-dashboard,
+.supplier-dashboard,
+.catalog-page,
+.product-detail-page,
+.supplier-detail-page,
+.store-profile-page,
+.supplier-profile-page,
+.store-requests-page,
+.supplier-requests-page,
+.request-form-page,
+.store-request-detail-page,
+.supplier-request-detail-page,
+.supplier-products-page,
+.supplier-product-form-page,
+.not-found-page {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --kerno-page-background-overlay:
+      linear-gradient(
+        90deg,
+        rgb(248 245 239 / 84%) 0%,
+        rgb(248 245 239 / 74%) 50%,
+        rgb(248 245 239 / 66%) 100%
+      );
+
+    --kerno-page-background-veil:
+      linear-gradient(
+        180deg,
+        rgb(248 245 239 / 12%) 0%,
+        rgb(248 245 239 / 22%) 56%,
+        rgb(248 245 239 / 40%) 100%
+      );
+  }
+
+  .kerno-shell__content,
+  .public-layout:not(.public-layout--landing) .public-layout__content {
+    background:
+      var(--kerno-page-background-overlay),
+      var(--kerno-page-background-image) center top / cover no-repeat !important;
+  }
+
+  .public-layout--landing .landing-page {
+    background-image:
+      radial-gradient(ellipse 440px 280px at 10% 4%, rgb(22 78 63 / 8%), transparent 66%),
+      radial-gradient(ellipse 380px 250px at 90% 12%, rgb(249 115 22 / 6%), transparent 64%),
+      var(--kerno-page-background-overlay),
+      var(--kerno-page-background-image) !important;
+  }
+}
+
+/* End global background visibility pass */
+
+/* Global background opacity tuning - V2 Antoine */
+
+/* Réglage final d'opacité du fond global.
+   Plus les pourcentages sont bas, plus l'image de fond est visible.
+   Ce bloc est placé en fin de fichier pour gagner sur les anciens réglages.
+*/
+:root {
+  --kerno-page-background-overlay:
+    linear-gradient(
+      90deg,
+      rgb(248 245 239 / 64%) 0%,
+      rgb(248 245 239 / 48%) 50%,
+      rgb(248 245 239 / 40%) 100%
+    );
+
+  --kerno-page-background-veil:
+    linear-gradient(
+      180deg,
+      rgb(248 245 239 / 0%) 0%,
+      rgb(248 245 239 / 4%) 56%,
+      rgb(248 245 239 / 14%) 100%
+    );
+}
+
+.kerno-shell__content,
+.public-layout:not(.public-layout--landing) .public-layout__content {
+  background:
+    var(--kerno-page-background-overlay),
+    var(--kerno-page-background-image) center 28% / cover no-repeat !important;
+}
+
+.kerno-shell__content::before,
+.public-layout:not(.public-layout--landing) .public-layout__content::before {
+  background: var(--kerno-page-background-veil) !important;
+}
+
+.public-layout--landing .landing-page {
+  background-image:
+    radial-gradient(ellipse 780px 420px at 12% 6%, rgb(22 78 63 / 10%), transparent 62%),
+    radial-gradient(ellipse 720px 420px at 88% 16%, rgb(249 115 22 / 8%), transparent 60%),
+    var(--kerno-page-background-overlay),
+    var(--kerno-page-background-image) !important;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --kerno-page-background-overlay:
+      linear-gradient(
+        90deg,
+        rgb(248 245 239 / 76%) 0%,
+        rgb(248 245 239 / 62%) 50%,
+        rgb(248 245 239 / 54%) 100%
+      );
+
+    --kerno-page-background-veil:
+      linear-gradient(
+        180deg,
+        rgb(248 245 239 / 6%) 0%,
+        rgb(248 245 239 / 14%) 56%,
+        rgb(248 245 239 / 28%) 100%
+      );
+  }
+
+  .kerno-shell__content,
+  .public-layout:not(.public-layout--landing) .public-layout__content {
+    background:
+      var(--kerno-page-background-overlay),
+      var(--kerno-page-background-image) center top / cover no-repeat !important;
+  }
+
+  .public-layout--landing .landing-page {
+    background-image:
+      radial-gradient(ellipse 440px 280px at 10% 4%, rgb(22 78 63 / 8%), transparent 66%),
+      radial-gradient(ellipse 380px 250px at 90% 12%, rgb(249 115 22 / 6%), transparent 64%),
+      var(--kerno-page-background-overlay),
+      var(--kerno-page-background-image) !important;
+  }
+}
+
+/* End global background opacity tuning - V2 Antoine */
+

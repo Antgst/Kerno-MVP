@@ -267,6 +267,7 @@ function SupplierDashboardPage() {
           title="Demandes reçues"
           linkTo="/supplier/requests"
           linkPlacement="footer"
+          linkLabel="Voir toutes les demandes"
           requests={recentRequests}
           emptyTitle="Aucune demande reçue"
           emptyMessage="Les nouvelles demandes des magasins apparaîtront ici."
@@ -282,7 +283,8 @@ function SupplierDashboardPage() {
           completionPercent={completionPercent}
           profileIsComplete={profileIsComplete}
           profileTo="/supplier/profile"
-          completeMessage="Gérez les informations visibles par les magasins lorsqu'ils découvrent votre activité ou vos produits."
+          completeTitle="Profil fournisseur complet"
+          completeMessage="Vos informations sont visibles par les magasins qui consultent votre activité ou vos produits."
           ariaLabel={`Profil fournisseur complété à ${completionPercent}%`}
         />
       </section>
