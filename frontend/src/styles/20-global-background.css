@@ -766,3 +766,195 @@ body,
 
 /* End dashboard final micro polish - gauge and section links */
 
+
+/* Dashboard orange accent bars - Antoine */
+
+/* Barres oranges façon landing.
+   Scope limité aux dashboards store + supplier.
+   Responsive, purement CSS, aucune donnée codée en dur.
+*/
+
+.store-dashboard__intro h1,
+.supplier-dashboard__intro h1 {
+  position: relative !important;
+  display: inline-block !important;
+  padding-bottom: clamp(0.45rem, 0.7vw, 0.62rem) !important;
+}
+
+.store-dashboard__intro h1::after,
+.supplier-dashboard__intro h1::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: clamp(48px, 4.8vw, 76px) !important;
+  height: 3px !important;
+  border-radius: 999px !important;
+  background: #f97316 !important;
+  box-shadow: 0 6px 14px rgb(249 115 22 / 24%) !important;
+}
+
+.store-dashboard__section-header h2,
+.supplier-dashboard__section-header h2 {
+  position: relative !important;
+  display: inline-block !important;
+  padding-bottom: 0.48rem !important;
+}
+
+.store-dashboard__section-header h2::after,
+.supplier-dashboard__section-header h2::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: clamp(34px, 3.4vw, 56px) !important;
+  height: 2px !important;
+  border-radius: 999px !important;
+  background: #f97316 !important;
+  box-shadow: 0 5px 12px rgb(249 115 22 / 18%) !important;
+}
+
+.store-dashboard__section-header,
+.supplier-dashboard__section-header {
+  align-items: flex-end !important;
+}
+
+@media (max-width: 900px) {
+  .store-dashboard__intro h1,
+  .supplier-dashboard__intro h1 {
+    padding-bottom: 0.5rem !important;
+  }
+
+  .store-dashboard__intro h1::after,
+  .supplier-dashboard__intro h1::after {
+    width: 52px !important;
+    height: 3px !important;
+  }
+
+  .store-dashboard__section-header,
+  .supplier-dashboard__section-header {
+    align-items: flex-start !important;
+  }
+
+  .store-dashboard__section-header h2,
+  .supplier-dashboard__section-header h2 {
+    padding-bottom: 0.44rem !important;
+  }
+}
+
+/* End dashboard orange accent bars - Antoine */
+
+/* Dashboard action icons and alignment polish - Antoine */
+
+/* Stabilise les titres avec barre orange :
+   la barre reste visuelle, mais ne décale plus les liens de section.
+*/
+.store-dashboard__intro h1,
+.supplier-dashboard__intro h1 {
+  line-height: 1.05 !important;
+}
+
+.store-dashboard__section-header,
+.supplier-dashboard__section-header {
+  align-items: center !important;
+  gap: clamp(0.65rem, 1vw, 1rem) !important;
+}
+
+.store-dashboard__section-header h2,
+.supplier-dashboard__section-header h2 {
+  line-height: 1.12 !important;
+  margin: 0 !important;
+}
+
+.store-dashboard__section-header a,
+.supplier-dashboard__section-header a {
+  align-self: center !important;
+  transform: translateY(-0.04rem);
+}
+
+/* CTA principaux : alignement icône + texte */
+.store-dashboard__primary-cta,
+.supplier-dashboard__primary-cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.65rem !important;
+  white-space: nowrap !important;
+}
+
+.store-dashboard__primary-cta svg,
+.supplier-dashboard__primary-cta svg {
+  flex: 0 0 auto !important;
+}
+
+/* Boutons internes dashboards avec icônes */
+.store-dashboard__profile-action,
+.supplier-dashboard__profile-action,
+.store-dashboard__supplier-action,
+.supplier-dashboard__product-action {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+.store-dashboard__profile-action svg,
+.supplier-dashboard__profile-action svg,
+.store-dashboard__supplier-action svg,
+.supplier-dashboard__product-action svg {
+  width: 1rem !important;
+  height: 1rem !important;
+  flex: 0 0 auto !important;
+  stroke-width: 2.4 !important;
+}
+
+.store-dashboard__supplier-action {
+  width: 100% !important;
+}
+
+.supplier-dashboard__product-action {
+  min-width: 82px !important;
+  padding-inline: 0.85rem !important;
+}
+
+/* Footer des cards produits : évite les micro-décalages du bouton Gérer */
+.supplier-dashboard__product-footer {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+}
+
+/* Footer des cards fournisseurs : garde le bouton centré et stable */
+.store-dashboard__supplier-body > .store-dashboard__supplier-action {
+  margin-top: auto !important;
+}
+
+@media (max-width: 900px) {
+  .store-dashboard__section-header,
+  .supplier-dashboard__section-header {
+    align-items: flex-start !important;
+  }
+
+  .store-dashboard__section-header a,
+  .supplier-dashboard__section-header a {
+    transform: none !important;
+  }
+
+  .store-dashboard__primary-cta,
+  .supplier-dashboard__primary-cta {
+    width: 100% !important;
+    white-space: normal !important;
+  }
+
+  .store-dashboard__profile-action,
+  .supplier-dashboard__profile-action,
+  .store-dashboard__supplier-action,
+  .supplier-dashboard__product-action {
+    min-height: 40px !important;
+  }
+}
+
+/* End dashboard action icons and alignment polish - Antoine */
+

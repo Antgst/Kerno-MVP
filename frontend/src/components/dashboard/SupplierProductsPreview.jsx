@@ -36,7 +36,13 @@ function SupplierProductsPreview({ products }) {
                 </div>
 
                 <div className="supplier-dashboard__product-footer">
-                  <Link to={`/supplier/products/${product.id}/edit`}>Gérer</Link>
+                  <Link
+                    className="supplier-dashboard__product-action"
+                    to={`/supplier/products/${product.id}/edit`}
+                  >
+                    <DashboardIcon name="box" />
+                    <span>Gérer</span>
+                  </Link>
                 </div>
               </div>
             </article>

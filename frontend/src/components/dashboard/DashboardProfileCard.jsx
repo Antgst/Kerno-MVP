@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import DashboardIcon from "./DashboardIcon";
 
 function DashboardProfileCard({
   prefix,
@@ -35,8 +36,9 @@ function DashboardProfileCard({
         </div>
       </div>
 
-      <Link to={profileTo}>
-        {profileIsComplete ? "Modifier le profil" : "Compléter maintenant"}
+      <Link className={`${prefix}__profile-action`} to={profileTo}>
+        <DashboardIcon name={profileIsComplete ? "user" : "check"} />
+        <span>{profileIsComplete ? "Modifier le profil" : "Compléter maintenant"}</span>
       </Link>
     </article>
   );

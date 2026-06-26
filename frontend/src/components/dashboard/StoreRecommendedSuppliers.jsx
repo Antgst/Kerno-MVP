@@ -82,7 +82,10 @@ function StoreRecommendedSuppliers({ suppliers }) {
                     </span>
                   </div>
 
-                  <Link to={supplierPath}>Voir le fournisseur</Link>
+                  <Link className="store-dashboard__supplier-action" to={supplierPath}>
+                    <DashboardIcon name="eye" />
+                    <span>Voir le fournisseur</span>
+                  </Link>
                 </div>
               </article>
             );
