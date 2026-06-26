@@ -693,3 +693,76 @@ body,
 
 /* End dashboard primary CTA role polish - Antoine */
 
+/* Dashboard final micro polish - gauge and section links */
+
+/* Micro-polish final :
+   - jauge profil légèrement plus lisible dans la card ;
+   - liens de section plus actionnables ;
+   - responsive ;
+   - aucune donnée codée en dur.
+*/
+
+.store-dashboard__profile-gauge,
+.supplier-dashboard__profile-gauge {
+  width: clamp(112px, 8.4vw, 136px) !important;
+  height: clamp(112px, 8.4vw, 136px) !important;
+}
+
+.store-dashboard__profile-gauge::after,
+.supplier-dashboard__profile-gauge::after {
+  inset: 11px !important;
+}
+
+.store-dashboard__profile-gauge strong,
+.supplier-dashboard__profile-gauge strong {
+  font-size: clamp(1.15rem, 1.45vw, 1.42rem) !important;
+}
+
+.store-dashboard__section-header a,
+.supplier-dashboard__section-header a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+}
+
+.store-dashboard__section-header a::after,
+.supplier-dashboard__section-header a::after {
+  content: "→";
+  display: inline-block;
+  transform: translateY(-1px);
+  transition: transform 160ms ease;
+}
+
+.store-dashboard__section-header a:hover::after,
+.supplier-dashboard__section-header a:hover::after {
+  transform: translate(3px, -1px);
+}
+
+@media (max-width: 900px) {
+  .store-dashboard__profile-gauge,
+  .supplier-dashboard__profile-gauge {
+    width: clamp(98px, 30vw, 118px) !important;
+    height: clamp(98px, 30vw, 118px) !important;
+  }
+
+  .store-dashboard__profile-gauge::after,
+  .supplier-dashboard__profile-gauge::after {
+    inset: 10px !important;
+  }
+
+  .store-dashboard__section-header,
+  .supplier-dashboard__section-header {
+    gap: 0.5rem !important;
+    flex-wrap: wrap !important;
+  }
+
+  .store-dashboard__section-header a,
+  .supplier-dashboard__section-header a {
+    white-space: normal !important;
+  }
+}
+
+/* End dashboard final micro polish - gauge and section links */
+
