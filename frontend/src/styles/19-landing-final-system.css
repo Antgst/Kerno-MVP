@@ -1158,3 +1158,154 @@
   }
 }
 /* End landing final readability polish */
+
+/* Landing card interaction polish */
+.landing-page .hero-showcase__frame {
+  overflow: hidden;
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.landing-page .hero-showcase__frame img {
+  border-radius: inherit;
+}
+
+.landing-page .landing-hero__visual,
+.landing-page .hero-showcase {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.landing-page :is(
+  .landing-hero__card,
+  .landing-card,
+  .benefit-card,
+  .how-step-card,
+  .supplier-card,
+  .product-preview-card,
+  .pricing-card
+) {
+  position: relative;
+  z-index: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    transform 190ms ease,
+    box-shadow 190ms ease,
+    border-color 190ms ease,
+    background 190ms ease;
+  will-change: transform;
+}
+
+.landing-page :is(
+  .landing-card,
+  .benefit-card,
+  .how-step-card,
+  .supplier-card,
+  .product-preview-card,
+  .pricing-card
+):hover {
+  z-index: 5;
+  border-color: rgb(22 78 63 / 22%);
+  box-shadow:
+    0 28px 64px rgb(15 45 38 / 16%),
+    0 1px 0 rgb(255 255 255 / 54%) inset;
+  transform: translateY(-7px) scale(1.012);
+}
+
+.landing-page .landing-hero__card:hover {
+  z-index: 5;
+  border-color: rgb(255 255 255 / 72%);
+  box-shadow:
+    0 30px 72px rgb(15 45 38 / 15%),
+    0 1px 0 rgb(255 255 255 / 58%) inset;
+  transform: translateY(-5px);
+}
+
+.landing-page :is(
+  .supplier-card,
+  .product-preview-card
+):hover img {
+  transform: scale(1.035);
+}
+
+.landing-page :is(
+  .supplier-card__visual img,
+  .product-preview-card__image img,
+  .hero-showcase__frame img
+) {
+  transition:
+    transform 220ms ease,
+    opacity 520ms ease;
+}
+
+.landing-page :is(
+  .benefit-card,
+  .how-step-card
+):hover :is(.benefit-card__icon, .how-step-card__number) {
+  background: rgb(22 78 63 / 15%);
+  transform: translateY(-2px);
+}
+
+.landing-page :is(.benefit-card__icon, .how-step-card__number) {
+  transition:
+    transform 190ms ease,
+    background 190ms ease;
+}
+
+@media (max-width: 760px) {
+  .landing-page .hero-showcase__frame {
+    border-radius: 16px;
+  }
+
+  .landing-page :is(
+    .landing-card,
+    .benefit-card,
+    .how-step-card,
+    .supplier-card,
+    .product-preview-card,
+    .pricing-card
+  ):hover {
+    transform: translateY(-4px);
+  }
+
+  .landing-page .landing-hero__card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-page :is(
+    .landing-hero__card,
+    .landing-card,
+    .benefit-card,
+    .how-step-card,
+    .supplier-card,
+    .product-preview-card,
+    .pricing-card,
+    .supplier-card__visual img,
+    .product-preview-card__image img,
+    .hero-showcase__frame img,
+    .benefit-card__icon,
+    .how-step-card__number
+  ) {
+    transition: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  .landing-page :is(
+    .landing-card,
+    .benefit-card,
+    .how-step-card,
+    .supplier-card,
+    .product-preview-card,
+    .pricing-card,
+    .landing-hero__card
+  ):hover {
+    transform: none;
+  }
+}
+/* End landing card interaction polish */
