@@ -1,0 +1,574 @@
+
+/* Landing final visual system
+   Source de vérité finale de la landing.
+   Importé en dernier pour neutraliser les anciens overrides.
+*/
+
+/* Header public liquid glass */
+.public-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 52px;
+  border-bottom: 1px solid rgb(255 255 255 / 28%);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 34%), rgb(255 255 255 / 9%));
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 42%) inset,
+    0 14px 38px rgb(15 45 38 / 7%);
+  backdrop-filter: blur(24px) saturate(1.45);
+  -webkit-backdrop-filter: blur(24px) saturate(1.45);
+}
+
+.public-header::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    radial-gradient(circle at 8% 0%, rgb(255 255 255 / 52%), transparent 30%),
+    linear-gradient(90deg, rgb(255 255 255 / 16%), transparent 48%, rgb(255 255 255 / 18%));
+}
+
+.public-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.public-header__inner,
+.public-header__content,
+.public-header__bar {
+  background: transparent;
+  box-shadow: none;
+}
+
+.public-header a,
+.public-header button {
+  font-family: var(--font-main);
+}
+
+.public-header__brand,
+.public-header__brand span {
+  color: #123f35;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.public-header__actions a,
+.public-header__actions button,
+.public-header .landing-button,
+.public-header .public-header__button,
+.public-header .public-header__link {
+  min-height: 30px;
+  border: 1px solid rgb(255 255 255 / 46%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 30%);
+  color: #123f35;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 48%) inset,
+    0 8px 20px rgb(15 45 38 / 8%);
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+}
+
+.public-header__actions a:hover,
+.public-header__actions button:hover,
+.public-header .landing-button:hover,
+.public-header .public-header__button:hover,
+.public-header .public-header__link:hover {
+  border-color: rgb(255 255 255 / 70%);
+  background: rgb(255 255 255 / 44%);
+  color: #0f3d33;
+}
+
+.public-header__actions a:last-child,
+.public-header__actions button:last-child,
+.public-header .landing-button--primary {
+  border-color: rgb(22 78 63 / 42%);
+  background:
+    linear-gradient(180deg, rgb(22 78 63 / 92%), rgb(12 59 48 / 96%));
+  color: #ffffff;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 22%) inset,
+    0 12px 26px rgb(15 45 38 / 22%);
+}
+
+/* Landing base */
+.landing-page {
+  --landing-green: #164e3f;
+  --landing-green-dark: #0f342c;
+  --landing-ink: #102f2a;
+  --landing-body: #3f5852;
+  --landing-muted: #62746e;
+  --landing-border: rgb(15 45 38 / 14%);
+  --landing-card-bg: rgb(255 255 255 / 93%);
+  --landing-card-bg-strong: rgb(255 255 255 / 96%);
+  --landing-card-shadow: 0 22px 54px rgb(15 45 38 / 14%);
+  --landing-card-shadow-strong: 0 30px 72px rgb(15 45 38 / 17%);
+  --landing-title-size: clamp(1.95rem, 2.5vw, 2.5rem);
+  --landing-body-size: clamp(0.98rem, 0.95vw, 1.05rem);
+  --landing-small-size: clamp(0.84rem, 0.78vw, 0.92rem);
+
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh;
+  font-family: var(--font-main);
+  color: var(--landing-ink);
+  background-color: #f8f5ef;
+  background-image:
+    radial-gradient(ellipse 780px 420px at 12% 6%, rgb(22 78 63 / 10%), transparent 62%),
+    radial-gradient(ellipse 720px 420px at 88% 16%, rgb(249 115 22 / 8%), transparent 60%),
+    linear-gradient(180deg, rgb(248 245 239 / 52%) 0%, rgb(248 245 239 / 63%) 42%, rgb(248 245 239 / 80%) 100%),
+    url("../assets/landing/landing-background-premium.webp");
+  background-size:
+    auto,
+    auto,
+    100% 100%,
+    cover;
+  background-position:
+    center top,
+    center top,
+    center top,
+    center top;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+}
+
+.landing-page::before,
+.landing-page::after {
+  display: none;
+}
+
+.landing-page,
+.landing-page :where(button, input, textarea, select) {
+  font-family: var(--font-main);
+}
+
+.landing-page :where(h1, h2, h3, p, ul, li) {
+  text-rendering: optimizeLegibility;
+}
+
+.landing-hero,
+.landing-section,
+.landing-final-cta {
+  width: min(1120px, calc(100% - 56px));
+}
+
+/* Hero */
+.landing-hero {
+  margin-top: 24px;
+  border-color: rgb(15 45 38 / 13%);
+  background:
+    radial-gradient(circle at 88% 20%, rgb(249 115 22 / 11%), transparent 34%),
+    linear-gradient(135deg, rgb(255 255 255 / 94%), rgb(255 252 247 / 88%));
+  box-shadow: var(--landing-card-shadow-strong);
+}
+
+.landing-hero h1 {
+  max-width: 640px;
+  color: var(--landing-ink);
+  font-size: clamp(2.55rem, 4.4vw, 3.55rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+.landing-hero__label {
+  color: var(--color-orange);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.landing-hero__content > p:not(.landing-hero__label),
+.landing-section__heading p {
+  max-width: 680px;
+  color: var(--landing-body);
+  font-size: var(--landing-body-size);
+  font-weight: 500;
+  line-height: 1.68;
+}
+
+/* Sections sans effet card */
+.landing-section {
+  position: relative;
+  margin-top: clamp(72px, 7.5vw, 108px);
+}
+
+.landing-section__heading {
+  position: relative;
+  width: min(760px, 100%);
+  max-width: min(760px, 100%);
+  margin-bottom: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.landing-section__heading::before {
+  display: none;
+}
+
+.landing-section__heading h2,
+.landing-final-cta h2 {
+  color: var(--landing-ink);
+  font-size: var(--landing-title-size);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 58%);
+}
+
+.landing-section__heading h2::after {
+  display: block;
+  width: 46px;
+  height: 3px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: var(--color-orange);
+  content: "";
+}
+
+.landing-section__heading p {
+  margin-top: 10px;
+  color: #3f5852;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 50%);
+}
+
+/* Cards métier */
+.landing-card,
+.benefit-card,
+.how-step-card,
+.supplier-card,
+.product-preview-card,
+.pricing-card,
+.pricing-founder-banner {
+  border-color: var(--landing-border);
+  background: var(--landing-card-bg);
+  box-shadow: var(--landing-card-shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.landing-card:hover,
+.benefit-card:hover,
+.how-step-card:hover,
+.supplier-card:hover,
+.product-preview-card:hover,
+.pricing-card:hover {
+  border-color: rgb(22 78 63 / 18%);
+  box-shadow: 0 26px 62px rgb(15 45 38 / 16%);
+}
+
+.landing-card h3,
+.benefit-card h3,
+.how-step-card h3,
+.supplier-card h3,
+.product-preview-card h3,
+.pricing-card h3 {
+  color: var(--landing-green-dark);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+.landing-card p,
+.benefit-card p,
+.how-step-card p,
+.supplier-card p,
+.product-preview-card p,
+.pricing-card p,
+.pricing-card li {
+  color: var(--landing-body);
+  font-size: var(--landing-small-size);
+  font-weight: 500;
+  line-height: 1.58;
+}
+
+.how-step-card,
+.benefit-card {
+  min-height: 132px;
+}
+
+.supplier-card,
+.product-preview-card {
+  overflow: hidden;
+}
+
+.supplier-card img,
+.product-preview-card img {
+  display: block;
+}
+
+.product-preview-card__meta span,
+.supplier-card__location,
+.supplier-card__category,
+.product-preview-card__category,
+.product-preview-card__supplier,
+.product-preview-card__availability {
+  color: var(--landing-muted);
+  font-weight: 600;
+}
+
+/* Contrôles carousel plus discrets */
+.featured-suppliers__controls button,
+.suppliers-carousel__controls button,
+.landing-carousel__controls button {
+  border: 1px solid rgb(255 255 255 / 54%);
+  background: rgb(255 255 255 / 74%);
+  color: var(--landing-green);
+  box-shadow: 0 10px 24px rgb(15 45 38 / 10%);
+}
+
+/* Pricing */
+.pricing-founder-banner {
+  color: var(--landing-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.pricing-founder-banner strong {
+  color: var(--landing-green-dark);
+  font-weight: 800;
+}
+
+.pricing-card {
+  min-height: 294px;
+  padding: 28px 22px 24px;
+  background: var(--landing-card-bg-strong);
+}
+
+.pricing-card--featured {
+  border-color: rgb(249 115 22 / 26%);
+  background:
+    linear-gradient(180deg, rgb(255 251 246 / 96%), rgb(255 255 255 / 94%));
+  box-shadow: 0 28px 68px rgb(130 74 18 / 15%);
+}
+
+.pricing-card__badge-row {
+  min-height: 22px;
+}
+
+.pricing-card__badge {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f97316;
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.pricing-card__header h3 {
+  max-width: none;
+  color: var(--landing-green-dark);
+  font-size: clamp(1.05rem, 1vw, 1.16rem);
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.pricing-card__price strong {
+  color: var(--landing-green);
+  font-size: clamp(2.15rem, 2.5vw, 2.72rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+
+.pricing-card__price span {
+  color: #31524c;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+/* Boutons */
+.landing-button {
+  min-height: 42px;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.landing-button--primary {
+  background: var(--landing-green);
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgb(22 78 63 / 20%);
+}
+
+.landing-button--primary:hover,
+.landing-button--primary:focus-visible {
+  background: #0f3d33;
+}
+
+.landing-button--secondary {
+  border-color: rgb(22 78 63 / 18%);
+  background: rgb(255 255 255 / 92%);
+  color: var(--landing-green);
+}
+
+/* CTA final */
+.landing-final-cta {
+  width: min(1120px, calc(100% - 56px));
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 78% 50%, rgb(249 115 22 / 30%), transparent 22%),
+    linear-gradient(135deg, #1b6a55 0%, #0d3a30 100%);
+  box-shadow: 0 30px 72px rgb(15 45 38 / 22%);
+}
+
+.landing-page .landing-final-cta h2 {
+  color: #ffffff;
+  text-shadow: 0 1px 0 rgb(0 0 0 / 10%);
+}
+
+.landing-page .landing-final-cta p {
+  color: rgb(255 255 255 / 88%);
+}
+
+.landing-page .landing-final-cta .landing-button--secondary {
+  border-color: rgb(255 255 255 / 78%);
+  background: #ffffff;
+  color: var(--landing-green);
+}
+
+.landing-page .landing-final-cta .landing-button--secondary:hover,
+.landing-page .landing-final-cta .landing-button--secondary:focus-visible {
+  border-color: #ffffff;
+  background: #f8f5ef;
+  color: #0f3d33;
+}
+
+/* Responsive */
+@media (max-width: 1020px) {
+  .public-header {
+    min-height: 50px;
+  }
+
+  .landing-page {
+    background-image:
+      radial-gradient(ellipse 580px 340px at 14% 5%, rgb(22 78 63 / 9%), transparent 64%),
+      radial-gradient(ellipse 520px 320px at 86% 16%, rgb(249 115 22 / 7%), transparent 62%),
+      linear-gradient(180deg, rgb(248 245 239 / 62%) 0%, rgb(248 245 239 / 74%) 52%, rgb(248 245 239 / 90%) 100%),
+      url("../assets/landing/landing-background-premium.webp");
+  }
+
+  .landing-hero,
+  .landing-section,
+  .landing-final-cta {
+    width: min(100% - 36px, 920px);
+  }
+
+  .landing-section {
+    margin-top: clamp(64px, 9vw, 92px);
+  }
+}
+
+@media (max-width: 760px) {
+  .public-header {
+    min-height: 48px;
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 42%), rgb(255 255 255 / 16%));
+    backdrop-filter: blur(18px) saturate(1.3);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  }
+
+  .public-header__actions a,
+  .public-header__actions button,
+  .public-header .landing-button,
+  .public-header .public-header__button,
+  .public-header .public-header__link {
+    min-height: 28px;
+  }
+
+  .landing-page {
+    background-image:
+      radial-gradient(ellipse 440px 280px at 10% 4%, rgb(22 78 63 / 8%), transparent 66%),
+      radial-gradient(ellipse 380px 250px at 90% 12%, rgb(249 115 22 / 6%), transparent 64%),
+      linear-gradient(180deg, rgb(248 245 239 / 76%) 0%, rgb(248 245 239 / 86%) 54%, rgb(248 245 239 / 96%) 100%),
+      url("../assets/landing/landing-background-premium.webp");
+    background-position:
+      center top,
+      center top,
+      center top,
+      center top;
+  }
+
+  .landing-hero,
+  .landing-section,
+  .landing-final-cta {
+    width: min(100% - 28px, 680px);
+  }
+
+  .landing-hero {
+    padding: 30px 22px;
+    border-radius: 22px;
+  }
+
+  .landing-hero h1 {
+    font-size: clamp(2.18rem, 10vw, 2.8rem);
+    letter-spacing: -0.04em;
+  }
+
+  .landing-section__heading {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 18px;
+  }
+
+  .landing-section__heading h2 {
+    font-size: clamp(1.65rem, 7vw, 2.05rem);
+  }
+
+  .landing-card,
+  .benefit-card,
+  .how-step-card,
+  .supplier-card,
+  .product-preview-card,
+  .pricing-card,
+  .pricing-founder-banner {
+    background: rgb(255 255 255 / 95%);
+  }
+
+  .pricing-card {
+    min-height: auto;
+  }
+
+  .pricing-card__header h3,
+  .pricing-card__price {
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .pricing-card__badge-row {
+    justify-content: flex-start;
+  }
+
+  .pricing-card:not(.pricing-card--featured) .pricing-card__badge-row {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-page *,
+  .landing-page *::before,
+  .landing-page *::after,
+  .public-header *,
+  .public-header *::before,
+  .public-header *::after {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}
