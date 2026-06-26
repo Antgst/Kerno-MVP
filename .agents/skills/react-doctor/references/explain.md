@@ -1,65 +1,89 @@
-# Explaining and configuring rules
+# Expliquer et configurer les règles
 
-Explain React Doctor rules and edit `doctor.config.*` safely. Use this when a user
-wants to understand a rule or change which rules run — not for fixing diagnostics
-(that is the main `react-doctor` skill / `/doctor`).
+Utiliser ce fichier quand l’utilisateur veut comprendre ou configurer des règles React Doctor.
 
-Triggers: "why did this rule fire", "I disagree with this rule", "turn this rule off",
-"stop flagging X", "too noisy", "disable design rules".
+Ne pas l’utiliser pour corriger des diagnostics. Pour corriger le code, utiliser le workflow principal React Doctor.
+
+Déclencheurs : “pourquoi cette règle se déclenche”, “je ne suis pas d’accord avec cette règle”, “désactive cette règle”, “arrête de signaler X”, “trop de bruit”, “désactive les règles design”.
 
 ## Workflow
 
-1. Identify the rule key from the diagnostic (e.g. `react-doctor/no-array-index-as-key`).
-2. Explain it before changing anything:
+1. Identifier la clé de règle depuis le diagnostic, par exemple `react-doctor/no-array-index-as-key`.
+2. Expliquer la règle avant toute modification :
 
 ```bash
 npx react-doctor@latest rules explain react-doctor/no-array-index-as-key
 ```
 
-3. Pick the narrowest control that matches the user's intent (see decision guide).
-4. Apply it with a `rules` subcommand (edits your `doctor.config.*` or `package.json#reactDoctor` in place, preserving other fields and formatting).
-5. Validate the change did what they wanted:
+3. Si la règle détecte un vrai problème de correction, accessibilité, sécurité ou performance, recommander de corriger le code.
+4. Si une configuration reste souhaitée, choisir le contrôle le plus étroit.
+5. Appliquer avec une commande `rules`.
+6. Valider :
 
 ```bash
+npx react-doctor@latest rules list --configured
 npx react-doctor@latest --verbose --diff
 ```
 
-## Commands
+## Commandes
 
 ```bash
-npx react-doctor@latest rules list                         # every rule + its effective severity
-npx react-doctor@latest rules list --configured            # only what your config changed
-npx react-doctor@latest rules list --category Performance   # filter by category
-npx react-doctor@latest rules explain <rule>               # why it matters + how to configure
-npx react-doctor@latest rules disable <rule>               # rule never runs
-npx react-doctor@latest rules enable <rule>                # turn back on at its recommended severity
-npx react-doctor@latest rules set <rule> warn              # off | warn | error
-npx react-doctor@latest rules category "React Native" off   # whole category
-npx react-doctor@latest rules ignore-tag design            # skip a rule family (design, test-noise, …)
+npx react-doctor@latest rules list
+npx react-doctor@latest rules list --configured
+npx react-doctor@latest rules list --category Performance
+npx react-doctor@latest rules explain <rule>
+npx react-doctor@latest rules disable <rule>
+npx react-doctor@latest rules enable <rule>
+npx react-doctor@latest rules set <rule> warn
+npx react-doctor@latest rules category "React Native" off
+npx react-doctor@latest rules ignore-tag design
 npx react-doctor@latest rules unignore-tag design
 ```
 
-Rule references accept the full key (`react-doctor/no-danger`), the bare id (`no-danger`), or a legacy key (`react/no-danger`).
+Les références de règles acceptent la clé complète, l’identifiant court ou une ancienne clé :
 
-## Decision guide
+```text
+react-doctor/no-danger
+no-danger
+react/no-danger
+```
 
-Match the control to the intent — prefer the narrowest one:
+## Guide de décision
 
-- **User disagrees with one rule / it's a false positive for them** → `rules disable <rule>` (sets `rules.<key> = "off"`; the rule stops running everywhere). This is the default for "I don't want this rule".
-- **Rule is fine but wrong severity** → `rules set <rule> warn` or `rules set <rule> error`.
-- **A disabled-by-default rule they want on** → `rules enable <rule>`.
-- **A whole area is unwanted** (e.g. all React Native rules) → `rules category "<Category>" off`.
-- **A behavioral family is noisy** (`design`, `test-noise`, `migration-hint`) → `rules ignore-tag <tag>`.
-- **Keep it locally but hide from PR comment / score / CI gate only** → do NOT disable. Edit `surfaces` in your config (`surfaces.prComment.excludeRules`, `surfaces.score.excludeTags`, `surfaces.ciFailure.excludeCategories`). The rule still shows in local `cli` output.
+Choisir le contrôle le plus étroit correspondant à l’intention utilisateur.
 
-How the layers combine: `ignore.tags` disables every rule carrying that tag **before** linting, so a tagged rule stays off even if `rules`/`categories` set it to `warn`/`error` (a rule-level override cannot re-enable a tag-ignored rule). For rules that aren't tag-disabled, `rules` overrides `categories` overrides the rule's default. `surfaces` is visibility-only and never changes whether a rule runs.
+- Comprendre une règle → `rules explain <rule>`.
+- Corriger le problème sous-jacent → utiliser le workflow principal React Doctor.
+- Règle valide mais trop stricte pour l’instant → `rules set <rule> warn`.
+- Règle non souhaitée partout → `rules disable <rule>`.
+- Règle désactivée par défaut à activer → `rules enable <rule>`.
+- Domaine technique entier non souhaité → `rules category "<Category>" off`.
+- Famille comportementale trop bruyante → `rules ignore-tag <tag>`.
+- Règle à garder localement mais à exclure des commentaires PR, du score ou de l’échec CI → configurer `surfaces`; ne pas désactiver la règle.
 
-## Config shape
+Utiliser `rules disable <rule>` seulement si l’utilisateur veut clairement que la règle ne tourne plus nulle part, après explication de la règle.
 
-Config lives in `doctor.config.ts` (or `.js`/`.mjs`/`.cjs`/`.json`/`.jsonc`), or the `reactDoctor` key in `package.json`. The `rules` commands edit whichever exists — TS/JS edits preserve formatting (via magicast) — and create `doctor.config.json` when none does, stamping `$schema`:
+## Priorité de configuration
+
+React Doctor combine les couches de configuration dans cet ordre :
+
+1. `ignore.tags` désactive avant analyse toutes les règles portant ce tag.
+2. `rules` surcharge la sévérité d’une règle précise.
+3. `categories` définit la sévérité d’une catégorie entière.
+4. Les valeurs par défaut s’appliquent si rien n’est configuré.
+5. `surfaces` change uniquement où les résultats apparaissent ; cela ne change jamais si une règle tourne ou non.
+
+Une règle désactivée par `ignore.tags` ne peut pas être réactivée par `rules` ou `categories`. Il faut d’abord retirer le tag ignoré.
+
+## Forme de la configuration
+
+La configuration se trouve dans `doctor.config.ts`, `.js`, `.mjs`, `.cjs`, `.json`, `.jsonc`, ou dans `package.json#reactDoctor`.
+
+Les commandes `rules` modifient la configuration existante en place. Si aucune configuration n’existe, elles créent `doctor.config.json` avec `$schema`.
+
+Exemple :
 
 ```ts
-// doctor.config.ts
 export default {
   rules: { "react-doctor/no-array-index-as-key": "off" },
   categories: { "React Native": "warn" },
@@ -67,6 +91,30 @@ export default {
 };
 ```
 
-## Educating the user
+## Surfaces
 
-When explaining a rule, lead with the "Why it matters" guidance from `rules explain` and, when they want depth, the per-rule recipe at `https://www.react.doctor/prompts/rules/<plugin>/<rule>.md`. Only after they understand it should you offer to disable it — many "bad" rules are catching real issues.
+Utiliser `surfaces` quand l’utilisateur veut garder les diagnostics localement, mais les masquer des commentaires PR, du score ou de l’échec CI.
+
+Ne pas désactiver la règle dans ce cas.
+
+Exemples d’intention :
+
+- “Garde-le en local mais pas dans les commentaires PR.”
+- “Ne fais pas échouer la CI sur cette catégorie.”
+- “Ne compte pas les règles design dans le score.”
+
+## Expliquer à l’utilisateur
+
+Commencer par la sortie “Why it matters” de :
+
+```bash
+npx react-doctor@latest rules explain <rule>
+```
+
+Pour aller plus loin, utiliser :
+
+```text
+https://www.react.doctor/prompts/rules/<plugin>/<rule>.md
+```
+
+Ne proposer la désactivation qu’après compréhension de la règle et confirmation que la configuration est préférable à la correction du code.

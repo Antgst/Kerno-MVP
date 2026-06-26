@@ -33,8 +33,8 @@ function FeaturedSuppliersCarousel() {
     <section className="landing-section landing-section--featured">
       <div className="landing-section__split-heading">
         <SectionHeading
-          title="Fournisseurs à la une"
-          subtitle="Une sélection de fournisseurs mis en avant pour renforcer leur visibilité auprès des magasins."
+          title="Fournisseurs à découvrir"
+          subtitle="Une vitrine pour identifier des partenaires fiables — et gagner en visibilité auprès des magasins."
         />
 
         <div className="carousel-controls" aria-label="Navigation fournisseurs">
@@ -57,20 +57,9 @@ function FeaturedSuppliersCarousel() {
 
       <div className="supplier-carousel" aria-live="polite">
         {visibleSuppliers.map((supplier) => (
-          <article
-            className="landing-card supplier-card"
-            key={supplier.id}
-          >
-            <div
-              className="supplier-card__visual"
-              aria-label={`Aperçu du fournisseur ${supplier.name}`}
-              role="img"
-            >
-              <img
-                src={supplier.image}
-                alt=""
-                loading="lazy"
-              />
+          <article className="landing-card supplier-card" key={supplier.id}>
+            <div className="supplier-card__visual">
+              <img src={supplier.image} alt="" loading="lazy" />
             </div>
 
             <div className="supplier-card__body">

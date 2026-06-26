@@ -2,7 +2,7 @@ import NavigationLink from "../NavigationLink";
 
 function PublicHeaderActions({ pathname }) {
   return (
-    <div className="public-header-actions">
+    <div className="public-header-actions public-header__actions">
       {pathname !== "/login" && (
         <NavigationLink to="/login" variant="header-ghost">
           Se connecter

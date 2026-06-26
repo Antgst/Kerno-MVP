@@ -6,6 +6,7 @@ function PublicHeader({ isScrolled, pathname }) {
     <header
       className={[
         "site-header",
+        "public-header",
         "site-header--public",
         "public-header--glass",
         "site-header--public-no-nav",

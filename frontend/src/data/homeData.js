@@ -32,21 +32,45 @@ export const heroImages = [
 
 export const benefits = [
   {
-    title: "Sourcing plus rapide",
-    text: "Les magasins trouvent des offres locales lisibles, comparables dans un même espace professionnel.",
+    title: "Pour les magasins",
+    text: "Identifiez plus rapidement des fournisseurs, produits et opportunités adaptés à vos besoins.",
     icon: "search",
   },
   {
-    title: "Visibilité fournisseur",
-    text: "Les producteurs présentent leur activité, leurs produits et leurs informations utiles avec clarté.",
+    title: "Pour les fournisseurs",
+    text: "Présentez vos produits, gagnez en visibilité et facilitez les premiers contacts commerciaux.",
     icon: "storefront",
   },
   {
-    title: "Demandes structurées",
-    text: "Chaque premier contact contient le contexte nécessaire pour engager une discussion commerciale utile.",
+    title: "Un contact B2B structuré",
+    text: "Centralisez les informations clés avant d’envoyer ou de recevoir une demande claire.",
     icon: "form",
   },
 ];
+
+export const howItWorksSteps = [
+  {
+    step: "1",
+    title: "Choisissez votre rôle",
+    text: "Créez un compte magasin ou fournisseur pour accéder à un parcours adapté.",
+  },
+  {
+    step: "2",
+    title: "Complétez votre espace",
+    text: "Les fournisseurs présentent leurs produits ; les magasins renseignent leur profil et leurs besoins.",
+  },
+  {
+    step: "3",
+    title: "Trouvez, publiez et contactez",
+    text: "KERNO facilite la découverte, la mise en visibilité et le premier échange commercial.",
+  },
+];
+
+export const heroTrustBar = {
+  label: "Pensé pour les premiers échanges B2B",
+  primary: ["Parcours magasin", "Parcours fournisseur", "Demandes structurées"],
+  secondary: [],
+};
 
 export const featuredSuppliers = [
   {
@@ -100,7 +124,8 @@ export const products = [
     category: "Épicerie sucrée",
     price: "8,90 €",
     availability: "Disponible",
-    views: 42,
+    supplier: "Ferme des Trois Vallées",
+    origin: "Normandie",
     visualKey: "honey",
     image: honeyImage,
   },
@@ -110,7 +135,8 @@ export const products = [
     category: "Confitures",
     price: "5,40 €",
     availability: "Disponible",
-    views: 36,
+    supplier: "Jardins de Provence",
+    origin: "Provence",
     visualKey: "jam",
     image: jamImage,
   },
@@ -120,7 +146,8 @@ export const products = [
     category: "Boissons",
     price: "3,80 €",
     availability: "Stock limité",
-    views: 31,
+    supplier: "Vergers du Littoral",
+    origin: "Bretagne",
     visualKey: "appleJuice",
     image: appleJuiceImage,
   },
@@ -130,7 +157,8 @@ export const products = [
     category: "Biscuits",
     price: "4,20 €",
     availability: "Disponible",
-    views: 26,
+    supplier: "Atelier Saint-Malo",
+    origin: "Bretagne",
     visualKey: "buckwheatBiscuits",
     image: biscuitsImage,
   },
@@ -138,30 +166,49 @@ export const products = [
 
 export const pricingPlans = [
   {
-    name: "Freemium",
+    name: "Découverte",
     price: "0 €",
-    description: "Découvrir la plateforme avec une présence simple.",
+    description: "Explorez KERNO avec un accès limité",
+    details: [
+      "Aperçu des produits et fournisseurs disponibles",
+      "Noms, coordonnées et détails sensibles masqués",
+      "Idéal pour découvrir la plateforme sans engagement",
+    ],
   },
   {
-    name: "Hebdomadaire",
+    name: "Pass 7 jours",
     price: "15 €",
-    period: "/ semaine",
-    description:
-      "Tester une visibilité renforcée sans engagement long.",
+    period: "/ 7 jours",
+    description: "Testez KERNO sans engagement long",
+    details: [
+      "Accès complet temporaire aux informations clés",
+      "Test du sourcing ou de la visibilité produit",
+      "Sans abonnement ni engagement long",
+    ],
   },
   {
-    name: "Mensuel",
+    name: "Pro",
     price: "49 €",
     period: "/ mois",
-    description:
-      "Structurer sa présence fournisseur avec plus de visibilité.",
+    description: "Accès complet et présence continue",
+    details: [
+      "Profils, produits et coordonnées accessibles",
+      "Demandes de contact ou de devis structurées",
+      "Catalogue complet pour trouver ou être trouvé",
+      "Présence active dans l’écosystème KERNO",
+    ],
   },
   {
-    name: "Annuel",
+    name: "Premium annuel",
     price: "490 €",
     period: "/ an",
-    description:
-      "L’offre la plus avantageuse pour une présence durable.",
+    description: "Accès complet + accompagnement renforcé",
+    details: [
+      "Tous les avantages de la formule Pro",
+      "Mise en avant dans les espaces clés KERNO",
+      "Accompagnement visibilité ou sourcing selon le rôle",
+      "Options premium selon le rôle : vitrine renforcée, contenu pro, sourcing accompagné",
+    ],
     featured: true,
   },
 ];

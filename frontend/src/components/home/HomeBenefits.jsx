@@ -7,6 +7,7 @@ function HomeBenefits() {
     <section className="landing-section">
       <SectionHeading
         title="Pourquoi KERNO crée de la valeur ?"
+        subtitle="Moins de recherche à froid côté magasin, plus de visibilité qualifiée côté fournisseur."
       />
 
       <div className="landing-card-grid landing-card-grid--three">

@@ -5,9 +5,15 @@ function HomePricing() {
   return (
     <section className="landing-section">
       <SectionHeading
-        title="Des offres adaptées à la visibilité fournisseur"
-        subtitle="Choisissez le rythme qui correspond à votre besoin de visibilité."
+        title="Des formules adaptées à votre usage de KERNO"
+        subtitle="Testez KERNO gratuitement au lancement, puis choisissez le niveau de visibilité adapté à votre usage."
       />
+
+      <div className="pricing-founder-banner">
+        <strong>Phase de lancement :</strong> les premiers comptes validés
+        testent gratuitement les fonctionnalités Pro pendant la période de
+        validation, avec un badge Founder visible sur leur profil.
+      </div>
 
       <div className="pricing-grid">
         {pricingPlans.map((plan) => (
@@ -21,17 +27,14 @@ function HomePricing() {
               .join(" ")}
             key={plan.name}
           >
-            <span
-              className={[
-                "pricing-card__badge",
-                plan.featured ? "" : "pricing-card__badge--placeholder",
-              ]
-                .filter(Boolean)
-                .join(" ")}
+            <div
+              className="pricing-card__badge-row"
               aria-hidden={!plan.featured}
             >
-              Meilleure valeur
-            </span>
+              {plan.featured && (
+                <span className="pricing-card__badge">Offre premium</span>
+              )}
+            </div>
             <div className="pricing-card__header">
               <h3>{plan.name}</h3>
             </div>
@@ -40,6 +43,13 @@ function HomePricing() {
               {plan.period && <span>{plan.period}</span>}
             </p>
             <p>{plan.description}</p>
+            {plan.details?.length > 0 && (
+              <ul>
+                {plan.details.map((detail) => (
+                  <li key={detail}>{detail}</li>
+                ))}
+              </ul>
+            )}
           </article>
         ))}
       </div>

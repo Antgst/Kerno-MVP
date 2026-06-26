@@ -10,7 +10,9 @@
     "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
     "dev:backend": "npm run dev --prefix backend",
     "dev:frontend": "npm run dev --prefix frontend",
-    "doctor": "npx react-doctor@latest"
+    "doctor": "npx react-doctor@latest",
+    "doctor:changed": "npx react-doctor@latest --verbose --scope changed",
+    "doctor:score": "npx react-doctor@latest --score"
   },
   "repository": {
     "type": "git",
