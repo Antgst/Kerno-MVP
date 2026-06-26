@@ -731,3 +731,96 @@
   }
 }
 /* End shared site footer layout */
+
+/* KERNO canonical shared footer - Antoine */
+
+/* Footer unique pour toutes les pages.
+   Aucune exception dashboard : le footer garde le même rendu partout.
+*/
+.public-layout__footer,
+.app-layout__footer {
+  flex: 0 0 auto;
+  width: 100%;
+  border-top: 1px solid rgb(15 23 42 / 7%);
+  background: rgb(248 245 239 / 92%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  z-index: 8;
+}
+
+.public-footer {
+  width: min(100%, 1120px);
+  min-height: auto;
+  margin: 0 auto;
+  padding: clamp(0.68rem, 0.82vw, 0.9rem) clamp(1rem, 3vw, 2rem);
+  display: grid;
+  grid-template-columns: minmax(250px, 0.82fr) auto;
+  align-items: center;
+  gap: clamp(0.8rem, 1.35vw, 1.45rem);
+}
+
+.public-footer__brand {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.public-footer__brand strong {
+  color: #164e3f;
+  font-size: clamp(0.76rem, 0.76vw, 0.84rem);
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.public-footer__brand p {
+  display: block;
+  max-width: 420px;
+  margin: 0;
+  color: #53655e;
+  font-size: clamp(0.74rem, 0.74vw, 0.82rem);
+  font-weight: 550;
+  line-height: 1.32;
+}
+
+.public-footer__links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(0.7rem, 1.12vw, 1.05rem);
+  flex-wrap: wrap;
+}
+
+.public-footer__links a {
+  color: #164e3f;
+  font-size: clamp(0.74rem, 0.74vw, 0.82rem);
+  font-weight: 800;
+  line-height: 1.15;
+  text-decoration: none;
+}
+
+.public-footer__links a:hover {
+  color: #0f3d31;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+  .public-footer {
+    grid-template-columns: 1fr;
+    padding: 0.95rem 1rem;
+    text-align: left;
+  }
+
+  .public-footer__links {
+    justify-content: flex-start;
+    gap: 0.65rem 0.95rem;
+  }
+
+  .public-footer__brand p {
+    max-width: none;
+  }
+}
+
+/* End KERNO canonical shared footer - Antoine */
+

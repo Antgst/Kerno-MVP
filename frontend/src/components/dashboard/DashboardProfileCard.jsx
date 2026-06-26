@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import DashboardIcon from "./DashboardIcon";
 
 function DashboardProfileCard({
   prefix,
@@ -11,8 +12,15 @@ function DashboardProfileCard({
   incompleteMessage = "Ajoutez les informations manquantes pour renforcer votre crédibilité.",
   ariaLabel,
 }) {
+  const profileCardClass = [
+    `${prefix}__profile-card`,
+    profileIsComplete
+      ? `${prefix}__profile-card--complete`
+      : `${prefix}__profile-card--incomplete`,
+  ].join(" ");
+
   return (
-    <article className={`${prefix}__profile-card`}>
+    <article className={profileCardClass}>
       <div className={`${prefix}__profile-content`}>
         <div className={`${prefix}__profile-copy`}>
           <h2>{profileIsComplete ? completeTitle : incompleteTitle}</h2>
@@ -28,8 +36,9 @@ function DashboardProfileCard({
         </div>
       </div>
 
-      <Link to={profileTo}>
-        {profileIsComplete ? "Modifier le profil" : "Compléter maintenant"}
+      <Link className={`${prefix}__profile-action`} to={profileTo}>
+        <DashboardIcon name={profileIsComplete ? "user" : "check"} />
+        <span>{profileIsComplete ? "Modifier le profil" : "Compléter maintenant"}</span>
       </Link>
     </article>
   );

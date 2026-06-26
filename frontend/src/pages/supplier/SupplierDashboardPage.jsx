@@ -221,25 +221,25 @@ function SupplierDashboardPage() {
       icon: "products",
       value: publishedProductCount,
       label: "Produits publiés",
-      helper: "Visibles au catalogue",
+      helper: "Visibles dans le catalogue",
     },
     {
       icon: "mail",
       value: receivedRequestCount,
       label: "Demandes reçues",
-      helper: "Depuis vos magasins",
+      helper: "Demandes de magasins",
     },
     {
       icon: "clock",
       value: pendingRequestCount,
-      label: "En attente",
+      label: "Demandes en attente",
       helper: "À traiter",
     },
     {
       icon: "check",
       value: processedRequestCount,
       label: "Demandes traitées",
-      helper: "Suivi commercial",
+      helper: "Demandes finalisées",
       featured: true,
     },
   ];
@@ -250,6 +250,7 @@ function SupplierDashboardPage() {
         prefix="supplier-dashboard"
         titleId="supplier-dashboard-title"
         displayName={supplierDisplayName}
+        subtitle="Suivez vos demandes reçues et gérez vos produits visibles dans le catalogue."
         ctaTo="/supplier/products/new"
         ctaLabel="Ajouter un produit"
         ctaIcon="plus"
@@ -267,6 +268,7 @@ function SupplierDashboardPage() {
           title="Demandes reçues"
           linkTo="/supplier/requests"
           linkPlacement="footer"
+          linkLabel="Voir toutes les demandes"
           requests={recentRequests}
           emptyTitle="Aucune demande reçue"
           emptyMessage="Les nouvelles demandes des magasins apparaîtront ici."
@@ -282,7 +284,8 @@ function SupplierDashboardPage() {
           completionPercent={completionPercent}
           profileIsComplete={profileIsComplete}
           profileTo="/supplier/profile"
-          completeMessage="Gérez les informations visibles par les magasins lorsqu'ils découvrent votre activité ou vos produits."
+          completeTitle="Profil fournisseur complet"
+          completeMessage="Vos informations sont visibles par les magasins qui consultent votre activité ou vos produits."
           ariaLabel={`Profil fournisseur complété à ${completionPercent}%`}
         />
       </section>

@@ -274,19 +274,19 @@ function StoreDashboardPage() {
       icon: "mail",
       value: sentRequestCount,
       label: "Demandes envoyées",
-      helper: `${pendingRequestCount} en attente`,
+      helper: "Total de vos demandes",
     },
     {
       icon: "eye",
       value: pendingRequestCount,
-      label: "Demandes en attente",
-      helper: "À suivre",
+      label: "Réponses en attente",
+      helper: "En attente de réponse",
     },
     {
       icon: "star",
       value: `${completionPercent}%`,
-      label: "Profil complété",
-      helper: profileIsComplete ? "Prêt à être utilisé" : "À finaliser",
+      label: "Profil magasin complet",
+      helper: profileIsComplete ? "Visible par les fournisseurs contactés" : "À finaliser",
       featured: true,
     },
   ];
@@ -296,8 +296,9 @@ function StoreDashboardPage() {
         prefix="store-dashboard"
         titleId="store-dashboard-title"
         displayName={storeDisplayName}
+        subtitle="Suivez vos demandes et découvrez les fournisseurs pertinents pour votre magasin."
         ctaTo="/catalog"
-        ctaLabel="Explorer le catalogue"
+        ctaLabel="Trouver des fournisseurs"
         ctaIcon="search"
       />
 
@@ -313,6 +314,7 @@ function StoreDashboardPage() {
           title="Demandes récentes"
           linkTo="/store/requests"
           linkPlacement="footer"
+          linkLabel="Voir toutes mes demandes"
           requests={recentRequests}
           emptyTitle="Aucune demande récente"
           emptyMessage="Créez une demande pour commencer un échange fournisseur."
@@ -328,7 +330,8 @@ function StoreDashboardPage() {
           completionPercent={completionPercent}
           profileIsComplete={profileIsComplete}
           profileTo="/store/profile"
-          completeMessage="Gérez les informations visibles par les fournisseurs lorsqu'ils consultent vos demandes."
+          completeTitle="Profil magasin complet"
+          completeMessage="Vos informations sont visibles par les fournisseurs contactés."
           ariaLabel={`Profil complété à ${completionPercent}%`}
         />
       </section>

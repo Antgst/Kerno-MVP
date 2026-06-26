@@ -20,7 +20,7 @@ function StoreRecommendedSuppliers({ suppliers }) {
     >
       <div className="store-dashboard__section-header">
         <h2 id="recommended-suppliers-title">Fournisseurs recommandés</h2>
-        <Link to="/catalog">Découvrir les fournisseurs</Link>
+        <Link to="/catalog">Explorer tous les fournisseurs</Link>
       </div>
 
       <div className="store-dashboard__supplier-grid">
@@ -82,7 +82,10 @@ function StoreRecommendedSuppliers({ suppliers }) {
                     </span>
                   </div>
 
-                  <Link to={supplierPath}>Voir le fournisseur</Link>
+                  <Link className="store-dashboard__supplier-action" to={supplierPath}>
+                    <DashboardIcon name="eye" />
+                    <span>Voir le fournisseur</span>
+                  </Link>
                 </div>
               </article>
             );
