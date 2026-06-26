@@ -8,9 +8,9 @@ import { loginUser } from "../services/authService";
 import { getDashboardPathByRole } from "../utils/authNavigation";
 
 const loginBenefits = [
-  "Un accès rapide à votre tableau de bord",
-  "Vos demandes et profils centralisés",
-  "Un parcours adapté à votre rôle",
+  "Un accès unique pour les magasins et fournisseurs",
+  "Vos demandes, profils et échanges au même endroit",
+  "Un espace professionnel sécurisé et lisible",
 ];
 
 const initialFormData = {
@@ -98,13 +98,13 @@ function LoginPage() {
   }
 
   return (
-    <main className="auth-page register-page" data-testid="login-page">
+    <main className="auth-page register-page login-page" data-testid="login-page">
       <section className="register-shell">
         <aside className="register-editorial" aria-labelledby="login-title">
-          <h1 id="login-title">Retrouvez votre espace KERNO</h1>
+          <h1 id="login-title">Connectez-vous à votre espace KERNO</h1>
           <p>
-            Accédez à vos demandes, vos profils et vos premiers échanges
-            commerciaux dans un environnement clair et professionnel.
+            Magasin ou fournisseur, retrouvez vos demandes, vos profils et
+            vos premiers échanges B2B dans un espace clair et professionnel.
           </p>
 
           <figure className="register-visual">
@@ -127,7 +127,8 @@ function LoginPage() {
         <section className="register-card" aria-labelledby="login-form-title">
           <div className="register-card__header">
             <h2 id="login-form-title">Se connecter</h2>
-            <p>Renseignez vos identifiants pour accéder à votre espace.</p>
+            <p>Utilisez vos identifiants professionnels pour reprendre votre activité KERNO.</p>
+            <p className="login-required-note">Les champs marqués d’un astérisque (*) sont obligatoires.</p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>
