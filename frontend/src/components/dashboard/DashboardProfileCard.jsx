@@ -1,5 +1,16 @@
 import { Link } from "react-router-dom";
 import DashboardIcon from "./DashboardIcon";
+import ProfileCompletionGauge from "./ProfileCompletionGauge";
+
+function getSafeCompletionPercent(value) {
+  const percent = Number(value);
+
+  if (!Number.isFinite(percent)) {
+    return 0;
+  }
+
+  return Math.min(100, Math.max(0, Math.round(percent)));
+}
 
 function DashboardProfileCard({
   prefix,
@@ -12,9 +23,12 @@ function DashboardProfileCard({
   incompleteMessage = "Ajoutez les informations manquantes pour renforcer votre crédibilité.",
   ariaLabel,
 }) {
+  const safeCompletionPercent = getSafeCompletionPercent(completionPercent);
+  const isProfileComplete = Boolean(profileIsComplete) || safeCompletionPercent >= 100;
+
   const profileCardClass = [
     `${prefix}__profile-card`,
-    profileIsComplete
+    isProfileComplete
       ? `${prefix}__profile-card--complete`
       : `${prefix}__profile-card--incomplete`,
   ].join(" ");
@@ -23,22 +37,22 @@ function DashboardProfileCard({
     <article className={profileCardClass}>
       <div className={`${prefix}__profile-content`}>
         <div className={`${prefix}__profile-copy`}>
-          <h2>{profileIsComplete ? completeTitle : incompleteTitle}</h2>
-          <p>{profileIsComplete ? completeMessage : incompleteMessage}</p>
+          <h2>{isProfileComplete ? completeTitle : incompleteTitle}</h2>
+          <p>{isProfileComplete ? completeMessage : incompleteMessage}</p>
         </div>
 
-        <div
-          className={`${prefix}__profile-gauge`}
-          style={{ "--progress": completionPercent }}
-          aria-label={ariaLabel}
-        >
-          <strong>{completionPercent}%</strong>
+        <div className={`${prefix}__profile-gauge`}>
+          <ProfileCompletionGauge
+            value={safeCompletionPercent}
+            isComplete={isProfileComplete}
+            ariaLabel={ariaLabel}
+          />
         </div>
       </div>
 
       <Link className={`${prefix}__profile-action`} to={profileTo}>
-        <DashboardIcon name={profileIsComplete ? "user" : "check"} />
-        <span>{profileIsComplete ? "Modifier le profil" : "Compléter maintenant"}</span>
+        <DashboardIcon name={isProfileComplete ? "user" : "check"} />
+        <span>{isProfileComplete ? "Modifier le profil" : "Compléter maintenant"}</span>
       </Link>
     </article>
   );

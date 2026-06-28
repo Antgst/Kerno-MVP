@@ -562,38 +562,6 @@
   line-height: 1.5;
 }
 
-.store-dashboard__profile-gauge {
-  position: relative;
-  display: grid;
-  width: 82px;
-  height: 82px;
-  flex: 0 0 auto;
-  place-items: center;
-  border-radius: 999px;
-  background:
-    conic-gradient(
-      #d6ebe2 calc(var(--progress) * 1%),
-      rgb(255 255 255 / 18%) 0
-    ),
-    rgb(255 255 255 / 10%);
-}
-
-.store-dashboard__profile-gauge::after {
-  content: "";
-  position: absolute;
-  inset: 9px;
-  border-radius: inherit;
-  background: #164e3f;
-}
-
-.store-dashboard__profile-gauge strong {
-  position: relative;
-  z-index: 1;
-  color: #fff;
-  font-size: 1.08rem;
-  font-weight: 600;
-}
-
 .store-dashboard__profile-card a {
   display: inline-flex;
   min-height: 50px;
@@ -1144,38 +1112,6 @@
   line-height: 1.5;
 }
 
-.supplier-dashboard__profile-gauge {
-  position: relative;
-  display: grid;
-  width: 82px;
-  height: 82px;
-  flex: 0 0 auto;
-  place-items: center;
-  border-radius: 999px;
-  background:
-    conic-gradient(
-      #d6ebe2 calc(var(--progress) * 1%),
-      rgb(255 255 255 / 18%) 0
-    ),
-    rgb(255 255 255 / 10%);
-}
-
-.supplier-dashboard__profile-gauge::after {
-  content: "";
-  position: absolute;
-  inset: 9px;
-  border-radius: inherit;
-  background: #164e3f;
-}
-
-.supplier-dashboard__profile-gauge strong {
-  position: relative;
-  z-index: 1;
-  color: #fff;
-  font-size: 1.08rem;
-  font-weight: 600;
-}
-
 .supplier-dashboard__profile-card a {
   display: inline-flex;
   min-height: 50px;
@@ -1428,19 +1364,6 @@
 
   .store-dashboard__profile-content {
     gap: 16px;
-  }
-
-  .store-dashboard__profile-gauge {
-    width: 64px;
-    height: 64px;
-  }
-
-  .store-dashboard__profile-gauge::after {
-    inset: 8px;
-  }
-
-  .store-dashboard__profile-gauge strong {
-    font-size: 0.96rem;
   }
 
   .store-dashboard__profile-card a {
@@ -1754,19 +1677,6 @@
 
   .supplier-dashboard__profile-content {
     gap: 16px;
-  }
-
-  .supplier-dashboard__profile-gauge {
-    width: 64px;
-    height: 64px;
-  }
-
-  .supplier-dashboard__profile-gauge::after {
-    inset: 8px;
-  }
-
-  .supplier-dashboard__profile-gauge strong {
-    font-size: 0.96rem;
   }
 
   .supplier-dashboard__profile-card a {
