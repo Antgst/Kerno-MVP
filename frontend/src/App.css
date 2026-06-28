@@ -1,3 +1,4 @@
+/* Ordre CSS volontaire : base -> layouts -> composants -> pages -> responsive -> polish. Ne pas modifier sans revalider le rendu global. */
 @import "./styles/01-base.css";
 @import "./styles/02-landing.css";
 @import "./styles/03-layout.css";
