@@ -298,7 +298,7 @@ function StoreDashboardPage() {
         displayName={storeDisplayName}
         subtitle="Suivez vos demandes et découvrez les fournisseurs pertinents pour votre magasin."
         ctaTo="/catalog"
-        ctaLabel="Trouver des fournisseurs"
+        ctaLabel="Explorer le catalogue"
         ctaIcon="search"
       />
 
@@ -317,7 +317,7 @@ function StoreDashboardPage() {
           linkLabel="Voir toutes mes demandes"
           requests={recentRequests}
           emptyTitle="Aucune demande récente"
-          emptyMessage="Créez une demande pour commencer un échange fournisseur."
+          emptyMessage="Créez une demande pour commencer un échange avec un fournisseur."
           getPrimary={getSupplierName}
           getSecondary={getRequestTitle}
           getTertiary={getRequestProduct}

@@ -219,7 +219,7 @@ function ProductDetailPage() {
             to={requestPath}
           >
             <ProductIcon name="request" />
-            Contacter le fournisseur
+            Créer une demande
           </Link>
         )}
 

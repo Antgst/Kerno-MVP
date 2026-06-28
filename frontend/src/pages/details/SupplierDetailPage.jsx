@@ -441,7 +441,7 @@ function SupplierDetailPage() {
         {supplier && canContactSupplier && (
           <Link className="supplier-detail-page__primary-action" to={requestPath}>
             <SupplierIcon name="request" />
-            Contacter le fournisseur
+            Créer une demande
           </Link>
         )}
       </header>
