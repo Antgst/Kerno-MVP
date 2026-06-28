@@ -202,7 +202,7 @@ function StoreRequestsPage() {
             <EmptyState
               className="supplier-requests-page__empty"
               title="Aucune demande envoyée"
-              message="Explorez le catalogue pour contacter un fournisseur ou demander un devis."
+              message="Explorez le catalogue pour créer une demande fournisseur."
               action={
                 <Link className="supplier-requests-empty__action" to="/catalog">
                   Explorer le catalogue

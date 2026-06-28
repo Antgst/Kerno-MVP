@@ -64,7 +64,7 @@ function RequestFormFields({
             name="subject"
             value={formData.subject}
             onChange={onChange}
-            placeholder="Demande de tarifs professionnels"
+            placeholder="Demande d’informations produit"
             error={fieldErrors.subject}
             required
           />

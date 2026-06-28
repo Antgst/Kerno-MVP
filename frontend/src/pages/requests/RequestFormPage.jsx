@@ -178,8 +178,8 @@ function RequestFormPage() {
     <div className="request-form-page" data-testid="request-form-page">
       <PageHeader
         className="request-form-page__header"
-        title="Envoyer une demande"
-        description="Présentez votre besoin au fournisseur en quelques informations essentielles."
+        title="Créer une demande"
+        description="Présentez votre besoin en quelques informations essentielles."
       >
         <Link to="/catalog">
           <Button variant="secondary">Retour au catalogue</Button>
