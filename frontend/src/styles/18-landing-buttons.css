@@ -1,6 +1,5 @@
 
 
-/* Header — Se connecter */
 .public-header .navigation-link--header-ghost {
   min-height: 40px;
   padding-inline: 17px;
@@ -23,7 +22,6 @@
     0 12px 26px rgb(15 23 42 / 7%);
 }
 
-/* Header — Créer un compte */
 .public-header .navigation-link--header-cta {
   min-height: 40px;
   padding-inline: 18px;
@@ -49,7 +47,6 @@
     0 17px 36px rgb(22 78 63 / 28%);
 }
 
-/* Hero — CTA principal */
 .landing-hero .landing-button--primary {
   min-height: 50px;
   padding-inline: 28px;
@@ -96,7 +93,6 @@
   opacity: 1;
 }
 
-/* Hero — CTA fournisseur secondaire premium */
 .landing-hero .landing-button--secondary {
   min-height: 50px;
   padding-inline: 28px;
@@ -122,7 +118,6 @@
     0 18px 42px rgb(22 78 63 / 14%);
 }
 
-/* Carousel arrows */
 .carousel-controls button {
   width: 42px;
   min-width: 42px;
@@ -144,7 +139,6 @@
   color: #0f3d33;
 }
 
-/* CTA final — Créer un compte */
 .landing-final-cta .landing-button--outline-light {
   border-color: rgb(255 255 255 / 20%);
   background:
@@ -167,7 +161,6 @@
     0 20px 44px rgb(249 115 22 / 36%);
 }
 
-/* CTA final — Se connecter */
 .landing-final-cta .landing-button--light {
   border-color: rgb(255 255 255 / 70%);
   background: #ffffff;
@@ -222,7 +215,6 @@
   }
 }
 
-/* Active state — keep primary CTA pressed but readable */
 .landing-hero .landing-button--primary:active,
 .landing-final-cta .landing-button--outline-light:active,
 .public-header .navigation-link--header-cta:active {
@@ -232,7 +224,6 @@
     0 8px 18px rgb(22 78 63 / 18%);
 }
 
-/* Active state — secondary buttons */
 .landing-hero .landing-button--secondary:active,
 .landing-final-cta .landing-button--light:active,
 .public-header .navigation-link--header-ghost:active {

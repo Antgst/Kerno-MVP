@@ -1,7 +1,7 @@
 const { parsePhoneNumberFromString } = require("libphonenumber-js");
 
 function isValidPhone(phone, defaultCountry = "FR") {
-  if (!phone) return true; // si le téléphone est optionnel
+  if (!phone) return true;
 
   const phoneNumber = parsePhoneNumberFromString(phone, defaultCountry);
 
@@ -17,7 +17,7 @@ function normalizePhone(phone, defaultCountry = "FR") {
     return null;
   }
 
-  return phoneNumber.number; // format international E.164
+  return phoneNumber.number;
 }
 
 module.exports = {

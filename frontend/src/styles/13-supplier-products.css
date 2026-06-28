@@ -1,4 +1,3 @@
-/* Supplier products — product management grid and list */
 .supplier-products-page {
   display: grid;
   width: min(1480px, calc(100vw - 80px));

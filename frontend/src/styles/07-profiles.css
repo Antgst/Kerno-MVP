@@ -1,4 +1,3 @@
-/* Store profile — authenticated S3 dashboard direction */
 .store-profile-page {
   display: grid;
   width: min(1728px, calc(100vw - 80px));
@@ -602,7 +601,6 @@
   }
 }
 
-/* Supplier profile — supplier role adaptation of the authenticated profile system */
 .supplier-profile-page {
   display: grid;
   width: min(1728px, calc(100vw - 80px));

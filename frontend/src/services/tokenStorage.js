@@ -19,8 +19,8 @@ export function setAuthToken(token) {
     }
 
     localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, token);
-  } catch {
-    // localStorage peut être indisponible.
+  } catch (error) {
+    void error;
   }
 }
 
@@ -46,8 +46,8 @@ export function setAuthRole(role) {
     }
 
     localStorage.setItem(AUTH_ROLE_STORAGE_KEY, String(role).toUpperCase());
-  } catch {
-    // Le rôle reste récupérable depuis le token.
+  } catch (error) {
+    void error;
   }
 }
 
@@ -55,7 +55,7 @@ export function clearAuthToken() {
   try {
     localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
     localStorage.removeItem(AUTH_ROLE_STORAGE_KEY);
-  } catch {
-    // Rien à faire.
+  } catch (error) {
+    void error;
   }
 }

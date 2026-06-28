@@ -1,4 +1,3 @@
-/* Targeted consistency pass — supplier detail, product forms and requests */
 .supplier-detail-page,
 .supplier-product-form-page,
 .request-form-page {
@@ -424,7 +423,6 @@
   cursor: pointer;
 }
 
-/* Product create and edit */
 .supplier-product-form-page__back {
   min-height: 43px;
   flex: 0 0 auto;
@@ -610,10 +608,10 @@
 }
 
 .supplier-product-form__visibility {
-  display: flex !important;
+  display: flex;
   align-items: center;
   gap: 12px;
-  margin: 0 !important;
+  margin: 0;
   padding: 14px 15px;
   border: 1px solid #dce3de;
   border-radius: 13px;
@@ -752,7 +750,6 @@
   border-top: 1px solid #e3e1db;
 }
 
-/* Requests */
 .supplier-requests-list__footer {
   display: flex;
   align-items: center;

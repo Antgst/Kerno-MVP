@@ -1,10 +1,3 @@
-/* Responsive */
-@media (max-width: 1180px) {
-  .dashboard-page {
-    width: min(832px, calc(100vw - 264px));
-  }
-}
-
 @media (max-width: 900px) {
   .kerno-shell {
     display: block;
@@ -51,26 +44,6 @@
     display: none;
   }
 
-  .dashboard-page {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-card,
-  .dashboard-card--exchanges,
-  .dashboard-card--profile-score,
-  .dashboard-card--reminders,
-  .dashboard-card--discover,
-  .dashboard-card--featured {
-    grid-column: span 1;
-    min-height: auto;
-  }
-
-  .featured-supplier,
   .marketing-hero,
   .auth-grid {
     grid-template-columns: 1fr;
@@ -106,29 +79,6 @@
     width: 100%;
   }
 
-  .dashboard-hero {
-    flex-direction: column;
-    min-height: auto;
-  }
-
-  .dashboard-hero h1 {
-    font-size: 3rem;
-  }
-
-  .dashboard-hero__actions,
-  .dashboard-hero__actions a,
-  .dashboard-hero__actions button {
-    width: 100%;
-  }
-
-  .featured-supplier {
-    grid-template-columns: 1fr;
-  }
-
-  .featured-supplier__visual {
-    min-height: 130px;
-  }
-
   .marketing-steps,
   .marketing-roles,
   .marketing-preview__grid {
@@ -142,7 +92,7 @@
   }
 }
 
-/* Fix account dropdown click layer */
+/* Keeps the account menu clickable above page content while the mobile sidebar still overlays the header. */
 .kerno-shell__main.kerno-page-bg > .kerno-app-header {
   z-index: 5000;
   overflow: visible;
@@ -165,7 +115,6 @@
   align-items: center;
 }
 
-/* Keep mobile sidebar above the header when opened */
 @media (max-width: 900px) {
   .kerno-shell__main.kerno-page-bg > .kerno-app-header {
     z-index: 2200;

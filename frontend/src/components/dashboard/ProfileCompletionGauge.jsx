@@ -3,16 +3,7 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-
-function getSafeCompletionPercent(value) {
-  const percent = Number(value);
-
-  if (!Number.isFinite(percent)) {
-    return 0;
-  }
-
-  return Math.min(100, Math.max(0, Math.round(percent)));
-}
+import { getSafeCompletionPercent } from "../../utils/completionPercent";
 
 function ProfileCompletionGauge({ value, isComplete = false, ariaLabel }) {
   const completionPercent = getSafeCompletionPercent(value);

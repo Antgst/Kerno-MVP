@@ -39,8 +39,8 @@ export function getSessionCache(key) {
   } catch {
     try {
       storage.removeItem(key);
-    } catch {
-      // Ignore cache cleanup failures.
+    } catch (error) {
+      void error;
     }
 
     return null;
@@ -61,8 +61,8 @@ export function setSessionCache(key, value) {
     }
 
     storage.setItem(key, JSON.stringify(value));
-  } catch {
-    // sessionStorage may be unavailable or full.
+  } catch (error) {
+    void error;
   }
 }
 
@@ -75,8 +75,8 @@ export function removeSessionCache(key) {
 
   try {
     storage.removeItem(key);
-  } catch {
-    // Nothing else to do.
+  } catch (error) {
+    void error;
   }
 }
 
@@ -93,8 +93,8 @@ export function clearSessionCache() {
         storage.removeItem(key);
       }
     }
-  } catch {
-    // Nothing else to do.
+  } catch (error) {
+    void error;
   }
 }
 

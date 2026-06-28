@@ -1,56 +1,54 @@
-/* KERNO shared profile completion gauge - source of truth for store + supplier dashboards */
-
 .store-dashboard__profile-card,
 .supplier-dashboard__profile-card {
-  position: relative !important;
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .store-dashboard__profile-content,
 .supplier-dashboard__profile-content {
-  display: block !important;
-  width: 100% !important;
-  min-height: clamp(112px, 8.4vw, 142px) !important;
+  display: block;
+  width: 100%;
+  min-height: clamp(112px, 8.4vw, 142px);
 }
 
 .store-dashboard__profile-copy,
 .supplier-dashboard__profile-copy {
-  position: relative !important;
-  z-index: 3 !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  text-align: left !important;
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 100%;
+  text-align: left;
 }
 
 .store-dashboard__profile-gauge,
 .supplier-dashboard__profile-gauge {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  z-index: 2 !important;
-  isolation: isolate !important;
-  display: grid !important;
-  width: clamp(92px, 5.7vw, 112px) !important;
-  height: clamp(92px, 5.7vw, 112px) !important;
-  flex: 0 0 clamp(92px, 5.7vw, 112px) !important;
-  place-items: center !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 999px !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  transform: translate(-50%, -50%) !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  isolation: isolate;
+  display: grid;
+  width: clamp(92px, 5.7vw, 112px);
+  height: clamp(92px, 5.7vw, 112px);
+  flex: 0 0 clamp(92px, 5.7vw, 112px);
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: none;
+  transform: translate(-50%, -50%);
 }
 
 .store-dashboard__profile-gauge::before,
 .store-dashboard__profile-gauge::after,
 .supplier-dashboard__profile-gauge::before,
 .supplier-dashboard__profile-gauge::after {
-  display: none !important;
-  content: none !important;
+  display: none;
+  content: none;
 }
 
 .dashboard-profile-gauge {
@@ -144,22 +142,22 @@
 
 .store-dashboard__profile-action,
 .supplier-dashboard__profile-action {
-  position: relative !important;
-  z-index: 4 !important;
-  margin-top: auto !important;
+  position: relative;
+  z-index: 4;
+  margin-top: auto;
 }
 
 @media (min-width: 901px) and (max-height: 900px) {
   .store-dashboard__profile-content,
   .supplier-dashboard__profile-content {
-    min-height: clamp(98px, 7.3vw, 122px) !important;
+    min-height: clamp(98px, 7.3vw, 122px);
   }
 
   .store-dashboard__profile-gauge,
   .supplier-dashboard__profile-gauge {
-    width: clamp(84px, 5.2vw, 100px) !important;
-    height: clamp(84px, 5.2vw, 100px) !important;
-    flex-basis: clamp(84px, 5.2vw, 100px) !important;
+    width: clamp(84px, 5.2vw, 100px);
+    height: clamp(84px, 5.2vw, 100px);
+    flex-basis: clamp(84px, 5.2vw, 100px);
   }
 
   .dashboard-profile-gauge__value {
@@ -170,37 +168,37 @@
 @media (max-width: 900px) {
   .store-dashboard__profile-content,
   .supplier-dashboard__profile-content {
-    display: grid !important;
-    gap: 0.9rem !important;
-    justify-items: center !important;
-    min-height: auto !important;
-    text-align: center !important;
+    display: grid;
+    gap: 0.9rem;
+    justify-items: center;
+    min-height: auto;
+    text-align: center;
   }
 
   .store-dashboard__profile-copy,
   .supplier-dashboard__profile-copy {
-    text-align: center !important;
+    text-align: center;
   }
 
   .store-dashboard__profile-gauge,
   .supplier-dashboard__profile-gauge {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    width: clamp(98px, 28vw, 118px) !important;
-    height: clamp(98px, 28vw, 118px) !important;
-    flex-basis: clamp(98px, 28vw, 118px) !important;
-    margin: 0 auto !important;
-    transform: none !important;
+    position: relative;
+    top: auto;
+    left: auto;
+    width: clamp(98px, 28vw, 118px);
+    height: clamp(98px, 28vw, 118px);
+    flex-basis: clamp(98px, 28vw, 118px);
+    margin: 0 auto;
+    transform: none;
   }
 }
 
 @media (max-width: 520px) {
   .store-dashboard__profile-gauge,
   .supplier-dashboard__profile-gauge {
-    width: 94px !important;
-    height: 94px !important;
-    flex-basis: 94px !important;
+    width: 94px;
+    height: 94px;
+    flex-basis: 94px;
   }
 
   .dashboard-profile-gauge__value {

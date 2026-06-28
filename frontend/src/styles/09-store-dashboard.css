@@ -1821,93 +1821,6 @@
   background: #fef2f2;
 }
 
-/* Remove useless desktop scroll on store dashboard only */
-@media (min-width: 901px) {
-  body:has(.dashboard-page--store) {
-    overflow: hidden;
-  }
-
-  body:has(.dashboard-page--store) .kerno-shell {
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  body:has(.dashboard-page--store) .kerno-shell__main {
-    height: 100vh;
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  body:has(.dashboard-page--store) .kerno-shell__content {
-    height: calc(100vh - 82px);
-    min-height: 0;
-    overflow: hidden;
-    padding-top: 28px;
-    padding-bottom: 18px;
-  }
-
-  .dashboard-page--store {
-    margin-top: -16px;
-  }
-
-  .dashboard-page--store .dashboard-hero {
-    margin-bottom: 10px;
-  }
-
-  .dashboard-page--store .dashboard-grid {
-    gap: 14px;
-  }
-}
-
-/* Store dashboard clickable feedback */
-.dashboard-page--store a,
-.dashboard-page--store button {
-  cursor: pointer;
-}
-
-.dashboard-page--store .dashboard-hero__button,
-.dashboard-page--store .dashboard-footer-button,
-.dashboard-page--store .featured-supplier button,
-.dashboard-page--store .featured-supplier .inline-flex,
-.dashboard-page--store .dashboard-text-link {
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    background-color 160ms ease,
-    color 160ms ease,
-    filter 160ms ease;
-}
-
-.dashboard-page--store .dashboard-hero__button:hover,
-.dashboard-page--store .dashboard-footer-button:hover {
-  background: #ff5f0a !important;
-  box-shadow: 0 10px 22px rgb(255 113 25 / 24%) !important;
-  transform: translateY(-2px);
-  filter: brightness(1.03);
-}
-
-.dashboard-page--store .featured-supplier button:hover,
-.dashboard-page--store .featured-supplier .inline-flex:hover {
-  background: #005641 !important;
-  box-shadow: 0 10px 22px rgb(0 104 79 / 22%) !important;
-  transform: translateY(-2px);
-  filter: brightness(1.04);
-}
-
-.dashboard-page--store .dashboard-text-link:hover {
-  color: #005641;
-  text-decoration: underline;
-}
-
-.dashboard-page--store .dashboard-hero__button:active,
-.dashboard-page--store .dashboard-footer-button:active,
-.dashboard-page--store .featured-supplier button:active,
-.dashboard-page--store .featured-supplier .inline-flex:active {
-  transform: translateY(0);
-  box-shadow: none !important;
-}
-
-/* Store dashboard desktop height tune */
 @media (min-width: 1440px) and (min-height: 900px) {
   body:has(.store-dashboard) .kerno-shell__content {
     padding-top: 10px;
@@ -2072,4 +1985,3 @@
     min-height: 30px;
   }
 }
-/* End store dashboard desktop height tune */
