@@ -1,32 +1,21 @@
-/* Global premium background system
-   Scope : toutes les pages KERNO.
-   Objectifs :
-   - fond premium présent partout ;
-   - même opacité de fond sur toutes les pages ;
-   - landing conservée dans sa composition, seule l'opacité change ;
-   - wrappers de pages transparents pour ne pas masquer le fond ;
-   - responsive.
-*/
-
 :root {
   --kerno-page-background-color: #f8f5ef;
   --kerno-page-background-image: url("../assets/landing/landing-background-premium.webp");
 
-  /* Opacité commune : image présente mais discrète, adaptée aux écrans opérationnels. */
   --kerno-page-background-overlay:
     linear-gradient(
       90deg,
-      rgb(248 245 239 / 94%) 0%,
-      rgb(248 245 239 / 91%) 50%,
-      rgb(248 245 239 / 88%) 100%
+      rgb(248 245 239 / 64%) 0%,
+      rgb(248 245 239 / 48%) 50%,
+      rgb(248 245 239 / 40%) 100%
     );
 
   --kerno-page-background-veil:
     linear-gradient(
       180deg,
-      rgb(248 245 239 / 30%) 0%,
-      rgb(248 245 239 / 46%) 56%,
-      rgb(248 245 239 / 76%) 100%
+      rgb(248 245 239 / 0%) 0%,
+      rgb(248 245 239 / 4%) 56%,
+      rgb(248 245 239 / 14%) 100%
     );
 }
 
@@ -46,7 +35,6 @@ body,
   background-color: var(--kerno-page-background-color);
 }
 
-/* Toutes les pages hors landing */
 .kerno-shell__content,
 .public-layout:not(.public-layout--landing) .public-layout__content {
   position: relative;
@@ -54,7 +42,7 @@ body,
   overflow: hidden;
   background:
     var(--kerno-page-background-overlay),
-    var(--kerno-page-background-image) center 28% / cover no-repeat !important;
+    var(--kerno-page-background-image) center 28% / cover no-repeat;
 }
 
 .kerno-shell__content::before,
@@ -73,272 +61,6 @@ body,
   z-index: 1;
 }
 
-/* Empêche les wrappers de pages de masquer le fond global */
-.kerno-shell__content > main,
-.kerno-shell__content > section,
-.public-layout:not(.public-layout--landing) .public-layout__content > main,
-.public-layout:not(.public-layout--landing) .public-layout__content > section,
-.auth-page,
-.login-page,
-.register-page,
-.store-dashboard,
-.supplier-dashboard,
-.catalog-page,
-.product-detail-page,
-.supplier-detail-page,
-.store-profile-page,
-.supplier-profile-page,
-.store-requests-page,
-.supplier-requests-page,
-.request-form-page,
-.store-request-detail-page,
-.supplier-request-detail-page,
-.supplier-products-page {
-  background: transparent !important;
-}
-
-/* Landing : composition conservée, opacité harmonisée via le même overlay global. */
-.public-layout--landing .landing-page {
-  background-color: var(--kerno-page-background-color) !important;
-  background-image:
-    radial-gradient(ellipse 780px 420px at 12% 6%, rgb(22 78 63 / 10%), transparent 62%),
-    radial-gradient(ellipse 720px 420px at 88% 16%, rgb(249 115 22 / 8%), transparent 60%),
-    var(--kerno-page-background-overlay),
-    var(--kerno-page-background-image) !important;
-  background-size:
-    auto,
-    auto,
-    100% 100%,
-    cover !important;
-  background-position:
-    center top,
-    center top,
-    center top,
-    center top !important;
-  background-repeat: no-repeat !important;
-  background-attachment: scroll !important;
-}
-
-/* Profil complet : moins dominant quand il est déjà validé.
-   Profil incomplet : conserve une mise en avant plus forte. */
-.store-dashboard__profile-card--complete,
-.supplier-dashboard__profile-card--complete {
-  border: 1px solid rgb(22 78 63 / 18%) !important;
-  background:
-    linear-gradient(
-      135deg,
-      rgb(255 255 255 / 88%),
-      rgb(234 247 242 / 78%)
-    ) !important;
-  color: #123f34 !important;
-  box-shadow:
-    0 18px 42px rgb(15 45 38 / 9%),
-    0 1px 0 rgb(255 255 255 / 76%) inset !important;
-}
-
-.store-dashboard__profile-card--complete h2,
-.store-dashboard__profile-card--complete p,
-.supplier-dashboard__profile-card--complete h2,
-.supplier-dashboard__profile-card--complete p {
-  color: #123f34 !important;
-}
-
-.store-dashboard__profile-card--complete a,
-.supplier-dashboard__profile-card--complete a {
-  border: 1px solid rgb(22 78 63 / 30%) !important;
-  background: rgb(22 78 63 / 14%) !important;
-  color: #123f34 !important;
-  font-weight: 800 !important;
-  box-shadow: 0 8px 18px rgb(22 78 63 / 8%) !important;
-}
-
-.store-dashboard__profile-card--complete a:hover,
-.supplier-dashboard__profile-card--complete a:hover {
-  background: rgb(22 78 63 / 22%) !important;
-}
-
-.app-layout__footer,
-.public-layout__footer {
-  position: relative;
-  z-index: 2;
-}
-
-@media (max-width: 900px) {
-  :root {
-    --kerno-page-background-overlay:
-      linear-gradient(
-        90deg,
-        rgb(248 245 239 / 94%) 0%,
-        rgb(248 245 239 / 91%) 50%,
-        rgb(248 245 239 / 88%) 100%
-      );
-
-    --kerno-page-background-veil:
-      linear-gradient(
-        180deg,
-        rgb(248 245 239 / 42%) 0%,
-        rgb(248 245 239 / 58%) 56%,
-        rgb(248 245 239 / 76%) 100%
-      );
-  }
-
-  .kerno-shell__content,
-  .public-layout:not(.public-layout--landing) .public-layout__content {
-    background:
-      var(--kerno-page-background-overlay),
-      var(--kerno-page-background-image) center top / cover no-repeat !important;
-  }
-
-  .public-layout--landing .landing-page {
-    background-image:
-      radial-gradient(ellipse 440px 280px at 10% 4%, rgb(22 78 63 / 8%), transparent 66%),
-      radial-gradient(ellipse 380px 250px at 90% 12%, rgb(249 115 22 / 6%), transparent 64%),
-      var(--kerno-page-background-overlay),
-      var(--kerno-page-background-image) !important;
-  }
-}
-
-/* Dashboard complete profile card - KERNO green override */
-.store-dashboard__profile-card--complete,
-.supplier-dashboard__profile-card--complete {
-  border: 1px solid rgb(22 78 63 / 22%) !important;
-  background:
-    linear-gradient(
-      135deg,
-      rgb(22 78 63 / 98%),
-      rgb(18 63 52 / 96%)
-    ) !important;
-  color: #ffffff !important;
-  box-shadow:
-    0 20px 46px rgb(15 45 38 / 16%),
-    0 1px 0 rgb(255 255 255 / 12%) inset !important;
-}
-
-.store-dashboard__profile-card--complete h2,
-.store-dashboard__profile-card--complete p,
-.supplier-dashboard__profile-card--complete h2,
-.supplier-dashboard__profile-card--complete p {
-  color: #ffffff !important;
-}
-
-.store-dashboard__profile-card--complete a,
-.supplier-dashboard__profile-card--complete a {
-  border: 1px solid rgb(255 255 255 / 72%) !important;
-  background: rgb(255 255 255 / 92%) !important;
-  color: #164e3f !important;
-  font-weight: 800 !important;
-  box-shadow: 0 10px 22px rgb(0 0 0 / 10%) !important;
-}
-
-.store-dashboard__profile-card--complete a:hover,
-.supplier-dashboard__profile-card--complete a:hover {
-  background: #ffffff !important;
-  transform: translateY(-1px);
-}
-
-@media (max-width: 900px) {
-  .store-dashboard__profile-card--complete,
-  .supplier-dashboard__profile-card--complete {
-    box-shadow:
-      0 14px 30px rgb(15 45 38 / 14%),
-      0 1px 0 rgb(255 255 255 / 12%) inset !important;
-  }
-}
-/* End dashboard complete profile card override */
-
-/* Final global background opacity + dashboard gauge polish */
-
-/* Fond global : moins de voile blanc, image plus visible partout.
-   Les variables sont utilisées par toutes les pages, landing incluse. */
-:root {
-  --kerno-page-background-overlay:
-    linear-gradient(
-      90deg,
-      rgb(248 245 239 / 86%) 0%,
-      rgb(248 245 239 / 78%) 50%,
-      rgb(248 245 239 / 72%) 100%
-    );
-
-  --kerno-page-background-veil:
-    linear-gradient(
-      180deg,
-      rgb(248 245 239 / 18%) 0%,
-      rgb(248 245 239 / 28%) 56%,
-      rgb(248 245 239 / 46%) 100%
-    );
-}
-
-@media (max-width: 900px) {
-  :root {
-    --kerno-page-background-overlay:
-      linear-gradient(
-        90deg,
-        rgb(248 245 239 / 90%) 0%,
-        rgb(248 245 239 / 84%) 50%,
-        rgb(248 245 239 / 78%) 100%
-      );
-
-    --kerno-page-background-veil:
-      linear-gradient(
-        180deg,
-        rgb(248 245 239 / 24%) 0%,
-        rgb(248 245 239 / 36%) 56%,
-        rgb(248 245 239 / 54%) 100%
-      );
-  }
-}
-
-/* End final global background opacity + dashboard gauge polish */
-
-/* Global background visibility pass - less opaque + anti masking */
-
-/* Passe finale :
-   - fond moins opaque / image plus visible ;
-   - même logique sur toutes les pages ;
-   - wrappers directs transparents pour éviter qu'une page masque le fond global.
-*/
-:root {
-  --kerno-page-background-overlay:
-    linear-gradient(
-      90deg,
-      rgb(248 245 239 / 78%) 0%,
-      rgb(248 245 239 / 66%) 50%,
-      rgb(248 245 239 / 58%) 100%
-    );
-
-  --kerno-page-background-veil:
-    linear-gradient(
-      180deg,
-      rgb(248 245 239 / 8%) 0%,
-      rgb(248 245 239 / 14%) 56%,
-      rgb(248 245 239 / 30%) 100%
-    );
-}
-
-/* Support global : le fond est porté par les conteneurs principaux. */
-.kerno-shell__content,
-.public-layout:not(.public-layout--landing) .public-layout__content {
-  background:
-    var(--kerno-page-background-overlay),
-    var(--kerno-page-background-image) center 28% / cover no-repeat !important;
-}
-
-.kerno-shell__content::before,
-.public-layout:not(.public-layout--landing) .public-layout__content::before {
-  background: var(--kerno-page-background-veil) !important;
-}
-
-/* Landing : composition conservée, seule l'opacité utilise les mêmes variables. */
-.public-layout--landing .landing-page {
-  background-image:
-    radial-gradient(ellipse 780px 420px at 12% 6%, rgb(22 78 63 / 10%), transparent 62%),
-    radial-gradient(ellipse 720px 420px at 88% 16%, rgb(249 115 22 / 8%), transparent 60%),
-    var(--kerno-page-background-overlay),
-    var(--kerno-page-background-image) !important;
-}
-
-/* Anti-masquage : seuls les wrappers directs deviennent transparents.
-   Les cards internes gardent leurs fonds blancs/verts. */
 .kerno-shell__content > main,
 .kerno-shell__content > section,
 .kerno-shell__content > [class*="page"],
@@ -365,90 +87,36 @@ body,
 .supplier-products-page,
 .supplier-product-form-page,
 .not-found-page {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-}
-
-@media (max-width: 900px) {
-  :root {
-    --kerno-page-background-overlay:
-      linear-gradient(
-        90deg,
-        rgb(248 245 239 / 84%) 0%,
-        rgb(248 245 239 / 74%) 50%,
-        rgb(248 245 239 / 66%) 100%
-      );
-
-    --kerno-page-background-veil:
-      linear-gradient(
-        180deg,
-        rgb(248 245 239 / 12%) 0%,
-        rgb(248 245 239 / 22%) 56%,
-        rgb(248 245 239 / 40%) 100%
-      );
-  }
-
-  .kerno-shell__content,
-  .public-layout:not(.public-layout--landing) .public-layout__content {
-    background:
-      var(--kerno-page-background-overlay),
-      var(--kerno-page-background-image) center top / cover no-repeat !important;
-  }
-
-  .public-layout--landing .landing-page {
-    background-image:
-      radial-gradient(ellipse 440px 280px at 10% 4%, rgb(22 78 63 / 8%), transparent 66%),
-      radial-gradient(ellipse 380px 250px at 90% 12%, rgb(249 115 22 / 6%), transparent 64%),
-      var(--kerno-page-background-overlay),
-      var(--kerno-page-background-image) !important;
-  }
-}
-
-/* End global background visibility pass */
-
-/* Global background opacity tuning - V2 Antoine */
-
-/* Réglage final d'opacité du fond global.
-   Plus les pourcentages sont bas, plus l'image de fond est visible.
-   Ce bloc est placé en fin de fichier pour gagner sur les anciens réglages.
-*/
-:root {
-  --kerno-page-background-overlay:
-    linear-gradient(
-      90deg,
-      rgb(248 245 239 / 64%) 0%,
-      rgb(248 245 239 / 48%) 50%,
-      rgb(248 245 239 / 40%) 100%
-    );
-
-  --kerno-page-background-veil:
-    linear-gradient(
-      180deg,
-      rgb(248 245 239 / 0%) 0%,
-      rgb(248 245 239 / 4%) 56%,
-      rgb(248 245 239 / 14%) 100%
-    );
-}
-
-.kerno-shell__content,
-.public-layout:not(.public-layout--landing) .public-layout__content {
-  background:
-    var(--kerno-page-background-overlay),
-    var(--kerno-page-background-image) center 28% / cover no-repeat !important;
-}
-
-.kerno-shell__content::before,
-.public-layout:not(.public-layout--landing) .public-layout__content::before {
-  background: var(--kerno-page-background-veil) !important;
+  background: transparent;
+  background-color: transparent;
+  background-image: none;
 }
 
 .public-layout--landing .landing-page {
+  background-color: var(--kerno-page-background-color);
   background-image:
     radial-gradient(ellipse 780px 420px at 12% 6%, rgb(22 78 63 / 10%), transparent 62%),
     radial-gradient(ellipse 720px 420px at 88% 16%, rgb(249 115 22 / 8%), transparent 60%),
     var(--kerno-page-background-overlay),
-    var(--kerno-page-background-image) !important;
+    var(--kerno-page-background-image);
+  background-size:
+    auto,
+    auto,
+    100% 100%,
+    cover;
+  background-position:
+    center top,
+    center top,
+    center top,
+    center top;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+}
+
+.app-layout__footer,
+.public-layout__footer {
+  position: relative;
+  z-index: 2;
 }
 
 @media (max-width: 900px) {
@@ -474,7 +142,7 @@ body,
   .public-layout:not(.public-layout--landing) .public-layout__content {
     background:
       var(--kerno-page-background-overlay),
-      var(--kerno-page-background-image) center top / cover no-repeat !important;
+      var(--kerno-page-background-image) center top / cover no-repeat;
   }
 
   .public-layout--landing .landing-page {
@@ -482,39 +150,78 @@ body,
       radial-gradient(ellipse 440px 280px at 10% 4%, rgb(22 78 63 / 8%), transparent 66%),
       radial-gradient(ellipse 380px 250px at 90% 12%, rgb(249 115 22 / 6%), transparent 64%),
       var(--kerno-page-background-overlay),
-      var(--kerno-page-background-image) !important;
+      var(--kerno-page-background-image);
   }
 }
 
-/* End global background opacity tuning - V2 Antoine */
+.store-dashboard__profile-card--complete,
+.supplier-dashboard__profile-card--complete {
+  border: 1px solid rgb(22 78 63 / 22%);
+  background:
+    linear-gradient(
+      135deg,
+      rgb(22 78 63 / 98%),
+      rgb(18 63 52 / 96%)
+    );
+  color: #ffffff;
+  box-shadow:
+    0 20px 46px rgb(15 45 38 / 16%),
+    0 1px 0 rgb(255 255 255 / 12%) inset;
+}
 
-/* Dashboard readability polish - Antoine */
+.store-dashboard__profile-card--complete h2,
+.store-dashboard__profile-card--complete p,
+.supplier-dashboard__profile-card--complete h2,
+.supplier-dashboard__profile-card--complete p {
+  color: #ffffff;
+}
 
-/* Lisibilité fine : petits textes plus lisibles sur fond image.
-   Scope limité aux dashboards store + supplier.
-*/
+.store-dashboard__profile-card--complete a,
+.supplier-dashboard__profile-card--complete a {
+  border: 1px solid rgb(255 255 255 / 72%);
+  background: rgb(255 255 255 / 92%);
+  color: #164e3f;
+  font-weight: 800;
+  box-shadow: 0 10px 22px rgb(0 0 0 / 10%);
+}
+
+.store-dashboard__profile-card--complete a:hover,
+.supplier-dashboard__profile-card--complete a:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+  .store-dashboard__profile-card--complete,
+  .supplier-dashboard__profile-card--complete {
+    box-shadow:
+      0 14px 30px rgb(15 45 38 / 14%),
+      0 1px 0 rgb(255 255 255 / 12%) inset;
+  }
+}
+
 .store-dashboard__hello,
 .supplier-dashboard__hello {
-  color: #5f6f68 !important;
-  font-weight: 650 !important;
+  color: #5f6f68;
+  font-weight: 650;
 }
 
 .store-dashboard__subtitle,
 .supplier-dashboard__subtitle {
-  color: #4f5f58 !important;
-  font-weight: 650 !important;
+  color: #4f5f58;
+  font-weight: 650;
 }
 
 .store-dashboard__stat-card p,
 .supplier-dashboard__stat-card p {
-  color: #263d35 !important;
-  font-weight: 800 !important;
+  color: #263d35;
+  font-weight: 800;
 }
 
 .store-dashboard__stat-card small,
 .supplier-dashboard__stat-card small {
-  color: #53655e !important;
-  font-weight: 650 !important;
+  color: #53655e;
+  font-weight: 650;
 }
 
 .store-dashboard__request-copy small,
@@ -523,243 +230,210 @@ body,
 .supplier-dashboard__request-copy em,
 .store-dashboard__request-date,
 .supplier-dashboard__request-date {
-  color: #53655e !important;
-  font-weight: 600 !important;
+  color: #53655e;
+  font-weight: 600;
 }
 
 .store-dashboard__section-header a,
 .supplier-dashboard__section-header a,
 .store-dashboard__request-all,
 .supplier-dashboard__request-all {
-  color: #164e3f !important;
-  font-weight: 850 !important;
+  color: #164e3f;
+  font-weight: 850;
 }
 
 .store-dashboard__section-header a:hover,
 .supplier-dashboard__section-header a:hover,
 .store-dashboard__request-all:hover,
 .supplier-dashboard__request-all:hover {
-  color: #0f3d31 !important;
+  color: #0f3d31;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
-/* End dashboard readability polish - Antoine */
-
-/* Dashboard primary CTA role polish - Antoine */
-
-/* CTA principal dashboards :
-   - magasin : Trouver des fournisseurs en orange ;
-   - fournisseur : Ajouter un produit conservé en orange ;
-   - responsive via dimensions fluides et wrapping propre.
-*/
 .store-dashboard__primary-cta,
 .supplier-dashboard__primary-cta {
-  min-height: clamp(46px, 3.2vw, 54px) !important;
-  padding: 0 clamp(20px, 2vw, 30px) !important;
-  border: 1px solid rgb(249 115 22 / 22%) !important;
-  border-radius: 18px !important;
-  background: #f97316 !important;
-  color: #ffffff !important;
-  font-weight: 850 !important;
+  min-height: clamp(46px, 3.2vw, 54px);
+  padding: 0 clamp(20px, 2vw, 30px);
+  border: 1px solid rgb(249 115 22 / 22%);
+  border-radius: 18px;
+  background: #f97316;
+  color: #ffffff;
+  font-weight: 850;
   box-shadow:
     0 14px 28px rgb(249 115 22 / 18%),
-    0 1px 0 rgb(255 255 255 / 24%) inset !important;
+    0 1px 0 rgb(255 255 255 / 24%) inset;
 }
 
 .store-dashboard__primary-cta:hover,
 .supplier-dashboard__primary-cta:hover {
-  background: #ea580c !important;
-  color: #ffffff !important;
+  background: #ea580c;
+  color: #ffffff;
   transform: translateY(-1px);
 }
 
 .store-dashboard__primary-cta svg,
 .supplier-dashboard__primary-cta svg {
-  width: clamp(18px, 1.4vw, 23px) !important;
-  height: clamp(18px, 1.4vw, 23px) !important;
+  width: clamp(18px, 1.4vw, 23px);
+  height: clamp(18px, 1.4vw, 23px);
 }
 
 @media (max-width: 900px) {
   .store-dashboard__intro,
   .supplier-dashboard__intro {
-    align-items: stretch !important;
+    align-items: stretch;
   }
 
   .store-dashboard__primary-cta,
   .supplier-dashboard__primary-cta {
-    width: 100% !important;
-    min-height: 48px !important;
+    width: 100%;
+    min-height: 48px;
   }
 }
 
-/* End dashboard primary CTA role polish - Antoine */
-
-/* Dashboard orange accent bars - Antoine */
-
-/* Barres oranges façon landing.
-   Scope limité aux dashboards store + supplier.
-   Responsive, purement CSS, aucune donnée codée en dur.
-*/
-
 .store-dashboard__intro h1,
 .supplier-dashboard__intro h1 {
-  position: relative !important;
-  display: inline-block !important;
-  padding-bottom: clamp(0.45rem, 0.7vw, 0.62rem) !important;
+  position: relative;
+  display: inline-block;
+  padding-bottom: clamp(0.45rem, 0.7vw, 0.62rem);
 }
 
 .store-dashboard__intro h1::after,
 .supplier-dashboard__intro h1::after {
-  content: "" !important;
-  position: absolute !important;
-  left: 0 !important;
-  bottom: 0 !important;
-  width: clamp(48px, 4.8vw, 76px) !important;
-  height: 3px !important;
-  border-radius: 999px !important;
-  background: #f97316 !important;
-  box-shadow: 0 6px 14px rgb(249 115 22 / 24%) !important;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: clamp(48px, 4.8vw, 76px);
+  height: 3px;
+  border-radius: 999px;
+  background: #f97316;
+  box-shadow: 0 6px 14px rgb(249 115 22 / 24%);
 }
 
 .store-dashboard__section-header h2,
 .supplier-dashboard__section-header h2 {
-  position: relative !important;
-  display: inline-block !important;
-  padding-bottom: 0.48rem !important;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.48rem;
 }
 
 .store-dashboard__section-header h2::after,
 .supplier-dashboard__section-header h2::after {
-  content: "" !important;
-  position: absolute !important;
-  left: 0 !important;
-  bottom: 0 !important;
-  width: clamp(34px, 3.4vw, 56px) !important;
-  height: 2px !important;
-  border-radius: 999px !important;
-  background: #f97316 !important;
-  box-shadow: 0 5px 12px rgb(249 115 22 / 18%) !important;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: clamp(34px, 3.4vw, 56px);
+  height: 2px;
+  border-radius: 999px;
+  background: #f97316;
+  box-shadow: 0 5px 12px rgb(249 115 22 / 18%);
 }
 
 .store-dashboard__section-header,
 .supplier-dashboard__section-header {
-  align-items: flex-end !important;
+  align-items: flex-end;
 }
 
 @media (max-width: 900px) {
   .store-dashboard__intro h1,
   .supplier-dashboard__intro h1 {
-    padding-bottom: 0.5rem !important;
+    padding-bottom: 0.5rem;
   }
 
   .store-dashboard__intro h1::after,
   .supplier-dashboard__intro h1::after {
-    width: 52px !important;
-    height: 3px !important;
+    width: 52px;
+    height: 3px;
   }
 
   .store-dashboard__section-header,
   .supplier-dashboard__section-header {
-    align-items: flex-start !important;
+    align-items: flex-start;
   }
 
   .store-dashboard__section-header h2,
   .supplier-dashboard__section-header h2 {
-    padding-bottom: 0.44rem !important;
+    padding-bottom: 0.44rem;
   }
 }
 
-/* End dashboard orange accent bars - Antoine */
-
-/* KERNO final dashboard gauge and alignment polish - Antoine */
-
-/* Objectif :
-   - corriger les micro-décalages texte sur les 2 dashboards ;
-   - garder les actions alignées et lisibles ;
-   - rendre la jauge plus grande, plus premium et toujours dynamique via --progress ;
-   - éviter que les cards basses soient masquées par le footer ;
-   - ne pas toucher aux routes, API, données ou composants métier.
-*/
-
-/* Header dashboard : titre, sous-titre et CTA mieux calés */
 .store-dashboard__intro,
 .supplier-dashboard__intro {
-  align-items: end !important;
+  align-items: end;
 }
 
 .store-dashboard__hello,
 .supplier-dashboard__hello {
-  margin: 0 0 0.08rem !important;
-  line-height: 1 !important;
+  margin: 0 0 0.08rem;
+  line-height: 1;
 }
 
 .store-dashboard__intro h1,
 .supplier-dashboard__intro h1 {
-  margin: 0 !important;
-  line-height: 1.02 !important;
-  letter-spacing: -0.035em !important;
+  margin: 0;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
 }
 
 .store-dashboard__subtitle,
 .supplier-dashboard__subtitle {
-  margin: 0.18rem 0 0 !important;
-  line-height: 1.22 !important;
+  margin: 0.18rem 0 0;
+  line-height: 1.22;
 }
 
-/* Stats : alignement stable entre icône, nombre, titre et sous-texte */
 .store-dashboard__stat-card,
 .supplier-dashboard__stat-card {
-  display: grid !important;
-  grid-template-columns: auto minmax(0, 1fr) !important;
-  align-items: center !important;
-  column-gap: clamp(0.72rem, 0.9vw, 1rem) !important;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: clamp(0.72rem, 0.9vw, 1rem);
 }
 
 .store-dashboard__stat-card > span,
 .supplier-dashboard__stat-card > span {
-  align-self: center !important;
+  align-self: center;
 }
 
 .store-dashboard__stat-card strong,
 .supplier-dashboard__stat-card strong {
-  margin: 0 !important;
-  line-height: 0.98 !important;
-  letter-spacing: -0.02em !important;
+  margin: 0;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
 }
 
 .store-dashboard__stat-card p,
 .supplier-dashboard__stat-card p {
-  margin: 0.18rem 0 0 !important;
-  line-height: 1.12 !important;
+  margin: 0.18rem 0 0;
+  line-height: 1.12;
 }
 
 .store-dashboard__stat-card small,
 .supplier-dashboard__stat-card small {
-  display: block !important;
-  margin-top: 0.16rem !important;
-  line-height: 1.12 !important;
+  display: block;
+  margin-top: 0.16rem;
+  line-height: 1.12;
 }
 
-/* Demandes : grille stable, textes non décalés, date/badge alignés */
 .store-dashboard__request-row,
 .supplier-dashboard__request-row {
-  display: grid !important;
-  grid-template-columns: auto minmax(0, 1fr) auto auto !important;
-  align-items: center !important;
-  column-gap: clamp(0.72rem, 1vw, 1.1rem) !important;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: clamp(0.72rem, 1vw, 1.1rem);
 }
 
 .store-dashboard__request-icon,
 .supplier-dashboard__request-icon {
-  align-self: center !important;
+  align-self: center;
 }
 
 .store-dashboard__request-copy,
 .supplier-dashboard__request-copy {
-  min-width: 0 !important;
-  display: grid !important;
-  gap: 0.12rem !important;
+  min-width: 0;
+  display: grid;
+  gap: 0.12rem;
 }
 
 .store-dashboard__request-copy strong,
@@ -768,306 +442,296 @@ body,
 .supplier-dashboard__request-copy small,
 .store-dashboard__request-copy em,
 .supplier-dashboard__request-copy em {
-  display: block !important;
-  margin: 0 !important;
-  line-height: 1.16 !important;
+  display: block;
+  margin: 0;
+  line-height: 1.16;
 }
 
 .store-dashboard__request-date,
 .supplier-dashboard__request-date {
-  white-space: nowrap !important;
-  text-align: right !important;
-  line-height: 1 !important;
+  white-space: nowrap;
+  text-align: right;
+  line-height: 1;
 }
 
-/* Titres de sections : barre orange + lien alignés sans décalage vertical */
 .store-dashboard__section-header,
 .supplier-dashboard__section-header {
-  align-items: flex-start !important;
-  gap: clamp(0.9rem, 1.25vw, 1.35rem) !important;
+  align-items: flex-start;
+  gap: clamp(0.9rem, 1.25vw, 1.35rem);
 }
 
 .store-dashboard__section-header h2,
 .supplier-dashboard__section-header h2 {
-  margin: 0 !important;
-  line-height: 1.06 !important;
+  margin: 0;
+  line-height: 1.06;
 }
 
 .store-dashboard__section-header a,
 .supplier-dashboard__section-header a {
-  display: inline-flex !important;
-  align-items: center !important;
-  min-height: 1.35rem !important;
-  line-height: 1.1 !important;
-  transform: translateY(0.08rem) !important;
-  white-space: nowrap !important;
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.35rem;
+  line-height: 1.1;
+  transform: translateY(0.08rem);
+  white-space: nowrap;
 }
 
 .store-dashboard__section-header a::after,
 .supplier-dashboard__section-header a::after {
-  content: "→" !important;
-  display: inline-block !important;
-  margin-left: 0.34rem !important;
-  transform: translateY(-1px) !important;
-  transition: transform 160ms ease !important;
+  content: "→";
+  display: inline-block;
+  margin-left: 0.34rem;
+  transform: translateY(-1px);
+  transition: transform 160ms ease;
 }
 
 .store-dashboard__section-header a:hover::after,
 .supplier-dashboard__section-header a:hover::after {
-  transform: translate(3px, -1px) !important;
+  transform: translate(3px, -1px);
 }
 
-/* Card profil : même logique store + supplier */
 .store-dashboard__profile-card,
 .supplier-dashboard__profile-card {
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
-  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
 .store-dashboard__profile-content,
 .supplier-dashboard__profile-content {
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .store-dashboard__profile-copy,
 .supplier-dashboard__profile-copy {
-  flex: 0 0 auto !important;
+  flex: 0 0 auto;
 }
 
 .store-dashboard__profile-copy h2,
 .supplier-dashboard__profile-copy h2 {
-  margin: 0 !important;
-  line-height: 1.08 !important;
+  margin: 0;
+  line-height: 1.08;
 }
 
 .store-dashboard__profile-copy p,
 .supplier-dashboard__profile-copy p {
-  margin: 0.18rem 0 0 !important;
-  max-width: 34rem !important;
-  line-height: 1.22 !important;
+  margin: 0.18rem 0 0;
+  max-width: 34rem;
+  line-height: 1.22;
 }
 
-/* Bouton profil : icône + texte mieux centrés */
 .store-dashboard__profile-action,
 .supplier-dashboard__profile-action,
 .store-dashboard__supplier-action,
 .supplier-dashboard__product-action {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.48rem !important;
-  line-height: 1 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.48rem;
+  line-height: 1;
 }
 
 .store-dashboard__profile-action svg,
 .supplier-dashboard__profile-action svg,
 .store-dashboard__supplier-action svg,
 .supplier-dashboard__product-action svg {
-  width: 1.08rem !important;
-  height: 1.08rem !important;
-  stroke-width: 2.7 !important;
-  flex: 0 0 auto !important;
+  width: 1.08rem;
+  height: 1.08rem;
+  stroke-width: 2.7;
+  flex: 0 0 auto;
 }
 
-/* Cards basses : hauteurs harmonisées et contenu qui ne part plus sous le footer */
 .store-dashboard__supplier-card,
 .supplier-dashboard__product-card {
-  min-height: 0 !important;
-  height: 100% !important;
+  min-height: 0;
+  height: 100%;
 }
 
 .store-dashboard__supplier-body,
 .supplier-dashboard__product-body {
-  min-height: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: clamp(0.34rem, 0.48vw, 0.52rem) !important;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.34rem, 0.48vw, 0.52rem);
 }
 
 .store-dashboard__supplier-footer,
 .supplier-dashboard__product-footer {
-  margin-top: auto !important;
-  display: flex !important;
-  align-items: center !important;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
 }
 
 .store-dashboard__supplier-footer {
-  justify-content: space-between !important;
+  justify-content: space-between;
 }
 
 .supplier-dashboard__product-footer {
-  justify-content: flex-end !important;
+  justify-content: flex-end;
 }
 
-/* Desktop : on compacte le contenu, pas le footer */
 @media (min-width: 901px) {
   body:has(.store-dashboard) .kerno-shell__content,
   body:has(.supplier-dashboard) .kerno-shell__content {
-    padding-top: clamp(0.58rem, 0.72vw, 0.82rem) !important;
-    padding-bottom: clamp(0.22rem, 0.32vw, 0.38rem) !important;
+    padding-top: clamp(0.58rem, 0.72vw, 0.82rem);
+    padding-bottom: clamp(0.22rem, 0.32vw, 0.38rem);
   }
 
   .store-dashboard,
   .supplier-dashboard {
-    gap: clamp(0.44rem, 0.56vw, 0.68rem) !important;
+    gap: clamp(0.44rem, 0.56vw, 0.68rem);
   }
 
   .store-dashboard__stats,
   .supplier-dashboard__stats {
-    gap: clamp(0.58rem, 0.72vw, 0.85rem) !important;
+    gap: clamp(0.58rem, 0.72vw, 0.85rem);
   }
 
   .store-dashboard__stat-card,
   .supplier-dashboard__stat-card {
-    min-height: clamp(72px, 5.4vw, 86px) !important;
-    padding: clamp(0.58rem, 0.68vw, 0.82rem) !important;
+    min-height: clamp(72px, 5.4vw, 86px);
+    padding: clamp(0.58rem, 0.68vw, 0.82rem);
   }
 
   .store-dashboard__work-grid,
   .supplier-dashboard__work-grid {
-    gap: clamp(0.58rem, 0.72vw, 0.86rem) !important;
+    gap: clamp(0.58rem, 0.72vw, 0.86rem);
   }
 
   .store-dashboard__request-row,
   .supplier-dashboard__request-row {
-    min-height: 40px !important;
-    padding-block: clamp(0.28rem, 0.36vw, 0.44rem) !important;
+    min-height: 40px;
+    padding-block: clamp(0.28rem, 0.36vw, 0.44rem);
   }
 
   .store-dashboard__request-copy strong,
   .supplier-dashboard__request-copy strong {
-    font-size: clamp(0.76rem, 0.72vw, 0.86rem) !important;
+    font-size: clamp(0.76rem, 0.72vw, 0.86rem);
   }
 
   .store-dashboard__request-copy small,
   .supplier-dashboard__request-copy small,
   .store-dashboard__request-copy em,
   .supplier-dashboard__request-copy em {
-    font-size: clamp(0.67rem, 0.64vw, 0.75rem) !important;
+    font-size: clamp(0.67rem, 0.64vw, 0.75rem);
   }
 
   .store-dashboard__profile-card,
   .supplier-dashboard__profile-card {
-    min-height: 0 !important;
-    padding: clamp(0.72rem, 0.8vw, 0.94rem) !important;
+    min-height: 0;
+    padding: clamp(0.72rem, 0.8vw, 0.94rem);
   }
 
   .store-dashboard__recommended,
   .supplier-dashboard__featured {
-    margin-top: clamp(0.34rem, 0.48vw, 0.62rem) !important;
+    margin-top: clamp(0.34rem, 0.48vw, 0.62rem);
   }
 
   .store-dashboard__section-header,
   .supplier-dashboard__section-header {
-    margin-bottom: clamp(0.38rem, 0.54vw, 0.66rem) !important;
+    margin-bottom: clamp(0.38rem, 0.54vw, 0.66rem);
   }
 
   .store-dashboard__supplier-grid,
   .supplier-dashboard__product-grid {
-    gap: clamp(0.62rem, 0.78vw, 0.9rem) !important;
-    align-items: stretch !important;
+    gap: clamp(0.62rem, 0.78vw, 0.9rem);
+    align-items: stretch;
   }
 
   .store-dashboard__supplier-visual,
   .supplier-dashboard__product-visual {
-    height: clamp(90px, 8.2vw, 128px) !important;
-    min-height: 0 !important;
+    height: clamp(90px, 8.2vw, 128px);
+    min-height: 0;
   }
 
   .store-dashboard__supplier-body,
   .supplier-dashboard__product-body {
-    padding: clamp(0.5rem, 0.62vw, 0.76rem) !important;
+    padding: clamp(0.5rem, 0.62vw, 0.76rem);
   }
 
   .store-dashboard__supplier-action,
   .supplier-dashboard__product-action,
   .store-dashboard__profile-action,
   .supplier-dashboard__profile-action {
-    min-height: 30px !important;
+    min-height: 30px;
   }
 }
 
-/* Écrans desktop plus bas : priorité à l’absence de masquage par le footer */
 @media (min-width: 901px) and (max-height: 900px) {
   .store-dashboard__intro h1,
   .supplier-dashboard__intro h1 {
-    font-size: clamp(1.42rem, 1.45vw, 1.82rem) !important;
+    font-size: clamp(1.42rem, 1.45vw, 1.82rem);
   }
 
   .store-dashboard__stat-card,
   .supplier-dashboard__stat-card {
-    min-height: 68px !important;
+    min-height: 68px;
   }
 
   .store-dashboard__request-row,
   .supplier-dashboard__request-row {
-    min-height: 37px !important;
+    min-height: 37px;
   }
 
   .store-dashboard__profile-gauge,
   .supplier-dashboard__profile-gauge {
-    width: clamp(120px, 7.4vw, 140px) !important;
-    height: clamp(120px, 7.4vw, 140px) !important;
+    width: clamp(120px, 7.4vw, 140px);
+    height: clamp(120px, 7.4vw, 140px);
   }
 
   .store-dashboard__supplier-visual,
   .supplier-dashboard__product-visual {
-    height: clamp(76px, 7vw, 102px) !important;
+    height: clamp(76px, 7vw, 102px);
   }
 
   .store-dashboard__supplier-body,
   .supplier-dashboard__product-body {
-    padding: 0.46rem 0.58rem !important;
-    gap: 0.28rem !important;
+    padding: 0.46rem 0.58rem;
+    gap: 0.28rem;
   }
 }
 
-/* Mobile/tablette : retour au flux naturel et jauge lisible */
 @media (max-width: 900px) {
   .store-dashboard__intro,
   .supplier-dashboard__intro {
-    align-items: stretch !important;
+    align-items: stretch;
   }
 
   .store-dashboard__request-row,
   .supplier-dashboard__request-row {
-    grid-template-columns: auto minmax(0, 1fr) !important;
-    row-gap: 0.42rem !important;
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: 0.42rem;
   }
 
   .store-dashboard__request-date,
   .supplier-dashboard__request-date {
-    grid-column: 2 !important;
-    text-align: left !important;
+    grid-column: 2;
+    text-align: left;
   }
 
   .store-dashboard__profile-gauge,
   .supplier-dashboard__profile-gauge {
-    width: clamp(118px, 32vw, 146px) !important;
-    height: clamp(118px, 32vw, 146px) !important;
+    width: clamp(118px, 32vw, 146px);
+    height: clamp(118px, 32vw, 146px);
   }
 
   .store-dashboard__section-header,
   .supplier-dashboard__section-header {
-    flex-wrap: wrap !important;
-    align-items: flex-start !important;
+    flex-wrap: wrap;
+    align-items: flex-start;
   }
 
   .store-dashboard__section-header a,
   .supplier-dashboard__section-header a {
-    transform: none !important;
+    transform: none;
   }
 
   .store-dashboard__supplier-visual,
   .supplier-dashboard__product-visual {
-    height: clamp(148px, 42vw, 210px) !important;
+    height: clamp(148px, 42vw, 210px);
   }
 }
-
-/* End KERNO final dashboard gauge and alignment polish - Antoine */
-

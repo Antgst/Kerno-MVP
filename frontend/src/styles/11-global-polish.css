@@ -1,4 +1,3 @@
-/* S3 global visual consistency polish */
 .site-header--public {
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   min-height: 72px;
@@ -328,7 +327,6 @@
   }
 }
 
-/* Final cascade for the targeted follow-up */
 .site-header--public.public-header--glass {
   border-bottom-color: rgb(255 255 255 / 62%);
   background:
@@ -479,7 +477,6 @@
   }
 }
 
-/* Shared header alignment — final cascade */
 @media (min-width: 901px) {
   .kerno-app-header {
     display: grid;
@@ -571,7 +568,6 @@
   }
 }
 
-/* Store dashboard request panel aligned with supplier dashboard */
 .store-dashboard__request-row {
   min-height: 104px;
   color: inherit;
