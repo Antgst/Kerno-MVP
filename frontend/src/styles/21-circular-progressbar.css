@@ -1,0 +1,209 @@
+/* KERNO shared profile completion gauge - source of truth for store + supplier dashboards */
+
+.store-dashboard__profile-card,
+.supplier-dashboard__profile-card {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.store-dashboard__profile-content,
+.supplier-dashboard__profile-content {
+  display: block !important;
+  width: 100% !important;
+  min-height: clamp(112px, 8.4vw, 142px) !important;
+}
+
+.store-dashboard__profile-copy,
+.supplier-dashboard__profile-copy {
+  position: relative !important;
+  z-index: 3 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  text-align: left !important;
+}
+
+.store-dashboard__profile-gauge,
+.supplier-dashboard__profile-gauge {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  z-index: 2 !important;
+  isolation: isolate !important;
+  display: grid !important;
+  width: clamp(92px, 5.7vw, 112px) !important;
+  height: clamp(92px, 5.7vw, 112px) !important;
+  flex: 0 0 clamp(92px, 5.7vw, 112px) !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.store-dashboard__profile-gauge::before,
+.store-dashboard__profile-gauge::after,
+.supplier-dashboard__profile-gauge::before,
+.supplier-dashboard__profile-gauge::after {
+  display: none !important;
+  content: none !important;
+}
+
+.dashboard-profile-gauge {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      circle at 50% 44%,
+      rgba(214, 235, 226, 0.16) 0%,
+      rgba(214, 235, 226, 0.06) 44%,
+      transparent 72%
+    );
+}
+
+.dashboard-profile-gauge::before {
+  position: absolute;
+  inset: 19%;
+  z-index: 0;
+  border: 1px solid rgba(248, 245, 239, 0.14);
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      circle at 38% 28%,
+      rgba(255, 255, 255, 0.14),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(22, 78, 63, 0.42),
+      rgba(11, 45, 77, 0.16)
+    );
+  box-shadow:
+    inset 0 0 18px rgba(255, 255, 255, 0.08),
+    0 10px 22px rgba(0, 0, 0, 0.11);
+  content: "";
+}
+
+.dashboard-profile-gauge .CircularProgressbar {
+  position: relative;
+  z-index: 1;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.12));
+}
+
+.dashboard-profile-gauge .CircularProgressbar-path {
+  filter: drop-shadow(0 0 4px rgba(214, 235, 226, 0.16));
+}
+
+.dashboard-profile-gauge .CircularProgressbar-trail {
+  stroke-linecap: round;
+}
+
+.dashboard-profile-gauge__center {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.dashboard-profile-gauge__value {
+  color: #ffffff;
+  font-size: clamp(1.16rem, 1.24vw, 1.42rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.055em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.24);
+}
+
+.store-dashboard__profile-card--complete .dashboard-profile-gauge,
+.supplier-dashboard__profile-card--complete .dashboard-profile-gauge {
+  background:
+    radial-gradient(
+      circle at 50% 44%,
+      rgba(214, 235, 226, 0.18) 0%,
+      rgba(214, 235, 226, 0.07) 48%,
+      transparent 74%
+    );
+}
+
+.store-dashboard__profile-card--complete .dashboard-profile-gauge__value,
+.supplier-dashboard__profile-card--complete .dashboard-profile-gauge__value {
+  color: #ffffff;
+}
+
+.store-dashboard__profile-action,
+.supplier-dashboard__profile-action {
+  position: relative !important;
+  z-index: 4 !important;
+  margin-top: auto !important;
+}
+
+@media (min-width: 901px) and (max-height: 900px) {
+  .store-dashboard__profile-content,
+  .supplier-dashboard__profile-content {
+    min-height: clamp(98px, 7.3vw, 122px) !important;
+  }
+
+  .store-dashboard__profile-gauge,
+  .supplier-dashboard__profile-gauge {
+    width: clamp(84px, 5.2vw, 100px) !important;
+    height: clamp(84px, 5.2vw, 100px) !important;
+    flex-basis: clamp(84px, 5.2vw, 100px) !important;
+  }
+
+  .dashboard-profile-gauge__value {
+    font-size: clamp(1.06rem, 1.1vw, 1.28rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .store-dashboard__profile-content,
+  .supplier-dashboard__profile-content {
+    display: grid !important;
+    gap: 0.9rem !important;
+    justify-items: center !important;
+    min-height: auto !important;
+    text-align: center !important;
+  }
+
+  .store-dashboard__profile-copy,
+  .supplier-dashboard__profile-copy {
+    text-align: center !important;
+  }
+
+  .store-dashboard__profile-gauge,
+  .supplier-dashboard__profile-gauge {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: clamp(98px, 28vw, 118px) !important;
+    height: clamp(98px, 28vw, 118px) !important;
+    flex-basis: clamp(98px, 28vw, 118px) !important;
+    margin: 0 auto !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .store-dashboard__profile-gauge,
+  .supplier-dashboard__profile-gauge {
+    width: 94px !important;
+    height: 94px !important;
+    flex-basis: 94px !important;
+  }
+
+  .dashboard-profile-gauge__value {
+    font-size: 1.08rem;
+  }
+}

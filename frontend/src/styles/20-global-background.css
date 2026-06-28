@@ -157,11 +157,6 @@ body,
   background: rgb(22 78 63 / 22%) !important;
 }
 
-.store-dashboard__profile-card--complete .store-dashboard__profile-gauge,
-.supplier-dashboard__profile-card--complete .supplier-dashboard__profile-gauge {
-  color: #164e3f !important;
-}
-
 .app-layout__footer,
 .public-layout__footer {
   position: relative;
@@ -226,15 +221,6 @@ body,
   color: #ffffff !important;
 }
 
-.store-dashboard__profile-card--complete .store-dashboard__profile-gauge,
-.supplier-dashboard__profile-card--complete .supplier-dashboard__profile-gauge {
-  background: rgb(255 255 255 / 13%) !important;
-  color: #ffffff !important;
-  box-shadow:
-    0 0 0 12px rgb(209 250 229 / 22%),
-    0 0 0 1px rgb(255 255 255 / 20%) inset !important;
-}
-
 .store-dashboard__profile-card--complete a,
 .supplier-dashboard__profile-card--complete a {
   border: 1px solid rgb(255 255 255 / 72%) !important;
@@ -282,79 +268,6 @@ body,
     );
 }
 
-/* Jauge dashboard : progression dynamique via --progress.
-   Pas de valeur codée en dur : le pourcentage vient du composant React. */
-.store-dashboard__profile-gauge,
-.supplier-dashboard__profile-gauge {
-  --dashboard-gauge-progress: #164e3f;
-  --dashboard-gauge-track: rgb(22 78 63 / 14%);
-  --dashboard-gauge-center: #ffffff;
-  --dashboard-gauge-text: #164e3f;
-
-  position: relative !important;
-  display: grid !important;
-  width: clamp(96px, 7.5vw, 118px) !important;
-  height: clamp(96px, 7.5vw, 118px) !important;
-  place-items: center !important;
-  border: 0 !important;
-  border-radius: 999px !important;
-  background:
-    conic-gradient(
-      var(--dashboard-gauge-progress) calc(var(--progress, 0) * 1%),
-      var(--dashboard-gauge-track) 0
-    ) !important;
-  box-shadow:
-    0 14px 30px rgb(22 78 63 / 11%),
-    0 1px 0 rgb(255 255 255 / 36%) inset !important;
-  color: var(--dashboard-gauge-text) !important;
-}
-
-.store-dashboard__profile-gauge::before,
-.supplier-dashboard__profile-gauge::before {
-  display: none !important;
-}
-
-.store-dashboard__profile-gauge::after,
-.supplier-dashboard__profile-gauge::after {
-  content: "" !important;
-  position: absolute !important;
-  inset: 10px !important;
-  z-index: 0 !important;
-  display: block !important;
-  border-radius: inherit !important;
-  background: var(--dashboard-gauge-center) !important;
-  box-shadow: inset 0 0 0 1px rgb(22 78 63 / 8%) !important;
-}
-
-.store-dashboard__profile-gauge strong,
-.supplier-dashboard__profile-gauge strong {
-  position: relative !important;
-  z-index: 1 !important;
-  color: var(--dashboard-gauge-text) !important;
-  font-size: clamp(1.05rem, 1.25vw, 1.28rem) !important;
-  font-weight: 850 !important;
-}
-
-/* Variante sur card complète verte */
-.store-dashboard__profile-card--complete .store-dashboard__profile-gauge,
-.supplier-dashboard__profile-card--complete .supplier-dashboard__profile-gauge {
-  --dashboard-gauge-progress: #d1fae5;
-  --dashboard-gauge-track: rgb(255 255 255 / 18%);
-  --dashboard-gauge-center: #164e3f;
-  --dashboard-gauge-text: #ffffff;
-
-  box-shadow:
-    0 16px 32px rgb(0 0 0 / 16%),
-    0 1px 0 rgb(255 255 255 / 16%) inset !important;
-}
-
-.store-dashboard__profile-card--complete .store-dashboard__profile-gauge::after,
-.supplier-dashboard__profile-card--complete .supplier-dashboard__profile-gauge::after {
-  box-shadow:
-    inset 0 0 0 1px rgb(255 255 255 / 14%),
-    0 0 0 1px rgb(255 255 255 / 8%) !important;
-}
-
 @media (max-width: 900px) {
   :root {
     --kerno-page-background-overlay:
@@ -372,17 +285,6 @@ body,
         rgb(248 245 239 / 36%) 56%,
         rgb(248 245 239 / 54%) 100%
       );
-  }
-
-  .store-dashboard__profile-gauge,
-  .supplier-dashboard__profile-gauge {
-    width: clamp(88px, 28vw, 108px) !important;
-    height: clamp(88px, 28vw, 108px) !important;
-  }
-
-  .store-dashboard__profile-gauge::after,
-  .supplier-dashboard__profile-gauge::after {
-    inset: 9px !important;
   }
 }
 
@@ -948,73 +850,6 @@ body,
   margin: 0.18rem 0 0 !important;
   max-width: 34rem !important;
   line-height: 1.22 !important;
-}
-
-/* Jauge premium dynamique.
-   --progress vient du composant React, aucune valeur codée en dur.
-*/
-.store-dashboard__profile-gauge,
-.supplier-dashboard__profile-gauge {
-  --dashboard-gauge-progress-color: #d1fae5;
-  --dashboard-gauge-track-color: rgb(255 255 255 / 16%);
-  --dashboard-gauge-core-color: #164e3f;
-
-  position: relative !important;
-  isolation: isolate !important;
-  display: grid !important;
-  place-items: center !important;
-  width: clamp(128px, 8.4vw, 158px) !important;
-  height: clamp(128px, 8.4vw, 158px) !important;
-  margin: auto !important;
-  border-radius: 999px !important;
-  background:
-    conic-gradient(
-      var(--dashboard-gauge-progress-color) calc(var(--progress) * 1%),
-      var(--dashboard-gauge-track-color) 0
-    ) !important;
-  box-shadow:
-    0 22px 42px rgb(0 0 0 / 18%),
-    0 0 0 9px rgb(209 250 229 / 13%),
-    0 0 0 1px rgb(255 255 255 / 18%) inset !important;
-}
-
-.store-dashboard__profile-gauge::before,
-.supplier-dashboard__profile-gauge::before {
-  content: "" !important;
-  position: absolute !important;
-  inset: 8px !important;
-  border-radius: inherit !important;
-  background:
-    radial-gradient(circle at 34% 24%, rgb(255 255 255 / 16%), transparent 34%),
-    linear-gradient(145deg, rgb(22 78 63 / 94%), rgb(9 58 47 / 98%)) !important;
-  box-shadow:
-    inset 0 0 0 1px rgb(255 255 255 / 16%),
-    inset 0 -18px 30px rgb(0 0 0 / 12%) !important;
-  z-index: 0 !important;
-}
-
-.store-dashboard__profile-gauge::after,
-.supplier-dashboard__profile-gauge::after {
-  content: "" !important;
-  position: absolute !important;
-  inset: 22px !important;
-  border-radius: inherit !important;
-  border: 1px solid rgb(255 255 255 / 13%) !important;
-  background: radial-gradient(circle, rgb(255 255 255 / 7%), transparent 64%) !important;
-  z-index: 1 !important;
-  pointer-events: none !important;
-}
-
-.store-dashboard__profile-gauge strong,
-.supplier-dashboard__profile-gauge strong {
-  position: relative !important;
-  z-index: 2 !important;
-  color: #ffffff !important;
-  font-size: clamp(1.38rem, 1.65vw, 1.72rem) !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: -0.04em !important;
-  text-shadow: 0 2px 12px rgb(0 0 0 / 18%) !important;
 }
 
 /* Bouton profil : icône + texte mieux centrés */

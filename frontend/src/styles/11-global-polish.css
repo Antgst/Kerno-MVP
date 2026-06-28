@@ -148,24 +148,6 @@
   max-width: 100%;
 }
 
-.store-dashboard__profile-gauge,
-.supplier-dashboard__profile-gauge {
-  width: 138px;
-  height: 138px;
-  align-self: center;
-  justify-self: center;
-}
-
-.store-dashboard__profile-gauge::after,
-.supplier-dashboard__profile-gauge::after {
-  inset: 14px;
-}
-
-.store-dashboard__profile-gauge strong,
-.supplier-dashboard__profile-gauge strong {
-  font-size: 1.34rem;
-}
-
 .store-dashboard__request-empty,
 .supplier-dashboard__request-empty {
   display: flex;
