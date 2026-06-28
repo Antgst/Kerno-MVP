@@ -1335,9 +1335,9 @@ It is also used to demonstrate:
 
 ## ✍️ Authors
 
-* Antoine Gousset
-* Yonas Houriez
-* Gwendal Boisard
+* [Antoine Gousset](https://github.com/Antgst)
+* [Yonas Houriez](https://github.com/Ausaryu)
+* [Gwendal Boisard](https://github.com/Gwendal-B)
 
 ---
 
