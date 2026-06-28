@@ -540,19 +540,19 @@ Before the technical review, confirm:
 
 | Check                                        | Status |
 | -------------------------------------------- | ------ |
-| README is up to date                         | TODO   |
-| Architecture documentation is complete       | TODO   |
-| Frontend structure documentation is complete | TODO   |
-| Database schema documentation is complete    | TODO   |
-| API summary is complete                      | TODO   |
-| Testing evidence is updated                  | TODO   |
-| Demo scenario is prepared                    | TODO   |
-| Backend starts correctly                     | TODO   |
-| Frontend starts correctly                    | TODO   |
-| Database migrations are ready                | TODO   |
-| Swagger documentation is accessible          | TODO   |
-| Full MVP scenario works                      | TODO   |
-| No blocking issue remains                    | TODO   |
+| README is up to date                         | TO VERIFY BEFORE REVIEW |
+| Architecture documentation is complete       | TO VERIFY BEFORE REVIEW |
+| Frontend structure documentation is complete | TO VERIFY BEFORE REVIEW |
+| Database schema documentation is complete    | TO VERIFY BEFORE REVIEW |
+| API summary is complete                      | TO VERIFY BEFORE REVIEW |
+| Testing evidence is updated                  | TO VERIFY BEFORE REVIEW |
+| Demo scenario is prepared                    | TO VERIFY BEFORE REVIEW |
+| Backend starts correctly                     | TO VERIFY BEFORE REVIEW |
+| Frontend starts correctly                    | TO VERIFY BEFORE REVIEW |
+| Database migrations are ready                | TO VERIFY BEFORE REVIEW |
+| Swagger documentation is accessible          | TO VERIFY BEFORE REVIEW |
+| Full MVP scenario works                      | TO VERIFY BEFORE REVIEW |
+| No blocking issue remains                    | TO VERIFY BEFORE REVIEW |
 
 ---
 

@@ -10,6 +10,7 @@ For the current MVP architecture, frontend API communication is handled by the `
 frontend/src/services/
 ├── apiClient.js
 ├── apiError.js
+├── frontendCache.js
 ├── authService.js
 ├── categoryService.js
 ├── productService.js

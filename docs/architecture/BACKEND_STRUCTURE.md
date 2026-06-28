@@ -14,7 +14,7 @@ backend/src/modules
 
 ## Current Backend Modules
 
-Current Sprint 2 modules:
+Current backend modules:
 
 | Module       | Responsibility                                                               |
 | ------------ | ---------------------------------------------------------------------------- |
@@ -121,7 +121,13 @@ This means documented OpenAPI paths should not repeat the `/api` prefix.
 
 ## Main API Documentation
 
-The Sprint 2 backend API reference is documented in:
+The current API summary is documented in:
+
+```text
+docs/api/API_SUMMARY.md
+```
+
+A historical Sprint 2 API reference remains available in:
 
 ```text
 docs/api/BACKEND_API_S2.md
@@ -227,13 +233,13 @@ The backend should follow these rules:
 * keep authentication and role checks in shared middlewares;
 * keep Prisma access centralized;
 * keep Swagger documentation close to the module it documents;
-* keep API behavior aligned with the Sprint 2 API reference.
+* keep API behavior aligned with the current API summary and OpenAPI output.
 
 ---
 
 ## Review Notes
 
-This structure supports the Sprint 2 backend scope:
+This structure supports the current MVP backend scope:
 
 * authentication;
 * role-based access;
