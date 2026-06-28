@@ -1,7 +1,10 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import franceCitiesSource from "../../data/franceCities.txt?raw";
 
 const MAX_SUGGESTIONS = 8;
+const CITY_DATA_URL = `${import.meta.env.BASE_URL}data/franceCities.txt`;
+
+let cachedCityOptions = null;
+let cachedCityOptionsPromise = null;
 
 function normalizeSearchValue(value) {
   return String(value || "")
@@ -9,6 +12,42 @@ function normalizeSearchValue(value) {
     .replace(/\p{Diacritic}/gu, "")
     .toLocaleLowerCase("fr-FR")
     .trim();
+}
+
+function parseCityOptions(source) {
+  return source
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => line.split("|"))
+    .filter(([cityName, regionName]) => cityName && regionName);
+}
+
+function loadCityOptions() {
+  if (cachedCityOptions) {
+    return Promise.resolve(cachedCityOptions);
+  }
+
+  if (!cachedCityOptionsPromise) {
+    cachedCityOptionsPromise = fetch(CITY_DATA_URL)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Impossible de charger les villes.");
+        }
+
+        return response.text();
+      })
+      .then((source) => {
+        cachedCityOptions = parseCityOptions(source);
+        return cachedCityOptions;
+      })
+      .catch((error) => {
+        cachedCityOptionsPromise = null;
+        throw error;
+      });
+  }
+
+  return cachedCityOptionsPromise;
 }
 
 function getCityOption(cityTuple) {
@@ -58,16 +97,12 @@ function LocationSelect({
   const componentId = useId();
   const listboxId = `${componentId}-suggestions`;
   const wrapperRef = useRef(null);
+  const isComponentMountedRef = useRef(true);
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
-  const cityOptions = useMemo(
-    () =>
-      franceCitiesSource
-        .split("\n")
-        .filter(Boolean)
-        .map((line) => line.split("|")),
-    [],
-  );
+  const [cityOptions, setCityOptions] = useState(() => cachedCityOptions || []);
+  const [isLoadingCities, setIsLoadingCities] = useState(false);
+  const [cityDataError, setCityDataError] = useState("");
 
   const filteredCities = useMemo(() => {
     const search = normalizeSearchValue(value);
@@ -105,6 +140,12 @@ function LocationSelect({
     activeIndex >= 0 ? `${componentId}-option-${activeIndex}` : undefined;
 
   useEffect(() => {
+    return () => {
+      isComponentMountedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
     function handlePointerDown(event) {
       if (!wrapperRef.current?.contains(event.target)) {
         setIsOpen(false);
@@ -128,8 +169,42 @@ function LocationSelect({
     });
   }
 
+  function ensureCityOptionsLoaded() {
+    if (cachedCityOptions) {
+      setCityOptions(cachedCityOptions);
+      setCityDataError("");
+      return;
+    }
+
+    setIsLoadingCities(true);
+
+    loadCityOptions()
+      .then((loadedCityOptions) => {
+        if (!isComponentMountedRef.current) {
+          return;
+        }
+
+        setCityOptions(loadedCityOptions);
+        setCityDataError("");
+      })
+      .catch(() => {
+        if (!isComponentMountedRef.current) {
+          return;
+        }
+
+        setCityOptions([]);
+        setCityDataError("Impossible de charger les suggestions.");
+      })
+      .finally(() => {
+        if (isComponentMountedRef.current) {
+          setIsLoadingCities(false);
+        }
+      });
+  }
+
   function handleInputChange(event) {
     onChange(event);
+    ensureCityOptionsLoaded();
     setIsOpen(true);
     setActiveIndex(-1);
   }
@@ -149,6 +224,7 @@ function LocationSelect({
 
     if (!shouldShowDropdown || filteredCities.length === 0) {
       if (event.key === "ArrowDown" && normalizeSearchValue(value).length >= 2) {
+        ensureCityOptionsLoaded();
         setIsOpen(true);
       }
       return;
@@ -191,6 +267,7 @@ function LocationSelect({
           value={value}
           onChange={handleInputChange}
           onFocus={() => {
+            ensureCityOptionsLoaded();
             setIsOpen(true);
             setActiveIndex(-1);
           }}
@@ -244,7 +321,10 @@ function LocationSelect({
                       onMouseEnter={() => setActiveIndex(index)}
                       onClick={() => handleSelectCity(city.value)}
                     >
-                      <span className="location-autocomplete__pin" aria-hidden="true">
+                      <span
+                        className="location-autocomplete__pin"
+                        aria-hidden="true"
+                      >
                         <svg
                           width="16"
                           height="16"
@@ -255,7 +335,7 @@ function LocationSelect({
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         >
-                          <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+                          <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 11 16 0Z" />
                           <circle cx="12" cy="10" r="2.5" />
                         </svg>
                       </span>
@@ -269,7 +349,9 @@ function LocationSelect({
               </ul>
             ) : (
               <p className="location-autocomplete__empty">
-                Aucune ville trouvée
+                {isLoadingCities
+                  ? "Chargement des villes..."
+                  : cityDataError || "Aucune ville trouvée"}
               </p>
             )}
           </div>
