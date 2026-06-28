@@ -2,6 +2,8 @@
 
 ## Summary
 
+> Note: this report records the 2026-06-25 full regression session and should not be read as a fresh execution for later docs-only branches.
+
 | Field | Value |
 | --- | --- |
 | Date | 2026-06-25 |

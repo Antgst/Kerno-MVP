@@ -4,7 +4,9 @@
 
 This document gathers testing evidence for the KERNO MVP technical review. It separates current automated regression evidence from historical Sprint 2 Postman evidence and records blockers honestly.
 
-## Current Automated Session
+> Note: this document records the latest full regression evidence available in the repository. Later docs-only changes should still be validated with `git diff --check`, frontend lint and frontend build before merge.
+
+## Recorded Full Regression Session
 
 | Item | Result | Evidence |
 | --- | --- | --- |

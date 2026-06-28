@@ -98,7 +98,7 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 | Database             | PostgreSQL with Prisma ORM                         |
 | Local infrastructure | Docker Compose for PostgreSQL local development    |
 | API                  | REST                                               |
-| API documentation    | OpenAPI / Swagger + Sprint 2 API reference         |
+| API documentation    | OpenAPI / Swagger + current API summary + historical Sprint 2 reference |
 | Portfolio stage      | Holberton Stage 4 MVP implementation               |
 
 ---
@@ -829,6 +829,7 @@ Kerno-MVP/
       pages/
       routes/
       services/
+      styles/
       utils/
   compose.yaml
   CONTRIBUTING.md
@@ -904,7 +905,7 @@ npm install
 npm run dev
 ```
 
-Frontend routing details are documented in [`frontend/README.md`](./frontend/README.md).
+Frontend routing is defined in [`frontend/src/routes/routeConfig.js`](./frontend/src/routes/routeConfig.js) and documented in [`docs/architecture/FRONTEND_STRUCTURE.md`](./docs/architecture/FRONTEND_STRUCTURE.md).
 
 ### Database Setup
 
@@ -1144,12 +1145,13 @@ Integration testing focuses on:
 Before a PR is considered ready:
 
 * code must match the issue scope;
-* `npm run build` should pass for frontend changes;
-* `npm run lint` should pass for frontend changes;
+* `npm --prefix frontend run build` should pass for frontend changes;
+* `npm --prefix frontend run lint` should pass for frontend changes;
 * backend syntax checks or tests should pass for backend changes;
 * documentation must be updated when relevant;
 * README files must stay aligned with the current project state;
-* no `.env`, generated Prisma client, `node_modules`, or build output should be committed.
+* no `.env`, `node_modules`, or build output should be committed accidentally;
+* generated code, including Prisma output, should only be committed when it is intentionally part of the project structure and reviewed.
 
 ---
 

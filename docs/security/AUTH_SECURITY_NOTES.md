@@ -4,11 +4,11 @@ This document records authentication-related security decisions for the Kerno MV
 
 ## Current MVP decision
 
-For Sprint 2, the minimum password length is set to 8 characters.
+For the current MVP, the minimum password length is set to 8 characters.
 
 This is an intentional MVP decision, not a final production security standard.
 
-The current goal of issue #30 is to implement a first working authentication flow with:
+The current goal of the MVP authentication scope is to implement a first working authentication flow with:
 
 * user registration
 * user login
@@ -72,7 +72,7 @@ Recommended improvements:
 
 ## Multi-factor authentication note
 
-MFA is not included in the Sprint 2 MVP.
+MFA is not included in the current MVP.
 
 It should be reconsidered before a real production launch, especially if the product later includes:
 
@@ -83,7 +83,7 @@ It should be reconsidered before a real production launch, especially if the pro
 * account settings with business impact
 * access to invoices, payments, or commercial documents
 
-## Out of scope for Sprint 2
+## Out of scope for the current MVP
 
 The following features are intentionally left for later iterations:
 

@@ -114,8 +114,8 @@ Public routes:
 
 ```text
 /
- /login
- /register
+/login
+/register
 ```
 
 Authenticated shared routes:
@@ -133,6 +133,7 @@ Supplier routes:
 /supplier/profile
 /supplier/products
 /supplier/products/new
+/supplier/products/:id/edit
 /supplier/requests
 /supplier/requests/:id
 ```
@@ -559,7 +560,35 @@ frontend/.env.example
 
 ---
 
-## 20. Utilities
+## 20. Styles and CSS Architecture
+
+Frontend styles are stored in:
+
+```text
+frontend/src/styles/
+```
+
+The global CSS cascade is imported from:
+
+```text
+frontend/src/App.css
+```
+
+The background harmonization file is imported separately from:
+
+```text
+frontend/src/App.jsx
+```
+
+Detailed CSS architecture and maintenance rules are documented in:
+
+```text
+docs/architecture/FRONTEND_CSS_ARCHITECTURE.md
+```
+
+---
+
+## 21. Utilities
 
 Utility functions are stored in:
 
@@ -567,17 +596,23 @@ Utility functions are stored in:
 frontend/src/utils/
 ```
 
-Current utility file:
+Current utility files:
 
 ```text
 authNavigation.js
+completionPercent.js
+jwt.js
+productImages.js
+productPrice.js
+responseUtils.js
+status.js
 ```
 
-This utility helps redirect users according to authentication or role-related navigation needs.
+These utilities support authentication navigation, profile completion calculations, JWT handling, product images, product price formatting, API response helpers and status labels.
 
 ---
 
-## 21. Assets
+## 22. Assets
 
 Frontend assets are stored in:
 
@@ -585,12 +620,16 @@ Frontend assets are stored in:
 frontend/src/assets/
 ```
 
-Current assets include:
+Current source assets include:
 
 ```text
-hero.png
-react.svg
-vite.svg
+brand/kerno-logo.webp
+catalog-cards/rillettes-de-legumes.webp
+landing/*.webp
+register/register-local-sourcing-banner.webp
+store-dashboard/*.webp
+supplier-dashboard/*.webp
+store-dashboard-bg.png
 ```
 
 Public assets are stored in:
@@ -602,13 +641,15 @@ frontend/public/
 Current public assets include:
 
 ```text
+assets/products/*.webp
+data/franceCities.txt
 favicon.webp
 icons.svg
 ```
 
 ---
 
-## 22. Frontend MVP Scope
+## 23. Frontend MVP Scope
 
 The frontend covers the following MVP screens:
 
@@ -633,7 +674,7 @@ The frontend covers the following MVP screens:
 
 ---
 
-## 23. Out of Scope
+## 24. Out of Scope
 
 The frontend intentionally does not include:
 

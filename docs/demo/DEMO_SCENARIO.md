@@ -558,20 +558,20 @@ Before the final review:
 
 | Check | Status |
 |---|---|
-| Backend starts correctly | TODO |
-| Frontend starts correctly | TODO |
-| Swagger opens correctly | TODO |
-| Supplier account ready | TODO |
-| Store account ready | TODO |
-| Supplier profile ready | TODO |
-| Store profile ready | TODO |
-| At least one product exists | TODO |
-| Catalog displays data | TODO |
-| Contact request can be created | TODO |
-| Supplier received requests visible | TODO |
-| Store sent requests visible | TODO |
-| Request detail page works | TODO |
-| No blocking issue found | TODO |
+| Backend starts correctly | TO VERIFY BEFORE DEMO |
+| Frontend starts correctly | TO VERIFY BEFORE DEMO |
+| Swagger opens correctly | TO VERIFY BEFORE DEMO |
+| Supplier account ready | TO VERIFY BEFORE DEMO |
+| Store account ready | TO VERIFY BEFORE DEMO |
+| Supplier profile ready | TO VERIFY BEFORE DEMO |
+| Store profile ready | TO VERIFY BEFORE DEMO |
+| At least one product exists | TO VERIFY BEFORE DEMO |
+| Catalog displays data | TO VERIFY BEFORE DEMO |
+| Contact request can be created | TO VERIFY BEFORE DEMO |
+| Supplier received requests visible | TO VERIFY BEFORE DEMO |
+| Store sent requests visible | TO VERIFY BEFORE DEMO |
+| Request detail page works | TO VERIFY BEFORE DEMO |
+| No blocking issue found | TO VERIFY BEFORE DEMO |
 
 ---
 
