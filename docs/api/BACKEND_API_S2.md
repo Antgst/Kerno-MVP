@@ -1,5 +1,8 @@
 # Kerno Backend API — Sprint 2
 
+> Historical note: this document records the Sprint 2 backend API state. For the current API reference, use `docs/api/API_SUMMARY.md`.
+
+
 ## Purpose
 
 This document describes the Sprint 2 backend API implemented for the Kerno MVP.

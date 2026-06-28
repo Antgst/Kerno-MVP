@@ -848,6 +848,7 @@ The final Stage 4 documentation is split by topic:
 | Application architecture | [`docs/architecture/APPLICATION_ARCHITECTURE.md`](./docs/architecture/APPLICATION_ARCHITECTURE.md) |
 | Backend structure | [`docs/architecture/BACKEND_STRUCTURE.md`](./docs/architecture/BACKEND_STRUCTURE.md) |
 | Frontend structure | [`docs/architecture/FRONTEND_STRUCTURE.md`](./docs/architecture/FRONTEND_STRUCTURE.md) |
+| Frontend CSS architecture | [`docs/architecture/FRONTEND_CSS_ARCHITECTURE.md`](./docs/architecture/FRONTEND_CSS_ARCHITECTURE.md) |
 | Database schema | [`docs/database/DATABASE_SCHEMA.md`](./docs/database/DATABASE_SCHEMA.md) |
 | API summary | [`docs/api/API_SUMMARY.md`](./docs/api/API_SUMMARY.md) |
 | Docker local database | [`docs/docker/DOCKER.md`](./docs/docker/DOCKER.md) |
@@ -1020,8 +1021,8 @@ Main branch logic:
 
 * `main`: stable final branch;
 * `develop`: integration branch;
-* `S1`, `S2`, `S3`, `S4`, `S5`: sprint branches;
-* feature branches: scoped branches created from the current sprint branch.
+* `S1`, `S2`, `S3`, `S4`, `S5`: historical sprint branches used during staged development;
+* feature, fix, docs and visual branches: scoped branches created from `develop` unless a temporary integration branch is explicitly announced.
 
 Branch naming examples:
 
@@ -1037,7 +1038,7 @@ frontend/s3-01-routing-map
 Pull request rules:
 
 * one PR per issue or small group of closely related tasks;
-* PR targets the active sprint branch;
+* PR targets `develop` unless a temporary integration branch is explicitly announced;
 * PR title follows the project convention;
 * PR description summarizes changes and validation;
 * PR references the related issue;

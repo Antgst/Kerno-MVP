@@ -62,7 +62,7 @@ Direct commits to `main` are not allowed.
 
 It contains validated work that is ready to be tested together before being merged into `main`.
 
-During sprint execution, feature, fix, and documentation branches should target the active sprint branch (`S1`, `S2`, `S3`, `S4`, or `S5`). Validated sprint branches can then be merged into `develop`, and `develop` can be stabilized into `main`.
+During the current Stage 4 stabilization phase, feature, fix, documentation and visual branches should target `develop` unless a temporary integration branch is explicitly announced. Historical sprint branches (`S1`, `S2`, `S3`, `S4`, `S5`) remain part of the project history.
 
 ---
 
