@@ -2051,3 +2051,65 @@
     transform: none;
   }
 }
+
+/* QA public polish landing - start */
+.landing-section {
+  scroll-margin-top: 96px;
+}
+
+.landing-card,
+.pricing-card {
+  backdrop-filter: blur(12px);
+}
+
+.pricing-card > p,
+.pricing-card li {
+  line-height: 1.62;
+}
+
+.pricing-card ul {
+  display: grid;
+  gap: 0.62rem;
+}
+
+.pricing-card__price {
+  margin-bottom: 0.85rem;
+}
+
+.pricing-grid {
+  align-items: stretch;
+}
+
+.landing-section [aria-label^="Afficher l'image"],
+.landing-section button:has(.carousel-arrow) {
+  transition:
+    transform 160ms ease,
+    opacity 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    outline-color 160ms ease;
+}
+
+.landing-section [aria-label^="Afficher l'image"]:hover,
+.landing-section [aria-label^="Afficher l'image"]:focus-visible,
+.landing-section button:has(.carousel-arrow):hover,
+.landing-section button:has(.carousel-arrow):focus-visible {
+  transform: translateY(-1px) scale(1.06);
+  opacity: 1;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+  outline: 2px solid rgba(22, 78, 63, 0.28);
+  outline-offset: 3px;
+}
+
+.landing-section button:hover .carousel-arrow,
+.landing-section button:focus-visible .carousel-arrow {
+  transform: translateX(1px);
+}
+
+@media (max-width: 768px) {
+  .pricing-card > p,
+  .pricing-card li {
+    line-height: 1.55;
+  }
+}
+/* QA public polish landing - end */
