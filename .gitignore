@@ -152,3 +152,6 @@ frontend/test-results/
 # Local AI assistant workspaces
 .agents/
 .codex/
+
+# Local security audit reports
+security-audit-reports/
