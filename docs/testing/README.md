@@ -10,6 +10,7 @@ Think of this folder as the quality logbook: it records how the product is check
 - `FULL_REGRESSION_TEST_PLAN.md` describes the regression test plan.
 - `FULL_REGRESSION_TEST_REPORT.md` records regression test results.
 - `TESTING_EVIDENCE.md` stores testing evidence notes.
+- `STAGE4_TEST_EVIDENCE.md` records the final Stage 4 technical and functional validation evidence.
 - `postman/` contains Postman and Newman resources.
 - `test_postman_S2/` contains earlier Postman artifacts and screenshots.
 

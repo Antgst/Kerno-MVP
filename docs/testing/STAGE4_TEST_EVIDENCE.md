@@ -31,22 +31,35 @@ Correct commands:
 
 | Flow | Expected result | Status |
 |---|---|---|
-| Landing page | Public value proposition visible | To verify |
-| Register page | Account creation accessible | To verify |
-| Login page | Authentication accessible | To verify |
-| Supplier dashboard | Supplier overview visible | To verify |
-| Supplier profile | Supplier information visible/editable | To verify |
-| Supplier products | Products visible/manageable | To verify |
-| Store dashboard | Store sourcing overview visible | To verify |
-| Store profile | Store information visible/editable | To verify |
-| Catalog | Products and suppliers searchable | To verify |
-| Product detail | Product information and request CTA visible | To verify |
-| Supplier detail | Supplier information and contact CTA visible | To verify |
-| Request form | Store can prepare a contact or quote request | To verify |
-| Store requests | Store can review sent requests | To verify |
-| Supplier requests | Supplier can review received requests | To verify |
-| Responsive check | Main pages usable on desktop/mobile widths | To verify |
+| Landing page | Public value proposition visible | OK |
+| Register page | Account creation accessible | OK |
+| Login page | Authentication accessible | OK |
+| Supplier dashboard | Supplier overview visible | OK |
+| Supplier profile | Supplier information visible/editable | OK |
+| Supplier products | Products visible/manageable | OK |
+| Store dashboard | Store sourcing overview visible | OK |
+| Store profile | Store information visible/editable | OK |
+| Catalog | Products and suppliers searchable | OK |
+| Product detail | Product information and request CTA visible | OK |
+| Supplier detail | Supplier information and contact CTA visible | OK |
+| Request form | Store can prepare a contact or quote request | OK |
+| Store requests | Store can review sent requests | OK |
+| Supplier requests | Supplier can review received requests | OK |
+| Responsive check | Main pages usable on desktop/mobile widths | Partial — desktop screenshots OK, mobile widths still to verify manually |
 
 ## Known MVP exclusions
 
 The MVP excludes payment, basket/cart, full ordering, delivery, invoicing, advanced messaging, advanced analytics and complex subscription management.
+
+
+## Screenshot evidence
+
+Screenshot run generated on 2026-07-01:
+
+- Folder: `kerno-2026-07-01_21h57m28s`
+- Total screenshots: 19
+- Public routes captured: landing, login, register
+- Supplier routes captured: dashboard, requests, request detail, products, product detail, edit product, new product, profile
+- Store routes captured: dashboard, supplier detail, catalog, product detail, requests, request form, request detail, profile
+- Redirects to login: 0
+- Result: OK for desktop/full-page screenshot validation

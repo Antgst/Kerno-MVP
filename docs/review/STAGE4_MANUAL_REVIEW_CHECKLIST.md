@@ -8,15 +8,15 @@ This document prepares the technical manual review for the KERNO MVP.
 
 | Item | Status |
 |---|---|
-| Functional MVP available | To verify |
-| Public landing page available | To verify |
-| Registration and login available | To verify |
-| Supplier journey available | To verify |
-| Store journey available | To verify |
-| Product catalog available | To verify |
-| Contact or quote request flow available | To verify |
-| Supplier received requests available | To verify |
-| Store sent requests available | To verify |
+| Functional MVP available | OK |
+| Public landing page available | OK |
+| Registration and login available | OK |
+| Supplier journey available | OK |
+| Store journey available | OK |
+| Product catalog available | OK |
+| Contact or quote request flow available | OK |
+| Supplier received requests available | OK |
+| Store sent requests available | OK |
 
 ## Demo scenario
 

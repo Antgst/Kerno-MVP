@@ -857,6 +857,11 @@ The final Stage 4 documentation is split by topic:
 | Testing evidence | [`docs/testing/TESTING_EVIDENCE.md`](./docs/testing/TESTING_EVIDENCE.md) |
 | Demo scenario | [`docs/demo/DEMO_SCENARIO.md`](./docs/demo/DEMO_SCENARIO.md) |
 | Technical review notes | [`docs/review/TECHNICAL_REVIEW_NOTES.md`](./docs/review/TECHNICAL_REVIEW_NOTES.md) |
+| Stage 4 deliverable links | [`docs/STAGE4_DELIVERABLE_LINKS.md`](./docs/STAGE4_DELIVERABLE_LINKS.md) |
+| Stage 4 sprint plan | [`docs/sprints/SPRINT_PLAN_STAGE4.md`](./docs/sprints/SPRINT_PLAN_STAGE4.md) |
+| Stage 4 sprint reviews and retrospectives | [`docs/sprints/SPRINT_REVIEWS_RETROSPECTIVES.md`](./docs/sprints/SPRINT_REVIEWS_RETROSPECTIVES.md) |
+| Stage 4 test evidence | [`docs/testing/STAGE4_TEST_EVIDENCE.md`](./docs/testing/STAGE4_TEST_EVIDENCE.md) |
+| Stage 4 manual review checklist | [`docs/review/STAGE4_MANUAL_REVIEW_CHECKLIST.md`](./docs/review/STAGE4_MANUAL_REVIEW_CHECKLIST.md) |
 
 ---
 
