@@ -1064,3 +1064,26 @@
     transform: none;
   }
 }
+
+/* QA public polish auth - start */
+main [role="radio"] {
+  min-height: 112px;
+  padding: 1rem 1.05rem;
+  line-height: 1.45;
+}
+
+main [role="radio"] strong {
+  margin-bottom: 0.28rem;
+}
+
+main [role="radio"] small {
+  line-height: 1.42;
+}
+
+@media (max-width: 768px) {
+  main [role="radio"] {
+    min-height: auto;
+    padding: 0.95rem;
+  }
+}
+/* QA public polish auth - end */
