@@ -7,7 +7,7 @@ This document records the validation checks used before the Stage 4 manual revie
 ## Latest validation
 
 Date: 2026-07-01
-Branch validated: develop
+Branch validated: develop after PR #201 merge
 
 | Check | Command | Result |
 |---|---|---|
