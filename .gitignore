@@ -148,3 +148,7 @@ frontend/test-results/
 
 .venv
 .env
+
+# Local AI assistant workspaces
+.agents/
+.codex/
