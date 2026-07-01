@@ -1,45 +1,26 @@
-# Frontend API Services
+# Frontend Services
 
-This folder centralizes frontend calls to the KERNO backend REST API.
+## Purpose
+This folder centralizes frontend communication with the KERNO backend REST API and keeps API calls out of page components.
 
-## Base URL
+## Analogy
+Think of this folder as the communication desk of the frontend: pages describe what users see, while services handle conversations with the backend.
 
-The API base URL is configured through:
+## Contents
+- `apiClient.js` is the central HTTP client. It applies the API base URL, authentication token, JSON handling, and normalized error behavior.
+- `apiError.js` defines frontend API error helpers.
+- `tokenStorage.js` manages client-side access to the authentication token.
+- `frontendCache.js` provides small frontend cache helpers.
+- `authService.js` handles login, registration, and authentication-related API calls.
+- `userService.js` handles current-user API calls.
+- `supplierService.js` handles supplier profile and supplier discovery API calls.
+- `storeService.js` handles store profile API calls.
+- `productService.js` handles product catalog and supplier product API calls.
+- `categoryService.js` handles product category API calls.
+- `requestService.js` handles contact or quote request API calls.
 
-```env
-VITE_API_BASE_URL="http://localhost:5000/api"
-```
+## How It Fits in KERNO
+Pages and components use this service layer to talk to the Express API configured through `frontend/src/config/api.js`. This keeps backend communication consistent across public, supplier, and store flows.
 
-The runtime configuration is implemented in:
-
-```text
-frontend/src/config/api.js
-```
-
-## Current service files
-
-```text
-apiClient.js
-apiError.js
-frontendCache.js
-authService.js
-categoryService.js
-productService.js
-requestService.js
-storeService.js
-supplierService.js
-tokenStorage.js
-userService.js
-```
-
-## Responsibility
-
-The services layer keeps API calls out of page components.
-
-It centralizes:
-
-* backend request configuration;
-* JWT token handling;
-* frontend cache helpers;
-* domain-specific calls for auth, users, suppliers, stores, products, categories and requests;
-* API error normalization.
+## Maintenance Notes
+Add domain-specific API calls to the matching service file. Keep low-level HTTP behavior in `apiClient.js` so token and error handling stay consistent.

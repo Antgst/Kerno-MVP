@@ -1,10 +1,10 @@
 # API Layer
 
-This directory is currently intentionally unused.
+This directory is reserved for a future low-level API layer if the frontend needs one.
 
-## Current project decision
+## Current Project Decision
 
-For the current MVP architecture, frontend API communication is handled by the `services` directory:
+In the current architecture, frontend API communication is handled by the `services` directory:
 
 ```text
 frontend/src/services/
@@ -29,9 +29,9 @@ This service-based structure already centralizes:
 * domain-specific API calls;
 * reusable frontend/backend communication logic.
 
-Because of this, adding files to `src/api/` right now would duplicate the role of `src/services/`.
+Because of this, adding files to `src/api/` would duplicate the role of `src/services/`.
 
-## Future use
+## Future Use
 
 This directory may be used later if the project needs a more explicit API layer separated from business-oriented services.
 
@@ -53,8 +53,8 @@ In that future structure:
 * `authApi.js`, `productApi.js`, and `requestApi.js` would expose raw API calls;
 * `services/` could then focus on higher-level frontend logic.
 
-## Rule for now
+## Maintenance Notes
 
 Do not add API logic here unless the team decides to refactor the current `services` architecture.
 
-For the MVP, keep API calls inside `frontend/src/services/`.
+For the current application scope, keep API calls inside `frontend/src/services/`.
