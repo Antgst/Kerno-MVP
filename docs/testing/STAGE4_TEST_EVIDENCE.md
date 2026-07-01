@@ -45,7 +45,7 @@ Correct commands:
 | Request form | Store can prepare a contact or quote request | OK |
 | Store requests | Store can review sent requests | OK |
 | Supplier requests | Supplier can review received requests | OK |
-| Responsive check | Main pages usable on desktop/mobile widths | Partial — desktop screenshots OK, mobile widths still to verify manually |
+| Responsive check | Main pages usable on desktop/mobile widths | OK |
 
 ## Known MVP exclusions
 
@@ -63,3 +63,38 @@ Screenshot run generated on 2026-07-01:
 - Store routes captured: dashboard, supplier detail, catalog, product detail, requests, request form, request detail, profile
 - Redirects to login: 0
 - Result: OK for desktop/full-page screenshot validation
+
+
+## Responsive validation evidence
+
+Responsive validation completed on 2026-07-01.
+
+Validated widths:
+
+- 1440px desktop
+- 1280px laptop
+- 768px tablet
+- 390px mobile
+- 360px small mobile
+
+Validated scope:
+
+- public landing page
+- login page
+- register page
+- supplier dashboard
+- supplier profile
+- supplier products
+- supplier requests
+- store dashboard
+- store profile
+- catalog
+- request form
+- store requests
+
+Result:
+
+- no blocking horizontal overflow detected
+- main navigation remains usable
+- key cards, forms, buttons, and content remain readable
+- responsive validation accepted for Stage 4 review

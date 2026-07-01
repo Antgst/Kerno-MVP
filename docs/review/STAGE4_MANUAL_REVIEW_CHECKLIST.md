@@ -68,3 +68,10 @@ This document prepares the technical manual review for the KERNO MVP.
 - npm --prefix frontend run lint
 - npm --prefix frontend run build
 - npm --prefix backend run test
+
+
+## Responsive/mobile validation
+
+Responsive/mobile validation was completed on the main public, store, supplier, catalog, and request screens.
+
+Result: OK for Stage 4 manual review preparation.
