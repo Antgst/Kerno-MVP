@@ -53,7 +53,7 @@ Security audit work on the audited branch includes the following additions and c
 
 This final report was added as:
 
-- `docs/security/KERNO_SECURITY_AUDIT_REPORT.md`
+- `docs/security/EN_KERNO_SECURITY_AUDIT_REPORT.md`
 
 ## 5. Security Fixes Implemented
 
