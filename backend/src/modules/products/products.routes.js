@@ -9,6 +9,20 @@ const router = express.Router();
 
 router.get("/", productsController.getAllProducts);
 
+router.get(
+  "/mine",
+  requireAuth,
+  requireRole("SUPPLIER"),
+  productsController.getCurrentSupplierProducts,
+);
+
+router.get(
+  "/mine/:id",
+  requireAuth,
+  requireRole("SUPPLIER"),
+  productsController.getCurrentSupplierProductById,
+);
+
 router.get("/:id", productsController.getProductById);
 
 router.post(
@@ -29,7 +43,7 @@ router.delete(
   "/:id",
   requireAuth,
   requireRole("SUPPLIER"),
-  productsController.deactivateProduct,
+  productsController.deleteProduct,
 );
 
 module.exports = router;

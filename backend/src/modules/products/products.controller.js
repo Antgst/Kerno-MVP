@@ -23,6 +23,35 @@ async function getAllProducts(req, res, next) {
   }
 }
 
+async function getCurrentSupplierProducts(req, res, next) {
+  try {
+    const products = await productsService.getCurrentSupplierProducts(req.user.id);
+
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getCurrentSupplierProductById(req, res, next) {
+  try {
+    const product = await productsService.getCurrentSupplierProductById(
+      req.user.id,
+      req.params.id,
+    );
+
+    res.status(200).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function getProductById(req, res, next) {
   try {
     const product = await productsService.getProductById(req.params.id);
@@ -68,16 +97,16 @@ async function updateProduct(req, res, next) {
   }
 }
 
-async function deactivateProduct(req, res, next) {
+async function deleteProduct(req, res, next) {
   try {
-    const product = await productsService.deactivateProduct(
+    const product = await productsService.deleteProduct(
       req.user.id,
       req.params.id,
     );
 
     res.status(200).json({
       success: true,
-      message: "Product deactivated successfully",
+      message: "Product deleted successfully",
       product,
     });
   } catch (error) {
@@ -88,8 +117,10 @@ async function deactivateProduct(req, res, next) {
 module.exports = {
   getProductsModuleStatus,
   getAllProducts,
+  getCurrentSupplierProducts,
+  getCurrentSupplierProductById,
   getProductById,
   createProduct,
   updateProduct,
-  deactivateProduct,
+  deleteProduct,
 };

@@ -4,6 +4,14 @@ export function getProducts(query) {
   return apiClient.get("/products", { query });
 }
 
+export function getCurrentSupplierProducts() {
+  return apiClient.get("/products/mine");
+}
+
+export function getCurrentSupplierProductById(id) {
+  return apiClient.get(`/products/mine/${id}`);
+}
+
 export function getProductById(id) {
   return apiClient.get(`/products/${id}`);
 }
