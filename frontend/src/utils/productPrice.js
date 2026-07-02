@@ -1,6 +1,7 @@
 const PRICE_UNIT_LABELS = {
   UNIT: "unité",
   KG: "kg",
+  LITER: "litre",
   LOT: "lot",
   COLIS: "colis",
   PALETTE: "palette",
@@ -10,6 +11,7 @@ const PRICE_UNIT_LABELS = {
 export const PRODUCT_PRICE_UNIT_OPTIONS = [
   { value: "UNIT", label: "Unité" },
   { value: "KG", label: "Kg" },
+  { value: "LITER", label: "Litre" },
   { value: "LOT", label: "Lot" },
   { value: "COLIS", label: "Colis" },
   { value: "PALETTE", label: "Palette" },

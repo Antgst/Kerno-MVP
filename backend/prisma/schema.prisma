@@ -15,6 +15,7 @@ enum UserRole {
 enum ProductPriceUnit {
   UNIT
   KG
+  LITER
   LOT
   COLIS
   PALETTE

@@ -3,6 +3,7 @@ const prisma = require("../../lib/prisma");
 const VALID_PRICE_UNITS = [
   "UNIT",
   "KG",
+  "LITER",
   "LOT",
   "COLIS",
   "PALETTE",
