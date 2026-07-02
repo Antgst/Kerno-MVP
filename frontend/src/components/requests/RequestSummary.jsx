@@ -10,12 +10,12 @@ function RequestSummary({ ariaLabel = "Résumé", statusCounts }) {
         <strong>{statusCounts.pending}</strong>
       </div>
       <div>
-        <span>Acceptées</span>
-        <strong>{statusCounts.accepted}</strong>
+        <span>Lues</span>
+        <strong>{statusCounts.read}</strong>
       </div>
       <div>
-        <span>Traitées</span>
-        <strong>{statusCounts.processed}</strong>
+        <span>Répondues</span>
+        <strong>{statusCounts.answered}</strong>
       </div>
     </section>
   );

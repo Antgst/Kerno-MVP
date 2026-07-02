@@ -93,8 +93,8 @@ function SupplierRequestsPage() {
     const counts = {
       total: requests.length,
       pending: 0,
-      accepted: 0,
-      processed: 0,
+      read: 0,
+      answered: 0,
     };
 
     requests.forEach((request) => {
@@ -104,12 +104,12 @@ function SupplierRequestsPage() {
         counts.pending += 1;
       }
 
-      if (status === "ACCEPTED") {
-        counts.accepted += 1;
+      if (status === "READ") {
+        counts.read += 1;
       }
 
-      if (status === "COMPLETED") {
-        counts.processed += 1;
+      if (status === "ANSWERED") {
+        counts.answered += 1;
       }
     });
 
