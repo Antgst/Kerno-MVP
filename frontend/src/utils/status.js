@@ -1,42 +1,45 @@
 const REQUEST_STATUS_LABELS = {
   PENDING: "En attente",
-  ACCEPTED: "Acceptée",
-  REJECTED: "Refusée",
-  COMPLETED: "Traitée",
-  CANCELLED: "Annulée",
+  READ: "Lue",
+  ANSWERED: "Répondue",
+  CLOSED: "Clôturée",
 };
 
 const REQUEST_STATUS_ALIASES = {
   "EN ATTENTE": "PENDING",
   PENDING: "PENDING",
-  LUE: "PENDING",
-  READ: "PENDING",
-  ACCEPTED: "ACCEPTED",
-  ACCEPTEE: "ACCEPTED",
-  ACCEPTÉE: "ACCEPTED",
-  VALIDATED: "ACCEPTED",
-  VALIDEE: "ACCEPTED",
-  VALIDÉE: "ACCEPTED",
-  REFUSED: "REJECTED",
-  REFUSEE: "REJECTED",
-  REFUSÉE: "REJECTED",
-  REJECTED: "REJECTED",
-  REPONDUE: "COMPLETED",
-  RÉPONDUE: "COMPLETED",
-  ANSWERED: "COMPLETED",
-  REPLIED: "COMPLETED",
-  CLOTUREE: "COMPLETED",
-  CLÔTURÉE: "COMPLETED",
-  CLOSED: "COMPLETED",
-  COMPLETED: "COMPLETED",
-  DONE: "COMPLETED",
-  RESOLVED: "COMPLETED",
-  TRAITEE: "COMPLETED",
-  TRAITÉE: "COMPLETED",
-  ANNULEE: "CANCELLED",
-  ANNULÉE: "CANCELLED",
-  CANCELED: "CANCELLED",
-  CANCELLED: "CANCELLED",
+
+  LUE: "READ",
+  READ: "READ",
+
+  REPONDUE: "ANSWERED",
+  RÉPONDUE: "ANSWERED",
+  ANSWERED: "ANSWERED",
+  REPLIED: "ANSWERED",
+
+  CLOTUREE: "CLOSED",
+  CLÔTURÉE: "CLOSED",
+  CLOSED: "CLOSED",
+
+  ACCEPTED: "READ",
+  ACCEPTEE: "READ",
+  ACCEPTÉE: "READ",
+
+  COMPLETED: "ANSWERED",
+  DONE: "ANSWERED",
+  RESOLVED: "ANSWERED",
+  TRAITEE: "ANSWERED",
+  TRAITÉE: "ANSWERED",
+
+  REFUSED: "CLOSED",
+  REFUSEE: "CLOSED",
+  REFUSÉE: "CLOSED",
+  REJECTED: "CLOSED",
+
+  ANNULEE: "CLOSED",
+  ANNULÉE: "CLOSED",
+  CANCELED: "CLOSED",
+  CANCELLED: "CLOSED",
 };
 
 const STATUS_LABELS = {
@@ -77,25 +80,21 @@ export function formatStatus(status, fallback = "Statut inconnu") {
 }
 
 export function getStatusTone(status) {
-  const normalizedStatus = getCanonicalRequestStatus(status);
+  const canonicalStatus = getCanonicalRequestStatus(status);
 
-  if (normalizedStatus === "PENDING") {
+  if (canonicalStatus === "PENDING") {
     return "pending";
   }
 
-  if (normalizedStatus === "ACCEPTED") {
+  if (canonicalStatus === "READ") {
     return "accepted";
   }
 
-  if (normalizedStatus === "REJECTED") {
-    return "rejected";
+  if (canonicalStatus === "ANSWERED") {
+    return "processed";
   }
 
-  if (normalizedStatus === "CANCELLED") {
-    return normalizedStatus.toLocaleLowerCase("fr-FR");
-  }
-
-  if (normalizedStatus === "COMPLETED") {
+  if (canonicalStatus === "CLOSED") {
     return "processed";
   }
 
@@ -104,8 +103,7 @@ export function getStatusTone(status) {
 
 export const requestStatusOptions = [
   { value: "PENDING", label: REQUEST_STATUS_LABELS.PENDING },
-  { value: "ACCEPTED", label: REQUEST_STATUS_LABELS.ACCEPTED },
-  { value: "REJECTED", label: REQUEST_STATUS_LABELS.REJECTED },
-  { value: "COMPLETED", label: REQUEST_STATUS_LABELS.COMPLETED },
-  { value: "CANCELLED", label: REQUEST_STATUS_LABELS.CANCELLED },
+  { value: "READ", label: REQUEST_STATUS_LABELS.READ },
+  { value: "ANSWERED", label: REQUEST_STATUS_LABELS.ANSWERED },
+  { value: "CLOSED", label: REQUEST_STATUS_LABELS.CLOSED },
 ];

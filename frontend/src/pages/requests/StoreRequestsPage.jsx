@@ -81,14 +81,14 @@ function StoreRequestsPage() {
   }, [reloadKey]);
 
   const statusCounts = useMemo(() => {
-    const counts = { total: requests.length, pending: 0, accepted: 0, processed: 0 };
+    const counts = { total: requests.length, pending: 0, read: 0, answered: 0 };
 
     requests.forEach((request) => {
       const status = getCanonicalRequestStatus(request.status);
       if (status === "PENDING") counts.pending += 1;
-      if (status === "ACCEPTED") counts.accepted += 1;
-      if (status === "COMPLETED") {
-        counts.processed += 1;
+      if (status === "READ") counts.read += 1;
+      if (status === "ANSWERED") {
+        counts.answered += 1;
       }
     });
 
