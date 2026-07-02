@@ -41,8 +41,19 @@ module.exports = {
               type: "object",
               required: ["email", "password", "role"],
               properties: {
-                email: { type: "string", format: "email", example: "supplier@example.com" },
-                password: { type: "string", minLength: 8, example: "password123" },
+                email: {
+                  type: "string",
+                  format: "email",
+                  maxLength: 254,
+                  example: "supplier@example.com",
+                },
+                password: {
+                  type: "string",
+                  minLength: 8,
+                  maxLength: 128,
+                  pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9\\s])\\S+$",
+                  example: "Password123!",
+                },
                 role: { type: "string", enum: ["SUPPLIER", "STORE"], example: "SUPPLIER" },
                 firstName: { type: "string", nullable: true, example: "Ada" },
                 lastName: { type: "string", nullable: true, example: "Lovelace" },

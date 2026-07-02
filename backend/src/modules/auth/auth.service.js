@@ -5,6 +5,8 @@ const prisma = require("../../lib/prisma");
 const VALID_ROLES = ["SUPPLIER", "STORE"];
 const PASSWORD_SALT_ROUNDS = 10;
 const TOKEN_EXPIRES_IN = "7d";
+const EMAIL_REGEX = /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?(?:\.[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?)+$/i;
+const STRONG_PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])\S{8,128}$/;
 
 function getStatus() {
   return "Auth module is ready";
@@ -36,6 +38,25 @@ function validatePassword(password) {
   if (password.length < 8) {
     throw createError("Password must contain at least 8 characters", 400);
   }
+
+  if (!STRONG_PASSWORD_REGEX.test(password)) {
+    throw createError(
+      "Password must contain an uppercase letter, a lowercase letter, a number and a special character (maximum 128 characters)",
+      400,
+    );
+  }
+}
+
+function validateEmail(email) {
+  validateRequiredString(email, "Email");
+
+  const normalizedEmail = normalizeEmail(email);
+
+  if (normalizedEmail.length > 254 || !EMAIL_REGEX.test(normalizedEmail)) {
+    throw createError("Email format is invalid", 400);
+  }
+
+  return normalizedEmail;
 }
 
 function validateRole(role) {
@@ -82,10 +103,9 @@ function generateToken(user) {
 async function registerUser(payload) {
   const { email, password, role, firstName, lastName } = payload;
 
-  validateRequiredString(email, "Email");
+  const normalizedEmail = validateEmail(email);
   validatePassword(password);
 
-  const normalizedEmail = normalizeEmail(email);
   const normalizedRole = validateRole(role);
 
   const existingUser = await prisma.user.findUnique({
