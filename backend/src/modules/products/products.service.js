@@ -101,6 +101,26 @@ function normalizeOptionalMinimumOrderQuantity(value) {
   return numberValue;
 }
 
+function normalizeOptionalBoolean(value) {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  if (value === "true") {
+    return true;
+  }
+
+  if (value === "false") {
+    return false;
+  }
+
+  throw createError("Product visibility must be a boolean", 400);
+}
+
 async function getSupplierProfileForUser(userId) {
   const supplierProfile = await prisma.supplierProfile.findUnique({
     where: {
@@ -130,6 +150,46 @@ async function getAllProducts() {
   });
 
   return products.map(getSafeProduct);
+}
+
+async function getCurrentSupplierProducts(userId) {
+  const supplierProfile = await getSupplierProfileForUser(userId);
+
+  const products = await prisma.product.findMany({
+    where: {
+      supplierId: supplierProfile.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      supplier: true,
+      category: true,
+    },
+  });
+
+  return products.map(getSafeProduct);
+}
+
+async function getCurrentSupplierProductById(userId, productId) {
+  const supplierProfile = await getSupplierProfileForUser(userId);
+
+  const product = await prisma.product.findFirst({
+    where: {
+      id: productId,
+      supplierId: supplierProfile.id,
+    },
+    include: {
+      supplier: true,
+      category: true,
+    },
+  });
+
+  if (!product) {
+    throw createError("Product not found", 404);
+  }
+
+  return getSafeProduct(product);
 }
 
 async function getProductById(id) {
@@ -164,6 +224,7 @@ async function createProduct(userId, payload) {
     minimumOrderUnit,
     origin,
     imageUrl,
+    isActive,
   } = payload;
 
   validateRequiredString(name, "Product name");
@@ -192,6 +253,7 @@ async function createProduct(userId, payload) {
       minimumOrderUnit: normalizeOptionalPriceUnit(minimumOrderUnit),
       origin: origin?.trim() || null,
       imageUrl: imageUrl?.trim() || null,
+      isActive: normalizeOptionalBoolean(isActive) ?? true,
     },
     include: {
       supplier: true,
@@ -209,7 +271,6 @@ async function updateProduct(userId, productId, payload) {
     where: {
       id: productId,
       supplierId: supplierProfile.id,
-      isActive: true,
     },
   });
 
@@ -227,6 +288,7 @@ async function updateProduct(userId, productId, payload) {
     minimumOrderUnit,
     origin,
     imageUrl,
+    isActive,
   } = payload;
 
   if (name !== undefined) {
@@ -252,7 +314,8 @@ async function updateProduct(userId, productId, payload) {
     data: {
       categoryId:
         categoryId !== undefined ? categoryId || null : undefined,
-      name: name !== undefined ? name.trim() : undefined,
+      name:
+        name !== undefined ? name.trim() : undefined,
       description:
         description !== undefined ? description?.trim() || null : undefined,
       priceCents:
@@ -264,11 +327,15 @@ async function updateProduct(userId, productId, payload) {
           ? normalizeOptionalMinimumOrderQuantity(minimumOrderQuantity)
           : undefined,
       minimumOrderUnit:
-        minimumOrderUnit !== undefined ? normalizeOptionalPriceUnit(minimumOrderUnit) : undefined,
+        minimumOrderUnit !== undefined
+          ? normalizeOptionalPriceUnit(minimumOrderUnit)
+          : undefined,
       origin:
         origin !== undefined ? origin?.trim() || null : undefined,
       imageUrl:
         imageUrl !== undefined ? imageUrl?.trim() || null : undefined,
+      isActive:
+        isActive !== undefined ? normalizeOptionalBoolean(isActive) : undefined,
     },
     include: {
       supplier: true,
@@ -279,27 +346,13 @@ async function updateProduct(userId, productId, payload) {
   return getSafeProduct(updatedProduct);
 }
 
-async function deactivateProduct(userId, productId) {
+async function deleteProduct(userId, productId) {
   const supplierProfile = await getSupplierProfileForUser(userId);
 
   const existingProduct = await prisma.product.findFirst({
     where: {
       id: productId,
       supplierId: supplierProfile.id,
-      isActive: true,
-    },
-  });
-
-  if (!existingProduct) {
-    throw createError("Product not found or not owned by current supplier", 404);
-  }
-
-  const product = await prisma.product.update({
-    where: {
-      id: productId,
-    },
-    data: {
-      isActive: false,
     },
     include: {
       supplier: true,
@@ -307,14 +360,26 @@ async function deactivateProduct(userId, productId) {
     },
   });
 
-  return getSafeProduct(product);
+  if (!existingProduct) {
+    throw createError("Product not found or not owned by current supplier", 404);
+  }
+
+  await prisma.product.delete({
+    where: {
+      id: existingProduct.id,
+    },
+  });
+
+  return getSafeProduct(existingProduct);
 }
 
 module.exports = {
   getStatus,
   getAllProducts,
+  getCurrentSupplierProducts,
+  getCurrentSupplierProductById,
   getProductById,
   createProduct,
   updateProduct,
-  deactivateProduct,
+  deleteProduct,
 };

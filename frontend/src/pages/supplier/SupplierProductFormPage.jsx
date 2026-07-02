@@ -10,7 +10,7 @@ import StatusBadge from "../../components/ui/StatusBadge";
 import { getCategories } from "../../services/categoryService";
 import {
   createProduct,
-  getProductById,
+  getCurrentSupplierProductById,
   updateProduct,
 } from "../../services/productService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
@@ -155,7 +155,7 @@ function SupplierProductFormPage() {
           await Promise.all([
             getCurrentSupplierProfile(),
             getCategories(),
-            isEditMode ? getProductById(id) : null,
+            isEditMode ? getCurrentSupplierProductById(id) : null,
           ]);
 
         if (!shouldUpdateState) {

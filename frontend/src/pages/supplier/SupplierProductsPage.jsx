@@ -7,7 +7,10 @@ import SupplierProductsToolbar from "../../components/supplier-products/Supplier
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
 import LoadingState from "../../components/ui/LoadingState";
-import { deleteProduct, getProducts } from "../../services/productService";
+import {
+  deleteProduct,
+  getCurrentSupplierProducts,
+} from "../../services/productService";
 import { getCurrentSupplierProfile } from "../../services/supplierService";
 import { formatMinimumOrder, formatProductPrice } from "../../utils/productPrice";
 import { getListResource, getResource } from "../../utils/responseUtils";
@@ -49,49 +52,50 @@ function SupplierProductsPage() {
   useEffect(() => {
     let shouldUpdateState = true;
 
-    async function loadProducts() {
-      setIsLoading(true);
-      setLoadErrorMessage("");
+      async function loadProducts() {
+        setIsLoading(true);
+        setLoadErrorMessage("");
 
-      try {
-        const [supplierResult, productsResult] = await Promise.allSettled([
-          getCurrentSupplierProfile(),
-          getProducts(),
-        ]);
+        try {
+          const supplierResponse = await getCurrentSupplierProfile().catch((error) => {
+            if (error.status === 404) {
+              return null;
+            }
 
-        if (!shouldUpdateState) {
-          return;
-        }
+            throw error;
+          });
 
-        if (productsResult.status === "rejected") {
-          throw productsResult.reason;
-        }
+          if (!shouldUpdateState) {
+            return;
+          }
 
-        if (
-          supplierResult.status === "rejected" &&
-          supplierResult.reason?.status !== 404
-        ) {
-          throw supplierResult.reason;
-        }
+          if (!supplierResponse) {
+            setSupplierProfile(null);
+            setProducts([]);
+            return;
+          }
 
-        setSupplierProfile(
-          supplierResult.status === "fulfilled"
-            ? getResource(supplierResult.value, ["supplier"])
-            : null,
-        );
-        setProducts(getListResource(productsResult.value, ["products"]));
-      } catch (error) {
-        if (shouldUpdateState) {
-          setLoadErrorMessage(
-            error.message || "Impossible de charger vos produits.",
-          );
-        }
-      } finally {
-        if (shouldUpdateState) {
-          setIsLoading(false);
+          const currentSupplierProfile = getResource(supplierResponse, ["supplier"]);
+          const productsResponse = await getCurrentSupplierProducts();
+
+          if (!shouldUpdateState) {
+            return;
+          }
+
+          setSupplierProfile(currentSupplierProfile);
+          setProducts(getListResource(productsResponse, ["products"]));
+        } catch (error) {
+          if (shouldUpdateState) {
+            setLoadErrorMessage(
+              error.message || "Impossible de charger vos produits.",
+            );
+          }
+        } finally {
+          if (shouldUpdateState) {
+            setIsLoading(false);
+          }
         }
       }
-    }
 
     loadProducts();
 
@@ -181,25 +185,26 @@ function SupplierProductsPage() {
   }
 
   async function handleDeleteProduct(productId) {
-    const confirmed = window.confirm(
-      "Retirer définitivement ce produit de votre catalogue ?",
+    const shouldDelete = window.confirm(
+      "Supprimer définitivement ce produit de votre catalogue ?",
     );
 
-    if (!confirmed) {
+    if (!shouldDelete) {
       return;
     }
 
-    setDeletingProductId(productId);
     setActionErrorMessage("");
+    setDeletingProductId(productId);
 
     try {
       await deleteProduct(productId);
+
       setProducts((currentProducts) =>
         currentProducts.filter((product) => product.id !== productId),
       );
     } catch (error) {
       setActionErrorMessage(
-        error.message || "Impossible de retirer ce produit.",
+        error.message || "Impossible de supprimer ce produit.",
       );
     } finally {
       setDeletingProductId("");
