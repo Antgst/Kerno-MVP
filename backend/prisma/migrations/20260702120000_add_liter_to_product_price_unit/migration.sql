@@ -1,0 +1,1 @@
+ALTER TYPE "ProductPriceUnit" ADD VALUE 'LITER';

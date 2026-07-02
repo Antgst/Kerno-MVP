@@ -169,14 +169,14 @@ const swaggerDocument = {
           priceUnit: {
             type: "string",
             nullable: true,
-            enum: ["UNIT", "KG", "LOT", "COLIS", "PALETTE", "OTHER"],
+            enum: ["UNIT", "KG", "LITER", "LOT", "COLIS", "PALETTE", "OTHER"],
             example: "KG",
           },
           minimumOrderQuantity: { type: "integer", nullable: true, example: 10 },
           minimumOrderUnit: {
             type: "string",
             nullable: true,
-            enum: ["UNIT", "KG", "LOT", "COLIS", "PALETTE", "OTHER"],
+            enum: ["UNIT", "KG", "LITER", "LOT", "COLIS", "PALETTE", "OTHER"],
             example: "KG",
           },
           origin: { ...nullableString, example: "Colombia" },
@@ -276,14 +276,14 @@ const swaggerDocument = {
               priceUnit: {
                 type: "string",
                 nullable: true,
-                enum: ["UNIT", "KG", "LOT", "COLIS", "PALETTE", "OTHER"],
+                enum: ["UNIT", "KG", "LITER", "LOT", "COLIS", "PALETTE", "OTHER"],
                 example: "KG",
               },
               minimumOrderQuantity: { type: "integer", nullable: true, example: 10 },
               minimumOrderUnit: {
                 type: "string",
                 nullable: true,
-                enum: ["UNIT", "KG", "LOT", "COLIS", "PALETTE", "OTHER"],
+                enum: ["UNIT", "KG", "LITER", "LOT", "COLIS", "PALETTE", "OTHER"],
                 example: "KG",
               },
             },

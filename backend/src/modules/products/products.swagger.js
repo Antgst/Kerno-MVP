@@ -5,17 +5,17 @@ const productBody = {
     name: { type: "string", example: "Single-origin beans" },
     description: { type: "string", nullable: true, example: "Washed arabica beans" },
     priceCents: { type: "integer", nullable: true, example: 1200 },
-    priceUnit: { 
+    priceUnit: {
       type: "string",
-      nullable: true, 
-      enum: ["UNIT", "KG", "LOT", "COLIS", "PALETTE", "OTHER"], 
+      nullable: true,
+      enum: ["UNIT", "KG", "LITER", "LOT", "COLIS", "PALETTE", "OTHER"],
       example: "KG",
     },
     minimumOrderQuantity: { type: "integer", nullable: true, example: 10 },
     minimumOrderUnit: {
       type: "string",
       nullable: true,
-      enum: ["UNIT", "KG", "LOT", "COLIS", "PALETTE", "OTHER"],
+      enum: ["UNIT", "KG", "LITER", "LOT", "COLIS", "PALETTE", "OTHER"],
       example: "KG",
     },
     origin: { type: "string", nullable: true, example: "Colombia" },
