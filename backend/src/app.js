@@ -9,14 +9,40 @@ const errorMiddleware = require("./middlewares/error.middleware");
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+const isProduction = process.env.NODE_ENV === "production";
 
-app.get("/api/openapi.json", (req, res) => {
-  res.json(swaggerDocument);
-});
+const allowedOrigins = (process.env.CORS_ORIGIN || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (!isProduction || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(null, false);
+  },
+};
+
+app.use(cors(corsOptions));
+app.use(express.json({ limit: "1mb" }));
+
+const apiDocsEnabled =
+  !isProduction || process.env.ENABLE_API_DOCS === "true";
+
+if (apiDocsEnabled) {
+  app.get("/api/openapi.json", (req, res) => {
+    res.json(swaggerDocument);
+  });
+
+  app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+}
 
 app.use("/api", apiRoutes);
 

@@ -212,6 +212,8 @@ async function getRequestById(userId, role, requestId) {
     if (request.storeId !== storeProfile.id) {
       throw createError("Forbidden: this request does not belong to your store", 403);
     }
+
+    return getSafeContactRequest(request);
   }
 
   if (role === "SUPPLIER") {
@@ -220,9 +222,11 @@ async function getRequestById(userId, role, requestId) {
     if (request.supplierId !== supplierProfile.id) {
       throw createError("Forbidden: this request was not sent to your supplier profile", 403);
     }
+
+    return getSafeContactRequest(request);
   }
 
-  return getSafeContactRequest(request);
+  throw createError("Forbidden: unsupported role for this request", 403);
 }
 
 async function updateRequestStatus(userId, requestId, payload) {

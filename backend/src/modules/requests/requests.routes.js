@@ -38,6 +38,7 @@ router.patch(
 router.get(
   "/:id",
   requireAuth,
+  requireRole("STORE", "SUPPLIER"),
   requestsController.getRequestById,
 );
 
