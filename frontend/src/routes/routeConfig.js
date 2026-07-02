@@ -19,7 +19,7 @@ const SupplierProductFormPage = lazy(() => import("../pages/supplier/SupplierPro
 const SupplierProductsPage = lazy(() => import("../pages/supplier/SupplierProductsPage"));
 const SupplierProfilePage = lazy(() => import("../pages/supplier/SupplierProfilePage"));
 
-export const routeConfig = [
+const routeConfig = [
   { path: "/", label: "Accueil", access: "public", component: HomePage },
   { path: "/login", label: "Connexion", access: "public", component: LoginPage },
   { path: "/register", label: "Inscription", access: "public", component: RegisterPage },

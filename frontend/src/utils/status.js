@@ -50,7 +50,7 @@ const STATUS_LABELS = {
   ERROR: "Erreur",
 };
 
-export function normalizeStatus(status) {
+function normalizeStatus(status) {
   return String(status || "UNKNOWN").trim().toUpperCase();
 }
 

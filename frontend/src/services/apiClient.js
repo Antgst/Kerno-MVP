@@ -53,7 +53,7 @@ async function parseResponse(response) {
   return data;
 }
 
-export async function apiRequest(path, options = {}) {
+async function apiRequest(path, options = {}) {
   const {
     method = "GET",
     body,
