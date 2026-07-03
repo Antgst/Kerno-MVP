@@ -862,6 +862,7 @@ The final Stage 4 documentation is split by topic:
 | Stage 4 sprint reviews and retrospectives | [`docs/sprints/SPRINT_REVIEWS_RETROSPECTIVES.md`](./docs/sprints/SPRINT_REVIEWS_RETROSPECTIVES.md) |
 | Stage 4 test evidence | [`docs/testing/STAGE4_TEST_EVIDENCE.md`](./docs/testing/STAGE4_TEST_EVIDENCE.md) |
 | Stage 4 manual review checklist | [`docs/review/STAGE4_MANUAL_REVIEW_CHECKLIST.md`](./docs/review/STAGE4_MANUAL_REVIEW_CHECKLIST.md) |
+| Quality audit | [`docs/audits/quality-audit-2026-07-03.md`](./docs/audits/quality-audit-2026-07-03.md) |
 
 ---
 
