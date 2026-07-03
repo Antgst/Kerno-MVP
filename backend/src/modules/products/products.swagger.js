@@ -53,7 +53,7 @@ module.exports = {
       tags: ["Products"],
       summary: "Create a product",
       description: "Creates a product for the current supplier profile.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       requestBody: {
         required: true,
         content: {
@@ -116,7 +116,7 @@ module.exports = {
       tags: ["Products"],
       summary: "Update product",
       description: "Updates a product owned by the current supplier.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       parameters: [{ $ref: "#/components/parameters/IdPath" }],
       requestBody: {
         required: true,
@@ -152,7 +152,7 @@ module.exports = {
       tags: ["Products"],
       summary: "Deactivate product",
       description: "Marks a product owned by the current supplier as inactive.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       parameters: [{ $ref: "#/components/parameters/IdPath" }],
       responses: {
         200: {

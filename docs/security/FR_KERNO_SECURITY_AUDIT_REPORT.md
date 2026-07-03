@@ -139,7 +139,7 @@ Le smoke test de durcissement de production valide des comportements orientés p
 
 Les risques suivants restent acceptables pour l'étape actuelle du MVP, mais devront être traités avant la préparation à la production :
 
-- Le jeton d'authentification est encore stocké côté frontend.
+- La session d'authentification est désormais stockée dans un cookie HttpOnly posé par le backend.
 - Amélioration future : déplacer le stockage d'authentification vers des cookies HTTP-only, Secure et SameSite.
 - Aucune limitation de débit n'est encore implémentée.
 - 3 constats backend modérés de `npm audit` restent à examiner avant la livraison finale ou le déploiement.

@@ -28,7 +28,7 @@ module.exports = {
       tags: ["Users"],
       summary: "Get current user",
       description: "Returns the authenticated user's public profile.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       responses: {
         200: {
           description: "Authenticated user",

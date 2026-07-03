@@ -1,4 +1,9 @@
 const authService = require("./auth.service");
+const {
+  AUTH_COOKIE_NAME,
+  getAuthCookieOptions,
+  getClearAuthCookieOptions,
+} = require("../../config/authCookie");
 
 function getAuthModuleStatus(req, res) {
   const message = authService.getStatus();
@@ -10,9 +15,19 @@ function getAuthModuleStatus(req, res) {
   });
 }
 
+function setAuthCookie(res, token) {
+  res.cookie(AUTH_COOKIE_NAME, token, getAuthCookieOptions());
+}
+
+function clearAuthCookie(res) {
+  res.clearCookie(AUTH_COOKIE_NAME, getClearAuthCookieOptions());
+}
+
 async function register(req, res, next) {
   try {
-    const result = await authService.registerUser(req.body);
+    const { token, ...result } = await authService.registerUser(req.body);
+
+    setAuthCookie(res, token);
 
     res.status(201).json({
       success: true,
@@ -26,7 +41,9 @@ async function register(req, res, next) {
 
 async function login(req, res, next) {
   try {
-    const result = await authService.loginUser(req.body);
+    const { token, ...result } = await authService.loginUser(req.body);
+
+    setAuthCookie(res, token);
 
     res.status(200).json({
       success: true,
@@ -38,8 +55,18 @@ async function login(req, res, next) {
   }
 }
 
+function logout(req, res) {
+  clearAuthCookie(res);
+
+  res.status(200).json({
+    success: true,
+    message: "User logged out successfully",
+  });
+}
+
 module.exports = {
   getAuthModuleStatus,
   register,
   login,
+  logout,
 };

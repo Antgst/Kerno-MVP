@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const prisma = require("../lib/prisma");
+const { AUTH_COOKIE_NAME } = require("../config/authCookie");
 
 function createError(message, statusCode) {
   const error = new Error(message);
@@ -7,7 +8,7 @@ function createError(message, statusCode) {
   return error;
 }
 
-function getTokenFromRequest(req) {
+function getBearerTokenFromRequest(req) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -21,6 +22,16 @@ function getTokenFromRequest(req) {
   }
 
   return token;
+}
+
+function getTokenFromRequest(req) {
+  const cookieToken = req.cookies?.[AUTH_COOKIE_NAME];
+
+  if (cookieToken) {
+    return cookieToken;
+  }
+
+  return getBearerTokenFromRequest(req);
 }
 
 async function requireAuth(req, res, next) {

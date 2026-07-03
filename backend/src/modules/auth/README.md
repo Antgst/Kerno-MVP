@@ -1,7 +1,7 @@
 # Auth Module
 
 ## Purpose
-This module handles account registration, login, password verification, JWT creation, and authentication API documentation.
+This module handles account registration, login, password verification, JWT session creation, secure auth cookie handling, and authentication API documentation.
 
 ## Analogy
 Think of this module as the access desk: it checks identity and issues the credentials used by protected parts of the product.
@@ -13,7 +13,7 @@ Think of this module as the access desk: it checks identity and issues the crede
 - `auth.swagger.js` documents authentication endpoints for the OpenAPI specification.
 
 ## How It Fits in KERNO
-The frontend login and registration pages call this module through the service layer. Successful authentication returns the user context and token used by protected routes.
+The frontend login and registration pages call this module through the service layer. Successful authentication returns the user context while the backend stores the session JWT in an HttpOnly cookie.
 
 ## Maintenance Notes
-Keep credential validation, password hashing, and token rules centralized here. Do not duplicate authentication logic in other modules.
+Keep credential validation, password hashing, and cookie and token rules centralized here. Do not duplicate authentication logic in other modules.

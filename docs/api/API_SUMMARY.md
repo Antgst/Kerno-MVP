@@ -75,7 +75,7 @@ The API uses JWT authentication.
 Protected routes require an `Authorization` header:
 
 ```http
-Authorization: Bearer <token>
+Cookie: kerno_auth_token=<http_only_cookie>
 ```
 
 The token is returned after a successful login or registration.
@@ -206,7 +206,7 @@ STORE
 
 #### Success Response
 
-Returns the created user and a JWT token.
+Returns the created user and sets an HttpOnly authentication cookie named `kerno_auth_token`.
 
 ```json
 {
@@ -218,8 +218,8 @@ Returns the created user and a JWT token.
     "role": "SUPPLIER",
     "firstName": "Ada",
     "lastName": "Lovelace"
-  },
-  "token": "jwt.token.value"
+  }
+
 }
 ```
 
@@ -244,7 +244,7 @@ Public.
 
 #### Success Response
 
-Returns the authenticated user and a JWT token.
+Returns the authenticated user and sets an HttpOnly authentication cookie named `kerno_auth_token`.
 
 ```json
 {
@@ -254,8 +254,8 @@ Returns the authenticated user and a JWT token.
     "id": "usr_123",
     "email": "supplier@example.com",
     "role": "SUPPLIER"
-  },
-  "token": "jwt.token.value"
+  }
+
 }
 ```
 
@@ -281,11 +281,9 @@ Retrieves the current authenticated user.
 
 Authenticated user.
 
-#### Headers
+#### Authentication
 
-```http
-Authorization: Bearer <token>
-```
+Authenticated session cookie `kerno_auth_token` sent automatically by the browser/API client.
 
 #### Success Response
 
@@ -342,11 +340,9 @@ Creates the authenticated supplier profile.
 
 Supplier only.
 
-#### Headers
+#### Authentication
 
-```http
-Authorization: Bearer <token>
-```
+Authenticated session cookie `kerno_auth_token` sent automatically by the browser/API client.
 
 #### Request Body
 
@@ -404,11 +400,9 @@ Creates the authenticated store profile.
 
 Store only.
 
-#### Headers
+#### Authentication
 
-```http
-Authorization: Bearer <token>
-```
+Authenticated session cookie `kerno_auth_token` sent automatically by the browser/API client.
 
 #### Request Body
 
@@ -525,11 +519,9 @@ Creates a product.
 
 Supplier only.
 
-#### Headers
+#### Authentication
 
-```http
-Authorization: Bearer <token>
-```
+Authenticated session cookie `kerno_auth_token` sent automatically by the browser/API client.
 
 #### Request Body
 
@@ -595,11 +587,9 @@ Creates a structured contact or quote request.
 
 Store only.
 
-#### Headers
+#### Authentication
 
-```http
-Authorization: Bearer <token>
-```
+Authenticated session cookie `kerno_auth_token` sent automatically by the browser/API client.
 
 #### Request Body
 

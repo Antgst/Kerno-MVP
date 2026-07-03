@@ -60,7 +60,7 @@ The backend uses JWT authentication.
 Protected routes require an HTTP `Authorization` header:
 
 ```http
-Authorization: Bearer <token>
+Cookie: kerno_auth_token=<http_only_cookie>
 ```
 
 Two user roles are currently supported:
@@ -177,8 +177,7 @@ STORE
     "role": "SUPPLIER",
     "firstName": "Ada",
     "lastName": "Lovelace"
-  },
-  "token": "jwt-token"
+  }
 }
 ```
 
@@ -205,8 +204,7 @@ Logs in an existing user.
     "id": "user-id",
     "email": "supplier@example.com",
     "role": "SUPPLIER"
-  },
-  "token": "jwt-token"
+  }
 }
 ```
 
@@ -226,11 +224,9 @@ Returns the currently authenticated user.
 
 Authenticated user.
 
-#### Headers
+#### Authentication
 
-```http
-Authorization: Bearer <token>
-```
+Authenticated session cookie `kerno_auth_token` sent automatically by the browser/API client.
 
 #### Success response
 
@@ -278,7 +274,7 @@ Supplier only.
 #### Headers
 
 ```http
-Authorization: Bearer <supplier-token>
+Cookie: kerno_auth_token=<supplier_session_cookie>
 ```
 
 #### Request body
@@ -354,7 +350,7 @@ Store only.
 #### Headers
 
 ```http
-Authorization: Bearer <store-token>
+Cookie: kerno_auth_token=<store_session_cookie>
 ```
 
 #### Request body
@@ -430,7 +426,7 @@ Supplier only.
 #### Headers
 
 ```http
-Authorization: Bearer <supplier-token>
+Cookie: kerno_auth_token=<supplier_session_cookie>
 ```
 
 #### Request body
@@ -479,7 +475,7 @@ Supplier only.
 #### Headers
 
 ```http
-Authorization: Bearer <supplier-token>
+Cookie: kerno_auth_token=<supplier_session_cookie>
 ```
 
 #### Request body
@@ -557,7 +553,7 @@ Store only.
 #### Headers
 
 ```http
-Authorization: Bearer <store-token>
+Cookie: kerno_auth_token=<store_session_cookie>
 ```
 
 #### Request body

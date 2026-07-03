@@ -32,7 +32,7 @@ module.exports = {
     post: {
       tags: ["Auth"],
       summary: "Register a user",
-      description: "Creates a supplier or store user and returns a JWT.",
+      description: "Creates a supplier or store user and sets an HttpOnly authentication cookie.",
       requestBody: {
         required: true,
         content: {
@@ -80,7 +80,6 @@ module.exports = {
                   createdAt: "2026-06-08T12:00:00.000Z",
                   updatedAt: "2026-06-08T12:00:00.000Z",
                 },
-                token: "jwt.token.value",
               },
             },
           },
@@ -94,7 +93,7 @@ module.exports = {
     post: {
       tags: ["Auth"],
       summary: "Log in a user",
-      description: "Authenticates a user and returns a JWT.",
+      description: "Authenticates a user and sets an HttpOnly authentication cookie.",
       requestBody: {
         required: true,
         content: {
@@ -128,13 +127,39 @@ module.exports = {
                   createdAt: "2026-06-08T12:00:00.000Z",
                   updatedAt: "2026-06-08T12:00:00.000Z",
                 },
-                token: "jwt.token.value",
               },
             },
           },
         },
         400: { $ref: "#/components/responses/BadRequest" },
         401: { $ref: "#/components/responses/Unauthorized" },
+      },
+    },
+  },
+  "/auth/logout": {
+    post: {
+      tags: ["Auth"],
+      summary: "Log out current user",
+      description: "Clears the HttpOnly authentication cookie.",
+      responses: {
+        200: {
+          description: "User logged out",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  success: { type: "boolean", example: true },
+                  message: { type: "string", example: "User logged out successfully" },
+                },
+              },
+              example: {
+                success: true,
+                message: "User logged out successfully",
+              },
+            },
+          },
+        },
       },
     },
   },

@@ -7,7 +7,7 @@ This folder contains shared Express middleware used across backend routes.
 Think of middleware as the checkpoint lane before and after route handlers: it can verify access, format failures, or catch missing routes.
 
 ## Contents
-- `auth.middleware.js` verifies JWT authentication and provides role-based access helpers.
+- `auth.middleware.js` verifies JWT cookie authentication and provides role-based access helpers.
 - `error.middleware.js` centralizes API error responses.
 - `notFound.middleware.js` handles requests that do not match a backend route.
 

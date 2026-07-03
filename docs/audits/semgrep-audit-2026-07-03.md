@@ -43,17 +43,7 @@ Subject: no CSRF middleware detected in the Express application
 
 Le finding Semgrep indique qu’aucun middleware CSRF n’a été détecté dans l’application Express.
 
-Dans l’architecture actuelle de KERNO, l’authentification repose encore sur un JWT stocké côté frontend et envoyé manuellement dans l’en-tête HTTP Authorization: Bearer <token>.
-
-Les fichiers concernés sont :
-
-- frontend/src/services/tokenStorage.js : stockage actuel du token dans localStorage ;
-- frontend/src/services/apiClient.js : ajout manuel du header Authorization: Bearer ;
-- backend/src/middlewares/auth.middleware.js : lecture du Bearer token côté backend.
-
-Dans cet état actuel, le finding CSRF est informatif et non bloquant.
-
-Le risque principal déjà identifié est plutôt le stockage du JWT dans localStorage, car il peut être exposé en cas de faille XSS.
+Mise à jour après l'issue #232 : l'authentification ne stocke plus le JWT dans le localStorage frontend. Le backend pose désormais un cookie d'authentification HttpOnly, SameSite=Lax en local, et Secure en production. Le frontend envoie les cookies via les requêtes API avec credentials, sans injecter manuellement de header Authorization.
 
 ## Lien avec issue #232
 
@@ -63,9 +53,9 @@ Le commentaire GitHub de l’issue #232 a été mis à jour pour mentionner ce f
 
 - docs/audits/semgrep-audit-2026-07-03.md
 
-Si KERNO migre vers une authentification par cookie HttpOnly, le sujet CSRF devra être traité pendant cette migration.
+KERNO migre vers une authentification par cookie HttpOnly dans cette branche. Le sujet CSRF reste un point de vigilance à traiter avant un vrai déploiement production, surtout si SameSite=None ou un contexte cross-site complet devient nécessaire.
 
-Points à vérifier dans cette future branche :
+Points vérifiés ou à conserver comme vigilance :
 
 - choisir une stratégie SameSite adaptée : Lax ou Strict si possible ;
 - si SameSite=None ou un vrai contexte cross-site est nécessaire, prévoir une protection CSRF adaptée pour les routes d’écriture ;
@@ -77,7 +67,7 @@ Points à vérifier dans cette future branche :
 
 ## Décision
 
-Aucune correction code n’est réalisée dans cette branche.
+La correction code est réalisée dans cette branche : suppression du stockage JWT frontend, cookie HttpOnly backend, CORS credentials et logout avec suppression du cookie.
 
 Le finding est documenté comme point de vigilance sécurité à traiter dans le cadre de l’issue #232.
 
@@ -90,4 +80,4 @@ Le finding est documenté comme point de vigilance sécurité à traiter dans le
 
 ## Conclusion
 
-L’audit Semgrep est satisfaisant pour cette passe : un seul finding informatif, déjà relié à une issue sécurité existante, sans correction urgente à appliquer dans l’état actuel du projet.
+L’audit Semgrep reste satisfaisant pour cette passe : le finding CSRF reste documenté comme point de vigilance production, tandis que le risque principal de stockage JWT dans localStorage est traité par l’issue #232.

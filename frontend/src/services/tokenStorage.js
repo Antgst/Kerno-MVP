@@ -1,61 +1,49 @@
-import { getRoleFromToken } from "../utils/jwt";
-
 const AUTH_TOKEN_STORAGE_KEY = "kerno_auth_token";
 const AUTH_ROLE_STORAGE_KEY = "kerno_auth_role";
 
-export function getAuthToken() {
+function getBrowserLocalStorage() {
   try {
-    return localStorage.getItem(AUTH_TOKEN_STORAGE_KEY);
+    if (typeof window === "undefined" || !window.localStorage) {
+      return null;
+    }
+
+    return window.localStorage;
   } catch {
     return null;
   }
 }
 
-export function setAuthToken(token) {
-  try {
-    if (!token) {
-      localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
-      return;
-    }
+function removeLegacyAuthValue(key) {
+  const storage = getBrowserLocalStorage();
 
-    localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, token);
+  if (!storage) {
+    return;
+  }
+
+  try {
+    storage.removeItem(key);
   } catch (error) {
     void error;
   }
+}
+
+export function getAuthToken() {
+  return null;
+}
+
+export function setAuthToken() {
+  clearAuthToken();
 }
 
 export function getAuthRole() {
-  try {
-    const storedRole = localStorage.getItem(AUTH_ROLE_STORAGE_KEY);
-
-    if (storedRole) {
-      return storedRole;
-    }
-
-    return getRoleFromToken(getAuthToken());
-  } catch {
-    return getRoleFromToken(getAuthToken());
-  }
+  return null;
 }
 
-export function setAuthRole(role) {
-  try {
-    if (!role) {
-      localStorage.removeItem(AUTH_ROLE_STORAGE_KEY);
-      return;
-    }
-
-    localStorage.setItem(AUTH_ROLE_STORAGE_KEY, String(role).toUpperCase());
-  } catch (error) {
-    void error;
-  }
+export function setAuthRole() {
+  removeLegacyAuthValue(AUTH_ROLE_STORAGE_KEY);
 }
 
 export function clearAuthToken() {
-  try {
-    localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
-    localStorage.removeItem(AUTH_ROLE_STORAGE_KEY);
-  } catch (error) {
-    void error;
-  }
+  removeLegacyAuthValue(AUTH_TOKEN_STORAGE_KEY);
+  removeLegacyAuthValue(AUTH_ROLE_STORAGE_KEY);
 }

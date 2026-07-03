@@ -26,12 +26,12 @@
       "type": "string"
     },
     {
-      "key": "supplierToken",
+      "key": "supplierCookie",
       "value": "",
       "type": "string"
     },
     {
-      "key": "storeToken",
+      "key": "storeCookie",
       "value": "",
       "type": "string"
     },
@@ -163,7 +163,12 @@
               "const json = pm.response.json();",
               "pm.test('Supplier token returned', function () { pm.expect(json.token).to.be.a('string').and.not.empty; });",
               "pm.test('Supplier role is correct', function () { pm.expect(json.user.role).to.eql('SUPPLIER'); });",
-              "pm.collectionVariables.set('supplierToken', json.token);",
+              "var setCookie = pm.response.headers.get(\"Set-Cookie\") || \"\";",
+              "pm.test(\"Supplier session cookie is returned\", function () {",
+              "  pm.expect(setCookie).to.include(\"kerno_auth_token=\");",
+              "});",
+              "var match = setCookie.match(/kerno_auth_token=([^;]+)/);",
+              "if (match) pm.collectionVariables.set(\"supplierCookie\", match[1]);",
               "pm.collectionVariables.set('supplierUserId', json.user.id);"
             ]
           }
@@ -211,7 +216,12 @@
               "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
               "const json = pm.response.json();",
               "pm.test('Supplier login returns token', function () { pm.expect(json.token).to.be.a('string').and.not.empty; });",
-              "pm.collectionVariables.set('supplierToken', json.token);"
+              "var setCookie = pm.response.headers.get(\"Set-Cookie\") || \"\";",
+              "pm.test(\"Supplier session cookie is returned\", function () {",
+              "  pm.expect(setCookie).to.include(\"kerno_auth_token=\");",
+              "});",
+              "var match = setCookie.match(/kerno_auth_token=([^;]+)/);",
+              "if (match) pm.collectionVariables.set(\"supplierCookie\", match[1]);"
             ]
           }
         }
@@ -238,11 +248,21 @@
           ]
         },
         "auth": {
-          "type": "bearer",
-          "bearer": [
+          "type": "apikey",
+          "apikey": [
             {
-              "key": "token",
-              "value": "{{supplierToken}}",
+              "key": "key",
+              "value": "Cookie",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "kerno_auth_token={{supplierCookie}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
               "type": "string"
             }
           ]
@@ -284,11 +304,21 @@
           ]
         },
         "auth": {
-          "type": "bearer",
-          "bearer": [
+          "type": "apikey",
+          "apikey": [
             {
-              "key": "token",
-              "value": "{{supplierToken}}",
+              "key": "key",
+              "value": "Cookie",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "kerno_auth_token={{supplierCookie}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
               "type": "string"
             }
           ]
@@ -340,11 +370,21 @@
           ]
         },
         "auth": {
-          "type": "bearer",
-          "bearer": [
+          "type": "apikey",
+          "apikey": [
             {
-              "key": "token",
-              "value": "{{supplierToken}}",
+              "key": "key",
+              "value": "Cookie",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "kerno_auth_token={{supplierCookie}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
               "type": "string"
             }
           ]
@@ -396,11 +436,21 @@
           ]
         },
         "auth": {
-          "type": "bearer",
-          "bearer": [
+          "type": "apikey",
+          "apikey": [
             {
-              "key": "token",
-              "value": "{{supplierToken}}",
+              "key": "key",
+              "value": "Cookie",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "kerno_auth_token={{supplierCookie}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
               "type": "string"
             }
           ]
@@ -510,7 +560,12 @@
               "const json = pm.response.json();",
               "pm.test('Store token returned', function () { pm.expect(json.token).to.be.a('string').and.not.empty; });",
               "pm.test('Store role is correct', function () { pm.expect(json.user.role).to.eql('STORE'); });",
-              "pm.collectionVariables.set('storeToken', json.token);",
+              "var setCookie = pm.response.headers.get(\"Set-Cookie\") || \"\";",
+              "pm.test(\"Store session cookie is returned\", function () {",
+              "  pm.expect(setCookie).to.include(\"kerno_auth_token=\");",
+              "});",
+              "var match = setCookie.match(/kerno_auth_token=([^;]+)/);",
+              "if (match) pm.collectionVariables.set(\"storeCookie\", match[1]);",
               "pm.collectionVariables.set('storeUserId', json.user.id);"
             ]
           }
@@ -558,7 +613,12 @@
               "pm.test('success is true', function () { pm.expect(pm.response.json().success).to.eql(true); });",
               "const json = pm.response.json();",
               "pm.test('Store login returns token', function () { pm.expect(json.token).to.be.a('string').and.not.empty; });",
-              "pm.collectionVariables.set('storeToken', json.token);"
+              "var setCookie = pm.response.headers.get(\"Set-Cookie\") || \"\";",
+              "pm.test(\"Store session cookie is returned\", function () {",
+              "  pm.expect(setCookie).to.include(\"kerno_auth_token=\");",
+              "});",
+              "var match = setCookie.match(/kerno_auth_token=([^;]+)/);",
+              "if (match) pm.collectionVariables.set(\"storeCookie\", match[1]);"
             ]
           }
         }
@@ -585,11 +645,21 @@
           ]
         },
         "auth": {
-          "type": "bearer",
-          "bearer": [
+          "type": "apikey",
+          "apikey": [
             {
-              "key": "token",
-              "value": "{{storeToken}}",
+              "key": "key",
+              "value": "Cookie",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "kerno_auth_token={{storeCookie}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
               "type": "string"
             }
           ]
@@ -641,11 +711,21 @@
           ]
         },
         "auth": {
-          "type": "bearer",
-          "bearer": [
+          "type": "apikey",
+          "apikey": [
             {
-              "key": "token",
-              "value": "{{storeToken}}",
+              "key": "key",
+              "value": "Cookie",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "kerno_auth_token={{storeCookie}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
               "type": "string"
             }
           ]
@@ -699,11 +779,21 @@
           ]
         },
         "auth": {
-          "type": "bearer",
-          "bearer": [
+          "type": "apikey",
+          "apikey": [
             {
-              "key": "token",
-              "value": "{{storeToken}}",
+              "key": "key",
+              "value": "Cookie",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "kerno_auth_token={{storeCookie}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
               "type": "string"
             }
           ]
@@ -745,11 +835,21 @@
           ]
         },
         "auth": {
-          "type": "bearer",
-          "bearer": [
+          "type": "apikey",
+          "apikey": [
             {
-              "key": "token",
-              "value": "{{supplierToken}}",
+              "key": "key",
+              "value": "Cookie",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "kerno_auth_token={{supplierCookie}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
               "type": "string"
             }
           ]
@@ -792,11 +892,21 @@
           ]
         },
         "auth": {
-          "type": "bearer",
-          "bearer": [
+          "type": "apikey",
+          "apikey": [
             {
-              "key": "token",
-              "value": "{{supplierToken}}",
+              "key": "key",
+              "value": "Cookie",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "kerno_auth_token={{supplierCookie}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
               "type": "string"
             }
           ]
@@ -888,11 +998,21 @@
           ]
         },
         "auth": {
-          "type": "bearer",
-          "bearer": [
+          "type": "apikey",
+          "apikey": [
             {
-              "key": "token",
-              "value": "{{storeToken}}",
+              "key": "key",
+              "value": "Cookie",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "kerno_auth_token={{storeCookie}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
               "type": "string"
             }
           ]

@@ -1,7 +1,6 @@
 import { API_BASE_URL } from "../config/api";
 import ApiError from "./apiError";
 import { clearSessionCache } from "./frontendCache";
-import { getAuthToken } from "./tokenStorage";
 
 function removeTrailingSlash(value) {
   return value.replace(/\/+$/, "");
@@ -59,7 +58,6 @@ async function apiRequest(path, options = {}) {
     body,
     query,
     headers = {},
-    token = getAuthToken(),
     ...fetchOptions
   } = options;
 
@@ -72,16 +70,13 @@ async function apiRequest(path, options = {}) {
     requestHeaders["Content-Type"] = "application/json";
   }
 
-  if (token) {
-    requestHeaders.Authorization = `Bearer ${token}`;
-  }
-
   try {
     const response = await fetch(buildUrl(path, query), {
       method,
       headers: requestHeaders,
       body: body !== undefined ? JSON.stringify(body) : undefined,
       ...fetchOptions,
+      credentials: "include",
     });
 
     return await parseResponse(response);

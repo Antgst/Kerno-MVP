@@ -4,7 +4,7 @@ module.exports = {
       tags: ["Requests"],
       summary: "Create contact request",
       description: "Creates a contact request from the current store to a supplier.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       requestBody: {
         required: true,
         content: {
@@ -51,7 +51,7 @@ module.exports = {
       tags: ["Requests"],
       summary: "List sent requests",
       description: "Returns contact requests sent by the current store.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       responses: {
         200: {
           description: "Sent contact requests",
@@ -81,7 +81,7 @@ module.exports = {
       tags: ["Requests"],
       summary: "List received requests",
       description: "Returns contact requests received by the current supplier.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       responses: {
         200: {
           description: "Received contact requests",
@@ -111,7 +111,7 @@ module.exports = {
       tags: ["Requests"],
       summary: "Update request status",
       description: "Updates the status of a contact request received by the current supplier.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       parameters: [{ $ref: "#/components/parameters/IdPath" }],
       requestBody: {
         required: true,
@@ -159,7 +159,7 @@ module.exports = {
       tags: ["Requests"],
       summary: "Get request by id",
       description: "Returns one contact request visible to the current store or supplier.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       parameters: [{ $ref: "#/components/parameters/IdPath" }],
       responses: {
         200: {

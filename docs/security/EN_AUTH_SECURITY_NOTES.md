@@ -14,7 +14,7 @@ The current goal of the MVP authentication scope is to implement a first working
 * user login
 * password hashing before storage
 * safe user responses
-* JWT-based authentication response
+* JWT session stored in an HttpOnly authentication cookie
 * basic validation
 * basic authentication error handling
 
@@ -48,7 +48,7 @@ The current MVP authentication implementation includes:
 * password hashes are never returned in API responses
 * login errors use a generic message for invalid credentials
 * accepted roles are limited to `SUPPLIER` and `STORE`
-* a JWT token is returned after successful registration or login
+* an HttpOnly authentication cookie is set after successful registration or login
 
 ## Future security hardening
 
@@ -61,9 +61,9 @@ Recommended improvements:
 * add login rate limiting
 * add temporary throttling after repeated failed login attempts
 * consider account lockout rules for suspicious activity
-* improve JWT expiration strategy
+* keep the JWT expiration strategy explicit and documented
 * consider refresh tokens if the product needs long sessions
-* consider secure HTTP-only cookies instead of storing tokens client-side
+* keep the HttpOnly cookie flow and review CSRF protection before production
 * add email verification if needed
 * add password reset flow
 * add re-authentication for sensitive actions
