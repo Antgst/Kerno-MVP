@@ -149,12 +149,10 @@ function SupplierDashboardPage() {
             : [],
         );
         setRequests(loadedRequests);
-      } catch (error) {
+      } catch {
         if (!shouldUpdateState) {
           return;
         }
-
-        console.error("Supplier dashboard loading error:", error);
 
         setSupplierProfile(null);
         setProducts([]);

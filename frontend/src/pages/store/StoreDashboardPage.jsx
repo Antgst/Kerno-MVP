@@ -165,12 +165,10 @@ function StoreDashboardPage() {
         setSuppliers(loadedSuppliers);
         setProducts(loadedProducts);
         setProductsAreLoaded(productsResult.status === "fulfilled");
-      } catch (error) {
+      } catch {
         if (!shouldUpdateState) {
           return;
         }
-
-        console.error("Store dashboard loading error:", error);
 
         setStoreProfile(null);
         setSentRequests([]);

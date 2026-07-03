@@ -14,6 +14,7 @@ Think of this folder as the project reference shelf: it explains decisions that 
 - `testing/` documents testing plans, reports, evidence, and Postman resources.
 - `demo/` contains the product demo scenario.
 - `review/` contains technical review notes and Stage 4 manual review preparation.
+- `audits/` contains targeted audit notes and quality checks performed before review.
 - `sprints/` contains Stage 4 sprint planning, reviews, and retrospectives.
 - `docker/` contains Docker local development documentation.
 - `STAGE4_DELIVERABLE_LINKS.md` centralizes repository, project, sprint, testing, and review links.
