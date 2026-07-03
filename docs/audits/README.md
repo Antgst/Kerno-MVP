@@ -7,6 +7,7 @@ Think of this folder as a focused quality notebook: it records what was checked,
 ## Documents
 
 - `quality-audit-2026-07-03.md` documents the frontend quality audit performed before manual review preparation.
+- `visual-audit-2026-07-03.md` documents the frontend visual consistency audit performed after manual review.
 
 ## Maintenance
 
