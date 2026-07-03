@@ -864,6 +864,7 @@ The final Stage 4 documentation is split by topic:
 | Stage 4 manual review checklist | [`docs/review/STAGE4_MANUAL_REVIEW_CHECKLIST.md`](./docs/review/STAGE4_MANUAL_REVIEW_CHECKLIST.md) |
 | Quality audit | [`docs/audits/quality-audit-2026-07-03.md`](./docs/audits/quality-audit-2026-07-03.md) |
 | Visual audit | [`docs/audits/visual-audit-2026-07-03.md`](./docs/audits/visual-audit-2026-07-03.md) |
+| Semgrep audit | [`docs/audits/semgrep-audit-2026-07-03.md`](./docs/audits/semgrep-audit-2026-07-03.md) |
 
 ---
 

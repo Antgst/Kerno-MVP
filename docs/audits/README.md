@@ -8,6 +8,7 @@ Think of this folder as a focused quality notebook: it records what was checked,
 
 - `quality-audit-2026-07-03.md` documents the frontend quality audit performed before manual review preparation.
 - `visual-audit-2026-07-03.md` documents the frontend visual consistency audit performed after manual review.
+- `semgrep-audit-2026-07-03.md` documents the Semgrep security/code-pattern audit and links the CSRF finding to issue #232.
 
 ## Maintenance
 
