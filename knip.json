@@ -1,0 +1,46 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": [
+        "tools/security-audit/**/*.cjs"
+      ],
+      "project": [
+        "tools/**/*.{js,cjs,mjs}"
+      ]
+    },
+    "frontend": {
+      "entry": [
+        "tests/e2e/**/*.spec.js"
+      ],
+      "project": [
+        "src/**/*.{js,jsx}",
+        "tests/**/*.{js,jsx}",
+        "*.{js,cjs,mjs}"
+      ],
+      "ignoreDependencies": [
+        "tailwindcss"
+      ]
+    },
+    "backend": {
+      "entry": [
+        "src/app.js"
+      ],
+      "project": [
+        "src/**/*.{js,ts}",
+        "!src/generated/prisma/**",
+        "prisma/**/*.{js,ts}",
+        "*.{js,ts,cjs,mjs}"
+      ],
+      "ignoreDependencies": [
+        "@prisma/client",
+        "pg"
+      ],
+      "ignoreIssues": {
+        "src/**/*.{js,ts}": [
+          "exports"
+        ]
+      }
+    }
+  }
+}

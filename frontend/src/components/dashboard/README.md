@@ -10,7 +10,6 @@ Think of this folder as the control board: it summarizes profile progress, activ
 - `DashboardIntro.jsx` renders dashboard introduction content.
 - `DashboardStats.jsx` renders dashboard statistics.
 - `DashboardProfileCard.jsx` renders profile summary content.
-- `DashboardQuickActions.jsx` renders shortcut actions.
 - `DashboardRequestsPanel.jsx` renders request-related dashboard content.
 - `ProfileCompletionGauge.jsx` renders profile completion progress.
 - `StoreRecommendedSuppliers.jsx` renders recommended supplier content for stores.

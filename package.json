@@ -2,7 +2,7 @@
   "name": "kerno-mvp",
   "version": "1.0.0",
   "description": "Kerno MVP - B2B SaaS marketplace connecting local suppliers and retail stores",
-  "main": "index.js",
+  "private": true,
   "directories": {
     "doc": "docs"
   },

@@ -15,7 +15,6 @@ Think of this folder as the API workshop: modules provide specialized tools, whi
 - `lib/` contains shared backend infrastructure such as the Prisma client.
 - `config/` contains application configuration such as Swagger setup.
 - `utils/` contains small reusable backend helpers.
-- `test-prisma.js` is a small Prisma connectivity helper.
 
 ## How It Fits in KERNO
 The frontend communicates with this source layer through HTTP JSON endpoints. The source layer validates requests, delegates work to modules, and persists data through Prisma.
