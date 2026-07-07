@@ -41,17 +41,20 @@ def api_request(
     method: str,
     path: str,
     *,
-    token: str | None = None,
+    session: requests.Session | None = None,
+    bearer_token: str | None = None,
     json: dict[str, Any] | list[Any] | None = None,
     raw_data: str | bytes | None = None,
     headers: dict[str, str] | None = None,
 ) -> requests.Response:
     request_headers = headers.copy() if headers else {}
-    if token is not None:
-        request_headers["Authorization"] = f"Bearer {token}"
+    request_client = session or requests
+
+    if bearer_token is not None:
+        request_headers["Authorization"] = f"Bearer {bearer_token}"
 
     if raw_data is not None:
-        return requests.request(
+        return request_client.request(
             method,
             url(path),
             data=raw_data,
@@ -59,7 +62,7 @@ def api_request(
             timeout=TIMEOUT,
         )
 
-    return requests.request(
+    return request_client.request(
         method,
         url(path),
         json=json,
@@ -117,9 +120,11 @@ def alphabetical_key(value: str) -> str:
 
 
 def register_user(role: str, label: str, password: str = "Password123!") -> dict[str, Any]:
+    session = requests.Session()
     response = api_request(
         "POST",
         "/api/auth/register",
+        session=session,
         json={
             "email": unique_email(label),
             "password": password,
@@ -129,22 +134,30 @@ def register_user(role: str, label: str, password: str = "Password123!") -> dict
         },
     )
     body = assert_success(response, 201)
-    assert "token" in body
+    assert "token" not in body
     assert "user" in body
     assert body["user"]["email"] == unique_email(label)
     assert body["user"]["role"] == role.upper()
     assert "password" not in body["user"]
     assert "passwordHash" not in body["user"]
+    assert session.cookies.get("kerno_auth_token")
+    body["session"] = session
     return body
 
 
 def login_user(label: str, password: str = "Password123!") -> dict[str, Any]:
+    session = requests.Session()
     response = api_request(
         "POST",
         "/api/auth/login",
+        session=session,
         json={"email": unique_email(label), "password": password},
     )
-    return assert_success(response, 200)
+    body = assert_success(response, 200)
+    assert "token" not in body
+    assert session.cookies.get("kerno_auth_token")
+    body["session"] = session
+    return body
 
 
 # ---------------------------------------------------------------------------
@@ -164,18 +177,18 @@ def seeded() -> dict[str, Any]:
     no_profile_supplier_auth = register_user("SUPPLIER", "supplier_without_profile")
     no_profile_store_auth = register_user("STORE", "store_without_profile")
 
-    data["supplier_token"] = supplier_auth["token"]
-    data["store_token"] = store_auth["token"]
-    data["other_supplier_token"] = other_supplier_auth["token"]
-    data["other_store_token"] = other_store_auth["token"]
-    data["no_profile_supplier_token"] = no_profile_supplier_auth["token"]
-    data["no_profile_store_token"] = no_profile_store_auth["token"]
+    data["supplier_session"] = supplier_auth["session"]
+    data["store_session"] = store_auth["session"]
+    data["other_supplier_session"] = other_supplier_auth["session"]
+    data["other_store_session"] = other_store_auth["session"]
+    data["no_profile_supplier_session"] = no_profile_supplier_auth["session"]
+    data["no_profile_store_session"] = no_profile_store_auth["session"]
 
     supplier_profile = assert_success(
         api_request(
             "POST",
             "/api/suppliers/profile",
-            token=data["supplier_token"],
+            session=data["supplier_session"],
             json={
                 "companyName": f"Kerno Supplier {RUN_ID}",
                 "description": "Local food supplier for automated tests",
@@ -194,7 +207,7 @@ def seeded() -> dict[str, Any]:
         api_request(
             "POST",
             "/api/suppliers/profile",
-            token=data["other_supplier_token"],
+            session=data["other_supplier_session"],
             json={"companyName": f"Other Supplier {RUN_ID}"},
         ),
         201,
@@ -205,7 +218,7 @@ def seeded() -> dict[str, Any]:
         api_request(
             "POST",
             "/api/stores/profile",
-            token=data["store_token"],
+            session=data["store_session"],
             json={
                 "storeName": f"Kerno Store {RUN_ID}",
                 "brandName": "Kerno Test Store",
@@ -224,7 +237,7 @@ def seeded() -> dict[str, Any]:
         api_request(
             "POST",
             "/api/stores/profile",
-            token=data["other_store_token"],
+            session=data["other_store_session"],
             json={"storeName": f"Other Store {RUN_ID}"},
         ),
         201,
@@ -235,7 +248,7 @@ def seeded() -> dict[str, Any]:
         api_request(
             "POST",
             "/api/categories",
-            token=data["supplier_token"],
+            session=data["supplier_session"],
             json={
                 "name": f"Category {RUN_ID}",
                 "description": "Automated test category",
@@ -249,7 +262,7 @@ def seeded() -> dict[str, Any]:
         api_request(
             "POST",
             "/api/products",
-            token=data["supplier_token"],
+            session=data["supplier_session"],
             json={
                 "categoryId": category["id"],
                 "name": f"Test Product {RUN_ID}",
@@ -270,7 +283,7 @@ def seeded() -> dict[str, Any]:
         api_request(
             "POST",
             "/api/requests",
-            token=data["store_token"],
+            session=data["store_session"],
             json={
                 "supplierId": supplier_profile["id"],
                 "productId": product["id"],
@@ -337,8 +350,8 @@ def test_method_not_allowed_or_not_found_returns_error_json() -> None:
 def test_register_supplier_success() -> None:
     body = register_user("SUPPLIER", "register_supplier_success")
     assert body["user"]["role"] == "SUPPLIER"
-    assert isinstance(body["token"], str)
-    assert len(body["token"].split(".")) == 3
+    assert "token" not in body
+    assert isinstance(body["session"], requests.Session)
 
 
 def test_register_store_success() -> None:
@@ -370,7 +383,8 @@ def test_login_success_after_register() -> None:
     register_user("STORE", "login_success")
     body = login_user("login_success")
     assert body["user"]["email"] == unique_email("login_success")
-    assert isinstance(body["token"], str)
+    assert "token" not in body
+    assert isinstance(body["session"], requests.Session)
 
 
 def test_login_accepts_email_with_uppercase_and_spaces() -> None:
@@ -518,7 +532,7 @@ def test_users_me_requires_authentication() -> None:
 
 
 def test_users_me_rejects_invalid_bearer_token() -> None:
-    assert_error(api_request("GET", "/api/users/me", token="not-a-valid-jwt"), 401)
+    assert_error(api_request("GET", "/api/users/me", bearer_token="not-a-valid-jwt"), 401)
 
 
 def test_users_me_rejects_malformed_authorization_header() -> None:
@@ -526,14 +540,14 @@ def test_users_me_rejects_malformed_authorization_header() -> None:
     assert_error(response, 401)
 
 
-def test_users_me_accepts_supplier_token(seeded: dict[str, Any]) -> None:
-    body = assert_success(api_request("GET", "/api/users/me", token=seeded["supplier_token"]), 200)
+def test_users_me_accepts_supplier_session(seeded: dict[str, Any]) -> None:
+    body = assert_success(api_request("GET", "/api/users/me", session=seeded["supplier_session"]), 200)
     assert body["user"]["role"] == "SUPPLIER"
     assert "passwordHash" not in body["user"]
 
 
-def test_users_me_accepts_store_token(seeded: dict[str, Any]) -> None:
-    body = assert_success(api_request("GET", "/api/users/me", token=seeded["store_token"]), 200)
+def test_users_me_accepts_store_session(seeded: dict[str, Any]) -> None:
+    body = assert_success(api_request("GET", "/api/users/me", session=seeded["store_session"]), 200)
     assert body["user"]["role"] == "STORE"
 
 
@@ -558,7 +572,7 @@ def test_get_supplier_by_unknown_uuid_returns_404() -> None:
 
 
 def test_supplier_profile_me_requires_supplier_role(seeded: dict[str, Any]) -> None:
-    assert_error(api_request("GET", "/api/suppliers/profile/me", token=seeded["store_token"]), 403)
+    assert_error(api_request("GET", "/api/suppliers/profile/me", session=seeded["store_session"]), 403)
 
 
 def test_supplier_profile_me_requires_authentication() -> None:
@@ -570,7 +584,7 @@ def test_create_supplier_profile_requires_supplier_role(seeded: dict[str, Any]) 
         api_request(
             "POST",
             "/api/suppliers/profile",
-            token=seeded["store_token"],
+            session=seeded["store_session"],
             json={"companyName": "Forbidden supplier"},
         ),
         403,
@@ -580,7 +594,7 @@ def test_create_supplier_profile_requires_supplier_role(seeded: dict[str, Any]) 
 def test_create_supplier_profile_requires_company_name(seeded: dict[str, Any]) -> None:
     temp = register_user("SUPPLIER", "supplier_missing_company")
     assert_error(
-        api_request("POST", "/api/suppliers/profile", token=temp["token"], json={}),
+        api_request("POST", "/api/suppliers/profile", session=temp["session"], json={}),
         400,
         "Company name is required",
     )
@@ -591,7 +605,7 @@ def test_create_supplier_profile_rejects_duplicate_profile(seeded: dict[str, Any
         api_request(
             "POST",
             "/api/suppliers/profile",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"companyName": "Duplicate profile"},
         ),
         409,
@@ -604,7 +618,7 @@ def test_update_supplier_profile_success_and_trims_values(seeded: dict[str, Any]
         api_request(
             "PUT",
             "/api/suppliers/profile/me",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"companyName": "  Updated Supplier Name  ", "description": "   "},
         ),
         200,
@@ -618,7 +632,7 @@ def test_update_supplier_profile_rejects_blank_company_name(seeded: dict[str, An
         api_request(
             "PUT",
             "/api/suppliers/profile/me",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"companyName": "   "},
         ),
         400,
@@ -628,7 +642,7 @@ def test_update_supplier_profile_rejects_blank_company_name(seeded: dict[str, An
 
 def test_get_supplier_profile_me_without_existing_profile_returns_404(seeded: dict[str, Any]) -> None:
     assert_error(
-        api_request("GET", "/api/suppliers/profile/me", token=seeded["no_profile_supplier_token"]),
+        api_request("GET", "/api/suppliers/profile/me", session=seeded["no_profile_supplier_session"]),
         404,
         "not found",
     )
@@ -645,7 +659,7 @@ def test_stores_module_status_is_public() -> None:
 
 
 def test_store_profile_me_requires_store_role(seeded: dict[str, Any]) -> None:
-    assert_error(api_request("GET", "/api/stores/profile/me", token=seeded["supplier_token"]), 403)
+    assert_error(api_request("GET", "/api/stores/profile/me", session=seeded["supplier_session"]), 403)
 
 
 def test_store_profile_me_requires_authentication() -> None:
@@ -657,7 +671,7 @@ def test_create_store_profile_requires_store_role(seeded: dict[str, Any]) -> Non
         api_request(
             "POST",
             "/api/stores/profile",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"storeName": "Forbidden store"},
         ),
         403,
@@ -667,7 +681,7 @@ def test_create_store_profile_requires_store_role(seeded: dict[str, Any]) -> Non
 def test_create_store_profile_requires_store_name() -> None:
     temp = register_user("STORE", "store_missing_name")
     assert_error(
-        api_request("POST", "/api/stores/profile", token=temp["token"], json={}),
+        api_request("POST", "/api/stores/profile", session=temp["session"], json={}),
         400,
         "Store name is required",
     )
@@ -678,7 +692,7 @@ def test_create_store_profile_rejects_duplicate_profile(seeded: dict[str, Any]) 
         api_request(
             "POST",
             "/api/stores/profile",
-            token=seeded["store_token"],
+            session=seeded["store_session"],
             json={"storeName": "Duplicate store"},
         ),
         409,
@@ -687,7 +701,7 @@ def test_create_store_profile_rejects_duplicate_profile(seeded: dict[str, Any]) 
 
 
 def test_get_store_profile_me_success(seeded: dict[str, Any]) -> None:
-    body = assert_success(api_request("GET", "/api/stores/profile/me", token=seeded["store_token"]), 200)
+    body = assert_success(api_request("GET", "/api/stores/profile/me", session=seeded["store_session"]), 200)
     assert body["store"]["id"] == seeded["store"]["id"]
 
 
@@ -696,7 +710,7 @@ def test_update_store_profile_success_and_nulls_empty_optional_fields(seeded: di
         api_request(
             "PUT",
             "/api/stores/profile/me",
-            token=seeded["store_token"],
+            session=seeded["store_session"],
             json={"storeName": "  Updated Store Name  ", "brandName": "   "},
         ),
         200,
@@ -710,7 +724,7 @@ def test_update_store_profile_rejects_blank_store_name(seeded: dict[str, Any]) -
         api_request(
             "PUT",
             "/api/stores/profile/me",
-            token=seeded["store_token"],
+            session=seeded["store_session"],
             json={"storeName": "   "},
         ),
         400,
@@ -720,7 +734,7 @@ def test_update_store_profile_rejects_blank_store_name(seeded: dict[str, Any]) -
 
 def test_get_store_profile_me_without_existing_profile_returns_404(seeded: dict[str, Any]) -> None:
     assert_error(
-        api_request("GET", "/api/stores/profile/me", token=seeded["no_profile_store_token"]),
+        api_request("GET", "/api/stores/profile/me", session=seeded["no_profile_store_session"]),
         404,
         "not found",
     )
@@ -743,14 +757,14 @@ def test_create_category_requires_authentication() -> None:
 
 def test_create_category_requires_supplier_role(seeded: dict[str, Any]) -> None:
     assert_error(
-        api_request("POST", "/api/categories", token=seeded["store_token"], json={"name": "Forbidden"}),
+        api_request("POST", "/api/categories", session=seeded["store_session"], json={"name": "Forbidden"}),
         403,
     )
 
 
 def test_create_category_requires_name(seeded: dict[str, Any]) -> None:
     assert_error(
-        api_request("POST", "/api/categories", token=seeded["supplier_token"], json={}),
+        api_request("POST", "/api/categories", session=seeded["supplier_session"], json={}),
         400,
         "Category name is required",
     )
@@ -758,7 +772,7 @@ def test_create_category_requires_name(seeded: dict[str, Any]) -> None:
 
 def test_create_category_rejects_blank_name(seeded: dict[str, Any]) -> None:
     assert_error(
-        api_request("POST", "/api/categories", token=seeded["supplier_token"], json={"name": "   "}),
+        api_request("POST", "/api/categories", session=seeded["supplier_session"], json={"name": "   "}),
         400,
         "Category name is required",
     )
@@ -769,7 +783,7 @@ def test_create_category_rejects_duplicate_name(seeded: dict[str, Any]) -> None:
         api_request(
             "POST",
             "/api/categories",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"name": seeded["category"]["name"]},
         ),
         409,
@@ -813,7 +827,7 @@ def test_create_product_requires_authentication() -> None:
 
 def test_create_product_requires_supplier_role(seeded: dict[str, Any]) -> None:
     assert_error(
-        api_request("POST", "/api/products", token=seeded["store_token"], json={"name": "Forbidden"}),
+        api_request("POST", "/api/products", session=seeded["store_session"], json={"name": "Forbidden"}),
         403,
     )
 
@@ -823,7 +837,7 @@ def test_create_product_requires_supplier_profile(seeded: dict[str, Any]) -> Non
         api_request(
             "POST",
             "/api/products",
-            token=seeded["no_profile_supplier_token"],
+            session=seeded["no_profile_supplier_session"],
             json={"name": "No profile product"},
         ),
         404,
@@ -833,7 +847,7 @@ def test_create_product_requires_supplier_profile(seeded: dict[str, Any]) -> Non
 
 def test_create_product_requires_name(seeded: dict[str, Any]) -> None:
     assert_error(
-        api_request("POST", "/api/products", token=seeded["supplier_token"], json={}),
+        api_request("POST", "/api/products", session=seeded["supplier_session"], json={}),
         400,
         "Product name is required",
     )
@@ -841,7 +855,7 @@ def test_create_product_requires_name(seeded: dict[str, Any]) -> None:
 
 def test_create_product_rejects_blank_name(seeded: dict[str, Any]) -> None:
     assert_error(
-        api_request("POST", "/api/products", token=seeded["supplier_token"], json={"name": "   "}),
+        api_request("POST", "/api/products", session=seeded["supplier_session"], json={"name": "   "}),
         400,
         "Product name is required",
     )
@@ -852,7 +866,7 @@ def test_create_product_rejects_unknown_category(seeded: dict[str, Any]) -> None
         api_request(
             "POST",
             "/api/products",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"name": "Unknown category product", "categoryId": str(uuid.uuid4())},
         ),
         404,
@@ -865,7 +879,7 @@ def test_create_product_accepts_optional_fields_as_empty_strings(seeded: dict[st
         api_request(
             "POST",
             "/api/products",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={
                 "name": f"Optional Empty Fields {RUN_ID}",
                 "description": "   ",
@@ -894,7 +908,7 @@ def test_update_product_success(seeded: dict[str, Any]) -> None:
         api_request(
             "PUT",
             f"/api/products/{seeded['product']['id']}",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"name": "  Updated Product Name  ", "categoryId": ""},
         ),
         200,
@@ -909,7 +923,7 @@ def test_update_product_rejects_blank_name(seeded: dict[str, Any]) -> None:
         api_request(
             "PUT",
             f"/api/products/{seeded['product']['id']}",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"name": "   "},
         ),
         400,
@@ -922,7 +936,7 @@ def test_update_product_rejects_unknown_category(seeded: dict[str, Any]) -> None
         api_request(
             "PUT",
             f"/api/products/{seeded['product']['id']}",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"categoryId": str(uuid.uuid4())},
         ),
         404,
@@ -935,7 +949,7 @@ def test_update_product_rejects_not_owner_supplier(seeded: dict[str, Any]) -> No
         api_request(
             "PUT",
             f"/api/products/{seeded['product']['id']}",
-            token=seeded["other_supplier_token"],
+            session=seeded["other_supplier_session"],
             json={"name": "Hijack attempt"},
         ),
         404,
@@ -944,7 +958,7 @@ def test_update_product_rejects_not_owner_supplier(seeded: dict[str, Any]) -> No
 
 def test_delete_product_requires_supplier_role(seeded: dict[str, Any]) -> None:
     assert_error(
-        api_request("DELETE", f"/api/products/{seeded['product']['id']}", token=seeded["store_token"]),
+        api_request("DELETE", f"/api/products/{seeded['product']['id']}", session=seeded["store_session"]),
         403,
     )
 
@@ -954,14 +968,14 @@ def test_deactivate_product_hides_it_from_public_list(seeded: dict[str, Any]) ->
         api_request(
             "POST",
             "/api/products",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"name": f"Temporary Product To Delete {RUN_ID}"},
         ),
         201,
     )["product"]
 
     body = assert_success(
-        api_request("DELETE", f"/api/products/{created['id']}", token=seeded["supplier_token"]),
+        api_request("DELETE", f"/api/products/{created['id']}", session=seeded["supplier_session"]),
         200,
     )
     assert body["product"]["isActive"] is False
@@ -977,14 +991,14 @@ def test_deactivate_product_twice_returns_404(seeded: dict[str, Any]) -> None:
         api_request(
             "POST",
             "/api/products",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"name": f"Temporary Double Delete {RUN_ID}"},
         ),
         201,
     )["product"]
 
-    assert_success(api_request("DELETE", f"/api/products/{created['id']}", token=seeded["supplier_token"]), 200)
-    assert_error(api_request("DELETE", f"/api/products/{created['id']}", token=seeded["supplier_token"]), 404)
+    assert_success(api_request("DELETE", f"/api/products/{created['id']}", session=seeded["supplier_session"]), 200)
+    assert_error(api_request("DELETE", f"/api/products/{created['id']}", session=seeded["supplier_session"]), 404)
 
 
 # ---------------------------------------------------------------------------
@@ -997,7 +1011,7 @@ def test_create_contact_request_requires_store_role(seeded: dict[str, Any]) -> N
         api_request(
             "POST",
             "/api/requests",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"supplierId": seeded["supplier"]["id"], "subject": "x", "message": "y"},
         ),
         403,
@@ -1009,7 +1023,7 @@ def test_create_contact_request_requires_store_profile(seeded: dict[str, Any]) -
         api_request(
             "POST",
             "/api/requests",
-            token=seeded["no_profile_store_token"],
+            session=seeded["no_profile_store_session"],
             json={"supplierId": seeded["supplier"]["id"], "subject": "x", "message": "y"},
         ),
         404,
@@ -1034,7 +1048,7 @@ def test_create_contact_request_validates_required_fields(
     if body.get("supplierId") == "x":
         body = {**body, "supplierId": seeded["supplier"]["id"]}
     assert_error(
-        api_request("POST", "/api/requests", token=seeded["store_token"], json=body),
+        api_request("POST", "/api/requests", session=seeded["store_session"], json=body),
         400,
         expected_message,
     )
@@ -1045,7 +1059,7 @@ def test_create_contact_request_rejects_unknown_supplier(seeded: dict[str, Any])
         api_request(
             "POST",
             "/api/requests",
-            token=seeded["store_token"],
+            session=seeded["store_session"],
             json={"supplierId": str(uuid.uuid4()), "subject": "x", "message": "y"},
         ),
         404,
@@ -1058,7 +1072,7 @@ def test_create_contact_request_rejects_product_from_another_supplier(seeded: di
         api_request(
             "POST",
             "/api/products",
-            token=seeded["other_supplier_token"],
+            session=seeded["other_supplier_session"],
             json={"name": f"Other Supplier Product {RUN_ID}"},
         ),
         201,
@@ -1068,7 +1082,7 @@ def test_create_contact_request_rejects_product_from_another_supplier(seeded: di
         api_request(
             "POST",
             "/api/requests",
-            token=seeded["store_token"],
+            session=seeded["store_session"],
             json={
                 "supplierId": seeded["supplier"]["id"],
                 "productId": other_product["id"],
@@ -1086,7 +1100,7 @@ def test_create_contact_request_without_product_success(seeded: dict[str, Any]) 
         api_request(
             "POST",
             "/api/requests",
-            token=seeded["store_token"],
+            session=seeded["store_session"],
             json={
                 "supplierId": seeded["supplier"]["id"],
                 "subject": " General question ",
@@ -1105,45 +1119,45 @@ def test_create_contact_request_without_product_success(seeded: dict[str, Any]) 
 
 
 def test_get_sent_requests_requires_store_role(seeded: dict[str, Any]) -> None:
-    assert_error(api_request("GET", "/api/requests/sent", token=seeded["supplier_token"]), 403)
+    assert_error(api_request("GET", "/api/requests/sent", session=seeded["supplier_session"]), 403)
 
 
 def test_get_sent_requests_success(seeded: dict[str, Any]) -> None:
-    body = assert_success(api_request("GET", "/api/requests/sent", token=seeded["store_token"]), 200)
+    body = assert_success(api_request("GET", "/api/requests/sent", session=seeded["store_session"]), 200)
     assert isinstance(body["requests"], list)
     assert any(request["id"] == seeded["request"]["id"] for request in body["requests"])
 
 
 def test_get_received_requests_requires_supplier_role(seeded: dict[str, Any]) -> None:
-    assert_error(api_request("GET", "/api/requests/received", token=seeded["store_token"]), 403)
+    assert_error(api_request("GET", "/api/requests/received", session=seeded["store_session"]), 403)
 
 
 def test_get_received_requests_success(seeded: dict[str, Any]) -> None:
-    body = assert_success(api_request("GET", "/api/requests/received", token=seeded["supplier_token"]), 200)
+    body = assert_success(api_request("GET", "/api/requests/received", session=seeded["supplier_session"]), 200)
     assert isinstance(body["requests"], list)
     assert any(request["id"] == seeded["request"]["id"] for request in body["requests"])
 
 
 def test_get_request_by_id_as_store_owner_success(seeded: dict[str, Any]) -> None:
-    body = assert_success(api_request("GET", f"/api/requests/{seeded['request']['id']}", token=seeded["store_token"]), 200)
+    body = assert_success(api_request("GET", f"/api/requests/{seeded['request']['id']}", session=seeded["store_session"]), 200)
     assert body["request"]["id"] == seeded["request"]["id"]
 
 
 def test_get_request_by_id_as_supplier_recipient_success(seeded: dict[str, Any]) -> None:
-    body = assert_success(api_request("GET", f"/api/requests/{seeded['request']['id']}", token=seeded["supplier_token"]), 200)
+    body = assert_success(api_request("GET", f"/api/requests/{seeded['request']['id']}", session=seeded["supplier_session"]), 200)
     assert body["request"]["id"] == seeded["request"]["id"]
 
 
 def test_get_request_by_id_rejects_other_store(seeded: dict[str, Any]) -> None:
-    assert_error(api_request("GET", f"/api/requests/{seeded['request']['id']}", token=seeded["other_store_token"]), 403)
+    assert_error(api_request("GET", f"/api/requests/{seeded['request']['id']}", session=seeded["other_store_session"]), 403)
 
 
 def test_get_request_by_id_rejects_other_supplier(seeded: dict[str, Any]) -> None:
-    assert_error(api_request("GET", f"/api/requests/{seeded['request']['id']}", token=seeded["other_supplier_token"]), 403)
+    assert_error(api_request("GET", f"/api/requests/{seeded['request']['id']}", session=seeded["other_supplier_session"]), 403)
 
 
 def test_get_unknown_request_returns_404(seeded: dict[str, Any]) -> None:
-    assert_error(api_request("GET", f"/api/requests/{uuid.uuid4()}", token=seeded["store_token"]), 404)
+    assert_error(api_request("GET", f"/api/requests/{uuid.uuid4()}", session=seeded["store_session"]), 404)
 
 
 @pytest.mark.parametrize("status", ["PENDING", "READ", "ANSWERED", "CLOSED", " read ", "answered"])
@@ -1152,7 +1166,7 @@ def test_update_request_status_accepts_valid_statuses(seeded: dict[str, Any], st
         api_request(
             "PATCH",
             f"/api/requests/{seeded['request']['id']}/status",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"status": status},
         ),
         200,
@@ -1165,7 +1179,7 @@ def test_update_request_status_rejects_invalid_statuses(seeded: dict[str, Any], 
     response = api_request(
         "PATCH",
         f"/api/requests/{seeded['request']['id']}/status",
-        token=seeded["supplier_token"],
+        session=seeded["supplier_session"],
         json={"status": status},
     )
     assert_error(response, 400)
@@ -1176,7 +1190,7 @@ def test_update_request_status_requires_supplier_role(seeded: dict[str, Any]) ->
         api_request(
             "PATCH",
             f"/api/requests/{seeded['request']['id']}/status",
-            token=seeded["store_token"],
+            session=seeded["store_session"],
             json={"status": "READ"},
         ),
         403,
@@ -1188,7 +1202,7 @@ def test_update_request_status_rejects_other_supplier(seeded: dict[str, Any]) ->
         api_request(
             "PATCH",
             f"/api/requests/{seeded['request']['id']}/status",
-            token=seeded["other_supplier_token"],
+            session=seeded["other_supplier_session"],
             json={"status": "READ"},
         ),
         404,
@@ -1200,7 +1214,7 @@ def test_update_unknown_request_status_returns_404(seeded: dict[str, Any]) -> No
         api_request(
             "PATCH",
             f"/api/requests/{uuid.uuid4()}/status",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"status": "READ"},
         ),
         404,
@@ -1233,7 +1247,7 @@ def test_request_body_can_contain_extra_fields_without_leaking_them(seeded: dict
         api_request(
             "POST",
             "/api/products",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={
                 "name": f"Extra Fields Product {RUN_ID}",
                 "admin": True,
@@ -1257,7 +1271,7 @@ def test_large_but_valid_text_fields_are_accepted(seeded: dict[str, Any]) -> Non
         api_request(
             "POST",
             "/api/products",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={"name": f"Large Text Product {RUN_ID}", "description": large_description},
         ),
         201,
@@ -1270,7 +1284,7 @@ def test_unicode_text_fields_are_accepted(seeded: dict[str, Any]) -> None:
         api_request(
             "POST",
             "/api/products",
-            token=seeded["supplier_token"],
+            session=seeded["supplier_session"],
             json={
                 "name": f"Produit spécial éèçà 🧪 {RUN_ID}",
                 "description": "测试 العربية emoji ✅",

@@ -31,8 +31,10 @@ async function apiLogin(request, email) {
   });
 
   expect(response.status(), `API login failed for ${email}`).toBe(200);
-  expect(body?.token, `API login did not return a token for ${email}`).toBeTruthy();
-  return body.token;
+  expect(body?.user?.email, `API login did not return a user for ${email}`).toBe(email);
+  expect(body?.token, "API login must not expose the JWT in the JSON response").toBeUndefined();
+
+  return body.user;
 }
 
 async function getSeededProduct(request) {
@@ -46,10 +48,8 @@ async function getSeededProduct(request) {
   return product;
 }
 
-async function getCurrentSupplierProfile(request, token) {
-  const { response, body } = await apiRequest(request, "/suppliers/profile/me", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+async function getCurrentSupplierProfile(request) {
+  const { response, body } = await apiRequest(request, "/suppliers/profile/me");
 
   expect(response.status(), "Seeded supplier profile is required for E2E regression").toBe(200);
   expect(body?.supplier?.id, "Seeded supplier profile did not include an id").toBeTruthy();
@@ -130,8 +130,8 @@ test.describe("KERNO MVP automated regression", () => {
     page,
     request,
   }) => {
-    const supplierToken = await apiLogin(request, SUPPLIER_EMAIL);
-    const supplier = await getCurrentSupplierProfile(request, supplierToken);
+    await apiLogin(request, SUPPLIER_EMAIL);
+    const supplier = await getCurrentSupplierProfile(request);
     const product = await getSeededProductForSupplier(request, supplier.id);
     const supplierId = supplier.id;
     const subject = `Playwright MVP request ${Date.now()}`;
@@ -141,7 +141,7 @@ test.describe("KERNO MVP automated regression", () => {
     await page.goto("/supplier/products");
     await expect(page.getByRole("heading", { name: /Produits/i })).toBeVisible();
 
-    await page.evaluate(() => localStorage.clear());
+    await page.context().clearCookies();
     await loginViaUi(page, STORE_EMAIL);
     await expect(page.getByTestId("store-dashboard")).toBeVisible();
 
@@ -162,9 +162,7 @@ test.describe("KERNO MVP automated regression", () => {
     await expect(page).toHaveURL(/\/store\/requests\/[0-9a-f-]+$/i);
     await expect(page.getByText(subject)).toBeVisible();
 
-    const { response, body } = await apiRequest(request, "/requests/received", {
-      headers: { Authorization: `Bearer ${supplierToken}` },
-    });
+    const { response, body } = await apiRequest(request, "/requests/received");
 
     expect(response.status()).toBe(200);
     const receivedRequests = Array.isArray(body?.requests) ? body.requests : [];

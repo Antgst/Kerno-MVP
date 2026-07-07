@@ -430,10 +430,12 @@
                   "}",
                   "var json = pm.response.json();",
                   "var payload = json.data || json;",
-                  "pm.test(\"Supplier token is returned\", function () {",
-                  "  pm.expect(payload.token).to.be.a(\"string\").and.not.empty;",
+                  "var setCookie = pm.response.headers.get(\"Set-Cookie\") || \"\";",
+                  "pm.test(\"Supplier session cookie is returned\", function () {",
+                  "  pm.expect(setCookie).to.include(\"kerno_auth_token=\");",
                   "});",
-                  "pm.environment.set(\"supplierToken\", payload.token);",
+                  "var match = setCookie.match(/kerno_auth_token=([^;]+)/);",
+                  "if (match) pm.environment.set(\"supplierCookie\", match[1]);",
                   "if (payload.user && payload.user.role) {",
                   "  pm.test(\"Supplier role is returned\", function () {",
                   "    pm.expect(payload.user.role).to.eql(\"SUPPLIER\");",
@@ -496,10 +498,12 @@
                   "}",
                   "var json = pm.response.json();",
                   "var payload = json.data || json;",
-                  "pm.test(\"Store token is returned\", function () {",
-                  "  pm.expect(payload.token).to.be.a(\"string\").and.not.empty;",
+                  "var setCookie = pm.response.headers.get(\"Set-Cookie\") || \"\";",
+                  "pm.test(\"Store session cookie is returned\", function () {",
+                  "  pm.expect(setCookie).to.include(\"kerno_auth_token=\");",
                   "});",
-                  "pm.environment.set(\"storeToken\", payload.token);",
+                  "var match = setCookie.match(/kerno_auth_token=([^;]+)/);",
+                  "if (match) pm.environment.set(\"storeCookie\", match[1]);",
                   "if (payload.user && payload.user.role) {",
                   "  pm.test(\"Store role is returned\", function () {",
                   "    pm.expect(payload.user.role).to.eql(\"STORE\");",
@@ -516,8 +520,8 @@
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "Bearer {{supplierToken}}"
+                "key": "Cookie",
+                "value": "kerno_auth_token={{supplierCookie}}"
               }
             ],
             "url": {
@@ -537,8 +541,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "if (!pm.environment.get(\"supplierToken\")) {",
-                  "  throw new Error(\"Missing supplierToken. Supplier login must run first.\");",
+                  "if (!pm.environment.get(\"supplierCookie\")) {",
+                  "  throw new Error(\"Missing supplierCookie. Supplier login must run first.\");",
                   "}"
                 ]
               }
@@ -579,8 +583,8 @@
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "Bearer {{storeToken}}"
+                "key": "Cookie",
+                "value": "kerno_auth_token={{storeCookie}}"
               }
             ],
             "url": {
@@ -600,8 +604,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "if (!pm.environment.get(\"storeToken\")) {",
-                  "  throw new Error(\"Missing storeToken. Store login must run first.\");",
+                  "if (!pm.environment.get(\"storeCookie\")) {",
+                  "  throw new Error(\"Missing storeCookie. Store login must run first.\");",
                   "}"
                 ]
               }
@@ -651,8 +655,8 @@
                 "value": "application/json"
               },
               {
-                "key": "Authorization",
-                "value": "Bearer {{storeToken}}"
+                "key": "Cookie",
+                "value": "kerno_auth_token={{storeCookie}}"
               }
             ],
             "url": {
@@ -680,8 +684,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "if (!pm.environment.get(\"storeToken\")) {",
-                  "  throw new Error(\"Missing storeToken. Store login must run first.\");",
+                  "if (!pm.environment.get(\"storeCookie\")) {",
+                  "  throw new Error(\"Missing storeCookie. Store login must run first.\");",
                   "}",
                   "if (!pm.environment.get(\"supplierId\")) {",
                   "  throw new Error(\"Missing supplierId. Supplier discovery must run first.\");",
@@ -740,8 +744,8 @@
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "Bearer {{storeToken}}"
+                "key": "Cookie",
+                "value": "kerno_auth_token={{storeCookie}}"
               }
             ],
             "url": {
@@ -761,8 +765,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "if (!pm.environment.get(\"storeToken\")) {",
-                  "  throw new Error(\"Missing storeToken. Store login must run first.\");",
+                  "if (!pm.environment.get(\"storeCookie\")) {",
+                  "  throw new Error(\"Missing storeCookie. Store login must run first.\");",
                   "}"
                 ]
               }
@@ -803,8 +807,8 @@
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "Bearer {{supplierToken}}"
+                "key": "Cookie",
+                "value": "kerno_auth_token={{supplierCookie}}"
               }
             ],
             "url": {
@@ -824,8 +828,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "if (!pm.environment.get(\"supplierToken\")) {",
-                  "  throw new Error(\"Missing supplierToken. Supplier login must run first.\");",
+                  "if (!pm.environment.get(\"supplierCookie\")) {",
+                  "  throw new Error(\"Missing supplierCookie. Supplier login must run first.\");",
                   "}"
                 ]
               }
@@ -866,8 +870,8 @@
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "Bearer {{storeToken}}"
+                "key": "Cookie",
+                "value": "kerno_auth_token={{storeCookie}}"
               }
             ],
             "url": {

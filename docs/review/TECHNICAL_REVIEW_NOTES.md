@@ -110,7 +110,7 @@ This limited scope was chosen to keep the project realistic, reviewable and alig
 ### Authentication
 
 * Password hashing
-* JWT authentication
+* JWT cookie authentication
 * Role-based access control
 
 ---
@@ -235,13 +235,13 @@ Prisma provides:
 
 ## 10. Authentication and Authorization
 
-KERNO uses JWT authentication.
+KERNO uses JWT cookie authentication.
 
 The flow is:
 
 1. the user registers or logs in;
 2. the backend verifies credentials;
-3. the backend returns a JWT;
+3. the backend creates a JWT and stores it in an HttpOnly authentication cookie;
 4. the frontend stores the token;
 5. protected requests include the token in the `Authorization` header;
 6. backend middleware verifies the token and role.
@@ -403,7 +403,7 @@ Reason:
 * easy to document with Swagger;
 * enough for the current data flow.
 
-### JWT authentication
+### JWT cookie authentication
 
 Reason:
 
@@ -562,6 +562,6 @@ KERNO is a B2B SaaS marketplace MVP that connects direct or local suppliers with
 
 The MVP allows suppliers to create a profile and publish products, while stores can browse the catalog and send structured contact or quote requests.
 
-Technically, the project uses a React/Vite frontend, a Node.js/Express REST API, PostgreSQL with Prisma ORM, JWT authentication, and role-based access control for supplier and store flows.
+Technically, the project uses a React/Vite frontend, a Node.js/Express REST API, PostgreSQL with Prisma ORM, JWT cookie authentication, and role-based access control for supplier and store flows.
 
 The architecture is intentionally simple and modular to stay realistic for the portfolio timeline while keeping the project maintainable and extensible.

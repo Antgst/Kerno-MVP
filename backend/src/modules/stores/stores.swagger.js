@@ -41,7 +41,7 @@ module.exports = {
       tags: ["Stores"],
       summary: "Create store profile",
       description: "Creates the current store user's profile.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       requestBody: {
         required: true,
         content: {
@@ -81,7 +81,7 @@ module.exports = {
       tags: ["Stores"],
       summary: "Get current store profile",
       description: "Returns the authenticated store user's profile.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       responses: {
         200: {
           description: "Current store profile",
@@ -106,7 +106,7 @@ module.exports = {
       tags: ["Stores"],
       summary: "Update current store profile",
       description: "Updates the authenticated store user's profile.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       requestBody: {
         required: true,
         content: {

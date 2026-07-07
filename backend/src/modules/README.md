@@ -7,7 +7,7 @@ This folder groups backend code by business domain. Each module owns its routes,
 Think of modules as departments in one company: each department owns a clear business responsibility, but all operate inside the same Express application.
 
 ## Contents
-- `auth/` handles registration, login, password verification, JWT creation, and authentication routes.
+- `auth/` handles registration, login, password verification, JWT session creation, secure cookie handling, and authentication routes.
 - `users/` exposes current-user and shared account data operations.
 - `suppliers/` manages supplier profiles and supplier discovery.
 - `stores/` manages store profiles.

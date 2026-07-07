@@ -40,7 +40,7 @@ module.exports = {
       tags: ["Categories"],
       summary: "Create a category",
       description: "Creates a category. Requires an authenticated supplier.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       requestBody: {
         required: true,
         content: {

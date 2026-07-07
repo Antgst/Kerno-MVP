@@ -43,10 +43,10 @@ const swaggerDocument = {
   ],
   components: {
     securitySchemes: {
-      bearerAuth: {
-        type: "http",
-        scheme: "bearer",
-        bearerFormat: "JWT",
+      cookieAuth: {
+        type: "apiKey",
+        in: "cookie",
+        name: "kerno_auth_token",
       },
     },
     parameters: {
@@ -127,12 +127,11 @@ const swaggerDocument = {
       },
       AuthResponse: {
         type: "object",
-        required: ["success", "message", "user", "token"],
+        required: ["success", "message", "user"],
         properties: {
           success: { type: "boolean", example: true },
           message: { type: "string", example: "User logged in successfully" },
           user: { $ref: "#/components/schemas/User" },
-          token: { type: "string", example: "jwt.token.value" },
         },
       },
       User: {

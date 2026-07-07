@@ -139,8 +139,8 @@ The production hardening smoke test validates production-oriented behavior such 
 
 The following risks remain acceptable for the current MVP stage but should be addressed before production readiness:
 
-- The authentication token is still stored on the frontend side.
-- Future improvement: move authentication storage to HTTP-only, Secure, SameSite cookies.
+- The authentication session is now stored as a backend-issued HttpOnly cookie.
+- Cookie attributes are now managed with HttpOnly, SameSite and production Secure options; CSRF strategy remains a production-readiness point.
 - No rate limiting is implemented yet.
 - 3 moderate backend `npm audit` findings remain and should be reviewed before final delivery or deployment.
 - Monitoring and alerting are still limited.
@@ -156,7 +156,7 @@ Known limitations:
 - No infrastructure, hosting, or network-layer review was included.
 - No centralized monitoring, SIEM, or alerting validation was performed.
 - Dependency findings were identified for monitoring, but not fully remediated during this stage.
-- The frontend token storage model remains an MVP risk.
+- The previous frontend token storage model has been removed; CSRF strategy for cookie-based auth remains a production-readiness point.
 
 Observed warning:
 

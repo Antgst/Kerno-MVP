@@ -12,18 +12,16 @@ import {
   getIsStoreSpace,
   getProfilePath,
 } from "./header/headerAccount";
-import { getCurrentAuthRole, isAuthenticated, logoutUser } from "../services/authService";
 import {
-  getCachedCurrentUser,
-  setCachedCurrentUser,
-} from "../services/frontendCache";
-import { getCurrentUser } from "../services/userService";
-import { getAuthToken } from "../services/tokenStorage";
-import { getUserFromToken } from "../utils/jwt";
-import { getResource } from "../utils/responseUtils";
+  getCurrentAuthRole,
+  getCurrentSessionUser,
+  isAuthenticated,
+  logoutUser,
+} from "../services/authService";
+import { getCachedCurrentUser } from "../services/frontendCache";
 
 function getInitialUserIdentity() {
-  return getCachedCurrentUser() || getUserFromToken(getAuthToken());
+  return getCachedCurrentUser();
 }
 
 function Header({ variant = "public", onMenuClick }) {
@@ -57,8 +55,8 @@ function Header({ variant = "public", onMenuClick }) {
     setIsMenuOpen((currentValue) => !currentValue);
   }
 
-  function handleLogout() {
-    logoutUser();
+  async function handleLogout() {
+    await logoutUser();
     closeAccountMenu();
     navigate("/");
   }
@@ -84,25 +82,15 @@ function Header({ variant = "public", onMenuClick }) {
       return undefined;
     }
 
-    const cachedUser = getCachedCurrentUser();
-
-    if (cachedUser) {
-      return undefined;
-    }
-
     let shouldUpdateState = true;
 
     async function loadAccountIdentity() {
-      const userResult = await getCurrentUser().catch(() => null);
+      const user = await getCurrentSessionUser().catch(() => null);
 
-      if (!shouldUpdateState) {
+      if (!shouldUpdateState || !user) {
         return;
       }
 
-      const user =
-        getResource(userResult, ["user"]) || getUserFromToken(getAuthToken());
-
-      setCachedCurrentUser(user);
       setAccountIdentity({ user });
     }
 

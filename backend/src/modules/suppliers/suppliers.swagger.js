@@ -43,7 +43,7 @@ module.exports = {
       tags: ["Suppliers"],
       summary: "Get current supplier profile",
       description: "Returns the authenticated supplier user's profile.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       responses: {
         200: {
           description: "Current supplier profile",
@@ -68,7 +68,7 @@ module.exports = {
       tags: ["Suppliers"],
       summary: "Update current supplier profile",
       description: "Updates the authenticated supplier user's profile.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       requestBody: {
         required: true,
         content: {
@@ -105,7 +105,7 @@ module.exports = {
       tags: ["Suppliers"],
       summary: "Create supplier profile",
       description: "Creates the current supplier user's profile.",
-      security: [{ bearerAuth: [] }],
+      security: [{ cookieAuth: [] }],
       requestBody: {
         required: true,
         content: {

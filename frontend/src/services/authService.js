@@ -1,51 +1,25 @@
 import apiClient from "./apiClient";
-import { clearSessionCache, setCachedCurrentUser } from "./frontendCache";
 import {
-  clearAuthToken,
-  getAuthRole,
-  getAuthToken,
-  setAuthRole,
-  setAuthToken,
-} from "./tokenStorage";
-import { getRoleFromToken, getUserFromToken } from "../utils/jwt";
+  clearSessionCache,
+  getCachedCurrentUser,
+  setCachedCurrentUser,
+} from "./frontendCache";
+import { clearAuthToken } from "./tokenStorage";
+import { getResource } from "../utils/responseUtils";
 
-function getTokenFromResponse(response) {
-  return (
-    response?.token ||
-    response?.accessToken ||
-    response?.jwt ||
-    response?.data?.token ||
-    response?.data?.accessToken ||
-    response?.data?.jwt ||
-    null
-  );
+function getUserFromResponse(response) {
+  return getResource(response, ["user"]);
 }
 
-function getRoleFromResponse(response, token) {
-  return (
-    response?.user?.role ||
-    response?.role ||
-    response?.account?.role ||
-    response?.data?.user?.role ||
-    response?.data?.role ||
-    response?.data?.account?.role ||
-    getRoleFromToken(token)
-  );
+function getRoleFromUser(user) {
+  return user?.role || null;
 }
 
 function persistAuthResponse(response) {
-  const token = getTokenFromResponse(response);
-  const role = getRoleFromResponse(response, token);
-  const user = response?.user || response?.data?.user || getUserFromToken(token);
+  const user = getUserFromResponse(response);
+  const role = getRoleFromUser(user);
 
-  if (token) {
-    setAuthToken(token);
-  }
-
-  if (role) {
-    setAuthRole(role);
-  }
-
+  clearAuthToken();
   setCachedCurrentUser(user);
 
   return {
@@ -67,15 +41,43 @@ export async function loginUser(payload) {
   return persistAuthResponse(response);
 }
 
-export function logoutUser() {
+export async function logoutUser() {
+  try {
+    await apiClient.post("/auth/logout");
+  } catch (error) {
+    void error;
+  } finally {
+    clearAuthToken();
+    clearSessionCache();
+  }
+}
+
+export async function getCurrentSessionUser({ forceRefresh = false } = {}) {
   clearAuthToken();
-  clearSessionCache();
+
+  const cachedUser = getCachedCurrentUser();
+
+  if (cachedUser && !forceRefresh) {
+    return cachedUser;
+  }
+
+  try {
+    const response = await apiClient.get("/users/me");
+    const user = getUserFromResponse(response);
+
+    setCachedCurrentUser(user);
+
+    return user;
+  } catch (error) {
+    clearSessionCache();
+    throw error;
+  }
 }
 
 export function getCurrentAuthRole() {
-  return getAuthRole();
+  return getRoleFromUser(getCachedCurrentUser());
 }
 
 export function isAuthenticated() {
-  return Boolean(getAuthToken());
+  return Boolean(getCachedCurrentUser());
 }

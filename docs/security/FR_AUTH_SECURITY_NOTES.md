@@ -14,7 +14,7 @@ L'objectif actuel du périmètre d'authentification du MVP est de mettre en plac
 * la connexion des utilisateurs ;
 * le hachage des mots de passe avant stockage ;
 * des réponses utilisateur sécurisées ;
-* une réponse d'authentification basée sur JWT ;
+* une session JWT stockée dans un cookie d'authentification HttpOnly ;
 * une validation de base ;
 * une gestion de base des erreurs d'authentification.
 
