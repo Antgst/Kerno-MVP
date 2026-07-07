@@ -24,9 +24,9 @@
       </a>
 
       <nav class="nav" aria-label="Primary">
-        <a class="nav__link" href="#features"><span class="nav__idx">01</span> Features</a>
-        <a class="nav__link" href="#about"><span class="nav__idx">02</span> About</a>
-        <a class="nav__link" href="#deliverables"><span class="nav__idx">03</span> Deliverables</a>
+        <a class="nav__link" href="#features"><span class="nav__idx"></span> Features</a>
+        <a class="nav__link" href="#about"><span class="nav__idx"></span> About</a>
+        <a class="nav__link" href="#deliverables"><span class="nav__idx"></span> Deliverables</a>
       </nav>
 
       <a class="btn btn--primary header__cta" href="https://github.com/Antgst/Kerno-MVP" data-app-link target="_blank" rel="noopener">
@@ -39,9 +39,9 @@
       </button>
     </div>
     <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
-      <a href="#features">01 — Features</a>
-      <a href="#about">02 — About</a>
-      <a href="#deliverables">03 — Deliverables</a>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a href="#deliverables">Deliverables</a>
       <a class="mobile-nav__cta" href="https://github.com/Antgst/Kerno-MVP" data-app-link target="_blank" rel="noopener">Open the app ↗</a>
     </nav>
   </header>
@@ -51,15 +51,20 @@
 
     <!-- ============ HERO / INTRO ============ -->
     <section class="hero" aria-labelledby="hero-title">
+      <img class="hero__bg" src="assets/hero-cover.webp"
+           alt="A supplier and a store buyer greet each other across a market stall of fresh produce."
+           width="1672" height="941" loading="eager" fetchpriority="high" />
+      <div class="hero__scrim" aria-hidden="true"></div>
+
       <div class="grid hero__grid">
         <div class="hero__copy reveal">
           <p class="kicker"><span class="kicker__dot"></span>B2B SaaS marketplace · Suppliers &amp; retail stores</p>
           <h1 class="hero__title" id="hero-title">
-            Find the right partners.<br />Make your offers <span class="ink-accent">visible</span>.
+            <span class="ink-accent">Kerno</span> <br/> connects local suppliers with retail stores.
           </h1>
           <p class="hero__lede">
-            Kerno connects direct and local suppliers with retail stores — a clear, professional
-            space to discover suppliers, browse products, and open the first business conversation.
+            A clear, professional space to discover suppliers,
+            browse products, and open the first business conversation.
           </p>
 
           <div class="hero__actions">
@@ -85,16 +90,6 @@
             </div>
           </dl>
         </div>
-
-        <figure class="hero__figure reveal" data-reveal-delay="120">
-          <img class="hero__image" src="assets/cover.webp"
-               alt="A local grocery store: a shopkeeper reviews products while a supplier presents fresh produce, over a soft network graphic."
-               width="992" height="1586" loading="eager" fetchpriority="high" />
-          <figcaption class="hero__figcap">
-            <span class="hero__figcap-label">Kerno</span>
-            <span class="hero__figcap-meta">Where local supply meets retail demand</span>
-          </figcaption>
-        </figure>
       </div>
 
       <div class="grid hero__marquee-wrap">
@@ -105,85 +100,22 @@
       </div>
     </section>
 
+    <!-- ============ PARALLAX BACKDROP (Features / About / Deliverables) ============ -->
+    <div class="page-parallax">
+      <div class="page-parallax__bg" aria-hidden="true"></div>
+
     <!-- ============ FEATURES ============ -->
     <section class="section features" id="features" aria-labelledby="features-title">
       <div class="grid section__head reveal">
-        <p class="section__index">01</p>
+        <p class="section__index"></p>
         <div class="section__headings">
-          <h2 class="section__title" id="features-title">Three moves, one clear path</h2>
+          <h2 class="section__title" id="features-title">What Kerno makes possible</h2>
           <p class="section__intro">
-            The MVP stays deliberately narrow. It covers the first critical step of B2B sourcing —
-            discovery, visibility, and a structured first contact — and does each one well.
+            Kerno focuses on the essential steps of a B2B marketplace: helping users build a
+            trustworthy profile, browse supplier products, and start clear business conversations
+            through structured requests.
           </p>
         </div>
-      </div>
-
-      <div class="grid features__list">
-        <!-- Feature 01 -->
-        <article class="feature reveal">
-          <div class="feature__media">
-            <img src="assets/feature-discovery.webp"
-                 alt="A stone farmhouse beside rows of lavender at golden hour, with a basket of fresh cuttings."
-                 width="1448" height="1086" loading="lazy" />
-            <span class="feature__badge">01</span>
-          </div>
-          <div class="feature__body">
-            <h3 class="feature__name">Supplier discovery</h3>
-            <p class="feature__desc">
-              Stores search a structured catalog of direct, local, regional and specialized
-              suppliers — no scattered contacts, no guesswork. The right partner, found faster.
-            </p>
-            <ul class="feature__meta">
-              <li>Supplier catalog</li>
-              <li>Detail pages</li>
-              <li>Search foundations</li>
-            </ul>
-          </div>
-        </article>
-
-        <!-- Feature 02 -->
-        <article class="feature reveal" data-reveal-delay="80">
-          <div class="feature__media">
-            <img src="assets/feature-products.webp"
-                 alt="Three jars of golden artisan honey on a rustic table, surrounded by wildflowers."
-                 width="1672" height="941" loading="lazy" />
-            <span class="feature__badge">02</span>
-          </div>
-          <div class="feature__body">
-            <h3 class="feature__name">Product visibility</h3>
-            <p class="feature__desc">
-              Suppliers publish structured product offers with clear, reusable information — turning
-              scattered PDFs and word-of-mouth into a professional profile retail buyers can trust.
-            </p>
-            <ul class="feature__meta">
-              <li>Product catalog</li>
-              <li>Company profiles</li>
-              <li>Categories</li>
-            </ul>
-          </div>
-        </article>
-
-        <!-- Feature 03 -->
-        <article class="feature reveal" data-reveal-delay="160">
-          <div class="feature__media">
-            <img src="assets/feature-requests.webp"
-                 alt="An artisan brewery interior with barrels and crafted bottles, warmly lit."
-                 width="1448" height="1086" loading="lazy" />
-            <span class="feature__badge">03</span>
-          </div>
-          <div class="feature__body">
-            <h3 class="feature__name">Structured requests</h3>
-            <p class="feature__desc">
-              Stores send a clear contact or quote request, optionally tied to a product. Suppliers
-              receive, review and track every request — the informal first email, made reliable.
-            </p>
-            <ul class="feature__meta">
-              <li>Quote requests</li>
-              <li>Status tracking</li>
-              <li>Role-based access</li>
-            </ul>
-          </div>
-        </article>
       </div>
 
       <!-- Flow strip -->
@@ -198,13 +130,94 @@
         <span class="flow__arrow" aria-hidden="true">→</span>
         <span class="flow__step flow__step--accent">Send request</span>
       </div>
+
+      <div class="grid feature-showcase reveal" data-reveal-delay="80">
+        <div class="feature-display">
+          <!-- Feature 01 -->
+          <div class="feature-panel is-active" data-feature="profile">
+            <div class="feature-panel__media">
+              <img src="assets/feature-discovery.webp"
+                   alt="A stone farmhouse beside rows of lavender at golden hour, with a basket of fresh cuttings."
+                   width="1448" height="1086" loading="lazy" />
+            </div>
+            <div class="feature-panel__body">
+              <h3 class="feature-panel__title">Guided profile completion</h3>
+              <p class="feature-panel__desc">
+                Stores and suppliers are guided toward a complete professional profile. A circular
+                completion gauge gives instant feedback and helps users understand how ready their
+                profile is before they start using the marketplace.
+              </p>
+              <ul class="feature-panel__tags">
+                <li>Profile setup</li>
+                <li>Completion gauge</li>
+                <li>Trust signals</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Feature 02 -->
+          <div class="feature-panel" data-feature="catalog">
+            <div class="feature-panel__media">
+              <img src="assets/feature-products.webp"
+                   alt="Three jars of golden artisan honey on a rustic table, surrounded by wildflowers."
+                   width="1672" height="941" loading="lazy" />
+            </div>
+            <div class="feature-panel__body">
+              <h3 class="feature-panel__title">Supplier product catalog</h3>
+              <p class="feature-panel__desc">
+                Store users can browse products published by suppliers, explore details, categories
+                and pricing information, then identify the offers that match their sourcing needs.
+              </p>
+              <ul class="feature-panel__tags">
+                <li>Product cards</li>
+                <li>Categories</li>
+                <li>Pricing units</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Feature 03 -->
+          <div class="feature-panel" data-feature="requests">
+            <div class="feature-panel__media">
+              <img src="assets/feature-requests.webp"
+                   alt="An artisan brewery interior with barrels and crafted bottles, warmly lit."
+                   width="1448" height="1086" loading="lazy" />
+            </div>
+            <div class="feature-panel__body">
+              <h3 class="feature-panel__title">Structured requests</h3>
+              <p class="feature-panel__desc">
+                Stores can send structured contact or quote requests to suppliers. Each request keeps
+                the conversation tied to a product or business need, making the first contact clearer
+                and easier to track.
+              </p>
+              <ul class="feature-panel__tags">
+                <li>Contact request</li>
+                <li>Quote flow</li>
+                <li>Status tracking</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-tabs" role="group" aria-label="Feature showcase">
+          <button class="feature-tab is-active" type="button" data-feature="profile" aria-pressed="true">
+            Guided profile completion
+          </button>
+          <button class="feature-tab" type="button" data-feature="catalog" aria-pressed="false">
+            Supplier product catalog
+          </button>
+          <button class="feature-tab" type="button" data-feature="requests" aria-pressed="false">
+            Structured requests
+          </button>
+        </div>
+      </div>
     </section>
 
     <!-- ============ ABOUT ============ -->
     <section class="section about" id="about" aria-labelledby="about-title">
       <div class="grid about__grid">
         <div class="about__head reveal">
-          <p class="section__index">02</p>
+          <p class="section__index"></p>
           <h2 class="section__title" id="about-title">Why we built Kerno</h2>
         </div>
 
@@ -244,7 +257,7 @@
           <ul class="about__team" aria-label="Team">
             <li class="member">
               <span class="member__name">Antoine Gousset</span>
-              <span class="member__role">Project lead · Product · Full-stack</span>
+              <span class="member__role">Original concept · MVP co-builder</span>
               <span class="member__links">
                 <a href="https://github.com/Antgst" target="_blank" rel="noopener">GitHub</a>
                 <a href="https://www.linkedin.com/in/antoinegousset/" target="_blank" rel="noopener">LinkedIn</a>
@@ -252,7 +265,7 @@
             </li>
             <li class="member">
               <span class="member__name">Yonas Houriez</span>
-              <span class="member__role">Backend lead</span>
+              <span class="member__role">MVP co-builder · Full-stack contributor</span>
               <span class="member__links">
                 <a href="https://github.com/Ausaryu" target="_blank" rel="noopener">GitHub</a>
                 <a href="https://www.linkedin.com/in/yonas-houriez/" target="_blank" rel="noopener">LinkedIn</a>
@@ -260,7 +273,7 @@
             </li>
             <li class="member">
               <span class="member__name">Gwendal Boisard</span>
-              <span class="member__role">Frontend lead</span>
+              <span class="member__role">MVP co-builder · Full-stack contributor</span>
               <span class="member__links">
                 <a href="https://github.com/Gwendal-B" target="_blank" rel="noopener">GitHub</a>
                 <a href="https://www.linkedin.com/in/gwendal-boisard/" target="_blank" rel="noopener">LinkedIn</a>
@@ -274,7 +287,7 @@
     <!-- ============ DELIVERABLES ============ -->
     <section class="section deliverables" id="deliverables" aria-labelledby="deliverables-title">
       <div class="grid section__head reveal">
-        <p class="section__index">03</p>
+        <p class="section__index"></p>
         <div class="section__headings">
           <h2 class="section__title" id="deliverables-title">Deliverables &amp; links</h2>
           <p class="section__intro">
@@ -328,6 +341,24 @@
         </a>
       </div>
 
+      <div class="grid tech-stack reveal">
+        <div class="tech-stack__head">
+          <h3 class="tech-stack__title">Built with a modern full-stack architecture</h3>
+        </div>
+        <ul class="tech-stack__list">
+          <li class="tech-stack__item"><img src="assets/stack-icons/react.svg" alt="" aria-hidden="true" width="20" height="20" /><span>React</span></li>
+          <li class="tech-stack__item"><img src="assets/stack-icons/vite.svg" alt="" aria-hidden="true" width="20" height="20" /><span>Vite</span></li>
+          <li class="tech-stack__item"><img src="assets/stack-icons/nodejs.svg" alt="" aria-hidden="true" width="20" height="20" /><span>Node.js</span></li>
+          <li class="tech-stack__item"><img src="assets/stack-icons/express.svg" alt="" aria-hidden="true" width="20" height="20" /><span>Express</span></li>
+          <li class="tech-stack__item"><img src="assets/stack-icons/prisma.svg" alt="" aria-hidden="true" width="20" height="20" /><span>Prisma</span></li>
+          <li class="tech-stack__item"><img src="assets/stack-icons/postgresql.svg" alt="" aria-hidden="true" width="20" height="20" /><span>PostgreSQL</span></li>
+          <li class="tech-stack__item"><img src="assets/stack-icons/jwt.svg" alt="" aria-hidden="true" width="20" height="20" /><span>JWT</span></li>
+          <li class="tech-stack__item"><img src="assets/stack-icons/swagger.svg" alt="" aria-hidden="true" width="20" height="20" /><span>Swagger / OpenAPI</span></li>
+          <li class="tech-stack__item"><img src="assets/stack-icons/docker.svg" alt="" aria-hidden="true" width="20" height="20" /><span>Docker</span></li>
+          <li class="tech-stack__item"><img src="assets/stack-icons/postman.svg" alt="" aria-hidden="true" width="20" height="20" /><span>Postman</span></li>
+        </ul>
+      </div>
+
       <div class="grid final-cta reveal">
         <div class="final-cta__copy">
           <h2 class="final-cta__title">Ready to see Kerno in action?</h2>
@@ -339,6 +370,7 @@
         </a>
       </div>
     </section>
+    </div>
   </main>
 
   <!-- ============ FOOTER ============ -->
@@ -376,7 +408,6 @@
 
     <div class="grid footer__base">
       <p>© 2026 Kerno — Portfolio Project, Holberton School. All rights reserved.</p>
-      <p class="footer__meta">React · Express · Prisma · PostgreSQL</p>
     </div>
   </footer>
 

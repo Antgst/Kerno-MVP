@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <path d="M21.5 3.4 12.6 21c-.24.47-.9.47-1.14 0L3 5.9c-.22-.44.14-.94.62-.87l8.3 1.24a.6.6 0 0 0 .68-.68l-.66-4.2c-.08-.5.44-.87.87-.63l8.4 4.68c.36.2.47.66.29.96Z" fill="url(#viteA)"/>
+  <path d="M16.1 2.1 9.2 3.9a.4.4 0 0 0-.28.5l1.7 6.6a.4.4 0 0 0 .5.28l2.1-.56a.4.4 0 0 1 .48.5l-1.28 4.9a.4.4 0 0 0 .66.4l5.9-6.5a.4.4 0 0 0-.28-.66l-2.36-.1a.4.4 0 0 1-.36-.55l1.7-4.2a.4.4 0 0 0-.62-.42Z" fill="url(#viteB)"/>
+  <defs>
+    <linearGradient id="viteA" x1="3" y1="3" x2="19" y2="21" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#41D1FF"/>
+      <stop offset="1" stop-color="#BD34FE"/>
+    </linearGradient>
+    <linearGradient id="viteB" x1="9" y1="2" x2="15" y2="16" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFEA83"/>
+      <stop offset="1" stop-color="#FFA800"/>
+    </linearGradient>
+  </defs>
+</svg>
