@@ -4,10 +4,11 @@
 
 This report documents the security audit work performed on the KERNO MVP backend and supporting security tooling.
 
-- Audited branch: `experimental-pentesting-antoine`
-- Stage: local audit and validation
-- Pull request status: no pull request has been created at this stage
-- Merge status: no merge has been created at this stage
+- Original audited branch: `experimental-pentesting-antoine`
+- Follow-up branch: `owasp-01`
+- Stage: local audit, validation, and OWASP A01 regression coverage
+- Pull request status: follow-up branch ready for PR review
+- Merge status: follow-up changes not merged yet
 
 The objective of this audit was to improve the MVP security posture, validate critical API protections, and provide a clear technical review artifact suitable for Holberton, portfolio presentation, and engineering review.
 
@@ -124,7 +125,7 @@ The production hardening smoke test validates production-oriented behavior such 
 
 | OWASP Category | Status | Notes |
 | --- | --- | --- |
-| A01 Broken Access Control | Improved and tested | Request route role checks and ownership enforcement were hardened. |
+| A01 Broken Access Control | Improved and tested | Request route role checks, request ownership enforcement, and supplier/store profile ownership regression coverage are documented and tested. |
 | A02 Security Misconfiguration | Improved and tested | CORS, production Swagger/OpenAPI exposure, JSON limits, and production error behavior were hardened. |
 | A03 Software Supply Chain Failures | To monitor | 3 moderate backend findings remain linked to Prisma dependencies. |
 | A04 Cryptographic Failures | Reviewed | Secrets are environment-based, and `.env.example` was cleaned. |
@@ -172,3 +173,34 @@ The KERNO MVP security posture has been improved on branch `experimental-pentest
 The most important security improvements are now covered by automated smoke tests, including access control, ownership checks, production hardening behavior, invalid JSON handling, and controlled error responses.
 
 At this stage, no critical or high-severity issue remains in the local static audit results, and all documented validation commands completed successfully. The remaining risks are known MVP limitations and should be tracked before final delivery or deployment.
+
+## 12. OWASP A01 Profile Ownership Regression Update
+
+A follow-up regression pass was added on branch `owasp-01` to complete the remaining Broken Access Control checklist item for profile ownership.
+
+Added coverage:
+
+- supplier `/profile/me` returns only the authenticated supplier profile;
+- store `/profile/me` returns only the authenticated store profile;
+- URL ID tampering cannot update another supplier or store profile;
+- updating the current profile does not modify another user's profile.
+
+Test file:
+
+```text
+backend/tests/test_kerno_api_comprehensive.py
+```
+
+Validation command:
+
+```bash
+python3 -m pytest backend/tests/test_kerno_api_comprehensive.py -k "owasp_a01" -q
+```
+
+Validated result:
+
+```text
+6 passed, 127 deselected
+```
+
+This is a test-only follow-up. No backend route, service, schema, or API behavior was changed.

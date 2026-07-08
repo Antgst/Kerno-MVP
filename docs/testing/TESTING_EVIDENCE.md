@@ -69,6 +69,29 @@ npm test
 
 Result: PASS. The command ran `node --check src/server.js && node --check src/app.js && node --check src/routes/index.js`.
 
+## OWASP A01 Profile Ownership Regression — 2026-07-08
+
+A targeted pytest regression pass was added on branch `owasp-01` for issue #205.
+
+Purpose:
+
+- validate supplier and store profile ownership;
+- verify `/profile/me` returns only the authenticated user's own profile;
+- verify URL ID tampering cannot update another user's profile;
+- confirm the change is test-only and does not alter backend behavior.
+
+Command:
+
+```bash
+python3 -m pytest backend/tests/test_kerno_api_comprehensive.py -k "owasp_a01" -q
+```
+
+Result:
+
+```text
+6 passed, 127 deselected
+```
+
 ## Automated Frontend Lint And Build
 
 Lint command:
