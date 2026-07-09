@@ -1,4 +1,4 @@
-// backend/prisma/seed.js
+// backend/prisma/seed-massive.js
 
 require("dotenv").config();
 

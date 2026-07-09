@@ -207,7 +207,7 @@ for (const file of files) {
 
         if (
           rule.id === "RAW_SQL" &&
-          relativeFile === "backend/prisma/seed.js"
+          ["backend/prisma/seed-demo.js", "backend/prisma/seed-massive.js"].includes(relativeFile)
         ) {
           continue;
         }

@@ -4,15 +4,6 @@ import honeyImage from "../assets/supplier-dashboard/supplier-product-honey.webp
 import jamImage from "../assets/supplier-dashboard/supplier-product-jam.webp";
 import dairyImage from "../assets/store-dashboard/store-supplier-cheese.webp";
 
-const KNOWN_PRODUCT_IMAGE_SOURCES = new Set([
-  "/assets/products/confiture-fraise-rhubarbe.webp",
-  "/assets/products/galettes-bretonnes.webp",
-  "/assets/products/jus-de-pomme-artisanal.webp",
-  "/assets/products/miel-de-fleurs.webp",
-  "/assets/products/rillettes-de-legumes.webp",
-  "/assets/products/tomme-fermiere.webp",
-]);
-
 const IMAGE_RULES = [
   {
     keywords: ["savon", "baume", "calendula", "cosmétique", "soin"],
@@ -92,8 +83,4 @@ export function getProductFallback(product) {
 
 export function getProductImageSource(product) {
   return String(product?.imageUrl || "").trim();
-}
-
-export function hasKnownProductImageSource(product) {
-  return KNOWN_PRODUCT_IMAGE_SOURCES.has(getProductImageSource(product));
 }

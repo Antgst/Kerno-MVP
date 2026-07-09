@@ -34,7 +34,7 @@ The full regression scope covers:
 * Python with `pytest` and `requests` available for backend API tests.
 * PostgreSQL running locally for Prisma.
 * Backend `.env` configured with `PORT=5001`.
-* Seeded local database from `node prisma/seed.js`.
+* Seeded local database from `node prisma/seed-massive.js` (or `node prisma/seed-demo.js` for a lighter dataset).
 * Backend API reachable at `http://localhost:5001/api/health`.
 * Frontend API base URL set to `http://localhost:5001/api`.
 * Playwright browsers installed locally if `npx playwright test` reports a missing browser executable.
