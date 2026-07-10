@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const swaggerUi = require("swagger-ui-express");
+const path = require("path");
 const swaggerDocument = require("./config/swagger");
 
 const apiRoutes = require("./routes");
@@ -62,6 +63,15 @@ if (apiDocsEnabled) {
 }
 
 app.use("/api", apiRoutes);
+
+if (isProduction) {
+  const frontendBuildPath = path.resolve(__dirname, "../../frontend-dist");
+
+  app.use(express.static(frontendBuildPath));
+  app.get(/^(?!\/api(?:\/|$)).*/, (req, res) => {
+    res.sendFile(path.join(frontendBuildPath, "index.html"));
+  });
+}
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
