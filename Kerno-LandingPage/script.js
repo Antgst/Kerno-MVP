@@ -118,18 +118,56 @@
      resizing the card, since all panels share the same grid cell. */
   var featureTabs = Array.prototype.slice.call(document.querySelectorAll(".feature-tab"));
   var featurePanels = Array.prototype.slice.call(document.querySelectorAll(".feature-panel"));
+  // Matches .feature-panel's opacity transition (.35s) so the outgoing
+  // panel's canvas isn't rewound to frame 0 until it has fully faded out.
+  var FEATURE_PANEL_FADE_MS = 350;
+  // Keyed by featureId so rapid tab-switching can't let one pending reset
+  // cancel another's, or fire late and stomp on an animation just started.
+  var pendingResetTimers = {};
+
+  function cancelPendingReset(featureId) {
+    if (pendingResetTimers[featureId]) {
+      clearTimeout(pendingResetTimers[featureId]);
+      delete pendingResetTimers[featureId];
+    }
+  }
+
   if (featureTabs.length && featurePanels.length) {
     featureTabs.forEach(function (tab) {
       tab.addEventListener("click", function () {
+        if (tab.classList.contains("is-active")) return;
+
         var target = tab.getAttribute("data-feature");
+        var previousFeature = null;
+
         featureTabs.forEach(function (t) {
           var active = t === tab;
           t.classList.toggle("is-active", active);
           t.setAttribute("aria-pressed", String(active));
         });
         featurePanels.forEach(function (panel) {
-          panel.classList.toggle("is-active", panel.getAttribute("data-feature") === target);
+          var isTarget = panel.getAttribute("data-feature") === target;
+          if (panel.classList.contains("is-active") && !isTarget) {
+            previousFeature = panel.getAttribute("data-feature");
+          }
+          panel.classList.toggle("is-active", isTarget);
         });
+
+        // The demo canvas only ever plays its intro animation once per
+        // reveal: replay it for the panel that just became visible, and
+        // rewind the one that just got hidden back to its first frame —
+        // once its fade-out has actually finished, not before.
+        if (window.KernoFeatureDemos) {
+          cancelPendingReset(target);
+          if (previousFeature) {
+            cancelPendingReset(previousFeature);
+            pendingResetTimers[previousFeature] = setTimeout(function () {
+              delete pendingResetTimers[previousFeature];
+              window.KernoFeatureDemos.reset(previousFeature);
+            }, FEATURE_PANEL_FADE_MS);
+          }
+          window.KernoFeatureDemos.play(target);
+        }
       });
     });
   }

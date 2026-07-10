@@ -136,9 +136,12 @@
           <!-- Feature 01 -->
           <div class="feature-panel is-active" data-feature="profile">
             <div class="feature-panel__media">
-              <img src="assets/feature-discovery.webp"
-                   alt="A stone farmhouse beside rows of lavender at golden hour, with a basket of fresh cuttings."
-                   width="1448" height="1086" loading="lazy" />
+              <canvas class="feature-panel__demo"
+                      data-kerno-feature="profile"
+                      role="img"
+                      aria-label="Animated supplier profile completion card with a circular progress indicator."
+                      width="503"
+                      height="494"></canvas>
             </div>
             <div class="feature-panel__body">
               <h3 class="feature-panel__title">Guided profile completion</h3>
@@ -158,9 +161,12 @@
           <!-- Feature 02 -->
           <div class="feature-panel" data-feature="catalog">
             <div class="feature-panel__media">
-              <img src="assets/feature-products.webp"
-                   alt="Three jars of golden artisan honey on a rustic table, surrounded by wildflowers."
-                   width="1672" height="941" loading="lazy" />
+              <canvas class="feature-panel__demo"
+                      data-kerno-feature="catalog"
+                      role="img"
+                      aria-label="Animated product catalog card with supplier product tiles."
+                      width="503"
+                      height="494"></canvas>
             </div>
             <div class="feature-panel__body">
               <h3 class="feature-panel__title">Supplier product catalog</h3>
@@ -179,9 +185,12 @@
           <!-- Feature 03 -->
           <div class="feature-panel" data-feature="requests">
             <div class="feature-panel__media">
-              <img src="assets/feature-requests.webp"
-                   alt="An artisan brewery interior with barrels and crafted bottles, warmly lit."
-                   width="1448" height="1086" loading="lazy" />
+              <canvas class="feature-panel__demo"
+                      data-kerno-feature="requests"
+                      role="img"
+                      aria-label="Animated requests card showing structured supplier requests and statuses."
+                      width="503"
+                      height="494"></canvas>
             </div>
             <div class="feature-panel__body">
               <h3 class="feature-panel__title">Structured requests</h3>
@@ -297,6 +306,13 @@
         </div>
       </div>
 
+      <div class="grid del-video reveal" data-placeholder="YouTube demo video">
+        <div class="del-video__frame">
+          <span class="del-video__play" aria-hidden="true">▶</span>
+          <span class="del-video__label">Demo video — add embed link</span>
+        </div>
+      </div>
+
       <div class="grid deliverables__grid">
         <a class="del-card del-card--primary reveal" href="#" data-placeholder="Landing Page / live app URL" target="_blank" rel="noopener">
           <span class="del-card__idx">A</span>
@@ -305,36 +321,15 @@
           <span class="del-card__arrow" aria-hidden="true">↗</span>
         </a>
 
-        <a class="del-card reveal" data-reveal-delay="60" href="#" data-placeholder="YouTube demo video URL" target="_blank" rel="noopener">
+        <a class="del-card reveal" data-reveal-delay="60" href="https://github.com/Antgst/Kerno-MVP" target="_blank" rel="noopener">
           <span class="del-card__idx">B</span>
-          <span class="del-card__label">YouTube demo</span>
-          <span class="del-card__value">Add video link</span>
-          <span class="del-card__arrow" aria-hidden="true">↗</span>
-        </a>
-
-        <a class="del-card reveal" data-reveal-delay="120" href="https://github.com/Antgst/Kerno-MVP" target="_blank" rel="noopener">
-          <span class="del-card__idx">C</span>
           <span class="del-card__label">GitHub repository</span>
           <span class="del-card__value">Antgst/Kerno-MVP</span>
           <span class="del-card__arrow" aria-hidden="true">↗</span>
         </a>
 
-        <a class="del-card reveal" data-reveal-delay="180" href="https://github.com/users/Antgst/projects/1/views/1" target="_blank" rel="noopener">
-          <span class="del-card__idx">D</span>
-          <span class="del-card__label">Project board</span>
-          <span class="del-card__value">GitHub Projects</span>
-          <span class="del-card__arrow" aria-hidden="true">↗</span>
-        </a>
-
-        <a class="del-card reveal" data-reveal-delay="240" href="https://canva.link/qqyguvw0uxid4ys" target="_blank" rel="noopener">
-          <span class="del-card__idx">E</span>
-          <span class="del-card__label">Stage 3 mockups</span>
-          <span class="del-card__value">Canva</span>
-          <span class="del-card__arrow" aria-hidden="true">↗</span>
-        </a>
-
-        <a class="del-card reveal" data-reveal-delay="300" href="https://canva.link/85zocsxjseziifk" target="_blank" rel="noopener">
-          <span class="del-card__idx">F</span>
+        <a class="del-card reveal" data-reveal-delay="120" href="https://canva.link/85zocsxjseziifk" target="_blank" rel="noopener">
+          <span class="del-card__idx">C</span>
           <span class="del-card__label">Stage 3 report</span>
           <span class="del-card__value">Full write-up</span>
           <span class="del-card__arrow" aria-hidden="true">↗</span>
@@ -411,6 +406,7 @@
     </div>
   </footer>
 
+  <script src="features/feature-demos.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
