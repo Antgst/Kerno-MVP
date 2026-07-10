@@ -154,7 +154,7 @@ function formatLocation(location) {
 
 function phone(location, index) {
   const number = String(10000000 + index * 7919).slice(0, 8);
-  return `${location.phonePrefix} ${number.slice(0, 2)} ${number.slice(2, 4)} ${number.slice(4, 6)} ${number.slice(6, 8)}`;
+  return `+33 ${location.phonePrefix.slice(1)} ${number.slice(0, 2)} ${number.slice(2, 4)} ${number.slice(4, 6)} ${number.slice(6, 8)}`;
 }
 
 function companyName(index, location) {
@@ -362,7 +362,7 @@ async function createFumoEasterEggSupplier(passwordHash) {
       location: "Gensokyo",
       businessType: "Boutique collector",
       contactEmail: email,
-      phone: "09 09 09 09 09",
+      phone: "+33 9 09 09 09 09",
       website: "https://fumo.systems",
     },
   });

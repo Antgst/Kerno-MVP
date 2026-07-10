@@ -71,7 +71,7 @@ const SUPPLIERS = [
     businessType: "Brasserie artisanale",
     description: "Brasserie familiale installée sur la côte atlantique, spécialisée dans les boissons artisanales élaborées à partir de fruits locaux.",
     location: "Nantes, Pays de la Loire, France",
-    phone: "02 40 11 22 33",
+    phone: "+33 2 40 11 22 33",
     website: "https://brasserie-du-littoral.example",
     category: "Boissons artisanales",
     products: [
@@ -88,7 +88,7 @@ const SUPPLIERS = [
     businessType: "Apiculteur",
     description: "Exploitation apicole familiale proposant des miels de fleurs et des spécialités sucrées à base de production locale.",
     location: "Angers, Pays de la Loire, France",
-    phone: "02 41 22 33 44",
+    phone: "+33 2 41 22 33 44",
     website: "https://miellerie-du-verger.example",
     category: "Épicerie sucrée",
     products: [
@@ -105,7 +105,7 @@ const SUPPLIERS = [
     businessType: "Fromagerie artisanale",
     description: "Fromagerie de montagne travaillant le lait cru de son propre troupeau pour des produits frais de caractère.",
     location: "Grenoble, Auvergne-Rhône-Alpes, France",
-    phone: "04 76 33 44 55",
+    phone: "+33 4 76 33 44 55",
     website: "https://fromagerie-des-alpages.example",
     category: "Produits frais",
     products: [
@@ -122,7 +122,7 @@ const SUPPLIERS = [
     businessType: "Petite conserverie",
     description: "Conserverie artisanale valorisant les produits de la pêche côtière bretonne, en petites séries.",
     location: "Vannes, Bretagne, France",
-    phone: "02 97 44 55 66",
+    phone: "+33 2 97 44 55 66",
     website: "https://conserverie-de-bretagne.example",
     category: "Produits de la mer",
     products: [
@@ -139,7 +139,7 @@ const SUPPLIERS = [
     businessType: "Atelier bio",
     description: "Atelier de cosmétique naturelle formulant des soins solides à partir d'ingrédients biologiques.",
     location: "Lyon, Auvergne-Rhône-Alpes, France",
-    phone: "04 78 55 66 77",
+    phone: "+33 4 78 55 66 77",
     website: "https://atelier-nature-et-sens.example",
     category: "Cosmétiques naturels",
     products: [
@@ -156,7 +156,7 @@ const SUPPLIERS = [
     businessType: "Boulangerie artisanale",
     description: "Boulangerie au levain naturel, farines locales et fabrication quotidienne à petite échelle.",
     location: "Rennes, Bretagne, France",
-    phone: "02 99 66 77 88",
+    phone: "+33 2 99 66 77 88",
     website: "https://boulangerie-des-artisans.example",
     category: "Boulangerie",
     products: [
@@ -175,7 +175,7 @@ const STORES = [
     storeName: "L'Épicerie du Marais",
     storeType: "Épicerie fine",
     location: "Paris, Île-de-France, France",
-    phone: "01 42 11 22 33",
+    phone: "+33 1 42 11 22 33",
     sourcingNeeds: "Recherche de producteurs locaux pour enrichir un rayon épicerie fine et boissons artisanales.",
   },
   {
@@ -185,7 +185,7 @@ const STORES = [
     storeName: "Le Comptoir Local",
     storeType: "Boutique de produits régionaux",
     location: "Lyon, Auvergne-Rhône-Alpes, France",
-    phone: "04 78 12 34 56",
+    phone: "+33 4 78 12 34 56",
     sourcingNeeds: "Sélection de produits régionaux et artisanaux pour une clientèle attachée aux circuits courts.",
   },
   {
@@ -195,7 +195,7 @@ const STORES = [
     storeName: "Maison Bio & Saveurs",
     storeType: "Magasin bio",
     location: "Bordeaux, Nouvelle-Aquitaine, France",
-    phone: "05 56 23 45 67",
+    phone: "+33 5 56 23 45 67",
     sourcingNeeds: "Développement d'une offre de cosmétiques naturels et d'épicerie biologique.",
   },
   {
@@ -205,7 +205,7 @@ const STORES = [
     storeName: "La Fromagerie du Port",
     storeType: "Fromagerie",
     location: "Nantes, Pays de la Loire, France",
-    phone: "02 40 34 56 78",
+    phone: "+33 2 40 34 56 78",
     sourcingNeeds: "Approvisionnement en produits frais fermiers et spécialités de la mer pour un rayon traiteur.",
   },
   {
@@ -215,7 +215,7 @@ const STORES = [
     storeName: "Le Panier Gourmand",
     storeType: "Concept store",
     location: "Strasbourg, Grand Est, France",
-    phone: "03 88 45 67 89",
+    phone: "+33 3 88 45 67 89",
     sourcingNeeds: "Curation d'une sélection de producteurs pour un concept store gourmand et responsable.",
   },
 ];
