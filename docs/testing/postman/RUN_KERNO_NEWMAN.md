@@ -17,14 +17,14 @@ docs/testing/postman/
 
 ## Prerequisites
 
-The local backend must be running and seeded.
+The local backend must be running and populated with the current demo seed from `backend/prisma/seed-demo.js`.
 
 Default environment values:
 
 ```text
 baseUrl: http://localhost:5001/api
-supplier: supplier.001@kerno-demo.local / Password123!
-store: store.001@kerno-demo.local / Password123!
+supplier: supplier1@kerno-demo.local / Password123!
+store: store1@kerno-demo.local / Password123!
 ```
 
 If your backend runs on port `5000`, update `baseUrl` in:

@@ -17,14 +17,13 @@ frontend/src/services/
 ├── requestService.js
 ├── storeService.js
 ├── supplierService.js
-├── tokenStorage.js
-└── userService.js
+└── tokenStorage.js
 ```
 
 This service-based structure already centralizes:
 
 * HTTP requests to the backend API;
-* authentication token handling;
+* cookie-based authentication handling;
 * API error formatting;
 * domain-specific API calls;
 * reusable frontend/backend communication logic.

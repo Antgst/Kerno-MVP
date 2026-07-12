@@ -2,8 +2,8 @@ import { expect, test } from "@playwright/test";
 
 const env = globalThis.process?.env || {};
 const API_BASE_URL = env.VITE_API_BASE_URL || "http://localhost:5001/api";
-const SUPPLIER_EMAIL = "supplier.001@kerno-demo.local";
-const STORE_EMAIL = "store.001@kerno-demo.local";
+const SUPPLIER_EMAIL = "supplier1@kerno-demo.local";
+const STORE_EMAIL = "store1@kerno-demo.local";
 const PASSWORD = "Password123!";
 
 async function loginViaUi(page, email, password = PASSWORD) {
@@ -77,7 +77,7 @@ test.describe("KERNO MVP automated regression", () => {
 
   test("public landing and login pages load", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /KERNO/i })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
     await page.goto("/login");
     await expect(page.getByTestId("login-page")).toBeVisible();

@@ -225,7 +225,6 @@ async function createProduct(userId, payload) {
     minimumOrderUnit,
     origin,
     imageUrl,
-    isActive,
   } = payload;
 
   validateRequiredString(name, "Product name");
@@ -254,7 +253,6 @@ async function createProduct(userId, payload) {
       minimumOrderUnit: normalizeOptionalPriceUnit(minimumOrderUnit),
       origin: origin?.trim() || null,
       imageUrl: imageUrl?.trim() || null,
-      isActive: normalizeOptionalBoolean(isActive) ?? true,
     },
     include: {
       supplier: true,
@@ -354,10 +352,7 @@ async function deleteProduct(userId, productId) {
     where: {
       id: productId,
       supplierId: supplierProfile.id,
-    },
-    include: {
-      supplier: true,
-      category: true,
+      isActive: true,
     },
   });
 
@@ -365,13 +360,20 @@ async function deleteProduct(userId, productId) {
     throw createError("Product not found or not owned by current supplier", 404);
   }
 
-  await prisma.product.delete({
+  const deactivatedProduct = await prisma.product.update({
     where: {
       id: existingProduct.id,
     },
+    data: {
+      isActive: false,
+    },
+    include: {
+      supplier: true,
+      category: true,
+    },
   });
 
-  return getSafeProduct(existingProduct);
+  return getSafeProduct(deactivatedProduct);
 }
 
 module.exports = {

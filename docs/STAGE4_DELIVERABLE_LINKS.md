@@ -44,6 +44,14 @@
 
 ## Production environment
 
-No public production environment is listed at this stage.
+At the time of the Stage 4 delivery, no public production environment was
+listed and the MVP was demonstrated locally with `npm run dev`.
 
-The MVP can be demonstrated locally with npm run dev.
+This document is preserved as a historical Stage 4 record.
+
+Current public environments added during Stage 5:
+
+| Environment | Link |
+|---|---|
+| Public KERNO application | https://kerno.ausaryu.com/ |
+| Demo Day landing page | https://kerno-landing.netlify.app/ |

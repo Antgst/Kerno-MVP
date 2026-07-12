@@ -4,7 +4,7 @@
 
 This document defines the Git workflow, branch strategy, pull request rules, review expectations, and collaboration conventions for the Kerno-MVP project.
 
-Kerno is a Holberton Stage 4 portfolio project. The goal is to build a functional MVP for a B2B SaaS marketplace connecting direct or local suppliers with retail stores.
+KERNO was developed as a Holberton Portfolio Project. Stage 4 produced the functional MVP, while Stage 5 closes, validates, documents and presents the final result.
 
 The workflow must stay simple, readable, and realistic for a small team. It must support clean collaboration without adding unnecessary process complexity.
 
@@ -62,7 +62,7 @@ Direct commits to `main` are not allowed.
 
 It contains validated work that is ready to be tested together before being merged into `main`.
 
-During the current Stage 4 stabilization phase, feature, fix, documentation and visual branches should target `develop` unless a temporary integration branch is explicitly announced. Historical sprint branches (`S1`, `S2`, `S3`, `S4`, `S5`) remain part of the project history.
+Feature, fix, documentation, audit and visual branches should target `develop` unless a temporary integration branch is explicitly announced. Historical sprint branches (`S1`, `S2`, `S3`, `S4`, `S5`) remain part of the project history.
 
 ---
 
