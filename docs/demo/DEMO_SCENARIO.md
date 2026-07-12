@@ -89,74 +89,118 @@ npx prisma studio
 
 ---
 
+## 3.1 Presentation Roles and Rehearsal
+
+### Speaking Parts
+
+The final speaking parts are assigned as follows:
+
+* **Antoine**: project introduction, main live demo driver, MVP scope, transitions and closing summary;
+* **Gwendal**: frontend presentation, interface choices, user experience and visual support during the demo;
+* **Yonas**: backend, API, database, security and technical support during the demo;
+* **Full team**: questions, retrospective and final review.
+
+### Rehearsal and Team Review
+
+The complete demo flow has been rehearsed with the full team.
+
+Following the rehearsal:
+
+* the sequence and timing were reviewed;
+* transitions between speakers were validated;
+* the script was adjusted where necessary;
+* demo accounts and seeded data were checked;
+* backup steps were reviewed;
+* MVP exclusions were validated;
+* the final presentation flow was approved by the full team.
+
+---
+
 ## 4. Demo Accounts
 
-Use simple demo accounts.
+Use the accounts created by `backend/prisma/seed-demo.js`.
 
 ### Supplier Account
 
 ```text
-Email: supplier.demo@kerno.local
+Email: supplier1@kerno-demo.local
 Password: Password123!
 Role: SUPPLIER
+Company: Brasserie du Littoral
+Contact: Camille Le Gall
 ```
 
 ### Store Account
 
 ```text
-Email: store.demo@kerno.local
+Email: store1@kerno-demo.local
 Password: Password123!
 Role: STORE
+Store: L'Épicerie du Marais
+Contact: Claire Berthier
 ```
 
-If these accounts already exist locally, log in with them instead of registering again.
+These accounts are prepared by the demo seed. Use the login page rather than registering new accounts during the presentation.
 
 ---
 
 ## 5. Demo Data
 
+The following examples match the data created by `backend/prisma/seed-demo.js`.
+
 ### Supplier Profile Example
 
 ```text
-Company name: GreenField Farms
-Description: Local supplier of fresh fruits and vegetables for retail stores.
-Location: Rennes
-Business type: Local producer
-Contact email: contact@greenfield.example
-Phone: 0600000000
-Website: https://greenfield.example
+Contact: Camille Le Gall
+Company name: Brasserie du Littoral
+Business type: Brasserie artisanale
+Description: Brasserie familiale installée sur la côte atlantique, spécialisée dans les boissons artisanales élaborées à partir de fruits locaux.
+Location: Nantes, Pays de la Loire, France
+Phone: +33 2 40 11 22 33
+Website: https://brasserie-du-littoral.example
+Category: Boissons artisanales
 ```
 
 ### Product Example
 
 ```text
-Name: Organic Tomatoes
-Description: Fresh local organic tomatoes available for weekly retail supply.
-Price info: 12 EUR / box
-Minimum order: 5 boxes
-Origin: Rennes area
-Category: Fresh Produce
-Image URL: https://example.com/tomatoes.jpg
+Name: Cidre doux fermier
+Description: Cidre fermier élaboré à partir de pommes locales, fermentation lente en cuve.
+Price: 4.50 EUR per unit
+Minimum order: 24 units
+Supplier: Brasserie du Littoral
+Origin: Nantes, Pays de la Loire, France
+Category: Boissons artisanales
+Image: /assets/products/cidre-doux-fermier.webp
+```
+
+### Additional Product Examples
+
+```text
+Jus de pomme artisanal
+Limonade au citron
 ```
 
 ### Store Profile Example
 
 ```text
-Store name: Kerno Market
-Brand name: Kerno Retail
-Location: Rennes
-Store type: Independent retail store
-Sourcing needs: Local fruits, vegetables and direct supplier opportunities
-Contact email: buyer@kerno-market.example
-Phone: 0600000001
+Contact: Claire Berthier
+Store name: L'Épicerie du Marais
+Store type: Épicerie fine
+Location: Paris, Île-de-France, France
+Phone: +33 1 42 11 22 33
+Sourcing needs: Recherche de producteurs locaux pour enrichir un rayon épicerie fine et boissons artisanales.
 ```
 
 ### Contact Request Example
 
 ```text
-Subject: Wholesale inquiry for organic tomatoes
-Message: Hello, we are interested in your organic tomatoes for weekly retail supply. Could you share your current availability, lead times and pricing conditions?
-Requested quantity: 20 boxes per week
+Product: Cidre doux fermier
+Store: L'Épicerie du Marais
+Supplier: Brasserie du Littoral
+Subject: Demande de tarifs professionnels
+Message: Bonjour, nous souhaiterions connaître vos tarifs professionnels ainsi que vos conditions de livraison pour un référencement en rayon.
+Requested quantity: Commande initiale de lancement
 ```
 
 ---
@@ -186,25 +230,27 @@ Expected result:
 
 ---
 
-## Step 2 — Register or Log In as Supplier
+## Step 2 — Log In as Supplier
 
 Go to:
 
 ```text
-/register
+/login
 ```
 
-Create or log in with the supplier demo account.
+Log in with the prepared supplier demo account.
 
 Explain:
 
 * the supplier role;
-* the need to create a professional profile before publishing products.
+* the professional profile used to present the company;
+* the product publication flow.
 
 Expected result:
 
-* supplier account is created or authenticated;
-* the user is redirected to the supplier area or can access supplier pages.
+* the supplier account is authenticated;
+* the user is redirected to the supplier dashboard;
+* supplier profile, products and received requests are accessible.
 
 ---
 
@@ -231,26 +277,27 @@ Expected result:
 
 ---
 
-## Step 4 — Create a Product
+## Step 4 — Create or Review a Product
 
 Go to:
 
 ```text
-/supplier/products/new
+/supplier/products
 ```
 
-Create a product using the demo data.
+Review the prepared product data. Product creation can also be demonstrated from the supplier product management page when required.
 
 Explain:
 
 * products are the core marketplace objects;
 * each product belongs to a supplier;
-* product information helps stores understand availability, price information, minimum order and origin.
+* product information helps stores understand price, minimum order, category and origin.
 
 Expected result:
 
-* product is created;
-* product becomes visible in supplier product management and catalog flow.
+* the prepared products are visible;
+* the product detail can be opened;
+* product creation and management remain available as part of the supplier journey.
 
 ---
 
@@ -275,26 +322,28 @@ Expected result:
 
 ---
 
-## Step 6 — Register or Log In as Store
+## Step 6 — Log In as Store
 
-Log out if needed, then go to:
+Log out from the supplier account, then go to:
 
 ```text
-/register
+/login
 ```
 
-Create or log in with the store demo account.
+Log in with the prepared store demo account.
 
 Explain:
 
 * the store role;
-* stores use KERNO to discover suppliers and send structured requests;
+* stores use KERNO to discover suppliers and products;
+* stores send structured commercial requests;
 * stores do not manage products.
 
 Expected result:
 
-* store account is created or authenticated;
-* the user can access the store area.
+* the store account is authenticated;
+* the user is redirected to the store dashboard;
+* catalog, supplier details and sent requests are accessible.
 
 ---
 
@@ -553,6 +602,12 @@ These are future possibilities, not completed MVP features.
 ---
 
 ## 10. Final Demo Checklist
+
+### Rehearsal Status
+
+The full team rehearsal has been completed. The final script, speaking parts, backup plan and MVP exclusions have been reviewed and approved.
+
+The technical checklist below must still be rechecked immediately before the final live presentation.
 
 Before the final review:
 
