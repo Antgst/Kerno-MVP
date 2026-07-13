@@ -853,7 +853,7 @@ The final Stage 4 documentation is split by topic:
 | Database schema | [`docs/database/DATABASE_SCHEMA.md`](./docs/database/DATABASE_SCHEMA.md) |
 | API summary | [`docs/api/API_SUMMARY.md`](./docs/api/API_SUMMARY.md) |
 | Docker local database | [`docs/docker/DOCKER.md`](./docs/docker/DOCKER.md) |
-| Auth and security notes | [`docs/security/AUTH_SECURITY_NOTES.md`](./docs/security/AUTH_SECURITY_NOTES.md) |
+| Security documentation | [`docs/security/README.md`](./docs/security/README.md) |
 | Testing evidence | [`docs/testing/TESTING_EVIDENCE.md`](./docs/testing/TESTING_EVIDENCE.md) |
 | Demo scenario | [`docs/demo/DEMO_SCENARIO.md`](./docs/demo/DEMO_SCENARIO.md) |
 | Technical review notes | [`docs/review/TECHNICAL_REVIEW_NOTES.md`](./docs/review/TECHNICAL_REVIEW_NOTES.md) |
@@ -1122,7 +1122,8 @@ Backend testing includes:
 * status codes;
 * validation errors;
 * authentication requirements;
-* role-based access control.
+* role-based access control;
+* OWASP A01 profile ownership regression checks for supplier and store profiles.
 
 ### API Testing
 
@@ -1131,7 +1132,8 @@ API testing uses:
 * Postman collections;
 * Swagger UI;
 * manual curl commands;
-* backend validation scripts where relevant.
+* backend validation scripts where relevant;
+* targeted pytest commands for security-sensitive regressions such as OWASP A01 profile ownership.
 
 ### Integration Testing
 

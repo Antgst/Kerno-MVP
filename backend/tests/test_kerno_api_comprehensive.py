@@ -1294,3 +1294,116 @@ def test_unicode_text_fields_are_accepted(seeded: dict[str, Any]) -> None:
     )
     assert "é" in body["product"]["name"]
     assert "✅" in body["product"]["description"]
+
+
+# ---------------------------------------------------------------------------
+# OWASP A01 - Profile ownership regression tests
+# ---------------------------------------------------------------------------
+
+
+def test_owasp_a01_supplier_profile_me_returns_only_current_supplier_profile(seeded: dict[str, Any]) -> None:
+    body = assert_success(
+        api_request("GET", "/api/suppliers/profile/me", session=seeded["supplier_session"]),
+        200,
+    )
+    assert body["supplier"]["id"] == seeded["supplier"]["id"]
+    assert body["supplier"]["id"] != seeded["other_supplier"]["id"]
+
+    other_body = assert_success(
+        api_request("GET", "/api/suppliers/profile/me", session=seeded["other_supplier_session"]),
+        200,
+    )
+    assert other_body["supplier"]["id"] == seeded["other_supplier"]["id"]
+    assert other_body["supplier"]["id"] != seeded["supplier"]["id"]
+
+
+def test_owasp_a01_store_profile_me_returns_only_current_store_profile(seeded: dict[str, Any]) -> None:
+    body = assert_success(
+        api_request("GET", "/api/stores/profile/me", session=seeded["store_session"]),
+        200,
+    )
+    assert body["store"]["id"] == seeded["store"]["id"]
+    assert body["store"]["id"] != seeded["other_store"]["id"]
+
+    other_body = assert_success(
+        api_request("GET", "/api/stores/profile/me", session=seeded["other_store_session"]),
+        200,
+    )
+    assert other_body["store"]["id"] == seeded["other_store"]["id"]
+    assert other_body["store"]["id"] != seeded["store"]["id"]
+
+
+def test_owasp_a01_supplier_profile_cannot_be_updated_by_url_id_tampering(seeded: dict[str, Any]) -> None:
+    assert_error(
+        api_request(
+            "PUT",
+            f"/api/suppliers/{seeded['other_supplier']['id']}",
+            session=seeded["supplier_session"],
+            json={"companyName": "Compromised supplier"},
+        ),
+        404,
+    )
+
+
+def test_owasp_a01_store_profile_cannot_be_updated_by_url_id_tampering(seeded: dict[str, Any]) -> None:
+    assert_error(
+        api_request(
+            "PUT",
+            f"/api/stores/{seeded['other_store']['id']}",
+            session=seeded["store_session"],
+            json={"storeName": "Compromised store"},
+        ),
+        404,
+    )
+
+
+def test_owasp_a01_supplier_profile_update_does_not_modify_other_supplier_profile(seeded: dict[str, Any]) -> None:
+    other_before = assert_success(
+        api_request("GET", f"/api/suppliers/{seeded['other_supplier']['id']}"),
+        200,
+    )["supplier"]
+
+    assert_success(
+        api_request(
+            "PUT",
+            "/api/suppliers/profile/me",
+            session=seeded["supplier_session"],
+            json={"companyName": "OWASP A01 Updated Supplier"},
+        ),
+        200,
+    )
+
+    other_after = assert_success(
+        api_request("GET", f"/api/suppliers/{seeded['other_supplier']['id']}"),
+        200,
+    )["supplier"]
+
+    assert other_after["id"] == other_before["id"]
+    assert other_after["companyName"] == other_before["companyName"]
+    assert other_after["companyName"] != "OWASP A01 Updated Supplier"
+
+
+def test_owasp_a01_store_profile_update_does_not_modify_other_store_profile(seeded: dict[str, Any]) -> None:
+    other_before = assert_success(
+        api_request("GET", "/api/stores/profile/me", session=seeded["other_store_session"]),
+        200,
+    )["store"]
+
+    assert_success(
+        api_request(
+            "PUT",
+            "/api/stores/profile/me",
+            session=seeded["store_session"],
+            json={"storeName": "OWASP A01 Updated Store"},
+        ),
+        200,
+    )
+
+    other_after = assert_success(
+        api_request("GET", "/api/stores/profile/me", session=seeded["other_store_session"]),
+        200,
+    )["store"]
+
+    assert other_after["id"] == other_before["id"]
+    assert other_after["storeName"] == other_before["storeName"]
+    assert other_after["storeName"] != "OWASP A01 Updated Store"

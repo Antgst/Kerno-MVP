@@ -16,7 +16,7 @@ KERNO remains a B2B marketplace MVP focused on supplier profiles, store profiles
 
 ## Maintenance Notes
 
-Update these documents when authentication, authorization, token handling, request ownership checks, security smoke tests, or sensitive configuration behavior changes.
+Update these documents when authentication, authorization, token handling, request ownership checks, profile ownership checks, security smoke tests, or sensitive configuration behavior changes.
 
 </details>
 
@@ -36,6 +36,6 @@ KERNO reste un MVP de marketplace B2B centré sur les profils fournisseurs, les 
 
 ## Notes de maintenance
 
-Mettre à jour ces documents lorsque l'authentification, l'autorisation, la gestion des jetons, les vérifications de propriété des demandes, les smoke tests de sécurité ou les comportements de configuration sensible changent.
+Mettre à jour ces documents lorsque l'authentification, l'autorisation, la gestion des jetons, les vérifications de propriété des demandes, les vérifications de propriété des profils, les smoke tests de sécurité ou les comportements de configuration sensible changent.
 
 </details>

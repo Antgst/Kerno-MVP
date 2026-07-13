@@ -4,10 +4,11 @@
 
 Ce rapport documente le travail d'audit de sécurité réalisé sur le backend du MVP KERNO et sur les outils de sécurité associés.
 
-- Branche auditée : `experimental-pentesting-antoine`
-- Étape : audit local et validation
-- Statut de la pull request : aucune pull request n'a été créée à ce stade
-- Statut de fusion : aucune fusion n'a été créée à ce stade
+- Branche auditée initialement : `experimental-pentesting-antoine`
+- Branche de suivi : `owasp-01`
+- Étape : audit local, validation et couverture de régression OWASP A01
+- Statut de la pull request : branche de suivi prête pour revue PR
+- Statut de fusion : changements de suivi pas encore fusionnés
 
 L'objectif de cet audit était d'améliorer la posture de sécurité du MVP, de valider les protections critiques de l'API et de fournir un document de revue technique clair, adapté à Holberton, à un portfolio et à une revue d'ingénierie.
 
@@ -124,7 +125,7 @@ Le smoke test de durcissement de production valide des comportements orientés p
 
 | Catégorie OWASP | Statut | Notes |
 | --- | --- | --- |
-| A01 Broken Access Control | Amélioré et testé | Les vérifications de rôle sur les routes de demandes et les contrôles de propriété ont été durcis. |
+| A01 Broken Access Control | Amélioré et testé | Les vérifications de rôle sur les routes de demandes, les contrôles de propriété des demandes et la couverture de régression des profils supplier/store sont documentés et testés. |
 | A02 Security Misconfiguration | Amélioré et testé | CORS, l'exposition Swagger/OpenAPI en production, les limites JSON et le comportement des erreurs de production ont été durcis. |
 | A03 Software Supply Chain Failures | À surveiller | 3 constats backend modérés restent liés aux dépendances Prisma. |
 | A04 Cryptographic Failures | Revu | Les secrets sont basés sur l'environnement, et `.env.example` a été nettoyé. |
@@ -140,7 +141,7 @@ Le smoke test de durcissement de production valide des comportements orientés p
 Les risques suivants restent acceptables pour l'étape actuelle du MVP, mais devront être traités avant la préparation à la production :
 
 - La session d'authentification est désormais stockée dans un cookie HttpOnly posé par le backend.
-- Amélioration future : déplacer le stockage d'authentification vers des cookies HTTP-only, Secure et SameSite.
+- Les attributs de cookie sont désormais gérés avec HttpOnly, SameSite et Secure en production ; la stratégie CSRF reste un point de préparation production.
 - Aucune limitation de débit n'est encore implémentée.
 - 3 constats backend modérés de `npm audit` restent à examiner avant la livraison finale ou le déploiement.
 - La supervision et l'alerting restent limités.
@@ -156,7 +157,7 @@ Limites connues :
 - Aucune revue de l'infrastructure, de l'hébergement ou de la couche réseau n'a été incluse.
 - Aucune validation de supervision centralisée, de SIEM ou d'alerting n'a été réalisée.
 - Des constats liés aux dépendances ont été identifiés pour surveillance, mais ils n'ont pas été entièrement corrigés à cette étape.
-- Le modèle de stockage des jetons côté frontend reste un risque du MVP.
+- L'ancien modèle de stockage des jetons côté frontend a été retiré ; la stratégie CSRF liée aux cookies reste un point de préparation production.
 
 Avertissement observé :
 
@@ -172,3 +173,34 @@ La posture de sécurité du MVP KERNO a été améliorée sur la branche `experi
 Les améliorations de sécurité les plus importantes sont désormais couvertes par des smoke tests automatisés, notamment le contrôle d'accès, les vérifications de propriété, le comportement de durcissement en production, la gestion des JSON invalides et les réponses d'erreur contrôlées.
 
 À ce stade, aucun problème critique ni de sévérité élevée ne reste dans les résultats de l'audit statique local, et toutes les commandes de validation documentées se sont terminées avec succès. Les risques restants sont des limites connues du MVP et devront être suivis avant la livraison finale ou le déploiement.
+
+## 12. Mise à jour de régression OWASP A01 — propriété des profils
+
+Une passe de régression complémentaire a été ajoutée sur la branche `owasp-01` afin de couvrir le point restant de la checklist Broken Access Control lié à la propriété des profils.
+
+Couverture ajoutée :
+
+- `/profile/me` fournisseur retourne uniquement le profil du fournisseur authentifié ;
+- `/profile/me` magasin retourne uniquement le profil du magasin authentifié ;
+- une tentative de modification par ID dans l'URL ne peut pas modifier le profil d'un autre fournisseur ou magasin ;
+- la mise à jour du profil courant ne modifie pas le profil d'un autre utilisateur.
+
+Fichier de test :
+
+```text
+backend/tests/test_kerno_api_comprehensive.py
+```
+
+Commande de validation :
+
+```bash
+python3 -m pytest backend/tests/test_kerno_api_comprehensive.py -k "owasp_a01" -q
+```
+
+Résultat validé :
+
+```text
+6 passed, 127 deselected
+```
+
+Il s'agit d'un suivi uniquement côté tests et documentation. Aucune route, aucun service, aucun schéma et aucun comportement API backend n'ont été modifiés.

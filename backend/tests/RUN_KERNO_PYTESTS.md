@@ -49,6 +49,31 @@ The result file will be created here:
 backend/tests/results/kerno_api_test_results.json
 ```
 
+## Run OWASP A01 profile ownership tests
+
+Use this targeted command when validating the Broken Access Control profile ownership coverage from issue #205.
+
+Start the backend on port `5001` in another terminal:
+
+```bash
+cd backend
+PORT=5001 npm run dev
+```
+
+Then run only the OWASP A01 regression tests from the repository root:
+
+```bash
+python3 -m pytest backend/tests/test_kerno_api_comprehensive.py -k "owasp_a01" -q
+```
+
+Expected result from the `owasp-01` branch validation:
+
+```text
+6 passed, 127 deselected
+```
+
+These tests verify that supplier and store profiles remain scoped to the authenticated user and that URL ID tampering cannot update another user's profile.
+
 ## Use a different API URL
 
 ```bash
