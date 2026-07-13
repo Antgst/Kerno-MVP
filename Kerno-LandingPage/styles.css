@@ -700,27 +700,18 @@ a { color: inherit; text-decoration: none; }
 .del-video__frame {
   width: 100%;
   aspect-ratio: 16 / 9;
-  display: grid;
-  place-items: center;
-  gap: 12px;
-  border: 1.5px dashed var(--line-strong);
-  border-radius: 16px;
-  background: var(--green-tint);
-}
-.del-video__play {
-  display: grid;
-  place-items: center;
-  width: 56px; height: 56px;
-  border-radius: 50%;
-  background: var(--white);
-  color: var(--green);
-  font-size: 1.1rem;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: #0d1714;
   box-shadow: var(--shadow-sm);
 }
-.del-video__label {
-  font-family: var(--mono);
-  font-size: .8rem;
-  color: var(--muted);
+.del-video__player {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
 }
 
 .deliverables__grid {
