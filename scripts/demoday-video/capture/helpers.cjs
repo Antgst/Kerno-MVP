@@ -37,83 +37,74 @@ function pointOnBezier(start, controlOne, controlTwo, end, progress) {
   return { x, y };
 }
 
+function cursorBootstrap() {
+  const createCursor = () => {
+    if (document.querySelector("[data-kerno-demo-cursor]")) {
+      return;
+    }
+
+    const style = document.createElement("style");
+    style.textContent = [
+      "[data-kerno-demo-cursor] {",
+      "position: fixed; left: 0; top: 0; width: 24px; height: 24px;",
+      "z-index: 2147483647; pointer-events: none; transform: translate(-3px, -2px);",
+      "filter: drop-shadow(0 3px 5px rgba(22, 78, 63, 0.3)); transition: opacity 120ms ease;",
+      "}",
+      "[data-kerno-demo-cursor]::before {",
+      "content: ''; display: block; width: 18px; height: 24px; background: #F97316;",
+      "clip-path: polygon(0 0, 0 100%, 27% 73%, 44% 100%, 58% 92%, 42% 66%, 78% 66%);",
+      "border: 1.5px solid #F8F5EF; box-sizing: border-box;",
+      "}",
+      "[data-kerno-demo-click-ring] {",
+      "position: fixed; width: 42px; height: 42px; border: 3px solid rgba(249, 115, 22, 0.9);",
+      "border-radius: 999px; pointer-events: none; z-index: 2147483646;",
+      "transform: translate(-50%, -50%) scale(0.35); animation: kerno-demo-click 520ms ease-out forwards;",
+      "}",
+      "@keyframes kerno-demo-click {",
+      "0% { opacity: 1; transform: translate(-50%, -50%) scale(0.35); }",
+      "100% { opacity: 0; transform: translate(-50%, -50%) scale(1.25); }",
+      "}",
+    ].join("\n");
+    document.documentElement.appendChild(style);
+
+    const cursor = document.createElement("div");
+    cursor.setAttribute("data-kerno-demo-cursor", "true");
+    cursor.style.opacity = "0";
+    document.documentElement.appendChild(cursor);
+
+    document.addEventListener(
+      "mousemove",
+      (event) => {
+        cursor.style.opacity = "1";
+        cursor.style.transform =
+          "translate(" + (event.clientX - 3) + "px, " + (event.clientY - 2) + "px)";
+      },
+      true,
+    );
+
+    document.addEventListener(
+      "click",
+      (event) => {
+        const ring = document.createElement("div");
+        ring.setAttribute("data-kerno-demo-click-ring", "true");
+        ring.style.left = event.clientX + "px";
+        ring.style.top = event.clientY + "px";
+        document.documentElement.appendChild(ring);
+        window.setTimeout(() => ring.remove(), 560);
+      },
+      true,
+    );
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", createCursor, { once: true });
+  } else {
+    createCursor();
+  }
+}
+
 async function installDemoCursor(context) {
-  await context.addInitScript({
-    content: `
-      (() => {
-        const createCursor = () => {
-          if (document.querySelector('[data-kerno-demo-cursor]')) return;
-
-          const style = document.createElement('style');
-          style.textContent = `
-            [data-kerno-demo-cursor] {
-              position: fixed;
-              left: 0;
-              top: 0;
-              width: 24px;
-              height: 24px;
-              z-index: 2147483647;
-              pointer-events: none;
-              transform: translate(-3px, -2px);
-              filter: drop-shadow(0 3px 5px rgba(22, 78, 63, 0.3));
-              transition: opacity 120ms ease;
-            }
-            [data-kerno-demo-cursor]::before {
-              content: '';
-              display: block;
-              width: 18px;
-              height: 24px;
-              background: #F97316;
-              clip-path: polygon(0 0, 0 100%, 27% 73%, 44% 100%, 58% 92%, 42% 66%, 78% 66%);
-              border: 1.5px solid #F8F5EF;
-              box-sizing: border-box;
-            }
-            [data-kerno-demo-click-ring] {
-              position: fixed;
-              width: 42px;
-              height: 42px;
-              border: 3px solid rgba(249, 115, 22, 0.9);
-              border-radius: 999px;
-              pointer-events: none;
-              z-index: 2147483646;
-              transform: translate(-50%, -50%) scale(0.35);
-              animation: kerno-demo-click 520ms ease-out forwards;
-            }
-            @keyframes kerno-demo-click {
-              0% { opacity: 1; transform: translate(-50%, -50%) scale(0.35); }
-              100% { opacity: 0; transform: translate(-50%, -50%) scale(1.25); }
-            }
-          `;
-          document.documentElement.appendChild(style);
-
-          const cursor = document.createElement('div');
-          cursor.setAttribute('data-kerno-demo-cursor', 'true');
-          cursor.style.opacity = '0';
-          document.documentElement.appendChild(cursor);
-
-          document.addEventListener('mousemove', (event) => {
-            cursor.style.opacity = '1';
-            cursor.style.transform = `translate(${event.clientX - 3}px, ${event.clientY - 2}px)`;
-          }, true);
-
-          document.addEventListener('click', (event) => {
-            const ring = document.createElement('div');
-            ring.setAttribute('data-kerno-demo-click-ring', 'true');
-            ring.style.left = `${event.clientX}px`;
-            ring.style.top = `${event.clientY}px`;
-            document.documentElement.appendChild(ring);
-            window.setTimeout(() => ring.remove(), 560);
-          }, true);
-        };
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', createCursor, { once: true });
-        } else {
-          createCursor();
-        }
-      })();
-    `,
-  });
+  await context.addInitScript(cursorBootstrap);
 }
 
 async function humanMove(page, locator, options = {}) {
@@ -228,7 +219,8 @@ async function humanType(page, locator, text, options = {}) {
   for (let index = 0; index < text.length; index += 1) {
     const character = text[index];
     const variance = (character.charCodeAt(0) + index * 17) % 31;
-    const delay = minimumDelay +
+    const delay =
+      minimumDelay +
       Math.round((variance / 30) * (maximumDelay - minimumDelay));
 
     await page.keyboard.type(character, { delay });
