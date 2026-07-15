@@ -106,7 +106,7 @@ fi
 
 if [[ "$FRONTEND_READY" -eq 0 ]]; then
   log "Starting KERNO locally without opening VS Code."
-  setsid npm run dev >"$RUNTIME_DIR/kerno-dev.log" 2>&1 &
+  VITE_API_BASE_URL="$API_BASE_URL" setsid npm run dev >"$RUNTIME_DIR/kerno-dev.log" 2>&1 &
   DEV_PID=$!
   wait_for_url "$HEALTH_URL" "Backend API" 90
   wait_for_url "$FRONTEND_URL" "Frontend" 90
