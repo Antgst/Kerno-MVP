@@ -169,11 +169,16 @@ test("03 - supplier dashboard", async ({ browser }) => {
         800,
       ).catch(() => sleep(800));
 
-      const productsMetric = page.getByText("Produits publiés", { exact: true });
+      const supplierIndicators = page.getByLabel("Indicateurs fournisseur");
+      const productsMetric = supplierIndicators.getByText("Produits publiés", {
+        exact: true,
+      });
       await humanMove(page, productsMetric, { duration: 650 });
       await sleep(850);
 
-      const requestsMetric = page.getByText("Demandes reçues", { exact: true }).first();
+      const requestsMetric = supplierIndicators.getByText("Demandes reçues", {
+        exact: true,
+      });
       await humanMove(page, requestsMetric, { duration: 620 });
       await sleep(850);
 
