@@ -199,6 +199,28 @@ async function smoothScrollTo(page, locator, options = {}) {
   await sleep(260);
 }
 
+async function retryLoginIfNeeded(page, locator) {
+  const buttonText = ((await locator.textContent().catch(() => "")) || "").trim();
+
+  if (buttonText !== "Se connecter") {
+    return;
+  }
+
+  await sleep(700);
+  if (!page.url().endsWith("/login")) {
+    return;
+  }
+
+  const emailField = page.getByLabel("Email professionnel");
+  const passwordField = page.getByLabel("Mot de passe");
+  const email = await emailField.inputValue();
+  const password = await passwordField.inputValue();
+
+  await emailField.fill(email);
+  await passwordField.fill(password);
+  await locator.click();
+}
+
 async function humanClick(page, locator, options = {}) {
   const { preDelay = 260, postDelay = 520 } = options;
 
@@ -207,6 +229,7 @@ async function humanClick(page, locator, options = {}) {
   await sleep(preDelay);
   await showClickRing(page, locator);
   await locator.click({ delay: 90 });
+  await retryLoginIfNeeded(page, locator);
   await sleep(postDelay);
 }
 
