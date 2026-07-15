@@ -49,10 +49,32 @@ if [[ ! -f package.json || ! -f frontend/package.json || ! -f backend/package.js
   exit 1
 fi
 
-log "Starting PostgreSQL."
-if command -v service >/dev/null 2>&1; then
-  sudo service postgresql start >/dev/null
+log "Starting PostgreSQL with Docker Compose."
+if ! command -v docker >/dev/null 2>&1; then
+  echo "Docker is not available in WSL. Start Docker Desktop and enable WSL integration for Ubuntu-20.04." >&2
+  exit 1
 fi
+
+if ! docker info >/dev/null 2>&1; then
+  echo "Docker Desktop is not running or WSL integration is unavailable." >&2
+  exit 1
+fi
+
+docker compose up -d postgres
+
+for ((index = 1; index <= 45; index += 1)); do
+  if docker compose exec -T postgres pg_isready -U kerno_user -d kerno_db >/dev/null 2>&1; then
+    printf '[KERNO VIDEO] PostgreSQL is ready.\n'
+    break
+  fi
+
+  if [[ "$index" -eq 45 ]]; then
+    echo "PostgreSQL did not become ready. Run: docker compose logs postgres" >&2
+    exit 1
+  fi
+
+  sleep 1
+done
 
 log "Installing missing dependencies."
 [[ -d node_modules ]] || npm ci
