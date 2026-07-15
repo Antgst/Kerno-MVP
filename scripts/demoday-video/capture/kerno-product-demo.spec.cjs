@@ -442,7 +442,9 @@ test("10 - request received", async ({ browser }) => {
         requestCard.getByRole("link", { name: "Consulter" }),
       );
       await expect(page).toHaveURL(/\/supplier\/requests\/[0-9a-f-]+$/i);
-      await expect(page.getByText(REQUEST_SUBJECT)).toBeVisible();
+      await expect(
+        page.getByRole("heading", { level: 1, name: REQUEST_SUBJECT }),
+      ).toBeVisible();
     },
     {
       storageState: supplierStorageState,
