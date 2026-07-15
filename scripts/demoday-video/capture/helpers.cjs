@@ -210,8 +210,7 @@ async function humanType(page, locator, text, options = {}) {
   await humanClick(page, locator, { duration: 520, postDelay: 180 });
 
   if (clear) {
-    await locator.press("Control+A");
-    await locator.press("Backspace");
+    await locator.fill("");
   }
 
   for (let index = 0; index < text.length; index += 1) {
@@ -221,11 +220,16 @@ async function humanType(page, locator, text, options = {}) {
       minimumDelay +
       Math.round((variance / 30) * (maximumDelay - minimumDelay));
 
-    await page.keyboard.type(character, { delay });
+    await locator.pressSequentially(character, { delay });
 
     if (character === " " && index % 4 === 0) {
       await sleep(90);
     }
+  }
+
+  const typedValue = await locator.inputValue();
+  if (typedValue !== text) {
+    throw new Error(`Human typing mismatch: expected ${text.length} characters, received ${typedValue.length}.`);
   }
 
   await sleep(pauseAfter);
