@@ -81,19 +81,6 @@ function cursorBootstrap() {
       },
       true,
     );
-
-    document.addEventListener(
-      "click",
-      (event) => {
-        const ring = document.createElement("div");
-        ring.setAttribute("data-kerno-demo-click-ring", "true");
-        ring.style.left = event.clientX + "px";
-        ring.style.top = event.clientY + "px";
-        document.documentElement.appendChild(ring);
-        window.setTimeout(() => ring.remove(), 560);
-      },
-      true,
-    );
   };
 
   if (document.readyState === "loading") {
@@ -105,6 +92,29 @@ function cursorBootstrap() {
 
 async function installDemoCursor(context) {
   await context.addInitScript(cursorBootstrap);
+}
+
+async function showClickRing(page, locator) {
+  const box = await locator.boundingBox();
+
+  if (!box) {
+    return;
+  }
+
+  await page.evaluate(
+    ({ x, y }) => {
+      const ring = document.createElement("div");
+      ring.setAttribute("data-kerno-demo-click-ring", "true");
+      ring.style.left = `${x}px`;
+      ring.style.top = `${y}px`;
+      document.documentElement.appendChild(ring);
+      window.setTimeout(() => ring.remove(), 560);
+    },
+    {
+      x: box.x + box.width / 2,
+      y: box.y + box.height / 2,
+    },
+  );
 }
 
 async function humanMove(page, locator, options = {}) {
@@ -195,6 +205,7 @@ async function humanClick(page, locator, options = {}) {
   await smoothScrollTo(page, locator, { offset: 210, duration: 680 }).catch(() => {});
   await humanMove(page, locator, options);
   await sleep(preDelay);
+  await showClickRing(page, locator);
   await locator.click({ delay: 90 });
   await sleep(postDelay);
 }
