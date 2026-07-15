@@ -195,9 +195,7 @@ async function humanClick(page, locator, options = {}) {
   await smoothScrollTo(page, locator, { offset: 210, duration: 680 }).catch(() => {});
   await humanMove(page, locator, options);
   await sleep(preDelay);
-  await page.mouse.down();
-  await sleep(90);
-  await page.mouse.up();
+  await locator.click({ delay: 90 });
   await sleep(postDelay);
 }
 
