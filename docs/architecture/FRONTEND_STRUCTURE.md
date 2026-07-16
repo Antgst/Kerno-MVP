@@ -629,7 +629,6 @@ landing/*.webp
 register/register-local-sourcing-banner.webp
 store-dashboard/*.webp
 supplier-dashboard/*.webp
-store-dashboard-bg.png
 ```
 
 Public assets are stored in:

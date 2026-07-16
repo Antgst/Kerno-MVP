@@ -27,22 +27,6 @@ function removeLegacyAuthValue(key) {
   }
 }
 
-export function getAuthToken() {
-  return null;
-}
-
-export function setAuthToken() {
-  clearAuthToken();
-}
-
-export function getAuthRole() {
-  return null;
-}
-
-export function setAuthRole() {
-  removeLegacyAuthValue(AUTH_ROLE_STORAGE_KEY);
-}
-
 export function clearAuthToken() {
   removeLegacyAuthValue(AUTH_TOKEN_STORAGE_KEY);
   removeLegacyAuthValue(AUTH_ROLE_STORAGE_KEY);

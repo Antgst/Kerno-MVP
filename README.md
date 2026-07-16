@@ -36,7 +36,7 @@ Store sends a contact or quote request
 Supplier receives and reviews the request
 ```
 
-This repository contains the Stage 4 implementation of Kerno, based on the Stage 3 technical documentation, mockups, architecture, database model, API planning, SCM strategy, and quality plan.
+This repository contains the finalized KERNO portfolio MVP. It consolidates the Stage 4 implementation and the Stage 5 project-closure work, including testing, quality reviews, security audits, deployment, documentation, and final repository cleanup.
 
 ---
 
@@ -99,7 +99,7 @@ This repository contains the Stage 4 implementation of Kerno, based on the Stage
 | Local infrastructure | Docker Compose for PostgreSQL local development    |
 | API                  | REST                                               |
 | API documentation    | OpenAPI / Swagger + current API summary + historical Sprint 2 reference |
-| Portfolio stage      | Holberton Stage 4 MVP implementation               |
+| Portfolio stage      | Holberton Stage 5 project closure and final MVP     |
 
 ---
 
@@ -798,6 +798,8 @@ For the final API reference, see [`docs/api/API_SUMMARY.md`](./docs/api/API_SUMM
 
 ```text
 Kerno-MVP/
+  .github/
+    workflows/
   backend/
     prisma/
     src/
@@ -807,15 +809,20 @@ Kerno-MVP/
       modules/
       routes/
     tests/
+  deployment/
+    compose.production.yaml
   docs/
     api/
     architecture/
     assets/
+    audits/
     database/
     demo/
     docker/
+    reports/
     review/
     security/
+    sprints/
     testing/
   frontend/
     public/
@@ -831,18 +838,25 @@ Kerno-MVP/
       services/
       styles/
       utils/
+    tests/
+  scripts/
+    demoday-video/
+  tools/
+    security-audit/
   compose.yaml
   CONTRIBUTING.md
+  Dockerfile
+  knip.json
+  package-lock.json
+  package.json
   README.md
 ```
-
----
 
 <a id="documentation-map"></a>
 
 ## 📖 Documentation Map
 
-The final Stage 4 documentation is split by topic:
+The repository documentation is organized by topic. Stage 4 delivery documents are preserved as historical project records:
 
 | Topic | File |
 | --- | --- |
@@ -855,6 +869,7 @@ The final Stage 4 documentation is split by topic:
 | Docker local database | [`docs/docker/DOCKER.md`](./docs/docker/DOCKER.md) |
 | Security documentation | [`docs/security/README.md`](./docs/security/README.md) |
 | Testing evidence | [`docs/testing/TESTING_EVIDENCE.md`](./docs/testing/TESTING_EVIDENCE.md) |
+| Stage 5 closure report — FR | [`docs/reports/KERNO_STAGE5_REPORT_FR.pdf`](./docs/reports/KERNO_STAGE5_REPORT_FR.pdf) |
 | Demo scenario | [`docs/demo/DEMO_SCENARIO.md`](./docs/demo/DEMO_SCENARIO.md) |
 | Technical review notes | [`docs/review/TECHNICAL_REVIEW_NOTES.md`](./docs/review/TECHNICAL_REVIEW_NOTES.md) |
 | Stage 4 deliverable links | [`docs/STAGE4_DELIVERABLE_LINKS.md`](./docs/STAGE4_DELIVERABLE_LINKS.md) |
@@ -865,6 +880,7 @@ The final Stage 4 documentation is split by topic:
 | Quality audit | [`docs/audits/quality-audit-2026-07-03.md`](./docs/audits/quality-audit-2026-07-03.md) |
 | Visual audit | [`docs/audits/visual-audit-2026-07-03.md`](./docs/audits/visual-audit-2026-07-03.md) |
 | Semgrep audit | [`docs/audits/semgrep-audit-2026-07-03.md`](./docs/audits/semgrep-audit-2026-07-03.md) |
+| Repository cleanup audit | [`docs/audits/repository-cleanup-audit-2026-07-12.md`](./docs/audits/repository-cleanup-audit-2026-07-12.md) |
 
 ---
 
@@ -948,26 +964,50 @@ docker compose down -v
 
 ## 🔐 Environment Variables
 
-### Backend `.env.example`
+### Backend `backend/.env.example`
 
 ```env
 PORT=5000
-DATABASE_URL="postgresql://kerno_user:kerno_password@localhost:5432/kerno_db?schema=public"
-JWT_SECRET="replace_with_local_secret"
+DATABASE_URL="postgresql://<db_user>:<db_password>@localhost:5432/<db_name>?schema=public"
+JWT_SECRET="replace_with_a_strong_local_secret"
 NODE_ENV="development"
+CORS_ORIGIN="http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174"
+AUTH_COOKIE_SAMESITE="lax"
+ENABLE_API_DOCS="true"
 ```
 
-### Frontend `.env.example`
+### Frontend `frontend/.env.example`
+
+`VITE_API_BASE_URL` is optional during local development. When it is unset,
+the frontend targets the backend on the same hostname using port `5000`.
 
 ```env
-VITE_API_BASE_URL="http://localhost:5000/api"
+# VITE_API_BASE_URL="http://localhost:5000/api"
 ```
 
-### Docker PostgreSQL Environment
+### Production deployment `deployment/.env.example`
 
-The Docker PostgreSQL service uses local development values defined in `compose.yaml`.
+```env
+POSTGRES_USER=kerno_user
+POSTGRES_PASSWORD=replace_with_a_long_random_password
+POSTGRES_DB=kerno_db
+JWT_SECRET=replace_with_a_long_random_secret
+CORS_ORIGIN=https://app.example.com
+AUTH_COOKIE_SAMESITE=lax
+ENABLE_API_DOCS=false
+APP_PORT=5000
+POSTGRES_DATA_PATH=./data/postgres
+UPLOADS_DATA_PATH=./data/uploads
+```
 
----
+The deployment workflow injects the following image coordinates at runtime:
+
+```env
+KERNO_IMAGE=ghcr.io/antgst/kerno-mvp
+KERNO_TAG=develop
+```
+
+`APP_ENV_FILE` is optional and defaults to `./data/.env`.
 
 <a id="docker-local-development"></a>
 
@@ -1015,7 +1055,11 @@ docker compose down -v
 
 ```text
 compose.yaml
+Dockerfile
+deployment/.env.example
+deployment/compose.production.yaml
 docs/docker/DOCKER.md
+docs/docker/CI_CD.md
 ```
 
 ---
@@ -1359,6 +1403,9 @@ It is also used to demonstrate:
 | -------------------- | ------------------------------------------- |
 | GitHub Repository    | https://github.com/Antgst/Kerno-MVP         |
 | GitHub Project Board | https://github.com/users/Antgst/projects/1/views/1 |
+| Deployed application | https://kerno.ausaryu.com/ |
+| Demo Day landing page | https://kerno-landing.netlify.app/ |
+| Stage 5 closure report — FR | [Open PDF](./docs/reports/KERNO_STAGE5_REPORT_FR.pdf) |
 | Stage 3 mockups      | https://canva.link/qqyguvw0uxid4ys          |
 | Stage 3 report — EN  | https://canva.link/85zocsxjseziifk          |
 
@@ -1378,9 +1425,9 @@ This repository is currently developed for educational purposes as part of the H
 
 ## 🔒 Project Origin and Intellectual Property Notice
 
-Kerno was initiated by Antoine Gousset as a future entrepreneurial project.
+KERNO was initiated by Antoine Gousset as a future entrepreneurial project.
 
-The Holberton Stage 4 implementation is used to build and demonstrate a functional MVP, but the project is also intended to serve as the foundation for a potential real-world business initiative after the portfolio phase.
+The Holberton Stage 4 implementation established the functional MVP, while the Stage 5 closure phase consolidated its testing, audits, documentation, deployment, and final portfolio presentation. The project is also intended to serve as the foundation for a potential real-world business initiative after the portfolio phase.
 
 All rights are reserved.
 

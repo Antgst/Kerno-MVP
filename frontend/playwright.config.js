@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const env = globalThis.process?.env || {};
-const frontendBaseUrl = env.PLAYWRIGHT_BASE_URL || "http://127.0.0.1:5173";
+const frontendBaseUrl = env.PLAYWRIGHT_BASE_URL || "http://localhost:5173";
 const apiBaseUrl = env.VITE_API_BASE_URL || "http://localhost:5001/api";
 
 export default defineConfig({
