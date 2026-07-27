@@ -155,3 +155,11 @@ frontend/test-results/
 
 # Local security audit reports
 security-audit-reports/
+
+# Demo video generated output
+scripts/demoday-video/output/
+
+# Python generated caches
+__pycache__/
+*.py[cod]
+.pytest_cache/

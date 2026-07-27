@@ -4,7 +4,7 @@
 
 This document defines the Git workflow, branch strategy, pull request rules, review expectations, and collaboration conventions for the Kerno-MVP project.
 
-Kerno is a Holberton Stage 4 portfolio project. The goal is to build a functional MVP for a B2B SaaS marketplace connecting direct or local suppliers with retail stores.
+KERNO was developed as a Holberton Portfolio Project. Stage 4 produced the functional MVP, while Stage 5 closes, validates, documents and presents the final result.
 
 The workflow must stay simple, readable, and realistic for a small team. It must support clean collaboration without adding unnecessary process complexity.
 
@@ -56,13 +56,13 @@ It contains the clean and validated version of the project. It should be used fo
 
 Direct commits to `main` are not allowed.
 
-### `develop`
+### `develop-V2`
 
-`develop` is the integration branch.
+`develop-V2` is the integration branch.
 
 It contains validated work that is ready to be tested together before being merged into `main`.
 
-During the current Stage 4 stabilization phase, feature, fix, documentation and visual branches should target `develop` unless a temporary integration branch is explicitly announced. Historical sprint branches (`S1`, `S2`, `S3`, `S4`, `S5`) remain part of the project history.
+Feature, fix, documentation, audit and visual branches should target `develop-V2` unless a temporary integration branch is explicitly announced. Historical sprint branches (`S1`, `S2`, `S3`, `S4`, `S5`) remain part of the project history.
 
 ---
 
@@ -172,9 +172,9 @@ Every meaningful change must go through a pull request.
 
 ### Pull request target
 
-Pull requests must target the active sprint branch, not `main`.
+Pull requests must target `develop-V2`, not `main`, unless a temporary integration branch is explicitly announced.
 
-Validated sprint branches can be merged into `develop`. The final stabilization pull request should go from `develop` to `main`.
+A final stabilization pull request may target `main` only after validation on `develop-V2`.
 
 ---
 

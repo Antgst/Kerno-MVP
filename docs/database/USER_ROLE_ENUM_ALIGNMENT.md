@@ -87,7 +87,7 @@ Relevant implementation files:
 ```text
 backend/prisma/schema.prisma
 backend/src/modules/auth/auth.service.js
-docs/security/AUTH_SECURITY_NOTES.md
+docs/security/EN_AUTH_SECURITY_NOTES.md
 ```
 
 ---
