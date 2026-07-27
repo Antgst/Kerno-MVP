@@ -516,13 +516,11 @@ apiClient.js
 apiError.js
 authService.js
 categoryService.js
-index.js
 productService.js
 requestService.js
 storeService.js
 supplierService.js
 tokenStorage.js
-userService.js
 ```
 
 ### Responsibilities
@@ -601,14 +599,13 @@ Current utility files:
 ```text
 authNavigation.js
 completionPercent.js
-jwt.js
 productImages.js
 productPrice.js
 responseUtils.js
 status.js
 ```
 
-These utilities support authentication navigation, profile completion calculations, JWT handling, product images, product price formatting, API response helpers and status labels.
+These utilities support authentication navigation, profile completion calculations, product images, product price formatting, API response helpers and status labels.
 
 ---
 
@@ -629,7 +626,6 @@ landing/*.webp
 register/register-local-sourcing-banner.webp
 store-dashboard/*.webp
 supplier-dashboard/*.webp
-store-dashboard-bg.png
 ```
 
 Public assets are stored in:

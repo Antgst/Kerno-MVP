@@ -792,5 +792,5 @@ These features are outside the current MVP scope.
 * `docs/architecture/APPLICATION_ARCHITECTURE.md`
 * `docs/architecture/BACKEND_STRUCTURE.md`
 * `docs/database/DATABASE_SCHEMA.md`
-* `docs/security/AUTH_SECURITY_NOTES.md`
+* `docs/security/EN_AUTH_SECURITY_NOTES.md`
 * `docs/testing/TESTING_EVIDENCE.md`

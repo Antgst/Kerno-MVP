@@ -9,7 +9,6 @@ Think of this folder as the shared measuring kit: helpers keep repeated formatti
 ## Contents
 - `authNavigation.js` determines navigation behavior after authentication.
 - `completionPercent.js` calculates profile completion values.
-- `jwt.js` reads useful information from JWT values.
 - `productImages.js` resolves product image data for UI rendering.
 - `productPrice.js` formats product price information for display.
 - `responseUtils.js` provides request or response formatting helpers.

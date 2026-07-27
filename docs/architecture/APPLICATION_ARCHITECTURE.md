@@ -238,15 +238,20 @@ sequenceDiagram
 
 ## 9. Deployment Approach
 
-The MVP is designed to support a simple deployment strategy:
+The final deployment uses a containerized application architecture:
 
-* frontend deployed separately;
-* backend deployed separately;
-* PostgreSQL database hosted through a managed or local service depending on the environment.
+* the React frontend is compiled during the Docker image build;
+* the Express backend serves both the API and the compiled frontend;
+* frontend and backend are therefore deployed together in one application image;
+* the image is published to GitHub Container Registry;
+* PostgreSQL runs as a separate service in the production Compose stack;
+* committed Prisma migrations are applied when the application container starts.
 
-The local development environment can also use Docker Compose for PostgreSQL.
+The local development environment remains separated:
 
----
+* Vite runs the frontend;
+* Express runs the backend;
+* Docker Compose provides the local PostgreSQL database.
 
 ## 10. Out of Scope for the MVP
 
