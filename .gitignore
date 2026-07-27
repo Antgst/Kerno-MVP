@@ -141,3 +141,17 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Playwright generated artifacts
+frontend/playwright-report/
+frontend/test-results/
+
+.venv
+.env
+
+# Local AI assistant workspaces
+.agents/
+.codex/
+
+# Local security audit reports
+security-audit-reports/

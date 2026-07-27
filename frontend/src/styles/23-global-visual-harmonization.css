@@ -1,0 +1,314 @@
+/* Global visual harmonization — experimental-all-antoine
+   Scope: visual consistency only.
+   No backend, route, API, business logic or global background change. */
+
+:root {
+  --kerno-connected-page-max: 1480px;
+  --kerno-connected-page-x: calc(100vw - 80px);
+  --kerno-connected-page-top: 24px;
+  --kerno-connected-page-gap: 20px;
+
+  --kerno-unified-title-size: clamp(1.85rem, 2.55vw, 2.32rem);
+  --kerno-unified-title-weight: 540;
+  --kerno-unified-title-line-height: 1.08;
+  --kerno-unified-title-spacing: -0.025em;
+
+  --kerno-unified-subtitle-size: 0.94rem;
+  --kerno-unified-subtitle-line-height: 1.52;
+
+  --kerno-unified-card-radius: 20px;
+  --kerno-unified-card-border: rgb(214 213 206 / 94%);
+  --kerno-unified-card-bg: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 97%) 0%,
+    rgb(255 255 255 / 94%) 100%
+  );
+  --kerno-unified-card-shadow:
+    0 1px 0 rgb(255 255 255 / 90%) inset,
+    0 14px 34px rgb(22 78 63 / 7%);
+}
+
+/* Largeurs, marges et espacements des pages métier */
+.catalog-page,
+.supplier-products-page,
+.supplier-requests-page,
+.store-requests-page,
+.supplier-detail-page,
+.product-detail-page,
+.request-form-page,
+.supplier-product-form-page,
+.supplier-request-detail-page,
+.store-request-detail-page {
+  width: min(var(--kerno-connected-page-max), var(--kerno-connected-page-x));
+  margin-top: var(--kerno-connected-page-top);
+  gap: var(--kerno-connected-page-gap);
+}
+
+.store-profile-page,
+.supplier-profile-page {
+  margin-top: var(--kerno-connected-page-top);
+  gap: 22px;
+}
+
+/* Titres hors card : même hiérarchie que dashboards / pages publiques */
+.catalog-header h1,
+.supplier-products-header h1,
+.supplier-requests-header h1,
+.store-requests-header h1,
+.supplier-detail-page__intro h1,
+.product-detail-page__intro h1,
+.supplier-product-form-page__intro h1,
+.supplier-request-detail-header h1,
+.store-profile-page__intro h1,
+.supplier-profile-page__intro h1,
+.page-header__title {
+  margin: 0;
+  color: #1b302e;
+  font-size: var(--kerno-unified-title-size);
+  font-weight: var(--kerno-unified-title-weight);
+  letter-spacing: var(--kerno-unified-title-spacing);
+  line-height: var(--kerno-unified-title-line-height);
+}
+
+/* Sous-titres de pages */
+.catalog-header > p:last-child,
+.supplier-products-header > div > p:last-child,
+.supplier-requests-header > div:first-child > p:last-child,
+.store-requests-header > div:first-child > p:last-child,
+.supplier-detail-page__subtitle,
+.product-detail-page__subtitle,
+.supplier-product-form-page__intro > div > p:last-child,
+.supplier-request-detail-header > div > p:last-child,
+.store-profile-page__subtitle,
+.supplier-profile-page__subtitle,
+.page-header__description {
+  max-width: 760px;
+  margin-top: 7px;
+  color: #68716e;
+  font-size: var(--kerno-unified-subtitle-size);
+  line-height: var(--kerno-unified-subtitle-line-height);
+}
+
+/* Cards et panels : finition cohérente sans changer la structure */
+.catalog-toolbar,
+.supplier-products-toolbar,
+.supplier-requests-toolbar,
+.store-requests-toolbar,
+.catalog-product-card,
+.supplier-product-card,
+.supplier-request-card,
+.store-request-card,
+.product-detail-page__card,
+.supplier-detail-page__card,
+.supplier-product-form-card,
+.supplier-product-preview,
+.request-form-page__card,
+.request-context-card,
+.supplier-request-detail-card,
+.store-request-detail-card,
+.store-profile-page__card,
+.supplier-profile-page__card {
+  border-color: var(--kerno-unified-card-border);
+  border-radius: var(--kerno-unified-card-radius);
+  background: var(--kerno-unified-card-bg);
+  box-shadow: var(--kerno-unified-card-shadow);
+}
+
+/* Titres internes : plus proches du niveau dashboard / card */
+.catalog-product-card h2,
+.supplier-product-card h2,
+.supplier-request-card h2,
+.store-request-card h2,
+.product-detail-page__card h2,
+.supplier-detail-page__card h2,
+.supplier-product-form-card h2,
+.supplier-product-preview h2,
+.request-form-page__card h2,
+.request-context-card h2,
+.store-request-detail-card h2,
+.supplier-request-detail-card h2,
+.store-profile-page__card h2,
+.supplier-profile-page__card h2 {
+  color: #1b302e;
+  font-size: clamp(1.02rem, 1.1vw, 1.16rem);
+  font-weight: 620;
+  letter-spacing: -0.012em;
+  line-height: 1.22;
+}
+
+/* Corps de texte : lisibilité uniforme sur les cards / listes */
+.catalog-product-card p,
+.supplier-product-card p,
+.supplier-request-card p,
+.store-request-card p,
+.product-detail-page__card p,
+.supplier-detail-page__card p,
+.supplier-product-preview p,
+.request-form-page__card p,
+.request-context-card p,
+.store-request-detail-card p,
+.supplier-request-detail-card p,
+.store-profile-page__card p,
+.supplier-profile-page__card p {
+  line-height: 1.48;
+}
+
+/* Metadata, labels et petits textes */
+.catalog-product-meta,
+.supplier-product-card__meta,
+.supplier-request-card small,
+.store-request-card small,
+.request-detail-field dt,
+.request-status-badge,
+.status-badge {
+  font-size: 0.8rem;
+  line-height: 1.28;
+}
+
+/* Toolbars : cohérence visuelle sur pages listes */
+.catalog-toolbar,
+.supplier-products-toolbar,
+.supplier-requests-toolbar,
+.store-requests-toolbar {
+  padding: clamp(0.95rem, 1.4vw, 1.2rem);
+  gap: 14px;
+}
+
+/* Listes longues : rythme plus régulier */
+.supplier-requests-list,
+.store-requests-list {
+  gap: 14px;
+}
+
+.catalog-products,
+.supplier-products-collection {
+  gap: 18px;
+}
+
+/* Actions secondaires et boutons de listes : interaction plus régulière */
+.catalog-product-card a,
+.supplier-product-card a,
+.supplier-request-card a,
+.store-request-card a,
+.supplier-detail-page a,
+.product-detail-page a,
+.request-form-page a,
+.request-form-page button,
+.supplier-product-form-page a,
+.supplier-product-form-page button {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+/* Header de contenu : éviter les écarts trop variables */
+.product-detail-page__intro,
+.supplier-detail-page__intro,
+.supplier-product-form-page__intro,
+.supplier-request-detail-header,
+.store-request-detail-header,
+.store-profile-page__intro,
+.supplier-profile-page__intro {
+  margin-bottom: 2px;
+}
+
+/* Responsive : respiration propre sans figer les hauteurs */
+@media (max-width: 900px) {
+  :root {
+    --kerno-connected-page-x: calc(100vw - 32px);
+    --kerno-connected-page-top: 18px;
+    --kerno-connected-page-gap: 16px;
+    --kerno-unified-title-size: clamp(1.62rem, 7vw, 2rem);
+    --kerno-unified-subtitle-size: 0.9rem;
+  }
+
+  .catalog-page,
+  .supplier-products-page,
+  .supplier-requests-page,
+  .store-requests-page,
+  .supplier-detail-page,
+  .product-detail-page,
+  .request-form-page,
+  .supplier-product-form-page,
+  .supplier-request-detail-page,
+  .store-request-detail-page,
+  .store-profile-page,
+  .supplier-profile-page {
+    width: min(100%, var(--kerno-connected-page-x));
+  }
+
+  .catalog-toolbar,
+  .supplier-products-toolbar,
+  .supplier-requests-toolbar,
+  .store-requests-toolbar,
+  .catalog-product-card,
+  .supplier-product-card,
+  .supplier-request-card,
+  .store-request-card,
+  .product-detail-page__card,
+  .supplier-detail-page__card,
+  .supplier-product-form-card,
+  .supplier-product-preview,
+  .request-form-page__card,
+  .request-context-card,
+  .supplier-request-detail-card,
+  .store-request-detail-card,
+  .store-profile-page__card,
+  .supplier-profile-page__card {
+    border-radius: 18px;
+  }
+}
+
+/* Global page title orange underlines - start */
+.catalog-header h1::after,
+.supplier-products-header h1::after,
+.supplier-requests-header h1::after,
+.store-requests-header h1::after,
+.supplier-detail-page__intro h1::after,
+.product-detail-page__intro h1::after,
+.supplier-product-form-page__intro h1::after,
+.supplier-request-detail-header h1::after,
+.store-request-detail-header h1::after,
+.store-profile-page__intro h1::after,
+.supplier-profile-page__intro h1::after,
+.page-header__title::after,
+.store-dashboard h1::after,
+.supplier-dashboard h1::after {
+  display: block;
+  width: 46px;
+  height: 3px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: var(--color-orange);
+  content: "";
+}
+
+.store-dashboard h1::after,
+.supplier-dashboard h1::after {
+  margin-top: 9px;
+}
+
+@media (max-width: 900px) {
+  .catalog-header h1::after,
+  .supplier-products-header h1::after,
+  .supplier-requests-header h1::after,
+  .store-requests-header h1::after,
+  .supplier-detail-page__intro h1::after,
+  .product-detail-page__intro h1::after,
+  .supplier-product-form-page__intro h1::after,
+  .supplier-request-detail-header h1::after,
+  .store-request-detail-header h1::after,
+  .store-profile-page__intro h1::after,
+  .supplier-profile-page__intro h1::after,
+  .page-header__title::after,
+  .store-dashboard h1::after,
+  .supplier-dashboard h1::after {
+    width: 40px;
+    height: 3px;
+    margin-top: 8px;
+  }
+}
+/* Global page title orange underlines - end */

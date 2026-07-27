@@ -1,0 +1,154 @@
+/* Typography harmonization — experimental-typo-antoine
+   Scope: visual text hierarchy only. No layout, route, API or backend change. */
+
+:root {
+  --kerno-page-title-size: clamp(1.85rem, 2.55vw, 2.32rem);
+  --kerno-page-title-weight: 540;
+  --kerno-page-title-line-height: 1.08;
+  --kerno-page-title-spacing: -0.025em;
+
+  --kerno-page-subtitle-size: 0.95rem;
+  --kerno-page-subtitle-line-height: 1.5;
+  --kerno-page-subtitle-weight: 430;
+
+  --kerno-section-title-size: clamp(1.08rem, 1.25vw, 1.2rem);
+  --kerno-section-title-weight: 620;
+  --kerno-section-title-line-height: 1.18;
+
+  --kerno-card-title-size: 0.98rem;
+  --kerno-card-title-weight: 620;
+  --kerno-card-title-line-height: 1.22;
+
+  --kerno-body-size: 0.94rem;
+  --kerno-small-size: 0.82rem;
+  --kerno-label-size: 0.8rem;
+}
+
+/* Shared React PageHeader component */
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.page-header__title {
+  max-width: 780px;
+  margin: 0;
+  color: #1b302e;
+  font-size: var(--kerno-page-title-size);
+  font-weight: var(--kerno-page-title-weight);
+  letter-spacing: var(--kerno-page-title-spacing);
+  line-height: var(--kerno-page-title-line-height);
+}
+
+.page-header__description {
+  max-width: 720px;
+  margin: 8px 0 0;
+  color: #53615d;
+  font-size: var(--kerno-page-subtitle-size);
+  font-weight: var(--kerno-page-subtitle-weight);
+  line-height: var(--kerno-page-subtitle-line-height);
+}
+
+.page-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Main authenticated page headers */
+.catalog-header h1,
+.supplier-requests-header h1,
+.store-requests-header h1,
+.supplier-products-header h1,
+.product-detail-page__intro h1,
+.supplier-detail-page__intro h1,
+.store-profile-page h1,
+.supplier-profile-page h1,
+.request-form-page h1 {
+  color: #1b302e;
+  font-size: var(--kerno-page-title-size);
+  font-weight: var(--kerno-page-title-weight);
+  letter-spacing: var(--kerno-page-title-spacing);
+  line-height: var(--kerno-page-title-line-height);
+}
+
+.catalog-header > p:last-child,
+.supplier-requests-header > div:first-child > p:last-child,
+.store-requests-header > div:first-child > p:last-child,
+.supplier-products-header > div:first-child > p:last-child,
+.product-detail-page__subtitle,
+.supplier-detail-page__subtitle,
+.store-profile-page__subtitle,
+.supplier-profile-page__subtitle,
+.request-form-page__subtitle {
+  color: #53615d;
+  font-size: var(--kerno-page-subtitle-size);
+  font-weight: var(--kerno-page-subtitle-weight);
+  line-height: var(--kerno-page-subtitle-line-height);
+}
+
+/* Section titles */
+.store-dashboard__section-header h2,
+.supplier-dashboard__section-header h2,
+.catalog-summary h2,
+.request-summary h2,
+.request-context-card h2,
+.product-detail-page h2,
+.supplier-detail-page h2,
+.store-profile-page h2,
+.supplier-profile-page h2 {
+  font-size: var(--kerno-section-title-size);
+  font-weight: var(--kerno-section-title-weight);
+  line-height: var(--kerno-section-title-line-height);
+}
+
+/* Card titles */
+.catalog-product-body h3,
+.supplier-product-card__heading h3,
+.store-dashboard__supplier-body h3,
+.supplier-products-summary strong,
+.supplier-request-card strong,
+.store-request-card strong,
+.request-detail-field dt {
+  font-size: var(--kerno-card-title-size);
+  font-weight: var(--kerno-card-title-weight);
+  line-height: var(--kerno-card-title-line-height);
+}
+
+/* Secondary text */
+.catalog-product-body p,
+.supplier-product-card p,
+.store-dashboard__request-copy small,
+.store-dashboard__request-copy em,
+.store-dashboard__request-date,
+.supplier-request-card small,
+.store-request-card small,
+.request-detail-field dd {
+  font-size: var(--kerno-body-size);
+  line-height: 1.45;
+}
+
+/* Labels, badges and metadata */
+.catalog-product-meta,
+.supplier-product-card__meta,
+.request-status-badge,
+.status-badge,
+.supplier-requests-header__summary span {
+  font-size: var(--kerno-label-size);
+  line-height: 1.25;
+}
+
+@media (max-width: 760px) {
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .page-header__actions {
+    width: 100%;
+  }
+}
