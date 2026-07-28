@@ -1,0 +1,84 @@
+name: Vérification sécurité Prisma #227
+
+on:
+  push:
+    branches:
+      - security/verify-prisma-audit-227
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-prisma-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Installer les dépendances verrouillées
+        run: npm ci
+
+      - name: Audit complet au niveau modéré
+        id: audit_all
+        continue-on-error: true
+        run: npm audit --audit-level=moderate
+
+      - name: Audit des dépendances de production
+        id: audit_prod
+        continue-on-error: true
+        run: npm audit --audit-level=moderate --omit=dev
+
+      - name: Vérifier la syntaxe backend
+        id: backend_test
+        continue-on-error: true
+        run: npm test
+
+      - name: Valider le schéma Prisma
+        id: prisma_validate
+        continue-on-error: true
+        run: npx prisma validate
+
+      - name: Générer le client Prisma
+        id: prisma_generate
+        continue-on-error: true
+        run: npx prisma generate
+
+      - name: Résumer les résultats
+        if: always()
+        working-directory: .
+        run: |
+          {
+            echo '## Résultats de la vérification #227'
+            echo
+            echo '| Contrôle | Résultat |'
+            echo '|---|---|'
+            echo "| npm audit complet | ${{ steps.audit_all.outcome }} |"
+            echo "| npm audit production | ${{ steps.audit_prod.outcome }} |"
+            echo "| npm test backend | ${{ steps.backend_test.outcome }} |"
+            echo "| prisma validate | ${{ steps.prisma_validate.outcome }} |"
+            echo "| prisma generate | ${{ steps.prisma_generate.outcome }} |"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Faire échouer si une vérification obligatoire échoue
+        if: always()
+        working-directory: .
+        run: |
+          test '${{ steps.audit_all.outcome }}' = 'success'
+          test '${{ steps.audit_prod.outcome }}' = 'success'
+          test '${{ steps.backend_test.outcome }}' = 'success'
+          test '${{ steps.prisma_validate.outcome }}' = 'success'
+          test '${{ steps.prisma_generate.outcome }}' = 'success'
