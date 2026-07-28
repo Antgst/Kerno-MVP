@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - security/verify-prisma-audit-227
+  pull_request:
+    branches:
+      - develop-V2
   workflow_dispatch:
 
 permissions:
