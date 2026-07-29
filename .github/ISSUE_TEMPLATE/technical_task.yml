@@ -1,0 +1,112 @@
+name: Créer une tâche technique
+description: Décrire un chantier de maintenance, sécurité, documentation, test ou architecture.
+title: "[Technique] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ce formulaire concerne les travaux techniques qui ne sont ni un bug utilisateur ni une évolution produit.
+        Vérifie l’état actuel de `develop-V2` et recherche les issues, pull requests ou commits liés.
+
+  - type: dropdown
+    id: categorie
+    attributes:
+      label: Catégorie
+      options:
+        - Sécurité
+        - Maintenance
+        - Dette technique
+        - Tests
+        - Documentation
+        - Architecture
+        - Base de données
+        - Dépendances
+        - CI / GitHub Actions
+        - Environnement de développement
+        - Autre
+    validations:
+      required: true
+
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Décris l’état actuel, le problème constaté et les sources vérifiées.
+    validations:
+      required: true
+
+  - type: textarea
+    id: objectif
+    attributes:
+      label: Objectif
+      description: Décris le résultat technique attendu.
+    validations:
+      required: true
+
+  - type: textarea
+    id: perimetre
+    attributes:
+      label: Périmètre
+      description: Indique clairement ce qui est inclus et ce qui reste hors périmètre.
+      placeholder: |
+        Inclus :
+        -
+
+        Hors périmètre :
+        -
+    validations:
+      required: true
+
+  - type: textarea
+    id: composants
+    attributes:
+      label: Composants ou fichiers concernés
+      placeholder: "backend/, frontend/, .github/workflows/, Prisma, documentation..."
+
+  - type: textarea
+    id: criteres
+    attributes:
+      label: Critères d’acceptation
+      description: Liste des conditions vérifiables permettant de considérer le chantier comme terminé.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: verifications
+    attributes:
+      label: Vérifications prévues
+      description: Indique les tests, builds, contrôles ou revues nécessaires.
+      placeholder: |
+        - npm test --prefix backend
+        - npm run lint --prefix frontend
+        - npm run build --prefix frontend
+        - git diff --check
+
+  - type: textarea
+    id: risques
+    attributes:
+      label: Risques et dépendances
+      description: Décris les impacts possibles sur la sécurité, les données, le déploiement ou les autres branches.
+
+  - type: textarea
+    id: documentation
+    attributes:
+      label: Documentation à mettre à jour
+      placeholder: "README.md, CONTRIBUTING.md, AGENTS.md, docs/..."
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Vérifications préalables
+      options:
+        - label: J’ai vérifié le besoin dans l’état actuel de `develop-V2`.
+          required: true
+        - label: J’ai recherché les issues, pull requests et commits liés.
+          required: true
+        - label: Le périmètre est ciblé et ne mélange pas plusieurs chantiers indépendants.
+          required: true
+        - label: Je n’ai inclus aucun secret ni donnée sensible.
+          required: true

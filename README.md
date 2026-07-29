@@ -885,85 +885,98 @@ The repository documentation is organized by topic. Stage 4 delivery documents a
 
 <a id="getting-started"></a>
 
-## ⚙️ Getting Started
+## ⚙️ Installation locale
 
-### Prerequisites
+### Prérequis
 
-* Node.js
-* npm
-* PostgreSQL or Docker
-* Git
-* VS Code or equivalent editor
-* Postman or equivalent API testing tool
+- Git ;
+- Node.js `22.22.3`, chargé via `.nvmrc` ;
+- npm `10.9.8` ;
+- Docker avec Docker Compose ;
+- un éditeur de code.
 
-### Clone the Repository
+PostgreSQL peut être installé séparément, mais l’environnement local de référence utilise le service `postgres` défini dans `compose.yaml`.
+
+### Cloner le dépôt
 
 ```bash
 git clone https://github.com/Antgst/Kerno-MVP.git
 cd Kerno-MVP
+git switch develop-V2
+nvm use
 ```
 
-### Backend Setup
+### Installer les dépendances
+
+Les fichiers de verrouillage doivent être respectés :
+
+```bash
+npm ci
+npm ci --prefix backend
+npm ci --prefix frontend
+```
+
+Ne pas remplacer `npm ci` par une mise à jour générale des dépendances dans un chantier sans rapport.
+
+### Préparer l’environnement backend
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+Remplacer uniquement les valeurs locales nécessaires. Ne jamais committer `backend/.env`.
+
+### Démarrer PostgreSQL
+
+```bash
+docker compose up -d postgres
+docker compose exec postgres pg_isready -U kerno_user -d kerno_db
+```
+
+La seconde commande doit indiquer que PostgreSQL accepte les connexions.
+
+### Préparer Prisma
 
 ```bash
 cd backend
-npm install
-cp .env.example .env
-npx prisma generate
-npx prisma migrate dev
+npm exec prisma -- generate
+npm exec prisma -- migrate status
+npm exec prisma -- migrate deploy
+cd ..
+```
+
+`migrate deploy` applique les migrations existantes. La création d’une nouvelle migration doit rester réservée à un changement de schéma explicite et vérifié.
+
+### Démarrer l’application
+
+Depuis la racine :
+
+```bash
 npm run dev
 ```
 
-Once the backend is running, you can access:
+Services locaux par défaut :
 
-* API health check: `http://localhost:5000/api/health`
-* Swagger UI: `http://localhost:5000/api/docs`
-* OpenAPI JSON: `http://localhost:5000/api/openapi.json`
+- frontend : `http://localhost:5173` ;
+- backend : `http://localhost:5000` ;
+- santé API : `http://localhost:5000/api/health` ;
+- documentation API : `http://localhost:5000/api/docs`, uniquement lorsque `ENABLE_API_DOCS=true`.
 
-### Frontend Setup
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend routing is defined in [`frontend/src/routes/routeConfig.js`](./frontend/src/routes/routeConfig.js) and documented in [`docs/architecture/FRONTEND_STRUCTURE.md`](./docs/architecture/FRONTEND_STRUCTURE.md).
-
-### Database Setup
+### Arrêter l’environnement local
 
 ```bash
-cd backend
-npx prisma generate
-npx prisma migrate dev
-```
-
-### Docker Local Database
-
-Docker Compose is used to provide a shared local PostgreSQL environment for the team.
-
-```bash
-docker compose up -d
-docker compose ps
-docker compose logs
 docker compose down
 ```
 
-To reset the local PostgreSQL volume, use:
-
-```bash
-docker compose down -v
-```
-
-> Warning: `docker compose down -v` removes local database volumes and deletes local PostgreSQL data.
+Ne pas utiliser `docker compose down -v` sans intention explicite de supprimer les données PostgreSQL locales.
 
 ---
 
 <a id="environment-variables"></a>
 
-## 🔐 Environment Variables
+## 🔐 Variables d’environnement
 
-### Backend `backend/.env.example`
+### Backend — `backend/.env.example`
 
 ```env
 PORT=5000
@@ -975,16 +988,22 @@ AUTH_COOKIE_SAMESITE="lax"
 ENABLE_API_DOCS="true"
 ```
 
-### Frontend `frontend/.env.example`
+Règles :
 
-`VITE_API_BASE_URL` is optional during local development. When it is unset,
-the frontend targets the backend on the same hostname using port `5000`.
+- utiliser un secret local long et aléatoire ;
+- ne jamais réutiliser un secret de production ;
+- conserver `ENABLE_API_DOCS=false` en production sauf besoin explicitement validé ;
+- ne jamais committer le fichier `.env`.
+
+### Frontend — `frontend/.env.example`
+
+`VITE_API_BASE_URL` est facultatif en local. Lorsqu’il est absent, le frontend cible le backend sur le même hôte, au port `5000`.
 
 ```env
 # VITE_API_BASE_URL="http://localhost:5000/api"
 ```
 
-### Production deployment `deployment/.env.example`
+### Déploiement — `deployment/.env.example`
 
 ```env
 POSTGRES_USER=kerno_user
@@ -999,14 +1018,18 @@ POSTGRES_DATA_PATH=./data/postgres
 UPLOADS_DATA_PATH=./data/uploads
 ```
 
-The deployment workflow injects the following image coordinates at runtime:
+Le workflow de déploiement existant utilise actuellement l’image et le tag suivants :
 
 ```env
 KERNO_IMAGE=ghcr.io/antgst/kerno-mvp
 KERNO_TAG=develop
 ```
 
-`APP_ENV_FILE` is optional and defaults to `./data/.env`.
+`APP_ENV_FILE` est facultatif et utilise `./data/.env` par défaut.
+
+Les valeurs de production ne doivent jamais être ajoutées au dépôt, aux issues, aux pull requests ou aux logs partagés.
+
+---
 
 <a id="docker-local-development"></a>
 
@@ -1065,37 +1088,55 @@ docs/docker/CI_CD.md
 
 <a id="development-workflow"></a>
 
-## 🌿 Development Workflow
+## 🌿 Workflow de développement
 
-### Branches
+### Rôle des branches
 
-Main branch logic:
+> **IMPORTANT — Une branche `develop-V2` a été créée en amont et devient la branche principale de travail et d’intégration pour la V2 de KERNO pendant la période RNCP. Les travaux liés au RNCP restent sur `develop` ou `main` selon le workflow concerné. Aucune fusion entre ces branches ne doit être réalisée automatiquement.**
 
-* `main`: stable final branch;
-* `develop-V2`: active integration branch;
-* `develop`: branch currently used by the deployment workflow;
-* `S1`, `S2`, `S3`, `S4`, `S5`: historical sprint branches used during staged development;
-* feature, fix, docs and visual branches: scoped branches created from `develop-V2` unless a temporary integration branch is explicitly announced.
+- `main` : version stable historique ;
+- `develop` : branche conservée pour le déploiement Ausaryu existant et les travaux RNCP concernés ;
+- `develop-V2` : branche d’intégration active de la V2 ;
+- `project-landing-page` : landing page séparée.
 
-Branch naming examples:
+Règles :
+
+- partir de `develop-V2` par défaut ;
+- créer une branche dédiée par chantier ;
+- cibler `develop-V2` dans les pull requests ;
+- ne pas committer directement sur `develop-V2` ;
+- ne jamais fusionner `develop-V2` vers `main` ou `develop` sans accord explicite ;
+- ne jamais annoncer un déploiement sans preuve.
+
+Préfixes autorisés :
 
 ```text
-setup/s1-04-project-structure
-backend/s2-01-health-route
-database/s2-02-prisma-schema
-frontend/s3-01-routing-map
+feat/
+fix/
+chore/
+docs/
+test/
+security/
+refactor/
 ```
 
-### Pull Requests
+Exemple :
 
-Pull request rules:
+```text
+chore/configurer-environnement-v2
+```
 
-* one PR per issue or small group of closely related tasks;
-* PR targets `develop-V2` unless a temporary integration branch is explicitly announced;
-* PR title follows the project convention;
-* PR description summarizes changes and validation;
-* PR references the related issue;
-* PR is reviewed before merge.
+### Pull requests
+
+- une PR doit couvrir un chantier cohérent ;
+- le titre et la description doivent être rédigés en français ;
+- la PR doit référencer l’issue concernée lorsque applicable ;
+- les vérifications réellement exécutées doivent être documentées ;
+- les risques, limites et éléments non modifiés doivent être indiqués ;
+- utiliser une PR en brouillon tant que les vérifications ne sont pas terminées ;
+- pousser, ouvrir une PR et fusionner uniquement après accord explicite.
+
+Les règles détaillées se trouvent dans [`CONTRIBUTING.md`](./CONTRIBUTING.md) et les instructions destinées aux agents dans [`AGENTS.md`](./AGENTS.md).
 
 ---
 

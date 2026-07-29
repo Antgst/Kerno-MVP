@@ -1,148 +1,208 @@
-# Contributing to Kerno-MVP
+# Contribuer à KERNO
 
-## 1. Purpose
+## 1. Objet
 
-This document defines the Git workflow, branch strategy, pull request rules, review expectations, and collaboration conventions for the Kerno-MVP project.
+Ce document décrit le workflow de contribution de KERNO pour la V2 :
 
-KERNO was developed as a Holberton Portfolio Project. Stage 4 produced the functional MVP, while Stage 5 closes, validates, documents and presents the final result.
+- stratégie de branches ;
+- conventions de commits ;
+- préparation des pull requests ;
+- règles de revue ;
+- gestion des issues ;
+- vérifications techniques ;
+- sécurité et documentation ;
+- nettoyage après fusion.
 
-The workflow must stay simple, readable, and realistic for a small team. It must support clean collaboration without adding unnecessary process complexity.
+KERNO est une marketplace SaaS B2B qui connecte des fournisseurs locaux ou directs avec des magasins.
 
----
-
-## 2. MVP scope reminder
-
-The MVP focuses on the following core journey:
-
-1. A supplier creates an account.
-2. A supplier completes a company profile.
-3. A supplier adds products.
-4. A store creates an account.
-5. A store completes a store profile.
-6. A store searches for products or suppliers.
-7. A store views product and supplier details.
-8. A store sends a contact or quote request.
-9. A supplier receives and reviews the request.
-
-The MVP must remain focused on supplier visibility, product discovery, and structured first contact between stores and suppliers.
-
-### Out of scope for the MVP
-
-The following features must not be implemented during the MVP unless explicitly validated by the team:
-
-* Online payment
-* Shopping cart
-* Full order management
-* Delivery or logistics tracking
-* Invoicing
-* Advanced internal messaging
-* Advanced analytics
-* Complex subscription management
-* Reviews and public ratings
-* Heavy admin back office
-* Mandatory external API integrations
-
-Any feature that extends the MVP scope must be discussed before development.
+Le processus doit rester simple, vérifiable et adapté à une petite équipe.
 
 ---
 
-## 3. Main branches
+## 2. Périmètre produit actuel
+
+Le parcours central couvre :
+
+1. la création d’un compte fournisseur ;
+2. la complétion du profil fournisseur ;
+3. la gestion des produits fournisseur ;
+4. la création d’un compte magasin ;
+5. la complétion du profil magasin ;
+6. la recherche de produits et de fournisseurs ;
+7. la consultation des détails produit et fournisseur ;
+8. l’envoi d’une demande de contact ou de devis ;
+9. le suivi des demandes envoyées et reçues.
+
+Ne font pas encore partie du MVP :
+
+- le paiement en ligne ;
+- le panier ;
+- la commande complète ;
+- la livraison et le suivi logistique ;
+- la facturation ;
+- la messagerie avancée ;
+- les abonnements complexes ;
+- les avis publics ;
+- un back-office administratif lourd.
+
+Toute extension importante de ce périmètre doit être validée avant développement.
+
+---
+
+## 3. Sources de vérité
+
+Respecter cet ordre :
+
+1. état actuel vérifié sur GitHub ;
+2. code et documentation de la branche concernée ;
+3. issue ou pull request du chantier ;
+4. documentation du dépôt ;
+5. rapports historiques des anciens stages.
+
+Une information historique ne doit pas être considérée comme actuelle lorsqu’elle peut être vérifiée dans le code ou sur GitHub.
+
+---
+
+## 4. Branches principales
 
 ### `main`
 
-`main` is the stable branch.
+`main` contient la version stable historique.
 
-It contains the clean and validated version of the project. It should be used for final demonstrations or stable project snapshots.
+Règles :
 
-Direct commits to `main` are not allowed.
+- aucun commit direct ;
+- aucune fusion automatique depuis `develop-V2` ;
+- toute fusion vers `main` nécessite une validation explicite ;
+- utiliser cette branche pour les versions stables ou les jalons validés.
+
+### `develop`
+
+`develop` est conservée pour le déploiement Ausaryu existant.
+
+Règles :
+
+- ne pas l’utiliser comme branche d’intégration V2 ;
+- ne pas la modifier pour un chantier V2 sans demande explicite ;
+- ne pas annoncer un déploiement sans preuve issue des checks ou du serveur.
 
 ### `develop-V2`
 
-`develop-V2` is the integration branch.
+`develop-V2` est la branche d’intégration active.
 
-It contains validated work that is ready to be tested together before being merged into `main`.
+Règles :
 
-Feature, fix, documentation, audit and visual branches should target `develop-V2` unless a temporary integration branch is explicitly announced. Historical sprint branches (`S1`, `S2`, `S3`, `S4`, `S5`) remain part of the project history.
+- partir de `develop-V2` par défaut ;
+- cibler `develop-V2` dans les pull requests ;
+- ne pas committer directement dessus ;
+- ne pas la fusionner vers `main` ou `develop` sans demande explicite.
 
----
+### `project-landing-page`
 
-## 4. Branch naming rules
+Cette branche concerne la landing page séparée.
 
-Each branch must have a clear purpose and should be linked to a GitHub issue when possible.
-
-### Feature branches
-
-Use `feature/` for new MVP features.
-
-Examples:
-
-* `feature/s2-04-auth-routes`
-* `feature/s2-06-supplier-profile-api`
-* `feature/s3-03-product-cards`
-
-### Fix branches
-
-Use `fix/` for bug fixes.
-
-Examples:
-
-* `fix/login-validation-error`
-* `fix/product-search-filter`
-* `fix/request-status-update`
-
-### Documentation branches
-
-Use `docs/` for documentation-only changes.
-
-Examples:
-
-* `docs/s1-02-git-workflow`
-* `docs/readme-update`
-* `docs/api-documentation`
-
-### Setup branches
-
-Use `setup/` for technical setup tasks.
-
-Examples:
-
-* `setup/backend-express`
-* `setup/frontend-vite`
-* `setup/prisma-postgresql`
+Les changements de la landing page ne doivent pas être mélangés aux chantiers de l’application V2.
 
 ---
 
-## 5. Commit message conventions
+## 5. Branches de chantier
 
-Commit messages must be short, explicit, and written in English.
+Créer une branche dédiée par chantier.
 
-Recommended format:
+Préfixes autorisés :
 
-```text
-type: short description
-```
+- `feat/` : nouvelle fonctionnalité ;
+- `fix/` : correction de bug ;
+- `chore/` : maintenance ou configuration ;
+- `docs/` : documentation ;
+- `test/` : tests ;
+- `security/` : sécurité ;
+- `refactor/` : amélioration interne sans changement fonctionnel.
 
-Allowed types:
-
-* `feat`: new feature
-* `fix`: bug fix
-* `docs`: documentation
-* `chore`: maintenance or configuration
-* `test`: tests
-* `refactor`: code improvement without changing behavior
-* `style`: formatting or styling only
-
-Examples:
+Exemples :
 
 ```text
-docs: add Git workflow conventions
-feat: add user registration route
-fix: correct product search filter
-chore: configure backend environment
-test: add auth route validation tests
+fix/dashboard-demandes-en-attente
+security/configurer-durees-session
+chore/configurer-environnement-v2
+docs/aligner-documentation-v2
 ```
 
-Avoid vague commits such as:
+Une branche doit avoir un périmètre clair et, lorsque possible, être liée à une issue.
+
+---
+
+## 6. Préparation d’un chantier
+
+Avant toute modification :
+
+1. vérifier la branche active ;
+2. exécuter `git status` ;
+3. lire le corps complet de l’issue ;
+4. consulter les commentaires utiles ;
+5. rechercher les pull requests et commits liés ;
+6. vérifier si le besoin existe encore dans `develop-V2` ;
+7. identifier les fichiers et tests concernés.
+
+Ne pas modifier une issue, fermer une issue ou changer son périmètre sans validation préalable lorsque le chantier porte sur le backlog.
+
+---
+
+## 7. Règles de modification
+
+Pendant le travail :
+
+- rester dans le périmètre validé ;
+- privilégier les changements ciblés et réversibles ;
+- éviter les refactorisations non demandées ;
+- ne pas mélanger plusieurs chantiers indépendants ;
+- vérifier régulièrement `git status` et le diff ;
+- ne pas utiliser `git add -A` lorsque le périmètre complet n’est pas confirmé ;
+- ne pas modifier une migration Prisma déjà appliquée ;
+- ne pas supprimer ou réinitialiser des données sans accord explicite ;
+- ne jamais exposer de secret ou de donnée sensible.
+
+Ne pas utiliser :
+
+```text
+npm audit fix --force
+```
+
+sans analyse, justification et accord explicite.
+
+---
+
+## 8. Conventions de commits
+
+Les commits doivent être courts, explicites et rédigés en français.
+
+Format recommandé :
+
+```text
+type(portée): description en français
+```
+
+Types courants :
+
+- `feat`
+- `fix`
+- `docs`
+- `test`
+- `chore`
+- `refactor`
+- `security`
+- `style`
+
+Exemples :
+
+```text
+fix(auth): corriger la durée du cookie de session
+chore(env): documenter les versions Node et npm
+docs(contribution): aligner le workflow sur develop-V2
+test(requests): ajouter un scénario de régression fournisseur
+```
+
+Éviter les messages vagues :
 
 ```text
 update
@@ -152,340 +212,368 @@ wip
 test
 ```
 
----
-
-## 6. Pull request workflow
-
-Every meaningful change must go through a pull request.
-
-### Standard workflow
-
-1. Start from the active sprint branch.
-2. Create a dedicated branch.
-3. Make the changes.
-4. Commit with a clear message.
-5. Push the branch.
-6. Open a pull request into the active sprint branch.
-7. Request at least one review.
-8. Apply corrections if needed.
-9. Merge only after validation.
-
-### Pull request target
-
-Pull requests must target `develop-V2`, not `main`, unless a temporary integration branch is explicitly announced.
-
-A final stabilization pull request may target `main` only after validation on `develop-V2`.
+Un commit ne doit pas prétendre qu’un test est passé lorsqu’il n’a pas été exécuté.
 
 ---
 
-## 7. Pull request requirements
+## 9. Workflow de pull request
 
-Each pull request must include:
+Workflow standard :
 
-* A clear title
-* A short description of what was changed
-* The linked issue number when applicable
-* The type of change
-* Testing or manual verification notes
-* Any known limitations or follow-up work
+1. partir de `develop-V2` ;
+2. créer une branche dédiée ;
+3. réaliser les changements ;
+4. exécuter les vérifications pertinentes ;
+5. relire le diff ;
+6. créer un commit clair ;
+7. pousser la branche après accord explicite ;
+8. ouvrir une pull request vers `develop-V2` après accord explicite ;
+9. utiliser une PR en brouillon si les vérifications ne sont pas terminées ;
+10. passer la PR en prête à relire après validation des tests pertinents ;
+11. fusionner uniquement après revue et validation.
 
-### Pull request title examples
+Ne jamais pousser, ouvrir une PR ou fusionner sans demande explicite d’Antoine.
 
-```text
-feat(auth): add user registration endpoint
-docs(readme): update MVP scope section
-fix(products): prevent empty product name
-```
+---
 
-### Pull request description template
+## 10. Contenu d’une pull request
+
+Chaque pull request doit inclure :
+
+- un titre clair en français ;
+- un résumé du besoin ;
+- l’issue liée lorsque applicable ;
+- la liste des modifications ;
+- les vérifications exécutées ;
+- les résultats observés ;
+- les risques et limites ;
+- les éléments volontairement non modifiés ;
+- les éventuelles suites recommandées.
+
+Structure recommandée :
 
 ```markdown
-## Summary
+## Résumé
 
-Describe the changes made in this pull request.
+## Issue liée
 
-## Related issue
+Closes #123
 
-Closes #issue-number
+## Modifications réalisées
 
-## Changes
+## Vérifications effectuées
 
-- Change 1
-- Change 2
-- Change 3
+## Impact sur le déploiement
 
-## Testing
+## Risques et limites
 
-- [ ] Manual test completed
-- [ ] Backend test completed
-- [ ] Frontend build completed
-- [ ] Documentation updated if needed
+## Éléments non modifiés
 
-## Notes
-
-Add any limitation, risk, or follow-up task.
+## Suite recommandée
 ```
 
----
-
-## 8. Review rules
-
-At least one team member should review a pull request before it is merged.
-
-A reviewer should check:
-
-* The change matches the issue scope
-* The MVP scope is respected
-* The code is readable
-* The file structure is coherent
-* No unrelated change is included
-* The application still runs
-* Documentation is updated when needed
-
-The reviewer should not only approve quickly. The goal is to catch issues early and keep the project explainable for the final review.
+Utiliser `Closes #123` uniquement lorsque la PR couvre réellement toute l’issue.
 
 ---
 
-## 9. Issue workflow
+## 11. Revue de code
 
-GitHub issues are used to split the project into manageable tasks.
+La revue doit vérifier :
 
-Each issue should include:
+- l’adéquation avec l’issue ;
+- le respect du périmètre MVP ;
+- l’absence de changement hors sujet ;
+- la lisibilité du code ;
+- la cohérence de l’architecture ;
+- les risques de sécurité ;
+- les migrations et impacts sur les données ;
+- les tests exécutés ;
+- la documentation associée ;
+- l’impact potentiel sur `develop`, `develop-V2` et le déploiement.
 
-* A clear title
-* A short description
-* Acceptance criteria
-* A sprint or priority indication when useful
-* A responsible person if assigned
-* Relevant labels if used
+Une approbation ne remplace pas les vérifications techniques.
 
-### Issue status
-
-Issues should move through the project board according to their real state:
-
-* Backlog
-* To Do
-* In Progress
-* Review
-* Done
-* Blocked
-* Parking lot
-
-A task should not stay in progress if it is waiting for review.
-
-A task should not be marked as done until it is reviewed and validated.
+Les commentaires de revue et leurs réponses doivent être rédigés en français.
 
 ---
 
-## 10. Documentation rules
+## 12. Gestion des issues
 
-Documentation is part of the project deliverable.
+Une issue doit contenir au minimum :
 
-Documentation should be updated when:
+- un titre clair en français ;
+- le contexte ;
+- le problème ou besoin ;
+- le périmètre ;
+- des critères d’acceptation vérifiables ;
+- les dépendances ou risques connus.
 
-* A new feature changes the project behavior
-* A new API route is added
-* The database schema changes
-* The setup process changes
-* The architecture changes
-* A decision needs to be preserved for the final review
+Avant de recommander une fermeture :
 
-Important documentation files include:
+- lire le corps complet ;
+- consulter les commentaires ;
+- rechercher les PR et commits liés ;
+- vérifier le besoin dans `develop-V2`.
 
-* `README.md`
-* `CONTRIBUTING.md`
-* `docs/api/API_SUMMARY.md`
-* `docs/architecture/APPLICATION_ARCHITECTURE.md`
-* `docs/architecture/BACKEND_STRUCTURE.md`
-* `docs/architecture/FRONTEND_STRUCTURE.md`
-* `docs/database/DATABASE_SCHEMA.md`
-* `docs/docker/DOCKER.md`
-* `docs/security/AUTH_SECURITY_NOTES.md`
-* `docs/testing/TESTING_EVIDENCE.md`
-* `docs/demo/DEMO_SCENARIO.md`
-* `docs/review/TECHNICAL_REVIEW_NOTES.md`
+Catégories d’audit possibles :
 
-Documentation must stay clear, factual, and aligned with the real implementation.
+- à fermer ;
+- doublon ou à fusionner ;
+- à conserver ;
+- à reformuler ;
+- à traiter prochainement ;
+- long terme ;
+- référence ou archive.
+
+Aucune mutation en lot ne doit être réalisée sans présentation et validation préalables.
 
 ---
 
-## 11. Code organization principles
+## 13. GitHub Project
 
-The project should stay easy to understand.
+Le GitHub Project sert à représenter l’état réel du travail.
+
+Statuts recommandés :
+
+- Inbox / À analyser ;
+- Future Ideas ;
+- To do ;
+- In progress ;
+- In review ;
+- Blocked ;
+- Done ;
+- Reference / Archive.
+
+Priorités recommandées :
+
+- P0 — Critique ;
+- P1 — Haute ;
+- P2 — Moyenne ;
+- P3 — Faible ;
+- P4 — Plus tard.
+
+Une carte ne doit pas rester dans `In progress` lorsqu’elle attend une revue.
+
+Une carte ne doit pas passer dans `Done` avant validation réelle.
+
+Lorsque les outils disponibles ne permettent pas de modifier les champs du Project v2, les mouvements doivent être réalisés manuellement et ne doivent pas être annoncés comme effectués.
+
+---
+
+## 14. Environnement local
+
+Environnement validé :
+
+- Node.js `22.22.3` via `.nvmrc` ;
+- npm `10.9.8` ;
+- Docker récent ;
+- Docker Compose ;
+- PostgreSQL `16` via `compose.yaml`.
+
+Installation recommandée :
+
+```bash
+nvm use
+npm ci
+npm ci --prefix backend
+npm ci --prefix frontend
+```
+
+Démarrage local de PostgreSQL :
+
+```bash
+docker compose up -d postgres
+```
+
+Vérification de PostgreSQL :
+
+```bash
+docker compose exec postgres pg_isready -U kerno_user -d kerno_db
+```
+
+Les fichiers d’environnement locaux ne doivent pas être commités.
+
+Utiliser :
+
+- `backend/.env.example`
+- `frontend/.env.example`
+- `deployment/.env.example`
+
+Ne jamais committer :
+
+- `.env` ;
+- clés secrètes ;
+- identifiants personnels ;
+- exports locaux de base de données ;
+- caches ;
+- rapports locaux générés.
+
+---
+
+## 15. Vérifications techniques
+
+Adapter les vérifications au périmètre du changement.
 
 ### Backend
 
-Backend code should be organized by domain when possible:
+```bash
+npm test --prefix backend
+```
 
-* auth
-* users
-* suppliers
-* stores
-* products
-* categories
-* requests
-* health
-
-The backend should keep a clear separation between:
-
-* routes
-* controllers
-* services
-* middlewares
-* configuration
+Ce contrôle vérifie actuellement la syntaxe des principaux fichiers de démarrage du backend.
 
 ### Frontend
 
-Frontend code should be organized by responsibility:
+```bash
+npm run lint --prefix frontend
+npm run build --prefix frontend
+```
 
-* pages
-* layouts
-* components
-* services
-* routes
-* config
-* utils
+### Tests E2E
 
-Reusable UI should be placed in shared or UI components instead of being duplicated across pages.
+Lorsque le chantier concerne un parcours utilisateur :
 
----
+```bash
+npm run test:e2e --prefix frontend
+```
 
-## 12. Testing expectations
-
-Testing must be proportional to the MVP scope.
-
-Before a pull request is approved, the team should run the relevant checks.
-
-### Backend checks
-
-Possible commands:
+### Prisma et base de données
 
 ```bash
 cd backend
-npm test
+npm exec prisma -- migrate status
 ```
 
-If API tests are needed:
+Pour tout changement de schéma :
+
+- créer une nouvelle migration ;
+- inspecter le SQL généré ;
+- vérifier l’impact sur les données ;
+- tester sur une base locale ;
+- documenter les risques.
+
+### Vérification du diff
+
+Avant commit :
 
 ```bash
-cd backend
-python3 -m pytest tests/test_kerno_api_comprehensive.py -v
+git diff --check
+git status --short
+git diff
 ```
 
-### Frontend checks
-
-Possible commands:
-
-```bash
-cd frontend
-npm run build
-```
-
-Manual route checks should be done for frontend navigation and major screens.
-
-### Manual MVP scenario
-
-Before final submission, the team should validate the full MVP flow:
-
-1. Register or login as supplier.
-2. Create or update supplier profile.
-3. Create product.
-4. Register or login as store.
-5. Create or update store profile.
-6. Browse catalog.
-7. Open product or supplier detail.
-8. Send request.
-9. Review sent and received requests.
-10. Update request status if available.
+Ne jamais inventer un résultat de test ou de check.
 
 ---
 
-## 13. Environment rules
+## 16. Documentation
 
-Local environment files must not be committed.
+Mettre à jour la documentation lorsqu’un changement affecte :
 
-Do not commit:
+- le comportement de l’application ;
+- une route API ;
+- le schéma de base de données ;
+- l’installation ;
+- l’architecture ;
+- la sécurité ;
+- les tests ;
+- le déploiement ;
+- une décision durable.
 
-* `.env`
-* secret keys
-* local database dumps
-* personal credentials
-* generated local caches
+Documents importants :
 
-Use example files instead:
+- `README.md`
+- `CONTRIBUTING.md`
+- `AGENTS.md`
+- `SECURITY.md`
+- `docs/api/`
+- `docs/architecture/`
+- `docs/database/`
+- `docs/docker/`
+- `docs/security/`
+- `docs/testing/`
 
-* `backend/.env.example`
-* `frontend/.env.example`
-
----
-
-## 14. Style and language rules
-
-GitHub-facing content must be written in English.
-
-This includes:
-
-* Issue titles
-* Issue descriptions
-* Pull request titles
-* Pull request descriptions
-* Commit messages
-* README sections
-* Technical documentation
-
-French can be used for team discussion if needed, but final repository content should stay in English.
+La documentation doit rester factuelle et alignée avec l’implémentation réelle.
 
 ---
 
-## 15. AI-assisted work rules
+## 17. Sécurité
 
-AI tools may be used to support the team, but the team remains responsible for the final work.
+Priorités produit :
 
-AI can help with:
+1. stabilité et sécurité ;
+2. validation auprès de magasins et fournisseurs réels ;
+3. correction des irritants du parcours existant ;
+4. mesure de l’usage et des retours ;
+5. fonctionnalités validées par le terrain ;
+6. automatisations et expérimentations ;
+7. fonctions transactionnelles complexes à long terme.
 
-* documentation drafts
-* code review suggestions
-* debugging explanations
-* architecture clarification
-* test scenario planning
+Toute modification de sécurité doit :
 
-AI should not be used blindly.
+- être ciblée ;
+- documenter son objectif ;
+- éviter les régressions ;
+- inclure les tests pertinents ;
+- distinguer les faits vérifiés des hypothèses.
 
-Every AI-assisted output must be reviewed, adapted, and validated by the team before being committed.
-
-The team must be able to explain every committed change during the technical review.
-
----
-
-## 16. Definition of done
-
-A task can be considered done when:
-
-* The expected work is completed.
-* The implementation matches the issue scope.
-* The code is readable and organized.
-* The MVP scope is respected.
-* The work has been tested or manually verified.
-* The pull request has been reviewed when required.
-* Documentation has been updated if needed.
-* The GitHub Project status is updated.
-* The team can explain the change during a technical review.
+Les rapports historiques de sécurité sont des références et non une preuve de l’état actuel.
 
 ---
 
-## 17. Final review mindset
+## 18. Travail assisté par IA
 
-The repository must be ready for a technical manual review.
+Les outils d’IA peuvent aider pour :
 
-The team should be able to explain:
+- l’audit ;
+- la documentation ;
+- la revue ;
+- le débogage ;
+- la préparation de tests ;
+- l’analyse d’architecture.
 
-* How the application works
-* How the frontend communicates with the backend
-* How the database is structured
-* How authentication and role protection work
-* How each MVP feature was tested
-* How the team collaborated
-* How Git branches, pull requests, and reviews were used
-* Why the technical choices are coherent with the MVP
+Toute sortie assistée par IA doit être :
 
-The goal is not only to build the application, but also to prove that the team can work with a clean, professional, and explainable development process.
+- relue ;
+- adaptée au dépôt ;
+- vérifiée dans le code ;
+- testée lorsque nécessaire ;
+- comprise par le contributeur.
+
+Ne pas appliquer automatiquement un changement proposé par une IA.
+
+Les instructions opérationnelles destinées aux agents se trouvent dans `AGENTS.md`.
+
+---
+
+## 19. Définition de terminé
+
+Une tâche est terminée lorsque :
+
+- le besoin de l’issue est couvert ;
+- le périmètre est respecté ;
+- aucun changement hors sujet n’est inclus ;
+- les tests pertinents sont passés ;
+- le diff a été relu ;
+- les risques et limites sont documentés ;
+- la documentation est mise à jour si nécessaire ;
+- la pull request a été revue et fusionnée ;
+- le statut du GitHub Project reflète l’état réel ;
+- la branche du chantier a été nettoyée.
+
+---
+
+## 20. Nettoyage après fusion
+
+Après confirmation de la fusion :
+
+1. revenir sur `develop-V2` ;
+2. récupérer la branche distante ;
+3. vérifier que la fusion est présente ;
+4. supprimer la branche locale ;
+5. supprimer la branche distante si GitHub ne l’a pas déjà supprimée ;
+6. exécuter `git fetch origin --prune` ;
+7. vérifier `git branch -vv` ;
+8. vérifier `git status`.
+
+Ne jamais supprimer une branche avant confirmation de sa fusion.
