@@ -24,7 +24,11 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `VITE_API_BASE_URL=${apiBaseUrl} npm run dev -- --host 127.0.0.1 --port 5173`,
+    command: "npm run dev -- --host 127.0.0.1 --port 5173",
+    env: {
+      ...env,
+      VITE_API_BASE_URL: apiBaseUrl,
+    },
     url: frontendBaseUrl,
     reuseExistingServer: true,
     timeout: 120_000,

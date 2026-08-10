@@ -77,7 +77,12 @@ test.describe("KERNO MVP automated regression", () => {
 
   test("public landing and login pages load", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /KERNO/i })).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Trouvez les bons partenaires. Rendez vos offres visibles.",
+      }),
+    ).toBeVisible();
 
     await page.goto("/login");
     await expect(page.getByTestId("login-page")).toBeVisible();
