@@ -36,8 +36,8 @@ Ne jamais supposer qu’une information historique est encore vraie lorsqu’ell
 
 ## Branches
 
-- `main` : version stable historique ;
-- `develop` : branche conservée pour le déploiement Ausaryu existant ;
+- `main` : snapshot MVP/RNCP stable, à conserver immobile jusqu’au RNCP d’octobre/novembre 2026 hors maintenance de sécurité nécessaire ;
+- `develop` : branche du MVP déployé sur Ausaryu, à maintenir stable avec uniquement les correctifs de sécurité nécessaires ;
 - `develop-V2` : branche d’intégration active de la V2 ;
 - `project-landing-page` : landing page séparée.
 
@@ -47,6 +47,9 @@ Règles :
 - créer une branche dédiée par chantier ;
 - cibler `develop-V2` dans les pull requests ;
 - ne jamais fusionner `develop-V2` vers `main` ou `develop` sans accord explicite ;
+- ne jamais synchroniser les branches uniquement pour aligner leurs historiques ;
+- lorsqu’un correctif de sécurité concerne plusieurs branches, réappliquer ou cherry-pick uniquement le correctif validé puis retester chaque branche séparément ;
+- ne pas faire de maintenance de versions courante sur `main` ou `develop` ;
 - ne jamais modifier le workflow de déploiement de `develop` sans chantier et validation dédiés ;
 - ne jamais annoncer un déploiement sans preuve.
 
@@ -210,6 +213,15 @@ Ne jamais :
 - utiliser `npm audit fix --force` sans analyse et accord explicite ;
 - fusionner une mise à jour de dépendance sans vérifier les tests et le diff ;
 - considérer un rapport de sécurité historique comme un état actuel.
+
+## Maintenance des dépendances et Dependabot
+
+- `.github/dependabot.yml` est stocké sur `main` car `main` est la branche par défaut du dépôt ;
+- les mises à jour de version npm de `/`, `/backend` et `/frontend` ciblent `develop-V2` ;
+- les mises à jour mineures et correctives peuvent être regroupées ; les mises à jour majeures restent à examiner séparément ;
+- les mises à jour de sécurité Dependabot ciblent la branche par défaut `main` ;
+- lorsqu’un correctif de sécurité doit aussi protéger `develop` ou `develop-V2`, appliquer le correctif séparément sur la branche concernée et rejouer ses vérifications ;
+- ne jamais fusionner automatiquement une PR Dependabot sans audit du diff, tests pertinents et vérification des effets de bord.
 
 ## Définition de terminé
 
