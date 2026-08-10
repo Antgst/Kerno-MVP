@@ -16,7 +16,7 @@
     "react-circular-progressbar": "^2.2.0",
     "react-dom": "^19.2.6",
     "react-phone-number-input": "^3.4.17",
-    "react-router-dom": "^7.17.0",
+    "react-router-dom": "^7.18.2",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
