@@ -1,0 +1,111 @@
+name: Proposer une évolution
+description: Proposer une amélioration produit, UX ou technique pour KERNO.
+title: "[Évolution] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Décris d’abord le problème ou le besoin observé, avant de proposer une solution.
+        Vérifie qu’une issue équivalente n’existe pas déjà.
+
+  - type: dropdown
+    id: origine
+    attributes:
+      label: Origine du besoin
+      options:
+        - Retour d’un magasin
+        - Retour d’un fournisseur
+        - Test utilisateur
+        - Observation produit
+        - Besoin technique
+        - Sécurité ou maintenance
+        - Idée exploratoire
+        - Autre
+    validations:
+      required: true
+
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Décris le parcours, les utilisateurs concernés et la situation observée.
+      placeholder: "Exemple : les magasins ne comprennent pas où retrouver les demandes envoyées..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: probleme
+    attributes:
+      label: Problème ou besoin
+      description: Explique le problème à résoudre sans imposer immédiatement une solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: preuve
+    attributes:
+      label: Preuves ou signaux disponibles
+      description: Indique les retours, observations ou données réelles disponibles. Ne rien inventer.
+      placeholder: "Retour utilisateur anonymisé, fréquence observée, capture non sensible..."
+
+  - type: textarea
+    id: proposition
+    attributes:
+      label: Solution envisagée
+      description: Décris une piste de solution. Cette proposition pourra évoluer après analyse.
+
+  - type: textarea
+    id: perimetre
+    attributes:
+      label: Périmètre proposé
+      description: Précise ce qui devrait être inclus et exclu.
+      placeholder: |
+        Inclus :
+        -
+
+        Exclu :
+        -
+    validations:
+      required: true
+
+  - type: textarea
+    id: criteres
+    attributes:
+      label: Critères d’acceptation
+      description: Liste des résultats observables permettant de considérer le besoin comme couvert.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: horizon
+    attributes:
+      label: Horizon estimé
+      options:
+        - À analyser
+        - Prochainement
+        - Long terme
+        - Future Ideas
+        - Référence uniquement
+    validations:
+      required: true
+
+  - type: textarea
+    id: risques
+    attributes:
+      label: Risques, dépendances ou questions ouvertes
+      placeholder: "Migration, sécurité, dépendance externe, besoin de validation terrain..."
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Vérifications
+      options:
+        - label: J’ai recherché une issue existante couvrant le même besoin.
+          required: true
+        - label: J’ai distingué les faits observés des hypothèses.
+          required: true
+        - label: Je n’ai inclus aucune donnée sensible.
+          required: true

@@ -1,0 +1,95 @@
+name: Signaler un bug
+description: Signaler un comportement incorrect ou une régression dans KERNO.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de vérifier que le problème existe encore sur `develop-V2` avant de créer l’issue.
+        Ne joins aucun secret, mot de passe, jeton, cookie ou contenu de fichier `.env`.
+
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Décris le parcours, le rôle utilisateur et la situation dans laquelle le problème apparaît.
+      placeholder: "Exemple : en tant que fournisseur, depuis la page de suivi des demandes..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: probleme
+    attributes:
+      label: Comportement observé
+      description: Décris précisément ce qui se passe.
+    validations:
+      required: true
+
+  - type: textarea
+    id: attendu
+    attributes:
+      label: Comportement attendu
+      description: Décris le résultat qui devrait être obtenu.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes de reproduction
+      description: Fournis une suite d’étapes minimale et reproductible.
+      placeholder: |
+        1. Se connecter avec...
+        2. Ouvrir...
+        3. Cliquer sur...
+        4. Observer...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environnement
+    attributes:
+      label: Environnement concerné
+      options:
+        - Local
+        - Ausaryu / develop
+        - develop-V2
+        - Inconnu
+    validations:
+      required: true
+
+  - type: input
+    id: commit
+    attributes:
+      label: Branche ou commit observé
+      description: Indique la branche, le SHA ou la version lorsque cette information est disponible.
+      placeholder: "develop-V2 — abc1234"
+
+  - type: textarea
+    id: preuves
+    attributes:
+      label: Captures, erreurs ou preuves
+      description: Ajoute uniquement des informations non sensibles et utiles au diagnostic.
+      placeholder: "Message d’erreur, capture, extrait de log nettoyé..."
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Explique qui est bloqué, la fréquence et les éventuelles solutions de contournement.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Vérifications
+      options:
+        - label: J’ai vérifié que le problème existe encore sur la branche concernée.
+          required: true
+        - label: J’ai recherché une issue existante décrivant le même problème.
+          required: true
+        - label: Je n’ai inclus aucun secret ni donnée sensible.
+          required: true

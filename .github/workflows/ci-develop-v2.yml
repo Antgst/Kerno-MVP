@@ -1,0 +1,78 @@
+name: Vérifications develop-V2
+
+on:
+  pull_request:
+    branches:
+      - develop-V2
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-develop-v2-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verification:
+    name: Backend et frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      CI: "true"
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Configurer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Configurer npm
+        run: npm install --global npm@10.9.8
+
+      - name: Vérifier les versions
+        shell: bash
+        run: |
+          expected_node="v$(cat .nvmrc)"
+          actual_node="$(node --version)"
+          actual_npm="$(npm --version)"
+
+          test "$actual_node" = "$expected_node"
+          test "$actual_npm" = "10.9.8"
+
+          echo "Node.js : $actual_node"
+          echo "npm : $actual_npm"
+
+      - name: Installer les dépendances racine
+        run: npm ci
+
+      - name: Installer les dépendances backend
+        run: npm ci --prefix backend
+
+      - name: Installer les dépendances frontend
+        run: npm ci --prefix frontend
+
+      - name: Tester le backend
+        run: npm test --prefix backend
+
+      - name: Vérifier le lint frontend
+        run: npm run lint --prefix frontend
+
+      - name: Construire le frontend
+        run: npm run build --prefix frontend
