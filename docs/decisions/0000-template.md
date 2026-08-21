@@ -18,31 +18,31 @@ Décrire la décision retenue de manière précise.
 
 Avantages :
 
-- 
+- À compléter.
 
 Inconvénients :
 
-- 
+- À compléter.
 
 ### Option B
 
 Avantages :
 
-- 
+- À compléter.
 
 Inconvénients :
 
-- 
+- À compléter.
 
 ## Conséquences
 
 ### Positives
 
-- 
+- À compléter.
 
 ### Négatives / compromis
 
-- 
+- À compléter.
 
 ## Vérification
 
