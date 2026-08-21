@@ -1,123 +1,60 @@
 # Contribuer à KERNO
 
-## 1. Objet
+## Objet
 
-Ce document décrit le workflow de contribution de KERNO pour la V2 :
-
-- stratégie de branches ;
-- conventions de commits ;
-- préparation des pull requests ;
-- règles de revue ;
-- gestion des issues ;
-- vérifications techniques ;
-- sécurité et documentation ;
-- nettoyage après fusion.
-
-KERNO est une marketplace SaaS B2B qui connecte des fournisseurs locaux ou directs avec des magasins.
+Ce document décrit le workflow de contribution de KERNO pour la V2. Les instructions opérationnelles destinées aux agents se trouvent dans `AGENTS.md`.
 
 Le processus doit rester simple, vérifiable et adapté à une petite équipe.
 
----
-
-## 2. Périmètre produit actuel
-
-Le parcours central couvre :
-
-1. la création d’un compte fournisseur ;
-2. la complétion du profil fournisseur ;
-3. la gestion des produits fournisseur ;
-4. la création d’un compte magasin ;
-5. la complétion du profil magasin ;
-6. la recherche de produits et de fournisseurs ;
-7. la consultation des détails produit et fournisseur ;
-8. l’envoi d’une demande de contact ou de devis ;
-9. le suivi des demandes envoyées et reçues.
-
-Ne font pas encore partie du MVP :
-
-- le paiement en ligne ;
-- le panier ;
-- la commande complète ;
-- la livraison et le suivi logistique ;
-- la facturation ;
-- la messagerie avancée ;
-- les abonnements complexes ;
-- les avis publics ;
-- un back-office administratif lourd.
-
-Toute extension importante de ce périmètre doit être validée avant développement.
-
----
-
-## 3. Sources de vérité
+## Sources de vérité
 
 Respecter cet ordre :
 
 1. état actuel vérifié sur GitHub ;
-2. code et documentation de la branche concernée ;
+2. code et configuration de la branche concernée ;
 3. issue ou pull request du chantier ;
-4. documentation du dépôt ;
-5. rapports historiques des anciens stages.
+4. documentation active ;
+5. rapports historiques.
 
-Une information historique ne doit pas être considérée comme actuelle lorsqu’elle peut être vérifiée dans le code ou sur GitHub.
+Une information historique ne doit pas être considérée comme actuelle lorsqu’elle peut être vérifiée dans le code, la CI ou GitHub.
 
----
-
-## 4. Branches principales
+## Branches
 
 ### `main`
 
-`main` contient la version stable historique.
-
-Règles :
-
-- aucun commit direct ;
-- aucune fusion automatique depuis `develop-V2` ;
-- toute fusion vers `main` nécessite une validation explicite ;
-- utiliser cette branche pour les versions stables ou les jalons validés.
+Snapshot stable historique. Aucun commit direct. Toute fusion vers `main` nécessite une validation explicite dédiée.
 
 ### `develop`
 
-`develop` est conservée pour le déploiement Ausaryu existant.
-
-Règles :
-
-- ne pas l’utiliser comme branche d’intégration V2 ;
-- ne pas la modifier pour un chantier V2 sans demande explicite ;
-- ne pas annoncer un déploiement sans preuve issue des checks ou du serveur.
+Branche historique liée au déploiement existant. Elle n’est pas la branche d’intégration V2 et ne doit pas être modifiée par un chantier V2 sans demande explicite.
 
 ### `develop-V2`
 
-`develop-V2` est la branche d’intégration active.
+Branche d’intégration active de la V2.
 
-Règles :
+Par défaut :
 
-- partir de `develop-V2` par défaut ;
-- cibler `develop-V2` dans les pull requests ;
-- ne pas committer directement dessus ;
-- ne pas la fusionner vers `main` ou `develop` sans demande explicite.
+- partir de `develop-V2` ;
+- créer une branche dédiée ;
+- cibler `develop-V2` dans la pull request ;
+- ne pas pousser directement sur `develop-V2` ;
+- ne pas fusionner `develop-V2` vers `main` ou `develop` sans autorisation explicite.
 
 ### `project-landing-page`
 
-Cette branche concerne la landing page séparée.
+Landing page séparée. Ne pas mélanger ses changements avec ceux de l’application V2.
 
-Les changements de la landing page ne doivent pas être mélangés aux chantiers de l’application V2.
+## Branches de chantier
 
----
+Préfixes recommandés :
 
-## 5. Branches de chantier
-
-Créer une branche dédiée par chantier.
-
-Préfixes autorisés :
-
-- `feat/` : nouvelle fonctionnalité ;
-- `fix/` : correction de bug ;
-- `chore/` : maintenance ou configuration ;
-- `docs/` : documentation ;
-- `test/` : tests ;
-- `security/` : sécurité ;
-- `refactor/` : amélioration interne sans changement fonctionnel.
+- `feat/`
+- `fix/`
+- `chore/`
+- `docs/`
+- `test/`
+- `security/`
+- `refactor/`
 
 Exemples :
 
@@ -130,51 +67,35 @@ docs/aligner-documentation-v2
 
 Une branche doit avoir un périmètre clair et, lorsque possible, être liée à une issue.
 
----
+## Préparation d’un chantier
 
-## 6. Préparation d’un chantier
+Avant modification :
 
-Avant toute modification :
+1. vérifier la branche active et `git status` ;
+2. lire l’issue complète et ses commentaires utiles ;
+3. vérifier si le besoin existe encore dans `develop-V2` ;
+4. inspecter les fichiers concernés ;
+5. rechercher les PR/commits liés si nécessaire ;
+6. identifier les vérifications pertinentes.
 
-1. vérifier la branche active ;
-2. exécuter `git status` ;
-3. lire le corps complet de l’issue ;
-4. consulter les commentaires utiles ;
-5. rechercher les pull requests et commits liés ;
-6. vérifier si le besoin existe encore dans `develop-V2` ;
-7. identifier les fichiers et tests concernés.
+Pour une ambiguïté technique réversible et à faible risque, choisir l’option la plus cohérente avec le dépôt et la documenter. Pour une décision structurante ou difficile à inverser, proposer la recommandation avant de l’appliquer.
 
-Ne pas modifier une issue, fermer une issue ou changer son périmètre sans validation préalable lorsque le chantier porte sur le backlog.
-
----
-
-## 7. Règles de modification
+## Règles de modification
 
 Pendant le travail :
 
-- rester dans le périmètre validé ;
+- rester dans le périmètre annoncé ;
 - privilégier les changements ciblés et réversibles ;
-- éviter les refactorisations non demandées ;
-- ne pas mélanger plusieurs chantiers indépendants ;
-- vérifier régulièrement `git status` et le diff ;
-- ne pas utiliser `git add -A` lorsque le périmètre complet n’est pas confirmé ;
+- corriger la cause racine démontrée ;
+- éviter les refactorisations sans lien avec le chantier ;
+- vérifier régulièrement le diff ;
 - ne pas modifier une migration Prisma déjà appliquée ;
-- ne pas supprimer ou réinitialiser des données sans accord explicite ;
+- ne pas supprimer ou réinitialiser des données difficiles à récupérer sans confirmation explicite ;
 - ne jamais exposer de secret ou de donnée sensible.
 
-Ne pas utiliser :
+`npm audit fix --force` n’est pas autorisé sans analyse et autorisation explicite.
 
-```text
-npm audit fix --force
-```
-
-sans analyse, justification et accord explicite.
-
----
-
-## 8. Conventions de commits
-
-Les commits doivent être courts, explicites et rédigés en français.
+## Conventions de commits
 
 Format recommandé :
 
@@ -182,16 +103,7 @@ Format recommandé :
 type(portée): description en français
 ```
 
-Types courants :
-
-- `feat`
-- `fix`
-- `docs`
-- `test`
-- `chore`
-- `refactor`
-- `security`
-- `style`
+Types courants : `feat`, `fix`, `docs`, `test`, `chore`, `refactor`, `security`, `style`.
 
 Exemples :
 
@@ -202,21 +114,9 @@ docs(contribution): aligner le workflow sur develop-V2
 test(requests): ajouter un scénario de régression fournisseur
 ```
 
-Éviter les messages vagues :
+Ne jamais prétendre dans un commit qu’un test est passé s’il n’a pas été exécuté.
 
-```text
-update
-fix
-changes
-wip
-test
-```
-
-Un commit ne doit pas prétendre qu’un test est passé lorsqu’il n’a pas été exécuté.
-
----
-
-## 9. Workflow de pull request
+## Workflow Git et pull request
 
 Workflow standard :
 
@@ -225,152 +125,74 @@ Workflow standard :
 3. réaliser les changements ;
 4. exécuter les vérifications pertinentes ;
 5. relire le diff ;
-6. créer un commit clair ;
-7. pousser la branche après accord explicite ;
-8. ouvrir une pull request vers `develop-V2` après accord explicite ;
-9. utiliser une PR en brouillon si les vérifications ne sont pas terminées ;
-10. passer la PR en prête à relire après validation des tests pertinents ;
-11. fusionner uniquement après revue et validation.
+6. créer des commits clairs ;
+7. pousser la branche de travail ;
+8. ouvrir ou mettre à jour la PR vers `develop-V2` ;
+9. suivre la CI et corriger les erreurs directement liées ;
+10. passer la PR en prête à relire lorsque les vérifications sont terminées ;
+11. fusionner uniquement après autorisation explicite.
 
-Ne jamais pousser, ouvrir une PR ou fusionner sans demande explicite d’Antoine.
+Dans une mission autorisée, les commits locaux, le push de la branche de travail, la création de PR, le suivi CI et les correctifs liés sont autonomes.
 
----
+Le merge reste une frontière humaine. Un `go merge` reste valable pour la mission tant que le périmètre ne change pas substantiellement.
 
-## 10. Contenu d’une pull request
+Les pushes directs vers `main`, `develop` ou `develop-V2` restent interdits sans autorisation explicite.
 
-Chaque pull request doit inclure :
+## Contenu d’une pull request
 
-- un titre clair en français ;
-- un résumé du besoin ;
+Chaque PR doit préciser :
+
+- le besoin couvert ;
 - l’issue liée lorsque applicable ;
-- la liste des modifications ;
-- les vérifications exécutées ;
-- les résultats observés ;
+- les modifications ;
+- les vérifications réellement exécutées ;
 - les risques et limites ;
-- les éléments volontairement non modifiés ;
-- les éventuelles suites recommandées.
-
-Structure recommandée :
-
-```markdown
-## Résumé
-
-## Issue liée
-
-Closes #123
-
-## Modifications réalisées
-
-## Vérifications effectuées
-
-## Impact sur le déploiement
-
-## Risques et limites
-
-## Éléments non modifiés
-
-## Suite recommandée
-```
+- les impacts base de données, sécurité et déploiement ;
+- les éléments volontairement non modifiés.
 
 Utiliser `Closes #123` uniquement lorsque la PR couvre réellement toute l’issue.
 
----
+Utiliser une PR en brouillon tant que les vérifications ne sont pas terminées.
 
-## 11. Revue de code
+## Revue de code
 
 La revue doit vérifier :
 
-- l’adéquation avec l’issue ;
-- le respect du périmètre MVP ;
-- l’absence de changement hors sujet ;
-- la lisibilité du code ;
-- la cohérence de l’architecture ;
-- les risques de sécurité ;
-- les migrations et impacts sur les données ;
-- les tests exécutés ;
-- la documentation associée ;
-- l’impact potentiel sur `develop`, `develop-V2` et le déploiement.
+- adéquation avec le besoin ;
+- absence de changement hors périmètre ;
+- lisibilité et cohérence architecturale ;
+- risques de sécurité ;
+- migrations et impacts données ;
+- tests exécutés ;
+- documentation associée ;
+- impact potentiel sur `develop`, `develop-V2`, `main` et le déploiement.
 
 Une approbation ne remplace pas les vérifications techniques.
 
-Les commentaires de revue et leurs réponses doivent être rédigés en français.
-
----
-
-## 12. Gestion des issues
+## Gestion des issues
 
 Une issue doit contenir au minimum :
 
-- un titre clair en français ;
-- le contexte ;
-- le problème ou besoin ;
-- le périmètre ;
-- des critères d’acceptation vérifiables ;
-- les dépendances ou risques connus.
+- contexte ;
+- problème ou besoin ;
+- périmètre ;
+- critères d’acceptation vérifiables ;
+- risques ou dépendances connus.
 
-Avant de recommander une fermeture :
+Avant fermeture ou fusion avec une autre issue, vérifier le besoin dans l’état actuel de `develop-V2` et les PR/commits liés.
 
-- lire le corps complet ;
-- consulter les commentaires ;
-- rechercher les PR et commits liés ;
-- vérifier le besoin dans `develop-V2`.
+Les mutations importantes en lot du backlog ou du GitHub Project doivent correspondre à une mission explicitement définie.
 
-Catégories d’audit possibles :
-
-- à fermer ;
-- doublon ou à fusionner ;
-- à conserver ;
-- à reformuler ;
-- à traiter prochainement ;
-- long terme ;
-- référence ou archive.
-
-Aucune mutation en lot ne doit être réalisée sans présentation et validation préalables.
-
----
-
-## 13. GitHub Project
-
-Le GitHub Project sert à représenter l’état réel du travail.
-
-Statuts recommandés :
-
-- Inbox / À analyser ;
-- Future Ideas ;
-- To do ;
-- In progress ;
-- In review ;
-- Blocked ;
-- Done ;
-- Reference / Archive.
-
-Priorités recommandées :
-
-- P0 — Critique ;
-- P1 — Haute ;
-- P2 — Moyenne ;
-- P3 — Faible ;
-- P4 — Plus tard.
-
-Une carte ne doit pas rester dans `In progress` lorsqu’elle attend une revue.
-
-Une carte ne doit pas passer dans `Done` avant validation réelle.
-
-Lorsque les outils disponibles ne permettent pas de modifier les champs du Project v2, les mouvements doivent être réalisés manuellement et ne doivent pas être annoncés comme effectués.
-
----
-
-## 14. Environnement local
+## Environnement local
 
 Environnement validé :
 
 - Node.js `22.22.3` via `.nvmrc` ;
 - npm `10.9.8` ;
-- Docker récent ;
-- Docker Compose ;
-- PostgreSQL `16` via `compose.yaml`.
+- Docker avec Docker Compose ;
+- PostgreSQL `16`.
 
-Installation recommandée :
+Installation :
 
 ```bash
 nvm use
@@ -379,82 +201,44 @@ npm ci --prefix backend
 npm ci --prefix frontend
 ```
 
-Démarrage local de PostgreSQL :
+PostgreSQL local :
 
 ```bash
 docker compose up -d postgres
-```
-
-Vérification de PostgreSQL :
-
-```bash
 docker compose exec postgres pg_isready -U kerno_user -d kerno_db
 ```
 
-Les fichiers d’environnement locaux ne doivent pas être commités.
+Les fichiers locaux d’environnement ne doivent jamais être commités. Utiliser les fichiers `.env.example` du dépôt comme référence.
 
-Utiliser :
+## Vérifications techniques
 
-- `backend/.env.example`
-- `frontend/.env.example`
-- `deployment/.env.example`
-
-Ne jamais committer :
-
-- `.env` ;
-- clés secrètes ;
-- identifiants personnels ;
-- exports locaux de base de données ;
-- caches ;
-- rapports locaux générés.
-
----
-
-## 15. Vérifications techniques
-
-Adapter les vérifications au périmètre du changement.
-
-### Backend
+Backend :
 
 ```bash
 npm test --prefix backend
 ```
 
-Ce contrôle vérifie actuellement la syntaxe des principaux fichiers de démarrage du backend.
-
-### Frontend
+Frontend :
 
 ```bash
 npm run lint --prefix frontend
 npm run build --prefix frontend
 ```
 
-### Tests E2E
-
-Lorsque le chantier concerne un parcours utilisateur :
+E2E lorsqu’un parcours utilisateur est concerné :
 
 ```bash
 npm run test:e2e --prefix frontend
 ```
 
-### Prisma et base de données
+Prisma lorsque la base est concernée :
 
 ```bash
 cd backend
 npm exec prisma -- migrate status
 ```
 
-Pour tout changement de schéma :
-
-- créer une nouvelle migration ;
-- inspecter le SQL généré ;
-- vérifier l’impact sur les données ;
-- tester sur une base locale ;
-- documenter les risques.
-
-### Vérification du diff
-
-Avant commit :
+Diff :
 
 ```bash
 git diff --check
@@ -462,118 +246,67 @@ git status --short
 git diff
 ```
 
-Ne jamais inventer un résultat de test ou de check.
+Adapter les vérifications au périmètre réel. Ne jamais inventer un résultat.
 
----
+## Base de données
 
-## 16. Documentation
+Pour tout changement de schéma :
 
-Mettre à jour la documentation lorsqu’un changement affecte :
+- créer une nouvelle migration ;
+- inspecter le SQL généré ;
+- vérifier l’impact sur les données ;
+- tester localement ;
+- documenter le risque et le plan de retour si nécessaire.
 
-- le comportement de l’application ;
-- une route API ;
-- le schéma de base de données ;
-- l’installation ;
-- l’architecture ;
-- la sécurité ;
-- les tests ;
-- le déploiement ;
-- une décision durable.
+Ne jamais modifier une migration déjà appliquée.
 
-Documents importants :
+## Documentation
 
-- `README.md`
-- `CONTRIBUTING.md`
-- `AGENTS.md`
-- `SECURITY.md`
-- `docs/api/`
-- `docs/architecture/`
-- `docs/database/`
-- `docs/docker/`
-- `docs/security/`
-- `docs/testing/`
+Mettre à jour la documentation directement impactée par une évolution de :
 
-La documentation doit rester factuelle et alignée avec l’implémentation réelle.
+- comportement produit ;
+- API ;
+- schéma de données ;
+- architecture ;
+- sécurité ;
+- installation ;
+- tests ;
+- CI/CD ;
+- décision technique durable.
 
----
+Documents clés : `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `docs/api/`, `docs/architecture/`, `docs/database/`, `docs/docker/`, `docs/security/`, `docs/testing/`.
 
-## 17. Sécurité
+## Sécurité et dépendances
 
-Priorités produit :
+Ne jamais :
 
-1. stabilité et sécurité ;
-2. validation auprès de magasins et fournisseurs réels ;
-3. correction des irritants du parcours existant ;
-4. mesure de l’usage et des retours ;
-5. fonctionnalités validées par le terrain ;
-6. automatisations et expérimentations ;
-7. fonctions transactionnelles complexes à long terme.
+- exposer un secret ;
+- affaiblir une protection sans justification ;
+- fusionner aveuglément une mise à jour de dépendance ;
+- considérer un ancien rapport de sécurité comme une preuve de l’état actuel.
 
-Toute modification de sécurité doit :
+Les mises à jour patch/minor peuvent être traitées normalement après vérifications. Les mises à jour majeures doivent être évaluées séparément.
 
-- être ciblée ;
-- documenter son objectif ;
-- éviter les régressions ;
-- inclure les tests pertinents ;
-- distinguer les faits vérifiés des hypothèses.
+Budget API payante : **0 € par défaut**. Toute dépense supplémentaire nécessite une autorisation explicite.
 
-Les rapports historiques de sécurité sont des références et non une preuve de l’état actuel.
+## Déploiement
 
----
+Le workflow actuel `deploy-develop.yml` concerne `develop` et ne doit pas être confondu avec la V2.
 
-## 18. Travail assisté par IA
+Un merge de PR ne constitue jamais à lui seul une autorisation de production. Toute mise en production réelle nécessite une autorisation explicite et une preuve de résultat.
 
-Les outils d’IA peuvent aider pour :
-
-- l’audit ;
-- la documentation ;
-- la revue ;
-- le débogage ;
-- la préparation de tests ;
-- l’analyse d’architecture.
-
-Toute sortie assistée par IA doit être :
-
-- relue ;
-- adaptée au dépôt ;
-- vérifiée dans le code ;
-- testée lorsque nécessaire ;
-- comprise par le contributeur.
-
-Ne pas appliquer automatiquement un changement proposé par une IA.
-
-Les instructions opérationnelles destinées aux agents se trouvent dans `AGENTS.md`.
-
----
-
-## 19. Définition de terminé
+## Definition of Done
 
 Une tâche est terminée lorsque :
 
-- le besoin de l’issue est couvert ;
+- le besoin est couvert ;
 - le périmètre est respecté ;
-- aucun changement hors sujet n’est inclus ;
 - les tests pertinents sont passés ;
+- `git diff --check` est propre ;
 - le diff a été relu ;
 - les risques et limites sont documentés ;
-- la documentation est mise à jour si nécessaire ;
-- la pull request a été revue et fusionnée ;
-- le statut du GitHub Project reflète l’état réel ;
-- la branche du chantier a été nettoyée.
+- la documentation impactée est à jour ;
+- la PR reflète les vérifications réellement exécutées ;
+- aucune production n’a été déclenchée sans autorisation.
 
----
-
-## 20. Nettoyage après fusion
-
-Après confirmation de la fusion :
-
-1. revenir sur `develop-V2` ;
-2. récupérer la branche distante ;
-3. vérifier que la fusion est présente ;
-4. supprimer la branche locale ;
-5. supprimer la branche distante si GitHub ne l’a pas déjà supprimée ;
-6. exécuter `git fetch origin --prune` ;
-7. vérifier `git branch -vv` ;
-8. vérifier `git status`.
-
-Ne jamais supprimer une branche avant confirmation de sa fusion.
+Après fusion, vérifier la présence du changement dans la branche cible avant de nettoyer la branche de chantier.
