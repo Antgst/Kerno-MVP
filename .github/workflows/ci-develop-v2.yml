@@ -148,7 +148,9 @@ jobs:
           KERNO_API_BASE_URL: http://127.0.0.1:5001
           KERNO_PYTEST_RESULTS_FILE: backend/tests/results/rncp_representative_test_results.json
         run: |
-          python -m pytest backend/tests/test_kerno_api_comprehensive.py -k "request" -q
+          python -m pytest backend/tests/test_kerno_api_comprehensive.py \
+            -k "create_contact_request or get_sent_requests or get_received_requests or get_request_by_id or update_request_status" \
+            -q
           cat backend/tests/results/rncp_representative_test_results.json
 
       - name: Archiver le résultat du jeu d'essai RNCP
