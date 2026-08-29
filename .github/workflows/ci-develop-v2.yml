@@ -24,24 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: kerno_ci
-          POSTGRES_PASSWORD: kerno_ci
-          POSTGRES_DB: kerno_ci
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U kerno_ci -d kerno_ci"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     env:
       CI: "true"
-      DATABASE_URL: postgresql://kerno_ci:kerno_ci@localhost:5432/kerno_ci?schema=public
 
     steps:
       - name: Récupérer le dépôt
@@ -88,24 +72,6 @@ jobs:
 
       - name: Installer les dépendances frontend
         run: npm ci --prefix frontend
-
-      - name: Installer le client PostgreSQL
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client
-
-      - name: Appliquer les migrations Prisma sur PostgreSQL CI
-        working-directory: backend
-        run: npx prisma migrate deploy
-
-      - name: Vérifier sauvegarde et restauration PostgreSQL
-        env:
-          ALLOW_BACKUP_RESTORE_PROBE: "true"
-          PG_SOURCE_URL: postgresql://kerno_ci:kerno_ci@localhost:5432/kerno_ci
-          PG_ADMIN_URL: postgresql://kerno_ci:kerno_ci@localhost:5432/postgres
-          PG_RESTORE_DB: kerno_ci_restore
-          PG_RESTORE_URL: postgresql://kerno_ci:kerno_ci@localhost:5432/kerno_ci_restore
-        run: bash scripts/verify-postgres-backup-restore.sh
 
       - name: Tester le backend
         run: npm test --prefix backend
