@@ -7,7 +7,6 @@
   --color-warm-ivory: #f8f5ef;
   --color-white: #ffffff;
   --color-orange: #f97316;
-  --color-orange-accessible: #c2410c;
   --color-text-secondary: #6b7280;
   --color-border: #e5e7eb;
 
@@ -55,7 +54,7 @@ select {
 }
 
 ::selection {
-  background: var(--color-orange-accessible);
+  background: #f97316;
   color: #ffffff;
 }
 
@@ -73,26 +72,4 @@ canvas {
 
 a {
   color: inherit;
-}
-
-.landing-button--outline-light {
-  border-color: var(--color-orange-accessible);
-  background: var(--color-orange-accessible);
-}
-
-.landing-button--outline-light:hover,
-.landing-button--outline-light:focus-visible {
-  border-color: #9a3412;
-  background: #9a3412;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }
