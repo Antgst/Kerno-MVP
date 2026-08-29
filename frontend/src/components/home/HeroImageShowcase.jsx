@@ -5,6 +5,14 @@ function HeroImageShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
+      return undefined;
+    }
+
     const rotation = window.setInterval(() => {
       setActiveIndex((currentIndex) => (currentIndex + 1) % heroImages.length);
     }, 4200);
