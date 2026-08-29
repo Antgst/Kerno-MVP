@@ -103,6 +103,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client
 
+      - name: Générer le client Prisma
+        working-directory: backend
+        run: npx prisma generate
+
       - name: Appliquer les migrations Prisma sur PostgreSQL CI
         working-directory: backend
         run: npx prisma migrate deploy
