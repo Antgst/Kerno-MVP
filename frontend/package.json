@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "test:unit": "node --test test/requestFormValidation.unit.test.js",
     "test:e2e": "playwright test",
+    "test:rncp5-evidence": "playwright test tests/e2e/rncp5-evidence.spec.js --project=chromium --workers=1",
     "preview": "vite preview"
   },
   "dependencies": {
