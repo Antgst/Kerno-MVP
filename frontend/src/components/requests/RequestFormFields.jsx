@@ -29,6 +29,7 @@ function RequestFormFields({
       <form
         className="request-form-fields"
         data-testid="request-form"
+        aria-busy={isSubmitting}
         onSubmit={onSubmit}
       >
         <input
@@ -99,19 +100,29 @@ function RequestFormFields({
             onChange={onChange}
             rows="6"
             placeholder="Décrivez votre besoin, les délais souhaités et vos questions."
+            required
             aria-invalid={Boolean(fieldErrors.message)}
             aria-describedby={fieldErrors.message ? "message-error" : undefined}
           />
 
           {fieldErrors.message && (
-            <p id="message-error" className="request-form-fields__error">
+            <p
+              id="message-error"
+              className="request-form-fields__error"
+              role="alert"
+            >
               {fieldErrors.message}
             </p>
           )}
         </div>
 
         <div className="request-form-fields__actions">
-          <Link to="/catalog">Annuler</Link>
+          <Link
+            to="/catalog"
+            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-800 focus-visible:ring-offset-2"
+          >
+            Annuler
+          </Link>
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Envoi..." : "Envoyer la demande"}
           </Button>
