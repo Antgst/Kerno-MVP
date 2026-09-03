@@ -45,7 +45,7 @@ function RequestFormFields({
         />
 
         {fieldErrors.supplierId && (
-          <p className="request-form-fields__target-error">
+          <p className="request-form-fields__target-error" role="alert">
             {fieldErrors.supplierId}
           </p>
         )}
@@ -70,7 +70,7 @@ function RequestFormFields({
           />
 
           <Input
-          label="Volume ou besoin professionnel"
+            label="Volume ou besoin professionnel"
             name="requestedQuantity"
             value={formData.requestedQuantity}
             onChange={onChange}
@@ -88,9 +88,7 @@ function RequestFormFields({
             </div>
           </div>
 
-          <label
-            htmlFor="message"
-          >
+          <label htmlFor="message">
             Message <span className="text-orange-500">*</span>
           </label>
 
@@ -102,10 +100,11 @@ function RequestFormFields({
             rows="6"
             placeholder="Décrivez votre besoin, les délais souhaités et vos questions."
             aria-invalid={Boolean(fieldErrors.message)}
+            aria-describedby={fieldErrors.message ? "message-error" : undefined}
           />
 
           {fieldErrors.message && (
-            <p className="request-form-fields__error">
+            <p id="message-error" className="request-form-fields__error">
               {fieldErrors.message}
             </p>
           )}
