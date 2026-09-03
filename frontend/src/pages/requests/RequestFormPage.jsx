@@ -10,6 +10,7 @@ import RequestFormFields from "../../components/requests/RequestFormFields";
 import { getProductById } from "../../services/productService";
 import { createContactRequest } from "../../services/requestService";
 import { getSupplierById } from "../../services/supplierService";
+import { getRequestFormErrors } from "../../utils/requestFormValidation";
 import { getResource } from "../../utils/responseUtils";
 
 const initialFormData = {
@@ -123,20 +124,7 @@ function RequestFormPage() {
   }
 
   function validateForm() {
-    const errors = {};
-
-    if (!formData.supplierId.trim()) {
-      errors.supplierId =
-        "Sélectionnez un fournisseur depuis le catalogue avant d’envoyer votre demande.";
-    }
-
-    if (!formData.subject.trim()) {
-      errors.subject = "L’objet est obligatoire.";
-    }
-
-    if (!formData.message.trim()) {
-      errors.message = "Le message est obligatoire.";
-    }
+    const errors = getRequestFormErrors(formData);
 
     setFieldErrors(errors);
 
