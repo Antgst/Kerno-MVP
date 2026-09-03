@@ -71,6 +71,36 @@ Covered behaviors:
 
 The validation rules were extracted from `RequestFormPage.jsx` into a pure function specifically so they can be tested without a browser, React renderer or API.
 
+## CI evidence for the backend-unit-test commit
+
+The original pull request used to validate commit `189b0b2` was later closed because the RNCP work is now intentionally kept without an open PR. The completed workflow runs remain valid historical evidence for that commit.
+
+GitHub Actions run:
+
+```text
+Vérifications develop-V2 — run 33780685749 — SUCCESS
+```
+
+The single `Backend et frontend` job completed successfully, including:
+
+- repository checkout;
+- pull-request diff check;
+- Node/npm setup;
+- root, backend and frontend dependency installation;
+- backend `npm test`;
+- frontend lint;
+- frontend Vite build.
+
+React Doctor run:
+
+```text
+React Doctor — run 33780685771 — SUCCESS
+```
+
+The `react-doctor` job completed successfully on the same commit.
+
+These workflow results apply to commit `189b0b2`. Later branch-only commits have not been validated by those historical runs.
+
 ## Accessibility work associated with the representative form
 
 The same working branch contains targeted semantic improvements to `frontend/src/components/requests/RequestFormFields.jsx`.
@@ -108,7 +138,7 @@ Total: 8 passed, 0 failed
 
 This isolated check proves the focused unit-test code executes successfully. It is not equivalent to a full repository `npm ci`, lint, Vite build, Playwright or PostgreSQL regression run.
 
-A previous CI run for the backend-unit-test commit succeeded before the related PR was closed. The current branch has deliberately been kept without an open PR, so later branch-only commits do not trigger the PR CI workflow.
+The current branch is deliberately kept without an open PR. The repository CI workflow is pull-request-triggered for `develop-V2`, so the later branch-only commits do not consume PR CI runs.
 
 ## Evidence boundaries for the dossier and jury
 
@@ -122,6 +152,7 @@ Do not claim:
 - 100% coverage;
 - that API/pytest or Playwright tests are unit tests;
 - that the branch-only changes are integrated into `develop-V2` before they actually are;
+- that the successful historical CI run covers later branch-only commits;
 - full accessibility or RGAA compliance from these targeted improvements.
 
 ## Remaining verification before integration or final submission
